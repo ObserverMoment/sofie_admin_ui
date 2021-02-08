@@ -5,7 +5,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start -p $PORT",
-    "postinstall": "tsc"
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "@apollo/client": "^3.3.8",
