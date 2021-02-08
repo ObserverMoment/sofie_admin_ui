@@ -14,13 +14,18 @@ const theme = {
   },
 }
 
+import { ApolloProvider } from '@apollo/client'
+import { useApollo } from '../lib/apolloClient'
+
 export default function App({ Component, pageProps }) {
+  const apolloClient = useApollo(pageProps.initialApolloState)
+
   return (
-    <>
+    <ApolloProvider client={apolloClient}>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <Component {...pageProps} />
       </ThemeProvider>
-    </>
+    </ApolloProvider>
   )
 }
