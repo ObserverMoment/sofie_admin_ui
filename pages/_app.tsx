@@ -5,6 +5,8 @@ import { useApollo } from '../lib/apolloClient'
 import { theme } from '../components/styled'
 import React from 'react'
 import Head from 'next/head'
+import { Header } from '../components/layout/header'
+import { Footer } from '../components/layout/footer'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -32,7 +34,9 @@ export default function App({ Component, pageProps }) {
       </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
+        <Header />
         <Component {...pageProps} />
+        <Footer />
       </ThemeProvider>
     </ApolloProvider>
   )

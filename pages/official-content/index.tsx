@@ -2,16 +2,15 @@ import { Page } from '../../components/layout/page'
 import { Title } from '../../components/styled'
 
 export default function Overview() {
-  const basePath = '/core-data'
+  const basePath = '/official-content'
   return (
     <Page
       navItems={[
         { text: 'Overview', link: basePath },
-        { text: 'Equipment', link: `${basePath}/equipment` },
-        { text: 'Moves', link: `${basePath}/moves` },
-        { text: 'Body Areas', link: `${basePath}/body-areas` },
-        { text: 'Workout Types', link: `${basePath}/workout-types` },
-        { text: 'Workout Goals', link: `${basePath}/workout-goals` },
+        { text: 'Workouts', link: `${basePath}/workouts` },
+        { text: 'Plans', link: `${basePath}/plans` },
+        { text: 'Events', link: `${basePath}/events` },
+        { text: 'Clubs', link: `${basePath}/clubs` },
       ]}
     >
       <Title>Overview dashboard</Title>

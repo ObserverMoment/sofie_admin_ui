@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { FlexBox, Spacer } from '../styled'
+import { FlexBox } from '../styled'
 import { Footer } from './footer'
 import { Header } from './header'
 import { LeftNav } from './leftNav'
@@ -8,19 +8,19 @@ import { LeftNav } from './leftNav'
 export const PageContainer = styled.div`
   margin-top: 60px;
   min-height: calc(100vh - 60px);
-  padding: 10px;
+  width: 100%;
 `
 
-export const Page = (props) => (
-  <div>
-    <Header />
-    <PageContainer>
-      <FlexBox direction="row">
-        <LeftNav />
-        <Spacer />
-        <div>{props.children}</div>
-      </FlexBox>
-    </PageContainer>
-    <Footer />
-  </div>
+export const PageContent = styled.div`
+  padding: 10px;
+  width: 100%;
+`
+
+export const Page = ({ children, navItems }) => (
+  <PageContainer>
+    <FlexBox direction="row">
+      {navItems && navItems.length > 0 && <LeftNav navItems={navItems} />}
+      <PageContent>{children}</PageContent>
+    </FlexBox>
+  </PageContainer>
 )
