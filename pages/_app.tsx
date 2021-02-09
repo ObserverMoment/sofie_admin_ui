@@ -6,7 +6,6 @@ import React from 'react'
 import Head from 'next/head'
 import { LogoMenuAndSideNav } from '../components/layout/sideNav'
 import { SecondaryNav } from '../components/layout/topNav'
-import { useRouter } from 'next/router'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -19,8 +18,6 @@ const GlobalStyle = createGlobalStyle`
 
 export default function App({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps.initialApolloState)
-  const { route } = useRouter()
-  const baseRoute = route.split('/')[1]
 
   return (
     <ApolloProvider client={apolloClient}>
