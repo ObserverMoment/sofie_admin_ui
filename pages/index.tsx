@@ -1,10 +1,9 @@
 import React from 'react'
-import { Page } from '../components/layout/page'
 import { ElevatedBox, FlexBox, Title } from '../components/styled'
 
 export default function Home() {
   return (
-    <Page navItems={[]}>
+    <FlexBox>
       <Title>Home Page</Title>
       <FlexBox direction="row" justify="center">
         <ElevatedBox>
@@ -17,6 +16,6 @@ export default function Home() {
           <Title>Dash Box 3</Title>
         </ElevatedBox>
       </FlexBox>
-    </Page>
+    </FlexBox>
   )
 }

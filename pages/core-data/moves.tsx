@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client'
-import { Page } from '../../components/layout/page'
-import { Title } from '../../components/styled'
+import React from 'react'
+import { FlexBox, Title } from '../../components/styled'
 
 export const STANDARD_MOVES_QUERY = gql`
   query standardMoves {
@@ -16,10 +16,10 @@ export default function Moves() {
   console.log(data)
 
   return (
-    <Page>
+    <FlexBox>
       <Title>Moves: </Title>
       {data &&
         data.standardMoves.map((move) => <div key={move.id}>{move.name}</div>)}
-    </Page>
+    </FlexBox>
   )
 }

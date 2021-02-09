@@ -1,20 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
-import { SpotMeLogo, AdminAvatar } from '../images'
-import { FlexBox, MainText, MyLink, SizedBox, Spacer } from '../styled'
-import { HeaderNav } from './headerNav'
+import { SpotMeLogo, AdminAvatar } from '../../images'
+import { FlexBox, MainText, MyLink, SizedBox, Spacer } from '../../styled'
+import { HeaderNav } from './headerNav-arch'
 
 export const FixedHeader = styled.header`
-  background-color: ${(props) => props.theme.colors.background};
+  background-color: ${(props) => props.theme.colors.primaryLight};
   position: fixed;
   z-index: 1100;
   top: 0;
   left: 0;
   right: 0;
-  padding-bottom: 1px;
+  padding: 8px 20px 8px 20px;
   box-shadow: 0 0 15px 0 rgb(0 0 0 / 10%);
-  transform: translateZ(100px);
-  padding: 10px;
 `
 
 export const Header = (props) => (
@@ -23,7 +21,7 @@ export const Header = (props) => (
       <FlexBox direction="row" align="center">
         <MyLink
           href="/"
-          content={<SpotMeLogo width={40} height={40} />}
+          content={<SpotMeLogo width={38} height={38} />}
         ></MyLink>
         <HeaderNav />
       </FlexBox>

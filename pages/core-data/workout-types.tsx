@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client'
-import { Page } from '../../components/layout/page'
-import { Title } from '../../components/styled'
+import React from 'react'
+import { FlexBox, Title } from '../../components/styled'
 
 export const WORKOUT_TYPES_QUERY = gql`
   query workoutTypes {
@@ -16,9 +16,9 @@ export default function WorkoutTypes() {
   console.log(data)
 
   return (
-    <Page>
-      <Title>Body Areas: </Title>
+    <FlexBox>
+      <Title>Workout Types: </Title>
       {data && data.workoutTypes.map((wt) => <div key={wt.id}>{wt.name}</div>)}
-    </Page>
+    </FlexBox>
   )
 }

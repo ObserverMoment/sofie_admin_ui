@@ -1,11 +1,10 @@
 import React from 'react'
-import { Page } from '../../components/layout/page'
-import { Title } from '../../components/styled'
+import { FlexBox, Title } from '../../components/styled'
 
 export default function OfficialContentWorkouts() {
   return (
-    <Page>
+    <FlexBox>
       <Title>OfficialContentWorkouts</Title>
-    </Page>
+    </FlexBox>
   )
 }

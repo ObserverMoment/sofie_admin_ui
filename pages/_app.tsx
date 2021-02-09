@@ -1,12 +1,12 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
-
 import { ApolloProvider } from '@apollo/client'
 import { useApollo } from '../lib/apolloClient'
-import { theme } from '../components/styled'
+import { FlexBox, Padding, theme } from '../components/styled'
 import React from 'react'
 import Head from 'next/head'
-import { Header } from '../components/layout/header'
-import { Footer } from '../components/layout/footer'
+import { LogoMenuAndSideNav } from '../components/layout/sideNav'
+import { SecondaryNav } from '../components/layout/topNav'
+import { useRouter } from 'next/router'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -19,6 +19,8 @@ const GlobalStyle = createGlobalStyle`
 
 export default function App({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps.initialApolloState)
+  const { route } = useRouter()
+  const baseRoute = route.split('/')[1]
 
   return (
     <ApolloProvider client={apolloClient}>
@@ -34,9 +36,15 @@ export default function App({ Component, pageProps }) {
       </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <Header />
-        <Component {...pageProps} />
-        <Footer />
+        <FlexBox direction="row">
+          <LogoMenuAndSideNav />
+          <FlexBox>
+            <SecondaryNav />
+            <Padding>
+              <Component {...pageProps} />
+            </Padding>
+          </FlexBox>
+        </FlexBox>
       </ThemeProvider>
     </ApolloProvider>
   )

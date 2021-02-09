@@ -1,6 +1,6 @@
 import React from 'react'
-import { SpotMeLogo } from '../images'
-import { FlexBox, MainText, Padding, Spacer } from '../styled'
+import { SpotMeLogo } from '../../images'
+import { FlexBox, MainText, Padding, Spacer } from '../../styled'
 
 export const Footer = (props) => (
   <Padding>
