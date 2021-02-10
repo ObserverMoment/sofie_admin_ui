@@ -1,4 +1,3 @@
-import { printIntrospectionSchema } from 'graphql'
 import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
@@ -11,7 +10,7 @@ import {
   UserAvatar,
   UsersIcon,
 } from '../images'
-import { FlexBox, MyButton, MyLink, Spacer, TinyText } from '../styled'
+import { MyButton, MyLink, Spacer, TinyText } from '../styled'
 
 //// Routing Data ////
 const primaryRoutes = [

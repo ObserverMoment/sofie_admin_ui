@@ -31,7 +31,7 @@ const StyledTableCell = styled.td`
 interface InteractiveTableProps {
   columnMapping: Array<any>
   data: Array<any>
-  handleRowClick?: (data) => void
+  handleRowClick?: (data: any) => void
 }
 
 const InteractiveTable = ({
