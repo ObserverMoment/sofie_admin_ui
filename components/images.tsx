@@ -7,8 +7,11 @@ import {
   faClipboardList,
   faUsersCog,
   faSignOutAlt,
+  faExclamationCircle,
+  faWindowClose,
+  faPlus,
 } from '@fortawesome/free-solid-svg-icons'
-import { FlexBox } from './styled'
+import { FlexBox, theme } from './styled'
 
 export const SpotMeLogo = ({ width = 40, height = 40 }) => (
   <FlexBox align="center">
@@ -39,5 +42,18 @@ export const UsersIcon = ({ width = 30 }) => (
   <FontAwesomeIcon icon={faUsersCog} width={width} />
 )
 export const SignOutIcon = ({ width = 30 }) => (
-  <FontAwesomeIcon icon={faSignOutAlt} width={width} rotation={90} />
+  <FontAwesomeIcon icon={faSignOutAlt} width={width} />
+)
+export const CloseWindowIcon = ({ width = 30 }) => (
+  <FontAwesomeIcon icon={faWindowClose} width={width} />
+)
+export const PlusIcon = ({ width = 30 }) => (
+  <FontAwesomeIcon icon={faPlus} width={width} />
+)
+export const ErrorIcon = ({ width = 30 }) => (
+  <FontAwesomeIcon
+    icon={faExclamationCircle}
+    width={width}
+    color={theme.colors.destructive}
+  />
 )

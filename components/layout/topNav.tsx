@@ -1,7 +1,7 @@
 import { printIntrospectionSchema } from 'graphql'
 import { useRouter } from 'next/router'
 import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import { MainText } from '../styled'
 
 //// Routing Data ////
@@ -32,7 +32,7 @@ interface NavItem {
   link: string
 }
 
-const SecondaryNavContainer = styled.nav`
+const TopNavContainer = styled.nav`
   display: flex;
   flex-direction: row;
   padding: 10px;
@@ -41,9 +41,13 @@ interface NavItemProps {
   isActive: boolean
 }
 
-const SecondaryNavItem = styled.a<NavItemProps>`
+const TopNavItem = styled.a<NavItemProps>`
   padding: 12px 16px;
   margin: 0 4px;
+  box-shadow: ${(props) =>
+    props.isActive
+      ? '0 3px 16px 0px rgb(0 0 0 / 12%), 0 5px 8px -4px rgb(0 0 0 / 30%)'
+      : 'None'};
   background-color: ${(props) =>
     props.isActive
       ? props.theme.colors.primaryDark
@@ -56,23 +60,23 @@ const SecondaryNavItem = styled.a<NavItemProps>`
   border-radius: 112px;
 `
 
-export const SecondaryNav = () => {
+export const TopNav = () => {
   const { route } = useRouter()
   const baseRoute = route.split('/')[1]
   const routes = baseRoute === '' ? null : subRoutes[baseRoute]
 
   return routes ? (
-    <SecondaryNavContainer>
+    <TopNavContainer>
       {routes.map(({ text, link }) => (
-        <SecondaryNavItem key={text} href={link} isActive={route === link}>
+        <TopNavItem key={text} href={link} isActive={route === link}>
           <MainText
             bold
             colorType={route === link ? 'primaryLight' : 'primaryDark'}
           >
             {text}
           </MainText>
-        </SecondaryNavItem>
+        </TopNavItem>
       ))}
-    </SecondaryNavContainer>
+    </TopNavContainer>
   ) : null
 }

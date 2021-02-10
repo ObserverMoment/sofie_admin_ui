@@ -1,11 +1,11 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { ApolloProvider } from '@apollo/client'
 import { useApollo } from '../lib/apolloClient'
-import { FlexBox, Padding, theme } from '../components/styled'
+import { FlexBox, MainContent, theme } from '../components/styled'
 import React from 'react'
 import Head from 'next/head'
 import { LogoMenuAndSideNav } from '../components/layout/sideNav'
-import { SecondaryNav } from '../components/layout/topNav'
+import { TopNav } from '../components/layout/topNav'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -35,11 +35,11 @@ export default function App({ Component, pageProps }) {
       <ThemeProvider theme={theme}>
         <FlexBox direction="row">
           <LogoMenuAndSideNav />
-          <FlexBox>
-            <SecondaryNav />
-            <Padding>
+          <FlexBox align="center">
+            <TopNav />
+            <MainContent>
               <Component {...pageProps} />
-            </Padding>
+            </MainContent>
           </FlexBox>
         </FlexBox>
       </ThemeProvider>

@@ -28,10 +28,11 @@ interface NavItem {
 }
 
 const SideNavContainer = styled.div`
+  position: fixed;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  width: 80px;
+  width: ${(props) => props.theme.spacing.sideNavWidth};
   border-radius: 0 10px 10px 0;
   background-color: ${(props) => props.theme.colors.primaryDark};
 `
