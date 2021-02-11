@@ -10,7 +10,7 @@ import {
   UserAvatar,
   UsersIcon,
 } from '../images'
-import { MyButton, MyLink, Spacer, TinyText } from '../styled'
+import { MyButton, MyLink, Spacer, TinyText } from '../styled-components/styled'
 
 //// Routing Data ////
 const primaryRoutes = [

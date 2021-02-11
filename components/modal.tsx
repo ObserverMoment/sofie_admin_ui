@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import { CloseWindowIcon } from './images'
-import { FlexBox } from './styled'
+import { FlexBox } from './styled-components/styled'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const Overlay = styled(motion.div)`
@@ -11,11 +11,9 @@ const Overlay = styled(motion.div)`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.5);
 `
 const ModalContainer = styled(motion.div)`
-  width: 50%;
-  height: 50%;
   background-color: white;
   position: absolute; // ----.
   top: 50%; //     |positioning the container
@@ -26,8 +24,8 @@ const ModalContainer = styled(motion.div)`
 `
 
 const CloseButton = styled.div`
-  top: 6px;
-  right: 8px;
+  top: 10px;
+  right: 12px;
   position: absolute;
   cursor: pointer;
 `
@@ -54,11 +52,9 @@ const Modal = ({ handleClose, children, isOpen }) => {
           variants={modalVariant}
         >
           <ModalContainer variants={containerVariant}>
-            <FlexBox direction="row" justify="flex-end">
-              <CloseButton onClick={handleClose}>
-                <CloseWindowIcon />
-              </CloseButton>
-            </FlexBox>
+            <CloseButton onClick={handleClose}>
+              <CloseWindowIcon />
+            </CloseButton>
 
             {children}
           </ModalContainer>

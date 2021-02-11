@@ -10,8 +10,13 @@ import {
   faExclamationCircle,
   faWindowClose,
   faPlus,
+  faSort,
+  faSortUp,
+  faSortDown,
+  faCheckCircle,
+  faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons'
-import { FlexBox, theme } from './styled'
+import { FlexBox, theme } from './styled-components/styled'
 
 export const SpotMeLogo = ({ width = 40, height = 40 }) => (
   <FlexBox align="center">
@@ -47,9 +52,42 @@ export const SignOutIcon = ({ width = 30 }) => (
 export const CloseWindowIcon = ({ width = 30 }) => (
   <FontAwesomeIcon icon={faWindowClose} width={width} />
 )
+
+type SortType = 'Sort' | 'Up' | 'Down'
+const sortIcons = {
+  Sort: faSort,
+  Up: faSortUp,
+  Down: faSortDown,
+}
+
+export const SortIcon = ({
+  width = 30,
+  type = 'Sort',
+}: {
+  width?: number
+  type?: SortType
+}) => <FontAwesomeIcon icon={sortIcons[type]} width={width} />
+
 export const PlusIcon = ({ width = 30 }) => (
   <FontAwesomeIcon icon={faPlus} width={width} />
 )
+
+export const SuccessIcon = ({ width = 30 }) => (
+  <FontAwesomeIcon
+    icon={faCheckCircle}
+    width={width}
+    color={theme.colors.success}
+  />
+)
+
+export const InfoIcon = ({ width = 30 }) => (
+  <FontAwesomeIcon
+    icon={faInfoCircle}
+    width={width}
+    color={theme.colors.info}
+  />
+)
+
 export const ErrorIcon = ({ width = 30 }) => (
   <FontAwesomeIcon
     icon={faExclamationCircle}

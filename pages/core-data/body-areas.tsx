@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client'
 import React from 'react'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
-import LoadingIndicator from '../../components/loadingIndicator'
+import { LoadingSpinner } from '../../components/loadingIndicators'
 
 export const BODYAREAS_QUERY = gql`
   query bodyAreas {
@@ -20,7 +20,7 @@ export default function BodyAreas() {
   if (error) {
     return <ErrorMessage message={error.message} />
   } else if (loading) {
-    return <LoadingIndicator />
+    return <LoadingSpinner />
   } else {
     return (
       <InteractiveTable

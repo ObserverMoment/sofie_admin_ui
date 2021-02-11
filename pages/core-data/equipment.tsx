@@ -1,16 +1,17 @@
-import { gql, useQuery } from '@apollo/client'
+import { gql, useQuery, useMutation } from '@apollo/client'
 import React, { useState } from 'react'
 import ErrorMessage from '../../components/errorMessage'
-import LoadingIndicator from '../../components/loadingIndicator'
+import { LoadingSpinner } from '../../components/loadingIndicators'
 import InteractiveTable from '../../components/interactiveTable'
 import {
   CreateButton,
   FlexBox,
-  MainText,
-  MyButton,
   Title,
-} from '../../components/styled'
+} from '../../components/styled-components/styled'
 import MyModal from '../../components/modal'
+import CreateEditEquipment from '../../components/forms/createEditEquipment'
+import { Equipment } from '../../types/modelTypes'
+import { showToast } from '../../components/notifications'
 
 export const EQUIPMENT_QUERY = gql`
   query equipments {
@@ -23,22 +24,51 @@ export const EQUIPMENT_QUERY = gql`
   }
 `
 
-interface Equipment {
-  id: string
-  name: string
-  altNames: string
-  loadAdjustable: boolean
-}
+export const CREATE_EQUIPMENT_MUTATION = gql`
+  mutation createEquipment($data: CreateEquipmentInput!) {
+    createEquipment(data: $data) {
+      id
+      name
+      altNames
+      loadAdjustable
+    }
+  }
+`
 
-export default function Equipment() {
-  const { loading, error, data } = useQuery(EQUIPMENT_QUERY)
+export const UPDATE_EQUIPMENT_MUTATION = gql`
+  mutation updateEquipment($data: UpdateEquipmentInput!) {
+    updateEquipment(data: $data) {
+      id
+      name
+      altNames
+      loadAdjustable
+    }
+  }
+`
+
+export default function EquipmentData() {
   const [{ isOpen, title }, setModalState] = useState({
     isOpen: false,
     title: 'Equipment',
   })
-  const [activeEquipmentData, setActiveEquipmentData] = useState(
-    {} as Equipment,
-  )
+
+  const { loading, error, data } = useQuery(EQUIPMENT_QUERY)
+
+  const [createEquipment] = useMutation(CREATE_EQUIPMENT_MUTATION, {
+    onCompleted: () => {
+      showToast('New Equipment Added', 'Success')
+      setModalState({ isOpen: false, title: '' })
+    },
+  })
+
+  const [updateEquipment] = useMutation(UPDATE_EQUIPMENT_MUTATION, {
+    onCompleted: () => {
+      showToast('Equipment Updated', 'Success')
+      setModalState({ isOpen: false, title: '' })
+    },
+  })
+
+  const [activeEquipmentData, setActiveEquipmentData] = useState(null)
 
   function handleRowClick(data: Equipment) {
     setActiveEquipmentData(data)
@@ -46,14 +76,22 @@ export default function Equipment() {
   }
 
   function handleAddNewClick() {
-    setActiveEquipmentData({} as Equipment)
+    setActiveEquipmentData(null)
     setModalState({ isOpen: true, title: 'Add Equipment' })
+  }
+
+  function handleCreateEquipment(data: Equipment) {
+    createEquipment({ variables: { data } })
+  }
+
+  function handleUpdateEquipment(data: Equipment) {
+    updateEquipment({ variables: { data } })
   }
 
   if (error) {
     return <ErrorMessage message={error.message} />
   } else if (loading) {
-    return <LoadingIndicator />
+    return <LoadingSpinner />
   } else {
     return (
       <FlexBox>
@@ -70,6 +108,7 @@ export default function Equipment() {
             {
               Header: 'Alt Names',
               accessor: 'altNames',
+              disableSortBy: true,
             },
             {
               id: 'loadAdjustable',
@@ -86,12 +125,14 @@ export default function Equipment() {
             setModalState({ isOpen: false, title: 'Equipment' })
           }
         >
-          {activeEquipmentData && (
-            <FlexBox>
-              <Title>{title}</Title>
-              <MainText>{activeEquipmentData.name}</MainText>
-            </FlexBox>
-          )}
+          <FlexBox>
+            <Title>{title}</Title>
+            <CreateEditEquipment
+              equipment={activeEquipmentData}
+              handleCreateEquipment={handleCreateEquipment}
+              handleUpdateEquipment={handleUpdateEquipment}
+            />
+          </FlexBox>
         </MyModal>
       </FlexBox>
     )

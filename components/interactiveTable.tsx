@@ -1,6 +1,8 @@
-import { useMemo } from 'react'
-import { useTable } from 'react-table'
+import React, { useMemo } from 'react'
+import { useTable, useSortBy } from 'react-table'
 import styled from 'styled-components'
+import { SortIcon } from './images'
+import { FlexBox, Spacer } from './styled-components/styled'
 
 const StyledTable = styled.table`
   border-radius: 6px;
@@ -40,7 +42,7 @@ const InteractiveTable = ({
   handleRowClick,
 }: InteractiveTableProps) => {
   const columns = useMemo(() => columnMapping, [])
-  const tableData = useMemo(() => data, [])
+  const tableData = useMemo(() => data, [data])
 
   const {
     getTableProps,
@@ -48,7 +50,7 @@ const InteractiveTable = ({
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns, data: tableData })
+  } = useTable({ columns, data: tableData, autoResetSortBy: false }, useSortBy)
 
   return (
     <StyledTable {...getTableProps()}>
@@ -56,8 +58,27 @@ const InteractiveTable = ({
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <StyledTheaderCell {...column.getHeaderProps()}>
-                {column.render('Header')}
+              <StyledTheaderCell
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+              >
+                <FlexBox direction="row">
+                  {column.render('Header')}
+                  {!column.disableSortBy && (
+                    <>
+                      <Spacer space="4px" />
+                      <SortIcon
+                        width={10}
+                        type={
+                          !column.isSorted
+                            ? 'Sort'
+                            : column.isSortedDesc
+                            ? 'Down'
+                            : 'Up'
+                        }
+                      />
+                    </>
+                  )}
+                </FlexBox>
               </StyledTheaderCell>
             ))}
           </tr>

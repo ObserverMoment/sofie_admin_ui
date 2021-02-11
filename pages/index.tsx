@@ -1,5 +1,9 @@
 import React from 'react'
-import { ElevatedBox, FlexBox, Title } from '../components/styled'
+import {
+  ElevatedBox,
+  FlexBox,
+  Title,
+} from '../components/styled-components/styled'
 
 export default function Home() {
   return (

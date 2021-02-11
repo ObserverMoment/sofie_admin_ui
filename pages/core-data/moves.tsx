@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client'
 import React from 'react'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
-import LoadingIndicator from '../../components/loadingIndicator'
+import { LoadingSpinner } from '../../components/loadingIndicators'
 
 export const STANDARD_MOVES_QUERY = gql`
   query standardMoves {
@@ -20,7 +20,7 @@ export default function Moves() {
   if (error) {
     return <ErrorMessage message={error.message} />
   } else if (loading) {
-    return <LoadingIndicator />
+    return <LoadingSpinner />
   } else {
     return (
       <InteractiveTable

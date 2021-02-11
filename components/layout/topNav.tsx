@@ -2,7 +2,7 @@ import { printIntrospectionSchema } from 'graphql'
 import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
-import { MainText } from '../styled'
+import { MainText } from '../styled-components/styled'
 
 //// Routing Data ////
 const coreDataBasePath = '/core-data'

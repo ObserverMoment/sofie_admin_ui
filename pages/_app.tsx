@@ -1,11 +1,17 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { ApolloProvider } from '@apollo/client'
 import { useApollo } from '../lib/apolloClient'
-import { FlexBox, MainContent, theme } from '../components/styled'
+import {
+  FlexBox,
+  MainContent,
+  theme,
+} from '../components/styled-components/styled'
 import React from 'react'
 import Head from 'next/head'
 import { LogoMenuAndSideNav } from '../components/layout/sideNav'
 import { TopNav } from '../components/layout/topNav'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -40,6 +46,7 @@ export default function App({ Component, pageProps }) {
             <MainContent>
               <Component {...pageProps} />
             </MainContent>
+            <ToastContainer style={{ width: '280px' }} />
           </FlexBox>
         </FlexBox>
       </ThemeProvider>

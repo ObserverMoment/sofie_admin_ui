@@ -11,6 +11,7 @@ function createApolloClient() {
       uri: 'https://spotme-api-sandbox.herokuapp.com/',
     }),
     cache: new InMemoryCache(),
+    assumeImmutableResults: true,
   })
 }
 

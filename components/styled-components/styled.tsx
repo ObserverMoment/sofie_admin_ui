@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 import Link from 'next/link'
-import { redirect } from 'next/dist/next-server/server/api-utils'
 import React from 'react'
-import { PlusIcon } from './images'
+import { PlusIcon } from '../images'
 
 //// Global Themes Data ////
 export const theme = {
@@ -11,8 +10,11 @@ export const theme = {
     pureBlack: '#000000',
     primaryLight: '#fafafa',
     pureWhite: '#ffffff',
+    grey: '#868686',
     highlight: '#167974',
     destructive: '#bb2020',
+    info: '#054894',
+    success: '#158550',
   },
   spacing: {
     sideNavWidth: '80px',
