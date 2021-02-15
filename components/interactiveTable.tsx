@@ -7,7 +7,8 @@ import { FlexBox, Spacer } from './styled-components/styled'
 const StyledTable = styled.table`
   border-radius: 6px;
   background-color: ${(props) => props.theme.colors.primaryLight};
-  display: inline-block;
+
+  font-size: 14px;
 `
 
 const StyledTheaderCell = styled.th`
@@ -93,7 +94,9 @@ const InteractiveTable = ({
                 return (
                   <StyledTableCell
                     {...cell.getCellProps()}
-                    onClick={() => handleRowClick(row.original)}
+                    onClick={
+                      handleRowClick ? () => handleRowClick(row.original) : null
+                    }
                   >
                     {cell.render('Cell')}
                   </StyledTableCell>

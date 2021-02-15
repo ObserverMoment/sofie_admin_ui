@@ -9,13 +9,15 @@ export const WORKOUT_TYPES_QUERY = gql`
     workoutTypes {
       id
       name
+      subtitle
+      description
+      scoreType
     }
   }
 `
 
 export default function WorkoutTypes() {
   const { loading, error, data } = useQuery(WORKOUT_TYPES_QUERY)
-  console.log(data)
 
   if (error) {
     return <ErrorMessage message={error.message} />
@@ -27,7 +29,23 @@ export default function WorkoutTypes() {
         columnMapping={[
           {
             Header: 'Name',
-            accessor: 'name', // accessor is the "key" in the data
+            accessor: 'name',
+            disableSortBy: true,
+          },
+          {
+            Header: 'Short Description',
+            accessor: 'subtitle',
+            disableSortBy: true,
+          },
+          {
+            Header: 'Long Description',
+            accessor: 'description',
+            disableSortBy: true,
+          },
+          {
+            Header: 'Score As',
+            accessor: 'scoreType',
+            disableSortBy: true,
           },
         ]}
         data={data.workoutTypes}

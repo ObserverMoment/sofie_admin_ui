@@ -12,9 +12,9 @@ const toastIcons = {
 
 const ToastComponent = ({ message, icon: Icon }) => (
   <FlexBox direction="row" justify="space-evenly" align="center">
-    <MainText bold>{message}</MainText>
-    <Spacer space="4px" />
     <Icon />
+    <Spacer space="4px" />
+    <MainText bold>{message}</MainText>
   </FlexBox>
 )
 

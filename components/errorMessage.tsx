@@ -9,8 +9,8 @@ import {
 
 const ErrorMessage = ({ message }: { message: string }) => (
   <ElevatedBox direction="row" align="center">
-    <ErrorIcon />
-    <Spacer space="4px" />
+    <ErrorIcon width={28} />
+    <Spacer space="8px" />
     <FlexBox>
       <MainText bold colorType="destructive">
         {message}

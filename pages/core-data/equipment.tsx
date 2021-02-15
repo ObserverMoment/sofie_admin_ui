@@ -13,35 +13,33 @@ import CreateEditEquipment from '../../components/forms/createEditEquipment'
 import { Equipment } from '../../types/modelTypes'
 import { showToast } from '../../components/notifications'
 
-export const EQUIPMENT_QUERY = gql`
+const equipmentFields = `
+  id
+  name
+  altNames
+  loadAdjustable
+`
+
+const EQUIPMENT_QUERY = gql`
   query equipments {
     equipments {
-      id
-      name
-      altNames
-      loadAdjustable
+      ${equipmentFields}
     }
   }
 `
 
-export const CREATE_EQUIPMENT_MUTATION = gql`
+const CREATE_EQUIPMENT_MUTATION = gql`
   mutation createEquipment($data: CreateEquipmentInput!) {
     createEquipment(data: $data) {
-      id
-      name
-      altNames
-      loadAdjustable
+      ${equipmentFields}
     }
   }
 `
 
-export const UPDATE_EQUIPMENT_MUTATION = gql`
+const UPDATE_EQUIPMENT_MUTATION = gql`
   mutation updateEquipment($data: UpdateEquipmentInput!) {
     updateEquipment(data: $data) {
-      id
-      name
-      altNames
-      loadAdjustable
+      ${equipmentFields}
     }
   }
 `

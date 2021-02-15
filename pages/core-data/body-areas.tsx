@@ -9,13 +9,15 @@ export const BODYAREAS_QUERY = gql`
     bodyAreas {
       id
       name
+      altNames
+      frontBack
+      upperLower
     }
   }
 `
 
 export default function BodyAreas() {
   const { loading, error, data } = useQuery(BODYAREAS_QUERY)
-  console.log(data)
 
   if (error) {
     return <ErrorMessage message={error.message} />
@@ -28,6 +30,22 @@ export default function BodyAreas() {
           {
             Header: 'Name',
             accessor: 'name', // accessor is the "key" in the data
+            disableSortBy: true,
+          },
+          {
+            Header: 'Alternative Names',
+            accessor: 'altNames', // accessor is the "key" in the data
+            disableSortBy: true,
+          },
+          {
+            Header: 'Front / Back',
+            accessor: 'frontBack', // accessor is the "key" in the data
+            disableSortBy: true,
+          },
+          {
+            Header: 'Upper / Core / Lower',
+            accessor: 'upperLower', // accessor is the "key" in the data
+            disableSortBy: true,
           },
         ]}
         data={data.bodyAreas}

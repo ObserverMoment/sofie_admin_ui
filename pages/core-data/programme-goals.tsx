@@ -9,13 +9,13 @@ export const WORKOUT_GOALS_QUERY = gql`
     workoutGoals {
       id
       name
+      description
     }
   }
 `
 
 export default function WorkoutGoals() {
   const { loading, error, data } = useQuery(WORKOUT_GOALS_QUERY)
-  console.log(data)
 
   if (error) {
     return <ErrorMessage message={error.message} />
@@ -28,6 +28,12 @@ export default function WorkoutGoals() {
           {
             Header: 'Name',
             accessor: 'name', // accessor is the "key" in the data
+            disableSortBy: true,
+          },
+          {
+            Header: 'Description',
+            accessor: 'description', // accessor is the "key" in the data
+            disableSortBy: true,
           },
         ]}
         data={data.workoutGoals}

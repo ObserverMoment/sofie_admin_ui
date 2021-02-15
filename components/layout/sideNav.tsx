@@ -1,16 +1,22 @@
 import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
+import { firebaseClient, signOut } from '../../lib/firebaseClient'
 import {
   ContentIcon,
   DataIcon,
   HomeIcon,
   SignOutIcon,
   SpotMeLogo,
-  UserAvatar,
   UsersIcon,
 } from '../images'
-import { MyButton, MyLink, Spacer, TinyText } from '../styled-components/styled'
+import {
+  FlexBox,
+  MyButton,
+  MyLink,
+  Spacer,
+  TinyText,
+} from '../styled-components/styled'
 
 //// Routing Data ////
 const primaryRoutes = [
@@ -102,12 +108,19 @@ const PrimaryNavItem = styled.a<NavItemProps>`
 export const LogoMenuAndSideNav = () => (
   <SideNavContainer>
     <Spacer space="8px" />
-    <MyLink href="/" content={<SpotMeLogo width={50} height={50} />} />
-    <PrimaryNav />
+    <MyLink
+      href="/"
+      content={
+        <FlexBox justify="center" align="center">
+          <SpotMeLogo width={50} height={50} />
+        </FlexBox>
+      }
+    />
+    <PrimaryNav signOut={signOut} />
   </SideNavContainer>
 )
 
-export const PrimaryNav = () => {
+export const PrimaryNav = ({ signOut }) => {
   const { route } = useRouter()
   const baseRoute = route.split('/')[1]
 
@@ -120,22 +133,20 @@ export const PrimaryNav = () => {
             href={link}
             isActive={`/${baseRoute}` === link}
           >
-            <Icon />
+            <Icon width={20} />
+            <Spacer space="3px" />
             <TinyText>{text}</TinyText>
           </PrimaryNavItem>
         ))}
       </NavItemsGroupContainer>
       <NavItemsGroupContainer>
-        <PrimaryNavItem href={'/settings'} isActive={false}>
-          <UserAvatar />
-          <TinyText>Settings</TinyText>
-        </PrimaryNavItem>
         <MyButton
           flexDirection="column"
-          onClick={() => console.log('sign out')}
+          onClick={signOut}
           colorType="primaryDark"
         >
           <SignOutIcon />
+          <Spacer space="3px" />
           <TinyText>Sign Out</TinyText>
         </MyButton>
       </NavItemsGroupContainer>

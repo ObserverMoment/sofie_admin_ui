@@ -1,11 +1,10 @@
-import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faUserCircle,
   faHome,
   faDatabase,
   faClipboardList,
-  faUsersCog,
+  faUsers,
   faSignOutAlt,
   faExclamationCircle,
   faWindowClose,
@@ -16,12 +15,10 @@ import {
   faCheckCircle,
   faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons'
-import { FlexBox, theme } from './styled-components/styled'
+import { theme } from './styled-components/styled'
 
 export const SpotMeLogo = ({ width = 40, height = 40 }) => (
-  <FlexBox align="center">
-    <img src="/spotme_logo.svg" alt="logo" width={width} height={height} />
-  </FlexBox>
+  <img src="/spotme_logo.svg" alt="logo" width={width} height={height} />
 )
 
 export const UserAvatar = ({ width = 30 }) => (
@@ -35,7 +32,7 @@ export const UserAvatar = ({ width = 30 }) => (
 
 /// Icons
 export const HomeIcon = ({ width = 30 }) => (
-  <FontAwesomeIcon icon={faHome} width={width} display="inline-block" />
+  <FontAwesomeIcon icon={faHome} width={width + 8} />
 )
 export const DataIcon = ({ width = 30 }) => (
   <FontAwesomeIcon icon={faDatabase} width={width} />
@@ -44,7 +41,7 @@ export const ContentIcon = ({ width = 30 }) => (
   <FontAwesomeIcon icon={faClipboardList} width={width} />
 )
 export const UsersIcon = ({ width = 30 }) => (
-  <FontAwesomeIcon icon={faUsersCog} width={width} />
+  <FontAwesomeIcon icon={faUsers} width={width + 12} />
 )
 export const SignOutIcon = ({ width = 30 }) => (
   <FontAwesomeIcon icon={faSignOutAlt} width={width} />

@@ -30,7 +30,7 @@ interface TextProps {
 type colorTypes = 'primaryDark' | 'primaryLight' | 'highlight' | 'destructive'
 
 export const Title = styled.h1<TextProps>`
-  font-size: 28px;
+  font-size: 26px;
   margin: 0px;
   color: ${(props) =>
     props.colorType
@@ -39,7 +39,7 @@ export const Title = styled.h1<TextProps>`
 `
 
 export const SubTitle = styled.h2<TextProps>`
-  font-size: 22px;
+  font-size: 20px;
   margin: 0px;
   color: ${(props) =>
     props.colorType
@@ -48,7 +48,7 @@ export const SubTitle = styled.h2<TextProps>`
 `
 
 export const MainText = styled.span<TextProps>`
-  font-size: 16px;
+  font-size: 15px;
   color: ${(props) =>
     props.colorType
       ? props.theme.colors[props.colorType]
@@ -57,7 +57,7 @@ export const MainText = styled.span<TextProps>`
 `
 
 export const TinyText = styled.span<TextProps>`
-  font-size: 10px;
+  font-size: 11px;
   color: ${(props) =>
     props.colorType
       ? props.theme.colors[props.colorType]
@@ -68,7 +68,6 @@ export const TinyText = styled.span<TextProps>`
 //// Layout ////
 /// Background for the individual page info.
 export const MainContent = styled.div`
-  background-color: ${(props) => props.theme.colors.primaryLight};
   border-radius: 24px;
   margin-left: ${(props) => props.theme.spacing.sideNavWidth};
   padding: 30px;

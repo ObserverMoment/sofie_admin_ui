@@ -1,17 +1,40 @@
 import { useMemo } from 'react'
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
+import {
+  ApolloClient,
+  createHttpLink,
+  HttpLink,
+  InMemoryCache,
+} from '@apollo/client'
+import { setContext } from '@apollo/client/link/context'
+import nookies from 'nookies'
 
 // https://www.apollographql.com/blog/building-a-next-js-app-with-apollo-client-slash-graphql/
 let apolloClient
 
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = nookies.get(null, 'spotmeToken')
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token || '',
+      accessType: 'ADMIN',
+    },
+  }
+})
+
+// 'https://spotme-api-sandbox.herokuapp.com/'
+// 'http://localhost:4000/'
+const httpLink = createHttpLink({
+  uri: 'http://localhost:4000/',
+})
+
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined', // set to true for SSR
-    link: new HttpLink({
-      uri: 'https://spotme-api-sandbox.herokuapp.com/',
-    }),
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
-    assumeImmutableResults: true,
   })
 }
 
