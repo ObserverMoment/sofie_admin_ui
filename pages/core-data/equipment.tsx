@@ -1,4 +1,4 @@
-import { gql, useQuery, useMutation } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import React, { useState } from 'react'
 import ErrorMessage from '../../components/errorMessage'
 import { LoadingSpinner } from '../../components/loadingIndicators'
@@ -10,39 +10,15 @@ import {
 } from '../../components/styled-components/styled'
 import MyModal from '../../components/modal'
 import CreateEditEquipment from '../../components/forms/createEditEquipment'
-import { Equipment } from '../../types/modelTypes'
+import { Equipment } from '../../types/models'
 import { showToast } from '../../components/notifications'
-
-const equipmentFields = `
-  id
-  name
-  altNames
-  loadAdjustable
-`
-
-const EQUIPMENT_QUERY = gql`
-  query equipments {
-    equipments {
-      ${equipmentFields}
-    }
-  }
-`
-
-const CREATE_EQUIPMENT_MUTATION = gql`
-  mutation createEquipment($data: CreateEquipmentInput!) {
-    createEquipment(data: $data) {
-      ${equipmentFields}
-    }
-  }
-`
-
-const UPDATE_EQUIPMENT_MUTATION = gql`
-  mutation updateEquipment($data: UpdateEquipmentInput!) {
-    updateEquipment(data: $data) {
-      ${equipmentFields}
-    }
-  }
-`
+import {
+  CREATE_EQUIPMENT_MUTATION,
+  EQUIPMENT_QUERY,
+} from '../../graphql/equipment'
+import nookies from 'nookies'
+import Router from 'next/router'
+import { toast } from 'react-toastify'
 
 export default function EquipmentData() {
   const [{ isOpen, title }, setModalState] = useState({
@@ -59,7 +35,7 @@ export default function EquipmentData() {
     },
   })
 
-  const [updateEquipment] = useMutation(UPDATE_EQUIPMENT_MUTATION, {
+  const [updateEquipment] = useMutation(CREATE_EQUIPMENT_MUTATION, {
     onCompleted: () => {
       showToast('Equipment Updated', 'Success')
       setModalState({ isOpen: false, title: '' })
@@ -87,7 +63,9 @@ export default function EquipmentData() {
   }
 
   if (error) {
-    return <ErrorMessage message={error.message} />
+    showToast(`Error retrieving data`, 'Error', 5000)
+    console.error(error)
+    return null
   } else if (loading) {
     return <LoadingSpinner />
   } else {

@@ -67,10 +67,22 @@ export const TinyText = styled.span<TextProps>`
 
 //// Layout ////
 /// Background for the individual page info.
+// Fixed height to 100vh and then scroll content.
+export const PageContainer = styled.div`
+  height: 100vh;
+  overflow: scroll;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  flex-wrap: wrap;
+  flex-grow: 1;
+`
+
 export const MainContent = styled.div`
   border-radius: 24px;
   margin-left: ${(props) => props.theme.spacing.sideNavWidth};
-  padding: 30px;
+  padding: 10px 20px;
   width: calc(100% - 60px - ${(props) => props.theme.spacing.sideNavWidth});
   display: flex;
   align-items: center;

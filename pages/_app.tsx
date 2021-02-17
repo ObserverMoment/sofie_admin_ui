@@ -1,20 +1,22 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { ApolloProvider } from '@apollo/client'
-import { useApollo } from '../lib/apolloClient'
 import {
   FlexBox,
   MainContent,
+  PageContainer,
   theme,
 } from '../components/styled-components/styled'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { LogoMenuAndSideNav } from '../components/layout/sideNav'
 import { TopNav } from '../components/layout/topNav'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
-import { firebaseClient } from '../lib/firebaseClient'
-import Router from 'next/router'
+import { createApolloClient, useApollo } from '../lib/apolloClient'
+import { initializeFirebase } from '../lib/firebaseClient'
+import Login from '../components/layout/loginForm'
 import nookies from 'nookies'
+import LoginModal from '../components/layout/loginModal'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -26,20 +28,29 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-const Private = ({ children }) => {
-  const { spotmeToken } = nookies.get()
-
-  useEffect(() => {
-    if (!spotmeToken && Router.route != '/login') {
-      Router.push(`/login?from=${Router.route}`)
-    }
-  }, [])
-
-  return children
-}
+const firebaseAuth = initializeFirebase()
 
 export default function App({ Component, pageProps }) {
-  const apolloClient = useApollo(pageProps.initialApolloState)
+  const apolloClient = createApolloClient()
+  const [authed, setAuthed] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (nookies.get().token) {
+      setAuthed(true)
+    }
+    const unsubscribe = firebaseAuth.onIdTokenChanged(async (user) => {
+      nookies.destroy(null, 'token')
+      if (!user) {
+        setAuthed(false)
+      } else {
+        const newToken = await user.getIdToken()
+        nookies.set(null, 'token', newToken)
+        setAuthed(true)
+      }
+    })
+
+    return () => unsubscribe()
+  }, [])
 
   return (
     <ThemeProvider theme={theme}>
@@ -55,18 +66,17 @@ export default function App({ Component, pageProps }) {
       </Head>
       <GlobalStyle />
       <ApolloProvider client={apolloClient}>
-        <FlexBox direction="row">
+        <PageContainer>
           <LogoMenuAndSideNav />
           <FlexBox align="center">
             <TopNav />
-            <MainContent>
-              <Private>
-                <Component {...pageProps} />
-              </Private>
-            </MainContent>
-            <ToastContainer style={{ width: '280px' }} />
+            <MainContent>{authed && <Component {...pageProps} />}</MainContent>
+            <ToastContainer style={{ width: '360px' }} />
           </FlexBox>
-        </FlexBox>
+          <LoginModal isOpen={!authed}>
+            <Login />
+          </LoginModal>
+        </PageContainer>
       </ApolloProvider>
     </ThemeProvider>
   )

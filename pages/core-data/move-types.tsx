@@ -1,12 +1,14 @@
-import { useQuery } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client'
 import React from 'react'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingSpinner } from '../../components/loadingIndicators'
-import { WORKOUT_GOALS_QUERY } from '../../graphql/coreData'
+import { MOVE_TYPES_QUERY } from '../../graphql/move'
 
-export default function WorkoutGoals() {
-  const { loading, error, data } = useQuery(WORKOUT_GOALS_QUERY)
+export default function MoveTypes() {
+  const { loading, error, data } = useQuery(MOVE_TYPES_QUERY)
+
+  console.log(data)
 
   if (error) {
     return <ErrorMessage message={error.message} />
@@ -18,16 +20,22 @@ export default function WorkoutGoals() {
         columnMapping={[
           {
             Header: 'Name',
-            accessor: 'name', // accessor is the "key" in the data
+            accessor: 'name',
             disableSortBy: true,
           },
           {
             Header: 'Description',
-            accessor: 'description', // accessor is the "key" in the data
+            accessor: 'description',
+            disableSortBy: true,
+          },
+          {
+            id: 'imageUrl',
+            Header: 'Has Image?',
+            accessor: ({ imageUrl }) => (imageUrl ? 'YES' : 'NO'),
             disableSortBy: true,
           },
         ]}
-        data={data.workoutGoals}
+        data={data.moveTypes}
       />
     )
   }

@@ -10,16 +10,18 @@ export interface Move {
   name: string
   description: string
   searchTerms: string
-  type: string
+  type: MoveType
   validRepTypes: Array<string>
   demoVideoUrl: string
   requiredEquipments: Array<Equipment>
   bodyAreaMoveScores: Array<BodyAreaMoveScore>
 }
 
-export interface Equipment {
+export interface MoveType {
   id: string
   name: string
+  description: string
+  imageUrl: string
 }
 
 export interface BodyAreaMoveScore {

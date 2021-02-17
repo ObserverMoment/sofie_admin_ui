@@ -1,20 +1,9 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import React from 'react'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingSpinner } from '../../components/loadingIndicators'
-
-export const WORKOUT_TYPES_QUERY = gql`
-  query workoutTypes {
-    workoutTypes {
-      id
-      name
-      subtitle
-      description
-      scoreType
-    }
-  }
-`
+import { WORKOUT_TYPES_QUERY } from '../../graphql/coreData'
 
 export default function WorkoutTypes() {
   const { loading, error, data } = useQuery(WORKOUT_TYPES_QUERY)

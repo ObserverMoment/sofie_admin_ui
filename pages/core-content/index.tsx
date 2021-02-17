@@ -6,23 +6,18 @@ import Router from 'next/router'
 export default function Overview() {
   return (
     <FlexBox>
-      <Title>Overview dashboard</Title>
-      <Title>Summary components</Title>
-      <Title>Useage components</Title>
-      <Title>Data on popular moves etc</Title>
+      <Title>OfficialContentOverview</Title>
     </FlexBox>
   )
 }
 
 // Overview.getInitialProps = async (ctx) => {
-//   console.log('CoreData.getStaticProps')
+//   console.log('Content.getStaticProps')
 //   let token: string
 //   if (typeof window === 'undefined') {
 //     console.log('server')
 //     console.log(ctx.pathname)
 //     const { idToken } = nookies.get(ctx)
-//     console.log('idToken server')
-//     console.log(idToken)
 //     token = idToken
 //     if (!token && ctx.pathname !== '/login') {
 //       ctx.res.writeHead(307, { Location: '/login' })

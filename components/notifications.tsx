@@ -12,16 +12,20 @@ const toastIcons = {
 
 const ToastComponent = ({ message, icon: Icon }) => (
   <FlexBox direction="row" justify="space-evenly" align="center">
-    <Icon />
+    <Icon width={20} />
     <Spacer space="4px" />
-    <MainText bold>{message}</MainText>
+    <MainText>{message}</MainText>
   </FlexBox>
 )
 
-export const showToast = (message: string, iconType: ToastIcon = 'Info') =>
+export const showToast = (
+  message: string,
+  iconType: ToastIcon = 'Info',
+  closeAfter?: number,
+) =>
   toast(<ToastComponent message={message} icon={toastIcons[iconType]} />, {
     hideProgressBar: true,
-    autoClose: 2000,
+    autoClose: closeAfter || 2000,
     style: {
       fontFamily: "'Nunito Sans',sans-serif",
       display: 'flex',

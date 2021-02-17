@@ -48,8 +48,8 @@ export const RadioButton = ({
   value,
   label,
   register,
-  height = '40px',
-  width = '60px',
+  height = null,
+  width = null,
 }) => (
   <RadioButtonContainer height={height} width={width}>
     <StyledRadioButton name={name} type="radio" value={value} ref={register} />
@@ -64,8 +64,8 @@ interface RadioButtonContainerProps {
 
 export const RadioButtonContainer = styled.div<RadioButtonContainerProps>`
   position: relative;
-  height: ${(props) => props.height || '30px'};
-  width: ${(props) => props.height || '50px'};
+  height: ${(props) => props.height || '100%'};
+  width: ${(props) => props.height || '100%'};
   margin: 4px;
   :hover {
     cursor: pointer;

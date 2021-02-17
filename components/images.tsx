@@ -14,6 +14,7 @@ import {
   faSortDown,
   faCheckCircle,
   faInfoCircle,
+  faChartBar,
 } from '@fortawesome/free-solid-svg-icons'
 import { theme } from './styled-components/styled'
 
@@ -32,7 +33,7 @@ export const UserAvatar = ({ width = 30 }) => (
 
 /// Icons
 export const HomeIcon = ({ width = 30 }) => (
-  <FontAwesomeIcon icon={faHome} width={width + 8} />
+  <FontAwesomeIcon icon={faChartBar} width={width + 8} />
 )
 export const DataIcon = ({ width = 30 }) => (
   <FontAwesomeIcon icon={faDatabase} width={width} />

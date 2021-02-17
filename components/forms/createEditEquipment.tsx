@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
-import { Equipment } from '../../types/modelTypes'
-import { TinyText } from '../styled-components/styled'
+import { Equipment } from '../../types/models'
 import {
   ExampleText,
   HorizontalButtonsInputGroup,

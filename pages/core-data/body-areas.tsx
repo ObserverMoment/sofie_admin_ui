@@ -1,20 +1,9 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import React from 'react'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingSpinner } from '../../components/loadingIndicators'
-
-export const BODYAREAS_QUERY = gql`
-  query bodyAreas {
-    bodyAreas {
-      id
-      name
-      altNames
-      frontBack
-      upperLower
-    }
-  }
-`
+import { BODYAREAS_QUERY } from '../../graphql/coreData'
 
 export default function BodyAreas() {
   const { loading, error, data } = useQuery(BODYAREAS_QUERY)

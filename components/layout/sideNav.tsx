@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
-import { firebaseClient, signOut } from '../../lib/firebaseClient'
+import { signOut } from '../../lib/firebaseClient'
 import {
   ContentIcon,
   DataIcon,
@@ -22,7 +22,7 @@ import {
 const primaryRoutes = [
   { text: 'Dashboard', link: '/', icon: HomeIcon },
   { text: 'Core Data', link: '/core-data', icon: DataIcon },
-  { text: 'Official Content', link: '/official-content', icon: ContentIcon },
+  { text: 'Core Content', link: '/core-content', icon: ContentIcon },
   { text: 'Users', link: '/users', icon: UsersIcon },
 ]
 
@@ -112,7 +112,7 @@ export const LogoMenuAndSideNav = () => (
       href="/"
       content={
         <FlexBox justify="center" align="center">
-          <SpotMeLogo width={50} height={50} />
+          <SpotMeLogo width={40} height={40} />
         </FlexBox>
       }
     />

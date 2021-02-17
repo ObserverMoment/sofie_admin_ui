@@ -1,9 +1,7 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import styled from 'styled-components'
-import { CloseWindowIcon } from './images'
-import { FlexBox } from './styled-components/styled'
 import { motion, AnimatePresence } from 'framer-motion'
+import LoginForm from './loginForm'
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -11,23 +9,13 @@ const Overlay = styled(motion.div)`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
 `
 const ModalContainer = styled(motion.div)`
-  background-color: white;
   position: absolute; // ----.
   top: 50%; //     |positioning the container
   left: 50%; //     |in the middle
   transform: translate(-50%, -50%); //  ----.
-  border-radius: 6px;
-  padding: 20px;
-`
-
-const CloseButton = styled.div`
-  top: 10px;
-  right: 12px;
-  position: absolute;
-  cursor: pointer;
 `
 
 const modalVariant = {
@@ -41,8 +29,8 @@ const containerVariant = {
   exit: { opacity: 0 },
 }
 
-const Modal = ({ handleClose, children, isOpen }) => {
-  return ReactDOM.createPortal(
+const LoginModal = ({ children, isOpen }) => {
+  return (
     <AnimatePresence>
       {isOpen && (
         <Overlay
@@ -52,17 +40,12 @@ const Modal = ({ handleClose, children, isOpen }) => {
           variants={modalVariant}
         >
           <ModalContainer variants={containerVariant}>
-            <CloseButton onClick={handleClose}>
-              <CloseWindowIcon />
-            </CloseButton>
-            {children}
+            <LoginForm />
           </ModalContainer>
         </Overlay>
       )}
-    </AnimatePresence>,
-
-    document.getElementById('__next'),
+    </AnimatePresence>
   )
 }
 
-export default Modal
+export default LoginModal

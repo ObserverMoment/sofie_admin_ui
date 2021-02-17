@@ -6,22 +6,23 @@ import { MainText } from '../styled-components/styled'
 
 //// Routing Data ////
 const coreDataBasePath = '/core-data'
-const officialContentBasePath = '/official-content'
+const coreContentBasePath = '/core-content'
 const subRoutes = {
   'core-data': [
     { text: 'Overview', link: coreDataBasePath },
     { text: 'Equipment', link: `${coreDataBasePath}/equipment` },
     { text: 'Moves', link: `${coreDataBasePath}/moves` },
+    { text: 'Move Types', link: `${coreDataBasePath}/move-types` },
     { text: 'Body Areas', link: `${coreDataBasePath}/body-areas` },
     { text: 'Workout Types', link: `${coreDataBasePath}/workout-types` },
     { text: 'Programme Goals', link: `${coreDataBasePath}/programme-goals` },
   ],
-  'official-content': [
-    { text: 'Overview', link: officialContentBasePath },
-    { text: 'Workouts', link: `${officialContentBasePath}/workouts` },
-    { text: 'Plans', link: `${officialContentBasePath}/plans` },
-    { text: 'Events', link: `${officialContentBasePath}/events` },
-    { text: 'Clubs', link: `${officialContentBasePath}/clubs` },
+  'core-content': [
+    { text: 'Overview', link: coreContentBasePath },
+    { text: 'Workouts', link: `${coreContentBasePath}/workouts` },
+    { text: 'Plans', link: `${coreContentBasePath}/plans` },
+    { text: 'Events', link: `${coreContentBasePath}/events` },
+    { text: 'Clubs', link: `${coreContentBasePath}/clubs` },
   ],
   users: null,
 }

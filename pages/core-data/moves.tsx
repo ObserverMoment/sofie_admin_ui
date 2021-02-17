@@ -1,7 +1,8 @@
-import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import ErrorMessage from '../../components/errorMessage'
+import CreateEditMove from '../../components/forms/createEditMove'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingSpinner } from '../../components/loadingIndicators'
 import { showToast } from '../../components/notifications'
@@ -9,53 +10,14 @@ import {
   CreateButton,
   FlexBox,
   theme,
+  Title,
 } from '../../components/styled-components/styled'
-import { BodyAreaMoveScore, Move } from '../../types/modelTypes'
-
-export const STANDARD_MOVES_QUERY = gql`
-  query standardMoves {
-    standardMoves {
-      id
-      name
-      description
-      searchTerms
-      type
-      validRepTypes
-      demoVideoUrl
-      requiredEquipments {
-        id
-        name
-      }
-      selectableEquipments {
-        id
-        name
-      }
-      bodyAreaMoveScores {
-        bodyArea {
-          id
-          name
-        }
-        score
-      }
-    }
-  }
-`
-
-export const CREATE_OFFICIAL_MOVE_MUTATION = gql`
-  mutation updateOfficialMove($data: CreateMoveInput!) {
-    updateOfficialMove(data: $data) {
-      id
-    }
-  }
-`
-
-export const UPDATE_OFFICIAL_MOVE_MUTATION = gql`
-  mutation createOfficialMove($data: DeepUpdateMoveInput!) {
-    createOfficialMove(data: $data) {
-      id
-    }
-  }
-`
+import MyModal from '../../components/modal'
+import {
+  CREATE_OFFICIAL_MOVE_MUTATION,
+  STANDARD_MOVES_QUERY,
+} from '../../graphql/move'
+import { BodyAreaMoveScore, Move } from '../../types/models'
 
 const ScoreTotal = styled.div`
   padding: 3px;
@@ -82,7 +44,7 @@ export default function Moves() {
     },
   })
 
-  const [updateMove] = useMutation(UPDATE_OFFICIAL_MOVE_MUTATION, {
+  const [updateMove] = useMutation(CREATE_OFFICIAL_MOVE_MUTATION, {
     onCompleted: () => {
       showToast('Move Updated', 'Success')
       setModalState({ isOpen: false, title: '' })
@@ -92,6 +54,7 @@ export default function Moves() {
   const [activeMoveData, setActiveMoveData] = useState(null)
 
   function handleRowClick(data: Move) {
+    console.log('handleRowClick')
     setActiveMoveData(data)
     setModalState({ isOpen: true, title: 'Edit Move' })
   }
@@ -121,8 +84,6 @@ export default function Moves() {
     )
   }
 
-  console.log(data)
-
   if (error) {
     return <ErrorMessage message={error.message} />
   } else if (loading) {
@@ -131,7 +92,7 @@ export default function Moves() {
     return (
       <FlexBox>
         <FlexBox direction="row" justify="center">
-          <CreateButton onClick={() => console.log('create new move')} />
+          <CreateButton onClick={handleAddNewClick} />
         </FlexBox>
         <InteractiveTable
           handleRowClick={(data) => handleRowClick(data)}
@@ -198,6 +159,21 @@ export default function Moves() {
           ]}
           data={data.standardMoves}
         />
+        <MyModal
+          isOpen={isOpen}
+          handleClose={() =>
+            setModalState({ isOpen: false, title: 'Equipment' })
+          }
+        >
+          <FlexBox>
+            <Title>{title}</Title>
+            <CreateEditMove
+              move={activeMoveData}
+              handleCreateMove={handleCreateMove}
+              handleUpdateMove={handleUpdateMove}
+            />
+          </FlexBox>
+        </MyModal>
       </FlexBox>
     )
   }

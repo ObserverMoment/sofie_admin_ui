@@ -1,6 +1,10 @@
 import Document from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 
+/*
+https://nextjs.org/docs/advanced-features/custom-document
+Document's getInitialProps function is not called during client-side transitions, nor when a page is statically optimized.
+*/
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const sheet = new ServerStyleSheet()
