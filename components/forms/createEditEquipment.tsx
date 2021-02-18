@@ -1,21 +1,20 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import { Equipment } from '../../types/models'
+import React, { useState } from 'react'
+import { CreateEquipment, Equipment, UpdateEquipment } from '../../types/models'
+import RadioButtons from './inputs/radioButtons'
+import TextInput from './inputs/textInput'
 import {
   ExampleText,
-  HorizontalButtonsInputGroup,
-  RadioButton,
   StyledForm,
   StyledInputGroup,
   StyledLabel,
-  StyledTextInput,
   SubmitButton,
-} from '../styled-components/styledForm'
+} from './styled'
+import useFormField from './useFormState'
 
 interface CreateEditEquipmentProps {
   readonly equipment?: Equipment
-  readonly handleCreateEquipment: (data: Equipment) => void
-  readonly handleUpdateEquipment: (data: Equipment) => void
+  readonly handleCreateEquipment: (data: CreateEquipment) => void
+  readonly handleUpdateEquipment: (data: UpdateEquipment) => void
 }
 
 const CreateEditEquipment = ({
@@ -23,49 +22,59 @@ const CreateEditEquipment = ({
   handleUpdateEquipment,
   equipment,
 }: CreateEditEquipmentProps) => {
-  const { register, handleSubmit, formState } = useForm({
-    defaultValues: {
-      name: equipment ? equipment.name : '',
-      altNames: equipment ? equipment.altNames : '',
-      loadAdjustable: equipment && equipment.loadAdjustable ? 'true' : 'false',
-    },
-  })
-  const onSubmit = (data) => {
-    const formattedData: Equipment = {
-      ...data,
-      loadAdjustable: data.loadAdjustable === 'true' ? true : false,
+  const formDirty = useState(false)
+
+  const [name, setName] = useFormField<string>(equipment?.name, formDirty)
+
+  const [altNames, setAltNames] = useFormField<string>(
+    equipment?.altNames,
+    formDirty,
+  )
+  const [loadAdjustable, setLoadAdjustable] = useFormField<boolean>(
+    equipment?.loadAdjustable || false,
+    formDirty,
+  )
+
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const data = {
+      name,
+      altNames,
+      loadAdjustable,
     }
     if (equipment) {
       handleUpdateEquipment({
         id: equipment.id,
-        ...formattedData,
+        ...data,
       })
     } else {
-      handleCreateEquipment(formattedData)
+      handleCreateEquipment({ ...data })
     }
   }
 
   return (
-    <StyledForm onSubmit={handleSubmit(onSubmit)}>
+    <StyledForm onSubmit={onSubmit}>
       <StyledInputGroup>
         <StyledLabel htmlFor="name">Name</StyledLabel>
-        <StyledTextInput
-          type="text"
+        <TextInput
           placeholder="Name"
           name="name"
+          value={name}
+          setter={setName}
+          maxLength={100}
           size={20}
-          ref={register({ required: true, maxLength: 20 })}
         />
       </StyledInputGroup>
 
       <StyledInputGroup>
         <StyledLabel htmlFor="altNames">Alternative Names</StyledLabel>
-        <StyledTextInput
-          type="text"
+        <TextInput
           placeholder="Alternative names"
           name="altNames"
+          value={altNames}
+          setter={setAltNames}
           size={60}
-          ref={register({ maxLength: 60 })}
+          maxLength={100}
         />
 
         <ExampleText>
@@ -75,24 +84,18 @@ const CreateEditEquipment = ({
 
       <StyledInputGroup>
         <StyledLabel htmlFor="loadAdjustable">Load Adjustable?</StyledLabel>
-        <HorizontalButtonsInputGroup>
-          <RadioButton
-            name="loadAdjustable"
-            label="Yes"
-            value="true"
-            register={register({ required: true })}
-          />
-          <RadioButton
-            name="loadAdjustable"
-            label="No"
-            value="false"
-            register={register({ required: true })}
-          />
-        </HorizontalButtonsInputGroup>
+        <RadioButtons<boolean>
+          value={loadAdjustable || false}
+          setter={setLoadAdjustable}
+          options={[
+            { value: true, label: 'Yes' },
+            { value: false, label: 'No' },
+          ]}
+        />
       </StyledInputGroup>
 
       <SubmitButton
-        disabled={!formState.isDirty}
+        disabled={!formDirty[0]}
         loading={false}
         text={equipment ? 'Update Equipment' : 'Add Equipment'}
       />

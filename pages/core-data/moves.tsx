@@ -12,7 +12,7 @@ import {
   theme,
   Title,
 } from '../../components/styled-components/styled'
-import MyModal from '../../components/modal'
+import MyModal from '../../components/layout/modal'
 import {
   CREATE_OFFICIAL_MOVE_MUTATION,
   STANDARD_MOVES_QUERY,

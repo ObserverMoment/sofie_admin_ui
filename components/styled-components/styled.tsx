@@ -14,7 +14,7 @@ export const theme = {
     highlight: '#167974',
     destructive: '#bb2020',
     info: '#054894',
-    success: '#158550',
+    success: '#167974',
   },
   spacing: {
     sideNavWidth: '80px',

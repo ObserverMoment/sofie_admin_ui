@@ -1,6 +1,5 @@
 import { useQuery } from '@apollo/client'
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import React from 'react'
 import { MOVE_TYPES_QUERY } from '../../graphql/move'
 import {
   BodyAreaMoveScore,
@@ -8,19 +7,20 @@ import {
   Move,
   MoveType,
 } from '../../types/models'
-import ErrorMessage from '../errorMessage'
 import { LoadingSpinner } from '../loadingIndicators'
+import { showToast } from '../notifications'
 import { MainText } from '../styled-components/styled'
+import CheckBoxes from './inputs/checkBoxes'
+import RadioButtons from './inputs/radioButtons'
+import { StyledTextInput } from './inputs/textInput'
 import {
   ExampleText,
-  HorizontalButtonsInputGroup,
-  RadioButton,
   StyledForm,
   StyledInputGroup,
   StyledLabel,
-  StyledTextInput,
   SubmitButton,
-} from '../styled-components/styledForm'
+} from './styled'
+import { useFormState, FieldDef } from './useFormState'
 
 interface CreateEditMoveProps {
   readonly move?: Move
@@ -35,62 +35,76 @@ const CreateEditMove = ({
 }: CreateEditMoveProps) => {
   const { loading, error, data } = useQuery(MOVE_TYPES_QUERY)
 
-  // Uploaded video cdn file id - Uploadcare (upload on client first)
-  const [demoVideoUrl, setDemoVideoUrl] = useState<string>(
-    move ? move.demoVideoUrl : null,
-  )
+  const { state, getFormData } = useFormState<Move>([
+    {
+      key: 'moveType',
+      initialValue: move?.moveType,
+    } as FieldDef<MoveType>,
+    {
+      key: 'name',
+      initialValue: move?.name,
+    } as FieldDef<string>,
+    {
+      key: 'searchTerms',
+      initialValue: move?.searchTerms,
+    } as FieldDef<string>,
+    {
+      key: 'description',
+      initialValue: move?.description,
+    } as FieldDef<string>,
+    {
+      key: 'demoVideoUrl',
+      initialValue: move?.demoVideoUrl,
+    } as FieldDef<string>,
+    {
+      key: 'validRepTypes',
+      initialValue: move ? move.validRepTypes : [],
+    } as FieldDef<Array<string>>,
+    {
+      key: 'requiredEquipments',
+      initialValue: move ? move.requiredEquipments : [],
+    } as FieldDef<Array<Equipment>>,
+    {
+      key: 'selectableEquipments',
+      initialValue: move ? move.selectableEquipments : [],
+    } as FieldDef<Array<Equipment>>,
+    {
+      key: 'bodyAreaMoveScores',
+      initialValue: move ? move.bodyAreaMoveScores : [],
+    } as FieldDef<Array<BodyAreaMoveScore>>,
+  ])
 
-  const [requiredEquipments, setRequiredEquipments] = useState<
-    Array<Equipment>
-  >(move ? move.requiredEquipments : [])
-
-  const [selectableEquipments, setSelectableEquipments] = useState<
-    Array<Equipment>
-  >(move ? move.requiredEquipments : [])
-
-  const [bodyAreaMovesScores, setBodyAreaMovesScores] = useState<
-    Array<BodyAreaMoveScore>
-  >(move ? move.bodyAreaMoveScores : [])
-
-  const { register, handleSubmit, formState } = useForm({
-    defaultValues: {
-      type: move ? move.type : null,
-      name: move ? move.name : '',
-      searchTerms: move ? move.searchTerms : '',
-      description: move ? move.description : '',
-      demoVideoUrl: move ? move.demoVideoUrl : null,
-      repTypes: move ? move.demoVideoUrl : null,
-    },
-  })
-
-  const onSubmit = (data) => {
-    const formattedData: Move = {
-      ...data,
-    }
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
     if (move) {
       handleUpdateMove({
         id: move.id,
-        ...formattedData,
+        ...getFormData(),
       })
     } else {
-      handleCreateMove(formattedData)
+      handleCreateMove({ ...getFormData() })
     }
   }
 
   if (error) {
-    return <ErrorMessage message={error.message} />
+    showToast(`Error retrieving data`, 'Error', 5000)
+    console.error(error)
+    return null
   } else if (loading) {
     return <LoadingSpinner />
   } else {
     return (
-      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+      <StyledForm onSubmit={onSubmit}>
         <StyledInputGroup>
-          <StyledLabel htmlFor="type">Type</StyledLabel>
-          <HorizontalButtonsInputGroup>
-            {data.moveTypes.map((t) => (
-              <MainText>{t.name}</MainText>
-            ))}
-          </HorizontalButtonsInputGroup>
+          <StyledLabel htmlFor="moveType">Type</StyledLabel>
+          <RadioButtons<MoveType>
+            options={data.moveTypes.map((mt) => ({
+              value: mt,
+              label: mt.name,
+            }))}
+            value={state.moveType.value}
+            setter={state.moveType.setValue}
+          />
         </StyledInputGroup>
 
         <StyledInputGroup>
@@ -99,8 +113,9 @@ const CreateEditMove = ({
             type="text"
             placeholder="Name"
             name="name"
+            onChange={state.name.setValue}
+            value={state.name.value}
             size={20}
-            ref={register({ required: true, maxLength: 20 })}
           />
         </StyledInputGroup>
 
@@ -111,47 +126,34 @@ const CreateEditMove = ({
             placeholder="Search Terms"
             name="searchTerms"
             size={60}
-            ref={register({ maxLength: 60 })}
+            onChange={state.searchTerms.setValue}
+            value={state.searchTerms.value}
           />
-
-          <ExampleText>
-            Comma separated list. E.g. 'ruck,sack,pack,rucksack's
-          </ExampleText>
         </StyledInputGroup>
+
+        <MainText>Description Text Area</MainText>
 
         <MainText>Demo Video Uploader</MainText>
 
-        {/* <StyledInputGroup>
-          <StyledLabel htmlFor="repTypes">Rep Types</StyledLabel>
-          <MainText>Time selected by default</MainText>
-          <HorizontalButtonsInputGroup>
-            <RadioButton
-              name="repTypes"
-              label="REPS"
-              value="REPS"
-              register={register({ required: true })}
-            />
-            <RadioButton
-              name="repTypes"
-              label="CALORIES"
-              value="CALORIES"
-              register={register({ required: true })}
-            />
-            <RadioButton
-              name="repTypes"
-              label="DISTANCE"
-              value="DISTANCE"
-              register={register({ required: true })}
-            />
-          </HorizontalButtonsInputGroup>
-        </StyledInputGroup> */}
+        <StyledInputGroup>
+          <StyledLabel htmlFor="validRepTypes">Valid Rep Types</StyledLabel>
+          <ExampleText>TIME is selected by default for all moves.</ExampleText>
+          <CheckBoxes<string>
+            options={['REPS', 'CALORIES', 'DISTANCE'].map((rt) => ({
+              value: rt,
+              label: rt,
+            }))}
+            selected={state.validRepTypes.value}
+            setter={state.validRepTypes.setValue}
+          />
+        </StyledInputGroup>
 
         <MainText>Required Equipments Select</MainText>
         <MainText>Selectable Equipments Select</MainText>
         <MainText>Body Area Move Scores Select</MainText>
 
         <SubmitButton
-          disabled={!formState.isDirty}
+          disabled={false}
           loading={false}
           text={move ? 'Update Move' : 'Add Move'}
         />

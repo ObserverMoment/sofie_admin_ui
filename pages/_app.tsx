@@ -12,9 +12,8 @@ import { LogoMenuAndSideNav } from '../components/layout/sideNav'
 import { TopNav } from '../components/layout/topNav'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
-import { createApolloClient, useApollo } from '../lib/apolloClient'
+import { createApolloClient } from '../lib/apolloClient'
 import { initializeFirebase } from '../lib/firebaseClient'
-import Login from '../components/layout/loginForm'
 import nookies from 'nookies'
 import LoginModal from '../components/layout/loginModal'
 
@@ -29,9 +28,9 @@ const GlobalStyle = createGlobalStyle`
 `
 
 const firebaseAuth = initializeFirebase()
+const apolloClient = createApolloClient()
 
 export default function App({ Component, pageProps }) {
-  const apolloClient = createApolloClient()
   const [authed, setAuthed] = useState<boolean>(false)
 
   useEffect(() => {
@@ -73,9 +72,7 @@ export default function App({ Component, pageProps }) {
             <MainContent>{authed && <Component {...pageProps} />}</MainContent>
             <ToastContainer style={{ width: '360px' }} />
           </FlexBox>
-          <LoginModal isOpen={!authed}>
-            <Login />
-          </LoginModal>
+          <LoginModal isOpen={!authed} />
         </PageContainer>
       </ApolloProvider>
     </ThemeProvider>

@@ -1,4 +1,3 @@
-import { printIntrospectionSchema } from 'graphql'
 import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'

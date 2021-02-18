@@ -5,15 +5,29 @@ export interface Equipment {
   loadAdjustable: boolean
 }
 
+export interface CreateEquipment {
+  name: string
+  altNames: string
+  loadAdjustable: boolean
+}
+
+export interface UpdateEquipment {
+  id: string
+  name?: string
+  altNames?: string
+  loadAdjustable?: boolean
+}
+
 export interface Move {
   id: string
   name: string
   description: string
   searchTerms: string
-  type: MoveType
+  moveType: MoveType
   validRepTypes: Array<string>
   demoVideoUrl: string
   requiredEquipments: Array<Equipment>
+  selectableEquipments: Array<Equipment>
   bodyAreaMoveScores: Array<BodyAreaMoveScore>
 }
 

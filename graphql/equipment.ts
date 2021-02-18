@@ -23,6 +23,13 @@ export const CREATE_EQUIPMENT_MUTATION = gql`
   }
 `
 
+export const NEW_EQUIPMENT_FRAGMENT = gql`
+  fragment NewEquipment on Equipment {
+    id
+    type
+  }
+`
+
 export const UPDATE_EQUIPMENT_MUTATION = gql`
   mutation updateEquipment($data: UpdateEquipmentInput!) {
     updateEquipment(data: $data) {

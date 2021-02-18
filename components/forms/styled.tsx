@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 import React from 'react'
-import { FlexBox } from './styled'
+import { FlexBox } from '../styled-components/styled'
 import { LoadingDots } from '../loadingIndicators'
 
 export const StyledForm = styled.form`
@@ -23,19 +23,6 @@ export const StyledLabel = styled.label`
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 4px;
-`
-
-export const StyledTextInput = styled.input`
-  display: inline;
-  font-size: 16px;
-  padding: 16px;
-  margin: 2px 0;
-  background: ${(props) => props.theme.colors.primaryLight};
-  border: none;
-  border-radius: 2px;
-  ::placeholder {
-    color: ${(props) => props.theme.colors.grey};
-  }
 `
 
 export const HorizontalButtonsInputGroup = styled.div`

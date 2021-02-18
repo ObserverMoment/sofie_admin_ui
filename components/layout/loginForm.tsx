@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
@@ -9,10 +8,10 @@ import {
   StyledForm,
   StyledInputGroup,
   StyledLabel,
-  StyledTextInput,
   SubmitButton,
-} from '../styled-components/styledForm'
+} from '../forms/styled'
 import { signIn } from '../../lib/firebaseClient'
+import { StyledTextInput } from '../forms/inputs/textInput'
 
 interface LoginData {
   email: string

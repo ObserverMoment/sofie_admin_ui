@@ -1,51 +1,55 @@
 import { gql } from '@apollo/client'
 
+const moveFields = `
+  id
+  name
+  description
+  searchTerms
+  moveType {
+    id
+    name
+    description
+    imageUrl
+  }
+  validRepTypes
+  demoVideoUrl
+  requiredEquipments {
+    id
+    name
+  }
+  selectableEquipments {
+    id
+    name
+  }
+  bodyAreaMoveScores {
+    bodyArea {
+      id
+      name
+    }
+    score
+  }
+`
+
 export const STANDARD_MOVES_QUERY = gql`
   query standardMoves {
     standardMoves {
-      id
-      name
-      description
-      searchTerms
-      moveType {
-        id
-        name
-        description
-        imageUrl
-      }
-      validRepTypes
-      demoVideoUrl
-      requiredEquipments {
-        id
-        name
-      }
-      selectableEquipments {
-        id
-        name
-      }
-      bodyAreaMoveScores {
-        bodyArea {
-          id
-          name
-        }
-        score
-      }
+      ${moveFields}
     }
   }
 `
 
 export const CREATE_OFFICIAL_MOVE_MUTATION = gql`
-  mutation updateOfficialMove($data: CreateMoveInput!) {
+  mutation createOfficialMove($data: CreateMoveInput!) {
     updateOfficialMove(data: $data) {
-      id
+      ${moveFields}
     }
   }
 `
 
 export const UPDATE_OFFICIAL_MOVE_MUTATION = gql`
-  mutation createOfficialMove($data: DeepUpdateMoveInput!) {
+  mutation updateOfficialMove($data: DeepUpdateMoveInput!) {
     createOfficialMove(data: $data) {
-      id
+      ${moveFields}
     }
   }
 `
