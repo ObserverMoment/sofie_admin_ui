@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { CreateEquipment, Equipment, UpdateEquipment } from '../../types/models'
 import RadioButtons from './inputs/radioButtons'
 import TextInput from './inputs/textInput'
@@ -9,7 +9,7 @@ import {
   StyledLabel,
   SubmitButton,
 } from './styled'
-import useFormField from './useFormState'
+import { useFormState } from './useFormState'
 
 interface CreateEditEquipmentProps {
   readonly equipment?: Equipment
@@ -22,33 +22,30 @@ const CreateEditEquipment = ({
   handleUpdateEquipment,
   equipment,
 }: CreateEditEquipmentProps) => {
-  const formDirty = useState(false)
-
-  const [name, setName] = useFormField<string>(equipment?.name, formDirty)
-
-  const [altNames, setAltNames] = useFormField<string>(
-    equipment?.altNames,
-    formDirty,
-  )
-  const [loadAdjustable, setLoadAdjustable] = useFormField<boolean>(
-    equipment?.loadAdjustable || false,
-    formDirty,
-  )
+  const { formState, formDirty, getFormData } = useFormState<Equipment>([
+    {
+      key: 'name',
+      value: equipment?.name as string,
+    },
+    {
+      key: 'altNames',
+      value: equipment?.altNames as string,
+    },
+    {
+      key: 'loadAdjustable',
+      value: equipment?.loadAdjustable || (false as boolean),
+    },
+  ])
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const data = {
-      name,
-      altNames,
-      loadAdjustable,
-    }
     if (equipment) {
       handleUpdateEquipment({
         id: equipment.id,
-        ...data,
+        ...getFormData(),
       })
     } else {
-      handleCreateEquipment({ ...data })
+      handleCreateEquipment({ ...getFormData() })
     }
   }
 
@@ -59,8 +56,8 @@ const CreateEditEquipment = ({
         <TextInput
           placeholder="Name"
           name="name"
-          value={name}
-          setter={setName}
+          value={formState.name.value}
+          setValue={formState.name.setValue}
           maxLength={100}
           size={20}
         />
@@ -71,8 +68,8 @@ const CreateEditEquipment = ({
         <TextInput
           placeholder="Alternative names"
           name="altNames"
-          value={altNames}
-          setter={setAltNames}
+          value={formState.altNames.value}
+          setValue={formState.altNames.setValue}
           size={60}
           maxLength={100}
         />
@@ -85,8 +82,8 @@ const CreateEditEquipment = ({
       <StyledInputGroup>
         <StyledLabel htmlFor="loadAdjustable">Load Adjustable?</StyledLabel>
         <RadioButtons<boolean>
-          value={loadAdjustable || false}
-          setter={setLoadAdjustable}
+          value={formState.loadAdjustable.value}
+          setValue={formState.loadAdjustable.setValue}
           options={[
             { value: true, label: 'Yes' },
             { value: false, label: 'No' },
@@ -95,7 +92,7 @@ const CreateEditEquipment = ({
       </StyledInputGroup>
 
       <SubmitButton
-        disabled={!formDirty[0]}
+        disabled={!formDirty()}
         loading={false}
         text={equipment ? 'Update Equipment' : 'Add Equipment'}
       />

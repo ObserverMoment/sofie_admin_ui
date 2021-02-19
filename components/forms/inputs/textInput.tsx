@@ -17,7 +17,7 @@ interface TextinputProps {
   name: string
   placeholder?: string
   value?: string
-  setter: (v: string) => void
+  setValue: (v: string) => void
   size?: number
   maxLength?: number
 }
@@ -26,7 +26,7 @@ const TextInput = ({
   name,
   placeholder = null,
   value,
-  setter,
+  setValue,
   size = 40,
   maxLength = null,
 }: TextinputProps) => {
@@ -36,7 +36,7 @@ const TextInput = ({
       type="text"
       placeholder={placeholder}
       value={value || ''}
-      onChange={(e) => setter(e.target.value)}
+      onChange={(e) => setValue(e.target.value)}
       size={size}
       maxLength={maxLength}
     />

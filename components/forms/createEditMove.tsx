@@ -1,18 +1,13 @@
 import { useQuery } from '@apollo/client'
 import React from 'react'
 import { MOVE_TYPES_QUERY } from '../../graphql/move'
-import {
-  BodyAreaMoveScore,
-  Equipment,
-  Move,
-  MoveType,
-} from '../../types/models'
+import { Move, MoveType } from '../../types/models'
 import { LoadingSpinner } from '../loadingIndicators'
 import { showToast } from '../notifications'
 import { MainText } from '../styled-components/styled'
 import CheckBoxes from './inputs/checkBoxes'
 import RadioButtons from './inputs/radioButtons'
-import { StyledTextInput } from './inputs/textInput'
+import TextInput from './inputs/textInput'
 import {
   ExampleText,
   StyledForm,
@@ -20,7 +15,7 @@ import {
   StyledLabel,
   SubmitButton,
 } from './styled'
-import { useFormState, FieldDef } from './useFormState'
+import { useFormState } from './useFormState'
 
 interface CreateEditMoveProps {
   readonly move?: Move
@@ -35,43 +30,43 @@ const CreateEditMove = ({
 }: CreateEditMoveProps) => {
   const { loading, error, data } = useQuery(MOVE_TYPES_QUERY)
 
-  const { state, getFormData } = useFormState<Move>([
+  const { formState, formDirty, getFormData } = useFormState<Move>([
     {
       key: 'moveType',
-      initialValue: move?.moveType,
-    } as FieldDef<MoveType>,
+      value: move?.moveType,
+    },
     {
       key: 'name',
-      initialValue: move?.name,
-    } as FieldDef<string>,
+      value: move?.name,
+    },
     {
       key: 'searchTerms',
-      initialValue: move?.searchTerms,
-    } as FieldDef<string>,
+      value: move?.searchTerms,
+    },
     {
       key: 'description',
-      initialValue: move?.description,
-    } as FieldDef<string>,
+      value: move?.description,
+    },
     {
       key: 'demoVideoUrl',
-      initialValue: move?.demoVideoUrl,
-    } as FieldDef<string>,
+      value: move?.demoVideoUrl,
+    },
     {
       key: 'validRepTypes',
-      initialValue: move ? move.validRepTypes : [],
-    } as FieldDef<Array<string>>,
+      value: move ? move.validRepTypes : [],
+    },
     {
       key: 'requiredEquipments',
-      initialValue: move ? move.requiredEquipments : [],
-    } as FieldDef<Array<Equipment>>,
+      value: move ? move.requiredEquipments : [],
+    },
     {
       key: 'selectableEquipments',
-      initialValue: move ? move.selectableEquipments : [],
-    } as FieldDef<Array<Equipment>>,
+      value: move ? move.selectableEquipments : [],
+    },
     {
       key: 'bodyAreaMoveScores',
-      initialValue: move ? move.bodyAreaMoveScores : [],
-    } as FieldDef<Array<BodyAreaMoveScore>>,
+      value: move ? move.bodyAreaMoveScores : [],
+    },
   ])
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -98,36 +93,34 @@ const CreateEditMove = ({
         <StyledInputGroup>
           <StyledLabel htmlFor="moveType">Type</StyledLabel>
           <RadioButtons<MoveType>
-            options={data.moveTypes.map((mt) => ({
+            options={data.moveTypes.map((mt: MoveType) => ({
               value: mt,
               label: mt.name,
             }))}
-            value={state.moveType.value}
-            setter={state.moveType.setValue}
+            value={formState.moveType.value}
+            setValue={formState.moveType.setValue}
           />
         </StyledInputGroup>
 
         <StyledInputGroup>
           <StyledLabel htmlFor="name">Name</StyledLabel>
-          <StyledTextInput
-            type="text"
+          <TextInput
             placeholder="Name"
             name="name"
-            onChange={state.name.setValue}
-            value={state.name.value}
+            value={formState.name.value}
+            setValue={formState.name.setValue}
             size={20}
           />
         </StyledInputGroup>
 
         <StyledInputGroup>
           <StyledLabel htmlFor="searchTerms">Search Terms</StyledLabel>
-          <StyledTextInput
-            type="text"
+          <TextInput
             placeholder="Search Terms"
             name="searchTerms"
             size={60}
-            onChange={state.searchTerms.setValue}
-            value={state.searchTerms.value}
+            value={formState.searchTerms.value}
+            setValue={formState.searchTerms.setValue}
           />
         </StyledInputGroup>
 
@@ -143,8 +136,8 @@ const CreateEditMove = ({
               value: rt,
               label: rt,
             }))}
-            selected={state.validRepTypes.value}
-            setter={state.validRepTypes.setValue}
+            selected={formState.validRepTypes.value}
+            setValue={formState.validRepTypes.setValue}
           />
         </StyledInputGroup>
 
@@ -153,7 +146,7 @@ const CreateEditMove = ({
         <MainText>Body Area Move Scores Select</MainText>
 
         <SubmitButton
-          disabled={false}
+          disabled={!formDirty()}
           loading={false}
           text={move ? 'Update Move' : 'Add Move'}
         />

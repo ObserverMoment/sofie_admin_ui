@@ -7,7 +7,7 @@ interface RadioButtonsProps<T> {
   direction?: 'row' | 'column'
   options: Array<RadioButtonOption<T>>
   value: T
-  setter: (v: T) => void
+  setValue: (v: T) => void
 }
 
 interface RadioButtonOption<T> {
@@ -59,7 +59,7 @@ function RadioButtons<T>({
   direction = 'row',
   options = [],
   value,
-  setter,
+  setValue,
 }: RadioButtonsProps<T>) {
   return (
     <FlexBox direction={direction} justify="start" align="center">
@@ -68,7 +68,7 @@ function RadioButtons<T>({
           key={o.label}
           isSelected={equal(o.value, value)}
           label={o.label}
-          onClick={() => setter(o.value)}
+          onClick={() => setValue(o.value)}
         />
       ))}
     </FlexBox>

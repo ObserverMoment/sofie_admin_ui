@@ -7,7 +7,7 @@ interface CheckBoxesProps<T> {
   direction?: 'row' | 'column'
   options: Array<CheckboxOption<T>>
   selected: Array<T>
-  setter: (updatedArray: Array<T>) => void
+  setValue: (updatedArray: Array<T>) => void
 }
 
 interface CheckboxOption<T> {
@@ -59,7 +59,7 @@ function CheckBoxes<T>({
   direction = 'row',
   options = [],
   selected,
-  setter,
+  setValue,
 }: CheckBoxesProps<T>) {
   function isSelected(v: T) {
     return selected.some((s) => equal(s, v))
@@ -68,10 +68,10 @@ function CheckBoxes<T>({
   function updateSelected(v: T) {
     if (isSelected(v)) {
       // Remove it
-      setter(selected.filter((s) => !equal(s, v)))
+      setValue(selected.filter((s) => !equal(s, v)))
     } else {
       // Add it
-      setter([v, ...selected])
+      setValue([v, ...selected])
     }
   }
 

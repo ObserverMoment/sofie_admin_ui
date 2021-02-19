@@ -85,7 +85,9 @@ export default function Moves() {
   }
 
   if (error) {
-    return <ErrorMessage message={error.message} />
+    showToast(`Error retrieving data`, 'Error', 5000)
+    console.error(error)
+    return null
   } else if (loading) {
     return <LoadingSpinner />
   } else {
