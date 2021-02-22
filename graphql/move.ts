@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client'
+import { Move } from '../types/models'
 
 const moveFields = `
   id
@@ -38,17 +39,25 @@ export const STANDARD_MOVES_QUERY = gql`
   }
 `
 
+export const genCreateMoveJson = (move: Move) => ({
+  ...move,
+  validRepTypes: ['TIME', ...move.validRepTypes], // TIME is always required, the API will throw an error if not present.
+  requiredEquipments: move.requiredEquipments.map((m) => m.id),
+  selectableEquipments: move.selectableEquipments.map((m) => m.id),
+  moveType: move.moveType.id,
+})
+
 export const CREATE_OFFICIAL_MOVE_MUTATION = gql`
-  mutation createOfficialMove($data: CreateMoveInput!) {
-    updateOfficialMove(data: $data) {
+  mutation createMove($data: CreateMoveInput!) {
+    createMove(data: $data) {
       ${moveFields}
     }
   }
 `
 
 export const UPDATE_OFFICIAL_MOVE_MUTATION = gql`
-  mutation updateOfficialMove($data: DeepUpdateMoveInput!) {
-    createOfficialMove(data: $data) {
+  mutation updateMove($data: DeepUpdateMoveInput!) {
+    updateMove(data: $data) {
       ${moveFields}
     }
   }

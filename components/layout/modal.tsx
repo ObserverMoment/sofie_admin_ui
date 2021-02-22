@@ -4,6 +4,8 @@ import styled from 'styled-components'
 import { CloseWindowIcon } from '../images'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useOnClickOutside } from '../../lib/utils'
+import { HighlightButton } from '../styled-components/buttons'
+import { MainText } from '../styled-components/styled'
 
 export const Overlay = styled(motion.div)`
   position: fixed;
@@ -11,17 +13,25 @@ export const Overlay = styled(motion.div)`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.8);
 `
 
+interface ModalContainerProps {
+  width: string
+}
+
 // https://css-tricks.com/almanac/properties/b/box-shadow/
-export const ModalContainer = styled(motion.div)`
+export const ModalContainer = styled(motion.div)<ModalContainerProps>`
   background-color: white;
   position: absolute; // ----.
   top: 50%; //     |positioning the container
   left: 50%; //     |in the middle
   border-radius: 5px;
   padding: 20px;
+  max-height: 90vh;
+  max-width: 90vw;
+  width: ${(p) => p.width};
+  overflow: auto;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
     0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
     0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
@@ -52,10 +62,26 @@ export const containerVariant = {
   exit: { x: '-50%', y: '-53%', opacity: 0 },
 }
 
-const Modal = ({ handleClose, children, isOpen }) => {
+interface ModalProps {
+  handleClose: () => void
+  children: React.ReactChildren
+  isOpen: boolean
+  disableClickOutsideClose?: boolean
+  width: string
+  closeOnDone?: boolean // Displays 'Done' button rather than exit button to indicate changes are saved.
+}
+
+const Modal = ({
+  handleClose,
+  children,
+  isOpen,
+  disableClickOutsideClose = false,
+  width = 'auto',
+  closeOnDone = false,
+}) => {
   const ref = useRef()
   useOnClickOutside(ref, () => {
-    isOpen ? handleClose() : () => {}
+    isOpen && !disableClickOutsideClose ? handleClose() : () => {}
   })
 
   return ReactDOM.createPortal(
@@ -67,9 +93,17 @@ const Modal = ({ handleClose, children, isOpen }) => {
           exit={'exit'}
           variants={modalVariant}
         >
-          <ModalContainer variants={containerVariant} ref={ref}>
-            <CloseButton onClick={handleClose}>
-              <CloseWindowIcon />
+          <ModalContainer variants={containerVariant} ref={ref} width={width}>
+            <CloseButton>
+              {closeOnDone ? (
+                <HighlightButton onClick={handleClose}>
+                  <MainText bold>Done</MainText>
+                </HighlightButton>
+              ) : (
+                <div onClick={handleClose}>
+                  <CloseWindowIcon />
+                </div>
+              )}
             </CloseButton>
             {children}
           </ModalContainer>

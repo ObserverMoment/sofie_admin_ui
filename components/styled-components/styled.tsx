@@ -1,7 +1,4 @@
 import styled from 'styled-components'
-import Link from 'next/link'
-import React from 'react'
-import { PlusIcon } from '../images'
 
 //// Global Themes Data ////
 export const theme = {
@@ -22,12 +19,17 @@ export const theme = {
 }
 
 //// Text ////
+export type ColorTypes =
+  | 'primaryDark'
+  | 'primaryLight'
+  | 'highlight'
+  | 'destructive'
+  | 'grey'
+
 interface TextProps {
   readonly bold?: boolean
-  readonly colorType?: colorTypes
+  readonly colorType?: ColorTypes
 }
-
-type colorTypes = 'primaryDark' | 'primaryLight' | 'highlight' | 'destructive'
 
 export const Title = styled.h1<TextProps>`
   font-size: 26px;
@@ -94,14 +96,20 @@ interface FlexProps {
   readonly justify?: string
   readonly align?: string
   readonly wrap?: string
+  readonly width?: string
+  readonly height?: string
+  readonly padding?: string
 }
 
 export const FlexBox = styled.div<FlexProps>`
+  padding: ${(props) => props.padding || 0};
   display: flex;
   flex-direction: ${(props) => props.direction || 'column'};
   justify-content: ${(props) => props.justify || 'flex-start'};
   align-items: ${(props) => props.align || 'stretch'};
-  flex-wrap: ${(props) => props.wrap || 'wrap'};
+  flex-wrap: ${(props) => props.wrap || 'no-wrap'};
+  width: ${(props) => props.width || 'auto'};
+  height: ${(props) => props.height || 'auto'};
   flex-grow: 1;
 `
 
@@ -142,128 +150,3 @@ export const ElevatedBox = styled.div<FlexProps>`
   align-items: ${(props) => props.align || 'stretch'};
   flex-wrap: ${(props) => props.wrap || 'wrap'};
 `
-
-//// Buttons ////
-const StyledAnchor = styled.a`
-  padding: 0;
-  margin: 0;
-  opacity: 1;
-  :hover {
-    cursor: pointer;
-    opacity: 0.8;
-  }
-`
-
-export const MyLink = ({ href, content }) => (
-  <Link href={href}>
-    <StyledAnchor>{content}</StyledAnchor>
-  </Link>
-)
-
-interface StyledButtonProps {
-  readonly flexDirection?: string
-  readonly colorType: colorTypes
-  readonly padding?: string
-}
-
-const StyledButton = styled.button<StyledButtonProps>`
-  padding: ${(props) => props.padding || 0};
-  margin: 0;
-  border: none;
-  opacity: 1;
-  border-radius: 100px;
-  display: flex;
-  flex-direction: ${(props) => props.flexDirection || 'row'};
-  justify-content: center;
-  align-items: center;
-  outline: none;
-  background-color: ${(props) => props.theme.colors[props.colorType]};
-  * {
-    color: ${(props) =>
-      props.colorType === 'primaryLight'
-        ? props.theme.colors.primaryDark
-        : props.theme.colors.primaryLight};
-  }
-  :hover {
-    cursor: pointer;
-    * {
-      opacity: 0.9;
-    }
-  }
-`
-
-export const MyButton = ({
-  flexDirection = 'row',
-  onClick,
-  children,
-  colorType,
-}) => (
-  <StyledButton
-    colorType={colorType}
-    flexDirection={flexDirection}
-    onClick={onClick}
-  >
-    {children}
-  </StyledButton>
-)
-
-// Dark BG, Light Text
-export const DarkButton = ({ flexDirection = 'row', onClick, children }) => (
-  <MyButton
-    flexDirection={flexDirection}
-    onClick={onClick}
-    children={children}
-    colorType="primaryDark"
-  />
-)
-
-// Light BG Dark Text
-export const LightButton = ({ flexDirection = 'row', onClick, children }) => (
-  <MyButton
-    flexDirection={flexDirection}
-    onClick={onClick}
-    children={children}
-    colorType="primaryLight"
-  />
-)
-
-// Highlight BG Light Text
-export const HighlightButton = ({
-  flexDirection = 'row',
-  onClick,
-  children,
-}) => (
-  <MyButton
-    flexDirection={flexDirection}
-    onClick={onClick}
-    children={children}
-    colorType="highlight"
-  />
-)
-
-// Red BG Light Text
-export const DestructiveButton = ({
-  flexDirection = 'row',
-  onClick,
-  children,
-}) => (
-  <MyButton
-    flexDirection={flexDirection}
-    onClick={onClick}
-    children={children}
-    colorType="destructive"
-  />
-)
-
-export const CreateButton = ({ flexDirection = 'row', onClick }) => (
-  <StyledButton
-    colorType={'highlight'}
-    flexDirection={flexDirection}
-    onClick={onClick}
-    padding="10px 14px"
-  >
-    <PlusIcon width={12} />
-    <Spacer space="4px" />
-    <MainText>Add New</MainText>
-  </StyledButton>
-)

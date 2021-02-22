@@ -24,6 +24,7 @@ export interface Move {
   description: string
   searchTerms: string
   moveType: MoveType
+  scope: 'STANDARD' | 'CUSTOM'
   validRepTypes: Array<string>
   demoVideoUrl: string
   requiredEquipments: Array<Equipment>

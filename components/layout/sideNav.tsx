@@ -10,13 +10,8 @@ import {
   SpotMeLogo,
   UsersIcon,
 } from '../images'
-import {
-  FlexBox,
-  MyButton,
-  MyLink,
-  Spacer,
-  TinyText,
-} from '../styled-components/styled'
+import { MyButton, MyLink } from '../styled-components/buttons'
+import { FlexBox, Spacer, TinyText } from '../styled-components/styled'
 
 //// Routing Data ////
 const primaryRoutes = [

@@ -14,6 +14,7 @@ import {
   faCheckCircle,
   faInfoCircle,
   faChartBar,
+  faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons'
 import { theme } from './styled-components/styled'
 
@@ -48,6 +49,9 @@ export const SignOutIcon = ({ width = 30 }) => (
 )
 export const CloseWindowIcon = ({ width = 30 }) => (
   <FontAwesomeIcon icon={faWindowClose} width={width} />
+)
+export const CloseCircleIcon = ({ width = 30 }) => (
+  <FontAwesomeIcon icon={faTimesCircle} width={width} />
 )
 
 type SortType = 'Sort' | 'Up' | 'Down'

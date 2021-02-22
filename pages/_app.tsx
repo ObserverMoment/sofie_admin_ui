@@ -25,8 +25,24 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Nunito Sans', sans-serif;
     background-color: ${theme.colors.primaryLight}
   }
+  * {
+    font-family: 'Nunito Sans', sans-serif;
+  }
+  // Uploadcare file uploader widget styling.
+  .uploadcare--button_primary, .uploadcare--widget__button_type_open { 
+    background-color: ${theme.colors.primaryDark};
+    border-color: ${theme.colors.primaryDark};
+    :focus {
+      background-color: ${theme.colors.primaryDark};
+      border-color: ${theme.colors.primaryDark};
+    }
+    :hover {
+      cursor: pointer;
+      background-color: ${theme.colors.pureBlack};
+    }}
 `
 
+// initializeFirebase return ref to firebase.auth()
 const firebaseAuth = initializeFirebase()
 const apolloClient = createApolloClient()
 
@@ -49,6 +65,18 @@ export default function App({ Component, pageProps }) {
     })
 
     return () => unsubscribe()
+  }, [])
+
+  // force refresh the token every 10 minutes while mounted
+  // https://github.com/colinhacks/next-firebase-ssr/blob/master/auth.tsx
+  useEffect(() => {
+    const handle = setInterval(async () => {
+      console.log(`refreshing token...`)
+      const user = firebaseAuth.currentUser
+      if (user) await user.getIdToken(true)
+    }, 10 * 60 * 1000)
+
+    return () => clearInterval(handle)
   }, [])
 
   return (

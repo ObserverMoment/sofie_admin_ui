@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const StyledTextInput = styled.input`
+export const StyledTextAreaInput = styled.textarea`
   display: inline;
   font-size: 16px;
   padding: 16px;
@@ -10,34 +10,30 @@ export const StyledTextInput = styled.input`
   border-radius: 2px;
 `
 
-interface TextInputProps {
+interface TextAreaInputProps {
   name: string
   placeholder?: string
   value?: string
   setValue: (v: string) => void
-  size?: number
   maxLength?: number
 }
 
-const TextInput = ({
+const TextAreaInput = ({
   name,
   placeholder = null,
   value,
   setValue,
-  size = 40,
   maxLength = null,
-}: TextInputProps) => {
+}: TextAreaInputProps) => {
   return (
-    <StyledTextInput
+    <StyledTextAreaInput
       name={name}
-      type="text"
       placeholder={placeholder}
       value={value || ''}
       onChange={(e) => setValue(e.target.value)}
-      size={size}
       maxLength={maxLength}
     />
   )
 }
 
-export default TextInput
+export default TextAreaInput
