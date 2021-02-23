@@ -43,7 +43,7 @@ const LoginForm = () => {
     <LoginFormContainer>
       <FlexBox direction="row" align="center" justify="center">
         <SpotMeLogo />
-        <Spacer />
+        <Spacer right="8px" />
         <Title>Sign In</Title>
       </FlexBox>
       {globalError && (

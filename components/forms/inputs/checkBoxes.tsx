@@ -50,7 +50,7 @@ const CheckBox = ({ isSelected, label, onClick }) => (
       isSelected={isSelected}
       aria-label={label}
     />
-    <Spacer space="4px" />
+    <Spacer right="4px" />
     <MainText>{label}</MainText>
   </StyledCheckboxContainer>
 )

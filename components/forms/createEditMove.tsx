@@ -2,15 +2,19 @@ import { useMutation, useQuery } from '@apollo/client'
 import React from 'react'
 import {
   CREATE_OFFICIAL_MOVE_MUTATION,
-  genCreateMoveJson,
+  genMoveJson,
   MOVE_TYPES_QUERY,
+  NEW_MOVE_FRAGMENT,
   UPDATE_OFFICIAL_MOVE_MUTATION,
 } from '../../graphql/move'
-import { Move, MoveType } from '../../types/models'
+import { Move, MoveType } from '../../types/models/move'
+import { SuccessIcon } from '../images'
 import { LoadingSpinner } from '../loadingIndicators'
 import { showToast } from '../notifications'
+import { SelectedBodyAreaMoveScores } from '../selectors/bodyAreaMoveScores'
 import { SelectedEquipmentDisplay } from '../selectors/equipmentMultiSelect'
-import { FlexBox, MainText } from '../styled-components/styled'
+import { DestructiveButton } from '../styled-components/buttons'
+import { FlexBox, MainText, Spacer } from '../styled-components/styled'
 import FileUploader from './fileUploader'
 import CheckBoxes from './inputs/checkBoxes'
 import RadioButtons from './inputs/radioButtons'
@@ -34,6 +38,19 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
   const { loading, error, data } = useQuery(MOVE_TYPES_QUERY)
 
   const [createMove] = useMutation(CREATE_OFFICIAL_MOVE_MUTATION, {
+    update(cache, { data: { createMove } }) {
+      cache.modify({
+        fields: {
+          standardMoves(prevMoves = []) {
+            const newMoveRef = cache.writeFragment({
+              data: createMove,
+              fragment: NEW_MOVE_FRAGMENT,
+            })
+            return [newMoveRef, ...prevMoves]
+          },
+        },
+      })
+    },
     onCompleted: () => {
       showToast('New Move Added', 'Success')
       onComplete && onComplete()
@@ -86,6 +103,8 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
     },
   ])
 
+  console.log(formState)
+
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (move) {
@@ -93,15 +112,14 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
         variables: {
           data: {
             id: move.id,
-            ...genCreateMoveJson(getFormData()),
-            scope: 'STANDARD',
+            ...genMoveJson(getFormData()),
           },
         },
       })
     } else {
       createMove({
         variables: {
-          data: { ...genCreateMoveJson(getFormData()), scope: 'STANDARD' },
+          data: { ...genMoveJson(getFormData()) },
         },
       })
     }
@@ -180,13 +198,27 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
           <FlexBox direction="column" width="50%">
             <StyledInputGroup>
               <StyledLabel htmlFor="demoVideoUrl">Demo Video</StyledLabel>
-              <FileUploader
-                onUploadComplete={(fileInfo) =>
-                  formState.demoVideoUrl.setValue(fileInfo.uuid)
-                }
-                allowedFileTypes="mp4"
-                onError={(message) => showToast(message, 'Error', 5000)}
-              />
+              {formState.demoVideoUrl.value ? (
+                <FlexBox direction="row" align="center">
+                  <SuccessIcon />
+                  <Spacer right="4px" />
+                  <MainText>Video Uploaded</MainText>
+                  <Spacer right="40px" />
+                  <DestructiveButton
+                    onClick={() => formState.demoVideoUrl.setValue(null)}
+                  >
+                    Remove
+                  </DestructiveButton>
+                </FlexBox>
+              ) : (
+                <FileUploader
+                  onUploadComplete={({ uuid }) =>
+                    formState.demoVideoUrl.setValue(uuid)
+                  }
+                  allowedFileTypes="mp4"
+                  onError={(message) => showToast(message, 'Error', 5000)}
+                />
+              )}
             </StyledInputGroup>
 
             <StyledInputGroup>
@@ -215,7 +247,10 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
               <StyledLabel htmlFor="bodyAreaMoveScores">
                 Body Area Move Scores
               </StyledLabel>
-              <MainText>Body Area Move Scores Select</MainText>
+              <SelectedBodyAreaMoveScores
+                bodyAreaMoveScores={formState.bodyAreaMoveScores.value}
+                updateBodyAreaMoveScores={formState.bodyAreaMoveScores.setValue}
+              />
             </StyledInputGroup>
           </FlexBox>
         </FlexBox>

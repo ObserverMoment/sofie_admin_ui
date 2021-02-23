@@ -58,7 +58,7 @@ export default function App({ Component, pageProps }) {
       if (!user) {
         setAuthed(false)
       } else {
-        const newToken = await user.getIdToken()
+        const newToken = await user.getIdToken(true)
         nookies.set(null, 'token', newToken)
         setAuthed(true)
       }

@@ -1,5 +1,12 @@
+import { useMutation } from '@apollo/client'
 import React from 'react'
-import { CreateEquipment, Equipment, UpdateEquipment } from '../../types/models'
+import {
+  CREATE_EQUIPMENT_MUTATION,
+  NEW_EQUIPMENT_FRAGMENT,
+  UPDATE_EQUIPMENT_MUTATION,
+} from '../../graphql/equipment'
+import { Equipment } from '../../types/models/equipment'
+import { showToast } from '../notifications'
 import RadioButtons from './inputs/radioButtons'
 import TextInput from './inputs/textInput'
 import {
@@ -13,15 +20,40 @@ import { useFormState } from './useFormState'
 
 interface CreateEditEquipmentProps {
   readonly equipment?: Equipment
-  readonly handleCreateEquipment: (data: CreateEquipment) => void
-  readonly handleUpdateEquipment: (data: UpdateEquipment) => void
+  readonly onComplete?: () => void
 }
 
 const CreateEditEquipment = ({
-  handleCreateEquipment,
-  handleUpdateEquipment,
   equipment,
+  onComplete,
 }: CreateEditEquipmentProps) => {
+  const [createEquipment] = useMutation(CREATE_EQUIPMENT_MUTATION, {
+    update(cache, { data: { createEquipment } }) {
+      cache.modify({
+        fields: {
+          equipments(prevEquipments = []) {
+            const newEquipmentRef = cache.writeFragment({
+              data: createEquipment,
+              fragment: NEW_EQUIPMENT_FRAGMENT,
+            })
+            return [newEquipmentRef, ...prevEquipments]
+          },
+        },
+      })
+    },
+    onCompleted() {
+      showToast('New Equipment Added', 'Success')
+      onComplete && onComplete()
+    },
+  })
+
+  const [updateEquipment] = useMutation(UPDATE_EQUIPMENT_MUTATION, {
+    onCompleted: () => {
+      showToast('Equipment Updated', 'Success')
+      onComplete && onComplete()
+    },
+  })
+
   const { formState, formDirty, getFormData } = useFormState<Equipment>([
     {
       key: 'name',
@@ -40,12 +72,22 @@ const CreateEditEquipment = ({
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (equipment) {
-      handleUpdateEquipment({
-        id: equipment.id,
-        ...getFormData(),
+      updateEquipment({
+        variables: {
+          data: {
+            id: equipment.id,
+            ...getFormData(),
+          },
+        },
       })
     } else {
-      handleCreateEquipment({ ...getFormData() })
+      createEquipment({
+        variables: {
+          data: {
+            ...getFormData(),
+          },
+        },
+      })
     }
   }
 

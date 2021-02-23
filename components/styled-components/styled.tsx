@@ -122,11 +122,17 @@ export const Padding = styled.div<PaddingProps>`
 `
 
 interface SpacerProps {
-  readonly space?: string
+  readonly top?: string
+  readonly right?: string
+  readonly bottom?: string
+  readonly left?: string
 }
 
 export const Spacer = styled.div<SpacerProps>`
-  padding: ${(props) => props.space || '8px'};
+  padding-top: ${(props) => props.top || 0};
+  padding-right: ${(props) => props.right || 0};
+  padding-bottom: ${(props) => props.bottom || 0};
+  padding-left: ${(props) => props.left || 0};
 `
 
 interface SizedBoxProps {

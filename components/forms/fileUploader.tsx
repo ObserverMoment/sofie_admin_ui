@@ -1,15 +1,4 @@
 import { FileInfo, Widget } from '@uploadcare/react-widget'
-import crypto from 'crypto'
-
-// https://uploadcare.com/docs/security/secure-uploads/
-function generateSignature(expire: number) {
-  const hmac = crypto.createHmac(
-    'sha256',
-    process.env.NEXT_PUBLIC_UPLOADCARE_PRIVATE_KEY,
-  )
-  hmac.update(expire.toString())
-  return hmac.digest('hex')
-}
 
 const fileTypeCheck = (
   allowedFileTypes: string,
@@ -36,6 +25,7 @@ interface FileUploaderProps {
   onUploadComplete: (fileInfo: FileInfo) => void
   allowedFileTypes?: string
   onError?: (message: string) => void
+  uploadedFileId?: string // For display
 }
 
 // https://uploadcare.com/docs/uploads/file-uploader-options/
@@ -44,8 +34,6 @@ const FileUploader = ({
   allowedFileTypes,
   onError,
 }: FileUploaderProps) => {
-  // Valid for 240 seconds
-  const expire = Math.round(Date.now() / 1000) + 120
   return (
     <Widget
       publicKey={process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY}
@@ -54,8 +42,6 @@ const FileUploader = ({
       validators={
         allowedFileTypes ? [fileTypeCheck(allowedFileTypes, onError)] : []
       }
-      secureSignature={generateSignature(expire)}
-      secureExpire={expire}
     />
   )
 }

@@ -1,22 +1,4 @@
-export interface Equipment {
-  id: string
-  name: string
-  altNames: string
-  loadAdjustable: boolean
-}
-
-export interface CreateEquipment {
-  name: string
-  altNames: string
-  loadAdjustable: boolean
-}
-
-export interface UpdateEquipment {
-  id: string
-  name?: string
-  altNames?: string
-  loadAdjustable?: boolean
-}
+import { Equipment } from './equipment'
 
 export interface Move {
   id: string
@@ -32,6 +14,19 @@ export interface Move {
   bodyAreaMoveScores: Array<BodyAreaMoveScore>
 }
 
+export interface MoveInput {
+  name: string
+  description?: string
+  searchTerms?: string
+  moveType: string // MoveType Id
+  scope: 'STANDARD' | 'CUSTOM'
+  validRepTypes: string[]
+  demoVideoUrl?: string
+  requiredEquipments?: string[] // Equipment Ids
+  selectableEquipments?: string[] // Equipment Ids
+  bodyAreaMoveScores?: Array<CreateBodyAreaMoveScoreInput>
+}
+
 export interface MoveType {
   id: string
   name: string
@@ -42,6 +37,11 @@ export interface MoveType {
 export interface BodyAreaMoveScore {
   id: string
   bodyArea: BodyArea
+  score: number
+}
+
+export interface CreateBodyAreaMoveScoreInput {
+  bodyArea: string // BodyArea Id
   score: number
 }
 

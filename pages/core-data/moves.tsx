@@ -10,10 +10,10 @@ import {
   theme,
   Title,
 } from '../../components/styled-components/styled'
-import MyModal from '../../components/layout/modal'
+import Modal from '../../components/layout/modal'
 import { STANDARD_MOVES_QUERY } from '../../graphql/move'
-import { BodyAreaMoveScore, Move } from '../../types/models'
 import { CreateButton } from '../../components/styled-components/buttons'
+import { BodyAreaMoveScore, Move } from '../../types/models/move'
 
 const ScoreTotal = styled.div`
   padding: 3px;
@@ -36,7 +36,6 @@ export default function Moves() {
   const [activeMoveData, setActiveMoveData] = useState(null)
 
   function handleRowClick(data: Move) {
-    console.log('handleRowClick')
     setActiveMoveData(data)
     setModalState({ isOpen: true, title: 'Edit Move' })
   }
@@ -135,7 +134,7 @@ export default function Moves() {
           ]}
           data={data.standardMoves}
         />
-        <MyModal
+        <Modal
           isOpen={isOpen}
           handleClose={() =>
             setModalState({ isOpen: false, title: 'Equipment' })
@@ -150,7 +149,7 @@ export default function Moves() {
               onComplete={() => setModalState({ isOpen: false, title: '' })}
             />
           </div>
-        </MyModal>
+        </Modal>
       </FlexBox>
     )
   }

@@ -2,7 +2,6 @@ import { useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { EQUIPMENT_QUERY } from '../../graphql/equipment'
-import { Equipment } from '../../types/models'
 import { CloseCircleIcon, PlusIcon } from '../images'
 import { LoadingSpinner } from '../loadingIndicators'
 import { showToast } from '../notifications'
@@ -15,7 +14,8 @@ import {
 } from '../styled-components/styled'
 import equal from 'deep-equal'
 import { DarkButton } from '../styled-components/buttons'
-import MyModal from '../layout/modal'
+import Modal from '../layout/modal'
+import { Equipment } from '../../types/models/equipment'
 
 //// Display Elements - shows already selected items in a simple UI with a button to open the selector ////
 //// Usually what the user will see first - before they open the selector if they need to make edits ////
@@ -52,10 +52,10 @@ export const SelectedEquipmentDisplay = ({
     <div>
       <DarkButton onClick={() => setOpenSelector(true)}>
         <PlusIcon width={12} />
-        <Spacer space="2px" />
+        <Spacer right="2px" />
         <MainText>Add</MainText>
       </DarkButton>
-      <Spacer space="6px" />
+      <Spacer bottom="6px" />
       <FlexBox direction="row" wrap="wrap">
         {selectedEquipments.length ? (
           selectedEquipments.map((e) => (
@@ -71,7 +71,7 @@ export const SelectedEquipmentDisplay = ({
           </Padding>
         )}
       </FlexBox>
-      <MyModal
+      <Modal
         isOpen={openSelector}
         handleClose={() => setOpenSelector(false)}
         disableClickOutsideClose={true}
@@ -82,7 +82,7 @@ export const SelectedEquipmentDisplay = ({
           selected={selectedEquipments}
           toggleSelected={handleToggleSelected}
         />
-      </MyModal>
+      </Modal>
     </div>
   )
 }
@@ -94,7 +94,6 @@ const StyledSelectedEquipmentDisplayItem = styled.div`
   justify-content: space-between;
   align-items: center;
   direction: row;
-  border: 1px solid red;
   padding: 8px 12px;
   border: 1px solid ${(p) => p.theme.colors.highlight};
   border-radius: 3px;
@@ -117,7 +116,7 @@ const SelectedEquipmentDisplayItem = ({
     onClick={() => removeEquipment(equipment)}
   >
     <TinyText bold>{equipment.name}</TinyText>
-    <Spacer space="3px" />
+    <Spacer right="3px" />
     <CloseCircleIcon width={11} />
   </StyledSelectedEquipmentDisplayItem>
 )

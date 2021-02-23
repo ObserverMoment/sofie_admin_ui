@@ -82,28 +82,3 @@ export function useFormState<FieldTypes>(
     checkErrors,
   }
 }
-
-// export function useFormField<T>(
-//   initialValue: T,
-//   dirtyController: [
-//     boolean,
-//     React.Dispatch<React.SetStateAction<boolean>>,
-//   ] = null,
-// ): { value: T; setValue: (v: T) => void } {
-//   const [value, setValue] = useState(initialValue)
-//   const onChange = useCallback((newValue: T) => {
-//     console.log('changing')
-//     console.log(newValue)
-//     if (dirtyController) {
-//       if (!dirtyController[0]) {
-//         dirtyController[1](true)
-//       }
-//     }
-//     setValue(newValue)
-//   }, [])
-
-//   return {
-//     value,
-//     setValue: onChange,
-//   }
-// }

@@ -66,7 +66,7 @@ const InteractiveTable = ({
                   {column.render('Header')}
                   {!column.disableSortBy && (
                     <>
-                      <Spacer space="4px" />
+                      <Spacer right="4px" />
                       <SortIcon
                         width={10}
                         type={

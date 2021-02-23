@@ -3,7 +3,7 @@ import Loader from 'react-loader-spinner'
 import { FlexBox, Padding } from './styled-components/styled'
 
 export const LoadingSpinner = ({ height = 60, width = 60 }) => (
-  <FlexBox justify="center" align="center">
+  <FlexBox justify="center" align="center" width="100%" height="100%">
     <Padding padding="40px">
       <Loader
         type="Oval"
@@ -16,7 +16,7 @@ export const LoadingSpinner = ({ height = 60, width = 60 }) => (
 )
 
 export const LoadingDots = ({ height = 60, width = 60 }) => (
-  <FlexBox justify="center" align="center">
+  <FlexBox justify="center" align="center" width="100%" height="100%">
     <Padding padding="40px">
       <Loader
         type="ThreeDots"

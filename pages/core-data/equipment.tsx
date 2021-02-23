@@ -1,22 +1,14 @@
-import { useQuery, useMutation } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 import { LoadingSpinner } from '../../components/loadingIndicators'
 import InteractiveTable from '../../components/interactiveTable'
-import {
-  CreateButton,
-  FlexBox,
-  Title,
-} from '../../components/styled-components/styled'
-import MyModal from '../../components/layout/modal'
+import { FlexBox, Title } from '../../components/styled-components/styled'
+import Modal from '../../components/layout/modal'
 import CreateEditEquipment from '../../components/forms/createEditEquipment'
-import { CreateEquipment, Equipment, UpdateEquipment } from '../../types/models'
 import { showToast } from '../../components/notifications'
-import {
-  CREATE_EQUIPMENT_MUTATION,
-  EQUIPMENT_QUERY,
-  NEW_EQUIPMENT_FRAGMENT,
-  UPDATE_EQUIPMENT_MUTATION,
-} from '../../graphql/equipment'
+import { EQUIPMENT_QUERY } from '../../graphql/equipment'
+import { CreateButton } from '../../components/styled-components/buttons'
+import { Equipment } from '../../types/models/equipment'
 
 export default function EquipmentData() {
   const [{ isOpen, title }, setModalState] = useState({
@@ -25,33 +17,6 @@ export default function EquipmentData() {
   })
 
   const { loading, error, data } = useQuery(EQUIPMENT_QUERY)
-
-  const [createEquipment] = useMutation(CREATE_EQUIPMENT_MUTATION, {
-    update(cache, { data: { createEquipment } }) {
-      cache.modify({
-        fields: {
-          equipments(prevEquipments = []) {
-            const newEquipmentRef = cache.writeFragment({
-              data: createEquipment,
-              fragment: NEW_EQUIPMENT_FRAGMENT,
-            })
-            return [newEquipmentRef, ...prevEquipments]
-          },
-        },
-      })
-    },
-    onCompleted() {
-      showToast('New Equipment Added', 'Success')
-      setModalState({ isOpen: false, title: '' })
-    },
-  })
-
-  const [updateEquipment] = useMutation(UPDATE_EQUIPMENT_MUTATION, {
-    onCompleted: () => {
-      showToast('Equipment Updated', 'Success')
-      setModalState({ isOpen: false, title: '' })
-    },
-  })
 
   const [activeEquipmentData, setActiveEquipmentData] = useState(null)
 
@@ -63,14 +28,6 @@ export default function EquipmentData() {
   function handleAddNewClick() {
     setActiveEquipmentData(null)
     setModalState({ isOpen: true, title: 'Add Equipment' })
-  }
-
-  function handleCreateEquipment(data: CreateEquipment) {
-    createEquipment({ variables: { data } })
-  }
-
-  function handleUpdateEquipment(data: UpdateEquipment) {
-    updateEquipment({ variables: { data } })
   }
 
   if (error) {
@@ -106,7 +63,7 @@ export default function EquipmentData() {
           ]}
           data={[...data.equipments]}
         />
-        <MyModal
+        <Modal
           isOpen={isOpen}
           handleClose={() =>
             setModalState({ isOpen: false, title: 'Equipment' })
@@ -116,11 +73,10 @@ export default function EquipmentData() {
             <Title>{title}</Title>
             <CreateEditEquipment
               equipment={activeEquipmentData}
-              handleCreateEquipment={handleCreateEquipment}
-              handleUpdateEquipment={handleUpdateEquipment}
+              onComplete={() => setModalState({ isOpen: false, title: '' })}
             />
           </FlexBox>
-        </MyModal>
+        </Modal>
       </FlexBox>
     )
   }

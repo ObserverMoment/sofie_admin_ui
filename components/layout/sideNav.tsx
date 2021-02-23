@@ -102,7 +102,7 @@ const PrimaryNavItem = styled.a<NavItemProps>`
 //// React Components ////
 export const LogoMenuAndSideNav = () => (
   <SideNavContainer>
-    <Spacer space="8px" />
+    <Spacer bottom="8px" />
     <MyLink
       href="/"
       content={
@@ -129,7 +129,7 @@ export const PrimaryNav = ({ signOut }) => {
             isActive={`/${baseRoute}` === link}
           >
             <Icon width={20} />
-            <Spacer space="3px" />
+            <Spacer bottom="3px" />
             <TinyText>{text}</TinyText>
           </PrimaryNavItem>
         ))}
@@ -141,7 +141,7 @@ export const PrimaryNav = ({ signOut }) => {
           colorType="primaryDark"
         >
           <SignOutIcon />
-          <Spacer space="3px" />
+          <Spacer bottom="3px" />
           <TinyText>Sign Out</TinyText>
         </MyButton>
       </NavItemsGroupContainer>
