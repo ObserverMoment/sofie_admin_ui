@@ -5,7 +5,7 @@ import { FlexBox } from '../styled-components/styled'
 import { LoadingDots } from '../loadingIndicators'
 
 export const StyledForm = styled.form`
-  padding: 20px;
+  padding: 16px 10px;
 `
 
 // Label
@@ -112,7 +112,17 @@ export const StyledSubmitButton = styled.button`
   }
 `
 
-export const SubmitButton = ({ disabled, loading, text }) => (
+interface SubmitButtonProps {
+  disabled?: boolean
+  loading?: boolean
+  text: string
+}
+
+export const SubmitButton = ({
+  disabled = false,
+  loading = false,
+  text,
+}: SubmitButtonProps) => (
   <FlexBox direction="row" justify="center">
     {loading ? (
       <StyledSubmitButton disabled={true}>

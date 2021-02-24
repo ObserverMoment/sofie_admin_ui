@@ -107,7 +107,7 @@ export const FlexBox = styled.div<FlexProps>`
   flex-direction: ${(props) => props.direction || 'column'};
   justify-content: ${(props) => props.justify || 'flex-start'};
   align-items: ${(props) => props.align || 'stretch'};
-  flex-wrap: ${(props) => props.wrap || 'no-wrap'};
+  flex-wrap: ${(props) => props.wrap || 'nowrap'};
   width: ${(props) => props.width || 'auto'};
   height: ${(props) => props.height || 'auto'};
   flex-grow: 1;

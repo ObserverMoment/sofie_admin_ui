@@ -1,17 +1,23 @@
 //// Display Elements - shows already selected body area move scores in a simple UI with a button to open the editor selector ////
 
+import { useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { BodyAreaMoveScore } from '../../types/models/move'
+import { BODY_AREAS_QUERY } from '../../graphql/move'
+import { BodyArea, BodyAreaMoveScore } from '../../types/models/move'
+import NumberInput from '../forms/inputs/numberInput'
 import { EditIcon } from '../images'
 import Modal from '../layout/modal'
-import { DarkButton } from '../styled-components/buttons'
+import { LoadingSpinner } from '../loadingIndicators'
+import { showToast } from '../notifications'
+import { DarkButton, HighlightButton } from '../styled-components/buttons'
 import {
   FlexBox,
   MainText,
   Padding,
   Spacer,
   TinyText,
+  Title,
 } from '../styled-components/styled'
 
 //// Usually what the user will see first - before they open the selector if they need to make edits ////
@@ -26,61 +32,81 @@ export const SelectedBodyAreaMoveScores = ({
 }: SelectedBodyAreaMoveScoresProps) => {
   const [openEditor, setOpeneditor] = useState(false)
 
-  return (
-    <div>
-      <FlexBox direction="row" align="center">
-        <DarkButton onClick={() => setOpeneditor(true)}>
-          <EditIcon width={12} />
-          <Spacer right="2px" />
-          <MainText>Edit</MainText>
-        </DarkButton>
-        <Spacer right="10px" />
-        {bodyAreaMoveScores.length && (
-          <TinyText bold>
-            Total assigned:
-            {bodyAreaMoveScores
-              .map((bam) => bam.score)
-              .reduce<number>((a, b) => a + b, 0)}
-            %
-          </TinyText>
-        )}
-      </FlexBox>
+  const { loading, error, data } = useQuery(BODY_AREAS_QUERY)
 
-      <Spacer bottom="6px" />
-      <FlexBox direction="row" wrap="wrap">
-        {bodyAreaMoveScores.length ? (
-          bodyAreaMoveScores.map((bam) => (
-            <SelectedBodyAreaMoveScoreItem
-              key={bam.id}
-              bodyAreaMoveScore={bam}
-            />
-          ))
-        ) : (
-          <Padding>
-            <MainText colorType="grey">None selected</MainText>
-          </Padding>
-        )}
-      </FlexBox>
-      <Modal
-        isOpen={openEditor}
-        handleClose={() => setOpeneditor(false)}
-        disableClickOutsideClose={true}
-        width="90vw"
-        closeOnDone
-      >
-        <BodyAreaMoveScoreEditor
-          bodyAreaMoveScores={bodyAreaMoveScores}
-          updateBodyAreaMoveScores={updateBodyAreaMoveScores}
-        />
-      </Modal>
-    </div>
-  )
+  function handleUpdateBodyAreaMoveScores(
+    updatedBodyAreaMoveScores: BodyAreaMoveScore[],
+  ) {
+    updateBodyAreaMoveScores(updatedBodyAreaMoveScores)
+    setOpeneditor(false)
+  }
+
+  if (error) {
+    showToast(`Error retrieving data`, 'Error', 5000)
+    console.error(error)
+    return null
+  } else if (loading) {
+    return <LoadingSpinner />
+  } else {
+    return (
+      <div>
+        <FlexBox direction="row" align="center">
+          <DarkButton onClick={() => setOpeneditor(true)}>
+            <EditIcon width={12} />
+            <Spacer right="2px" />
+            <MainText>Edit</MainText>
+          </DarkButton>
+          <Spacer right="10px" />
+          {bodyAreaMoveScores.length ? (
+            <TinyText bold>
+              {bodyAreaMoveScores
+                .map((bam) => bam.score)
+                .reduce<number>((a, b) => a + b, 0)}
+              % assigned
+            </TinyText>
+          ) : (
+            <TinyText bold colorType="grey">
+              0% Assigned
+            </TinyText>
+          )}
+        </FlexBox>
+
+        <Spacer bottom="6px" />
+        <FlexBox direction="row" wrap="wrap">
+          {bodyAreaMoveScores.length ? (
+            bodyAreaMoveScores.map((bam) => (
+              <SelectedBodyAreaMoveScoreItem
+                key={bam.bodyArea.name}
+                bodyAreaMoveScore={bam}
+              />
+            ))
+          ) : (
+            <Padding>
+              <MainText colorType="grey">None selected</MainText>
+            </Padding>
+          )}
+        </FlexBox>
+        <Modal
+          isOpen={openEditor}
+          handleClose={() => setOpeneditor(false)}
+          disableClickOutsideClose={true}
+          width="90vw"
+        >
+          <BodyAreaScoresEditor
+            allBodyAreas={data.bodyAreas}
+            bodyAreaMoveScores={bodyAreaMoveScores}
+            updateBodyAreaMoveScores={handleUpdateBodyAreaMoveScores}
+          />
+        </Modal>
+      </div>
+    )
+  }
 }
 
 //// Single Selected Equipment Display UI ////
 const StyledBodyAreaMoveScoreItem = styled.div`
   display: flex;
-  flex-wrap: no-wrap;
+  flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
   direction: row;
@@ -103,14 +129,192 @@ const SelectedBodyAreaMoveScoreItem = ({
 //////////////////
 //// The selector that opens in a modal - allowing equipment selection to be toggled on / off ////
 //////////////////
-interface BodyAreaMoveScoreEditorProps {
+interface BodyAreaScoresEditorProps {
+  allBodyAreas: BodyArea[]
   bodyAreaMoveScores: BodyAreaMoveScore[]
   updateBodyAreaMoveScores: (updated: BodyAreaMoveScore[]) => void
 }
 
-export const BodyAreaMoveScoreEditor = ({
+const BodyAreaScoreEditorWrapper = styled(FlexBox)`
+  padding: 40px;
+  flex-direction: row;
+  flex-wrap: wrap;
+`
+
+const BodyAreaGroupWrapper = styled(FlexBox)`
+  padding: 16px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 400px;
+  justify-content: space-between;
+  align-items: flex-start;
+`
+
+// Container for multiple bodyAreaMoveScores and display showing remaining points to assign
+export const BodyAreaScoresEditor = ({
+  allBodyAreas,
   bodyAreaMoveScores,
   updateBodyAreaMoveScores,
-}: BodyAreaMoveScoreEditorProps) => {
-  return <div>BodyAreaMoveScore Editor</div>
+}: BodyAreaScoresEditorProps) => {
+  const [partsByArea] = useState(
+    allBodyAreas.reduce(
+      (acum, next) => {
+        acum[next.frontBack].push(next)
+        return acum
+      },
+      {
+        FRONT: [],
+        BACK: [],
+        BOTH: [],
+      },
+    ),
+  )
+  // Make a temp bodyarea move score for each body area, including those not set / set at zero.
+  const [activeBodyAreaScores, updateActiveBodyAreaScores] = useState<
+    BodyAreaMoveScore[]
+  >(
+    allBodyAreas.map(
+      (ba) =>
+        bodyAreaMoveScores.find((bam) => bam.bodyArea.name === ba.name) || {
+          bodyArea: ba,
+          score: 0,
+        },
+    ),
+  )
+
+  // Save to internal state, not to parent.
+  function saveUpdatesInternally(bodyArea: BodyArea, score: number) {
+    updateActiveBodyAreaScores(
+      activeBodyAreaScores.map((bam) =>
+        bam.bodyArea.name === bodyArea.name ? { ...bam, score: score } : bam,
+      ),
+    )
+  }
+
+  // Pass the updated objects to parent for saving.
+  function saveUpdatesToParent() {
+    updateBodyAreaMoveScores(activeBodyAreaScores.filter((bam) => bam.score))
+  }
+
+  function getScore(bodyArea: BodyArea) {
+    return activeBodyAreaScores.find(
+      (bam) => bam.bodyArea.name === bodyArea.name,
+    ).score
+  }
+
+  const assigned: number = activeBodyAreaScores
+    .map((bam) => bam.score)
+    .reduce<number>((a, b) => a + b, 0)
+
+  return (
+    <FlexBox justify="center" align="center">
+      <FlexBox direction="row" align="center">
+        <MainText
+          colorType={assigned === 100 ? 'highlight' : 'destructive'}
+          bold
+        >
+          {assigned}% Assigned
+        </MainText>
+        <Spacer right="10px" />
+        {assigned === 100 ? (
+          <HighlightButton onClick={saveUpdatesToParent}>
+            <MainText bold>Save Assignments</MainText>
+          </HighlightButton>
+        ) : (
+          <Padding padding="9px">
+            <MainText colorType="grey" bold>
+              Exactly 100 points must be asigned
+            </MainText>
+          </Padding>
+        )}
+      </FlexBox>
+
+      <BodyAreaScoreEditorWrapper>
+        <FlexBox direction="row" justify="space-around">
+          <FlexBox direction="column" align="center">
+            <Title>FRONT</Title>
+            <BodyAreaGroupWrapper>
+              {partsByArea.FRONT.map((ba: BodyArea) => (
+                <BodyAreaScoreEditor
+                  key={ba.name}
+                  bodyArea={ba}
+                  score={getScore(ba)}
+                  updateBodyAreaScore={saveUpdatesInternally}
+                />
+              ))}
+            </BodyAreaGroupWrapper>
+          </FlexBox>
+          <FlexBox direction="column" align="center">
+            <Title>BOTH</Title>
+            <BodyAreaGroupWrapper>
+              {partsByArea.BOTH.map((ba: BodyArea) => (
+                <BodyAreaScoreEditor
+                  key={ba.name}
+                  bodyArea={ba}
+                  score={getScore(ba)}
+                  updateBodyAreaScore={saveUpdatesInternally}
+                />
+              ))}
+            </BodyAreaGroupWrapper>
+          </FlexBox>
+          <FlexBox direction="column" align="center">
+            <Title>BACK</Title>
+            <BodyAreaGroupWrapper>
+              {partsByArea.BACK.map((ba: BodyArea) => (
+                <BodyAreaScoreEditor
+                  key={ba.name}
+                  bodyArea={ba}
+                  score={getScore(ba)}
+                  updateBodyAreaScore={saveUpdatesInternally}
+                />
+              ))}
+            </BodyAreaGroupWrapper>
+          </FlexBox>
+        </FlexBox>
+      </BodyAreaScoreEditorWrapper>
+    </FlexBox>
+  )
 }
+
+interface BodyAreaScoreEditorProps {
+  bodyArea: BodyArea
+  score: number
+  updateBodyAreaScore: (bodyArea: BodyArea, score: number) => void
+}
+
+interface StyledScoreEditorProps {
+  isActive: boolean
+}
+
+const StyledBodyAreaScoreEditor = styled.div<StyledScoreEditorProps>`
+  border-style: solid;
+  border-width: 1px;
+  border-color: ${(p) =>
+    p.isActive ? p.theme.colors.primaryDark : p.theme.colors.primaryLight};
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: 10px;
+`
+
+// Single bodyAreaMoveScore editor
+const BodyAreaScoreEditor = ({
+  bodyArea,
+  score,
+  updateBodyAreaScore,
+}: BodyAreaScoreEditorProps) => (
+  <StyledBodyAreaScoreEditor isActive={score !== 0}>
+    <Spacer left="4px" />
+    <MainText bold>{bodyArea.name}</MainText>
+    <Spacer right="4px" />
+    <NumberInput
+      name={bodyArea.name}
+      value={score.toString()}
+      setValue={(value: string) => {
+        console.log(value)
+        updateBodyAreaScore(bodyArea, parseInt(value))
+      }}
+      max={100}
+    />
+  </StyledBodyAreaScoreEditor>
+)

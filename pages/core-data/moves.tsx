@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import CreateEditMove from '../../components/forms/createEditMove'
+import CreateEditMove from '../../components/contentCRUD/createEditMove'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingSpinner } from '../../components/loadingIndicators'
 import { showToast } from '../../components/notifications'
@@ -13,7 +13,8 @@ import {
 import Modal from '../../components/layout/modal'
 import { STANDARD_MOVES_QUERY } from '../../graphql/move'
 import { CreateButton } from '../../components/styled-components/buttons'
-import { BodyAreaMoveScore, Move } from '../../types/models/move'
+import { BodyArea, BodyAreaMoveScore, Move } from '../../types/models/move'
+import { Equipment } from '../../types/models/equipment'
 
 const ScoreTotal = styled.div`
   padding: 3px;
@@ -42,7 +43,7 @@ export default function Moves() {
 
   function handleAddNewClick() {
     setActiveMoveData(null)
-    setModalState({ isOpen: true, title: 'Add Move' })
+    setModalState({ isOpen: true, title: 'Create New Move' })
   }
 
   function buildScoreTotal(bams: Array<BodyAreaMoveScore>) {
@@ -51,7 +52,7 @@ export default function Moves() {
     return (
       <ScoreTotal>
         <span style={{ color: total === 100 ? highlight : destructive }}>
-          {total}%
+          ({total}%)
         </span>
       </ScoreTotal>
     )
@@ -83,12 +84,13 @@ export default function Moves() {
             },
             {
               Header: 'Search Terms',
-              accessor: 'searchterms',
+              accessor: 'searchTerms',
               disableSortBy: true,
             },
             {
+              id: 'moveType',
               Header: 'Type',
-              accessor: 'type', // accessor is the "key" in the data
+              accessor: ({ moveType }) => moveType.name,
             },
             {
               id: 'validRepTypes', // accessor is the "key" in the data
@@ -105,14 +107,14 @@ export default function Moves() {
               id: 'requiredEquipments', // accessor is the "key" in the data
               Header: 'Required',
               accessor: ({ requiredEquipments }) =>
-                requiredEquipments.map((e) => e.name).join(', '),
+                requiredEquipments.map((e: Equipment) => e.name).join(', '),
               disableSortBy: true,
             },
             {
               id: 'selectableEquipments', // accessor is the "key" in the data
               Header: 'Selectable',
               accessor: ({ selectableEquipments }) =>
-                selectableEquipments.map((e) => e.name).join(', '),
+                selectableEquipments.map((e: Equipment) => e.name).join(', '),
               disableSortBy: true,
             },
             {
@@ -122,7 +124,10 @@ export default function Moves() {
                 <FlexBox direction="row" wrap="wrap" align="center">
                   <div>
                     {bodyAreaMoveScores
-                      .map((bams) => `${bams.bodyArea.name}: ${bams.score}%`)
+                      .map(
+                        (bams: BodyAreaMoveScore) =>
+                          `${bams.bodyArea.name}: ${bams.score}%`,
+                      )
                       .join(', ')}
                   </div>
                   {buildScoreTotal(bodyAreaMoveScores)}

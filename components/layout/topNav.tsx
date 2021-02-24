@@ -27,11 +27,6 @@ const subRoutes = {
 }
 
 //// Styled Components ////
-interface NavItem {
-  text: string
-  link: string
-}
-
 const TopNavContainer = styled.nav`
   display: flex;
   flex-direction: row;

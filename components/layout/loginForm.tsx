@@ -20,7 +20,6 @@ interface LoginData {
 
 const LoginFormContainer = styled.div`
   background-color: ${(props) => props.theme.colors.pureWhite};
-  padding: 40px;
   border-radius: 4px;
 `
 

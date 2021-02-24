@@ -30,6 +30,8 @@ export const SelectedEquipmentDisplay = ({
 }: SelectedEquipmentDisplayProps) => {
   const [openSelector, setOpenSelector] = useState(false)
 
+  const { loading, error, data } = useQuery(EQUIPMENT_QUERY)
+
   function isSelected(v: Equipment) {
     return selectedEquipments.some((s) => equal(s, v))
   }
@@ -48,55 +50,64 @@ export const SelectedEquipmentDisplay = ({
     updateSelectedEquipments(selectedEquipments.filter((s) => !equal(s, v)))
   }
 
-  return (
-    <div>
-      <DarkButton onClick={() => setOpenSelector(true)}>
-        <PlusIcon width={12} />
-        <Spacer right="2px" />
-        <MainText>Add</MainText>
-      </DarkButton>
-      <Spacer bottom="6px" />
-      <FlexBox direction="row" wrap="wrap">
-        {selectedEquipments.length ? (
-          selectedEquipments.map((e) => (
-            <SelectedEquipmentDisplayItem
-              key={e.id}
-              equipment={e}
-              removeEquipment={handleRemoveSelected}
-            />
-          ))
-        ) : (
-          <Padding>
-            <MainText colorType="grey">None selected</MainText>
-          </Padding>
-        )}
-      </FlexBox>
-      <Modal
-        isOpen={openSelector}
-        handleClose={() => setOpenSelector(false)}
-        disableClickOutsideClose={true}
-        width="90vw"
-        closeOnDone
-      >
-        <EquipmentMultiSelect
-          selected={selectedEquipments}
-          toggleSelected={handleToggleSelected}
-        />
-      </Modal>
-    </div>
-  )
+  if (error) {
+    showToast(`Error retrieving data`, 'Error', 5000)
+    console.error(error)
+    return null
+  } else if (loading) {
+    return <LoadingSpinner />
+  } else {
+    return (
+      <div>
+        <DarkButton onClick={() => setOpenSelector(true)}>
+          <PlusIcon width={12} />
+          <Spacer right="2px" />
+          <MainText>Add</MainText>
+        </DarkButton>
+        <Spacer bottom="6px" />
+        <FlexBox direction="row" wrap="wrap">
+          {selectedEquipments.length ? (
+            selectedEquipments.map((e) => (
+              <SelectedEquipmentDisplayItem
+                key={e.id}
+                equipment={e}
+                removeEquipment={handleRemoveSelected}
+              />
+            ))
+          ) : (
+            <Padding>
+              <MainText colorType="grey">None selected</MainText>
+            </Padding>
+          )}
+        </FlexBox>
+        <Modal
+          isOpen={openSelector}
+          handleClose={() => setOpenSelector(false)}
+          disableClickOutsideClose={true}
+          width="90vw"
+          closeOnDone
+        >
+          <EquipmentMultiSelect
+            allEquipments={data.equipments}
+            selected={selectedEquipments}
+            toggleSelected={handleToggleSelected}
+          />
+        </Modal>
+      </div>
+    )
+  }
 }
 
 //// Single Selected Equipment Display UI ////
 const StyledSelectedEquipmentDisplayItem = styled.div`
   display: flex;
-  flex-wrap: no-wrap;
+  flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
   direction: row;
   padding: 8px 12px;
   border: 1px solid ${(p) => p.theme.colors.highlight};
-  border-radius: 3px;
+  border-radius: 6px;
   margin: 0 4px 4px 0;
   :hover {
     cursor: pointer;
@@ -125,7 +136,8 @@ const SelectedEquipmentDisplayItem = ({
 //// The selector that opens in a modal - allowing equipment selection to be toggled on / off ////
 //////////////////
 interface EquipmentMultiSelectProps {
-  selected: Array<Equipment>
+  allEquipments: Equipment[]
+  selected: Equipment[]
   toggleSelected: (selected: Equipment) => void
 }
 
@@ -149,40 +161,31 @@ const StyledEquipmentItem = styled.div<EquipmentItemProps>`
 `
 
 export const EquipmentMultiSelect = ({
+  allEquipments,
   selected,
   toggleSelected,
 }: EquipmentMultiSelectProps) => {
-  const { loading, error, data } = useQuery(EQUIPMENT_QUERY)
-
   function isSelected(v: Equipment) {
     return selected.some((s) => equal(s, v))
   }
 
-  if (error) {
-    showToast(`Error retrieving data`, 'Error', 5000)
-    console.error(error)
-    return null
-  } else if (loading) {
-    return <LoadingSpinner />
-  } else {
-    return (
-      <FlexBox
-        direction="row"
-        wrap="wrap"
-        justify="center"
-        height="100%"
-        padding="40px"
-      >
-        {data.equipments.map((e: Equipment) => (
-          <StyledEquipmentItem
-            key={e.id}
-            isSelected={isSelected(e)}
-            onClick={() => toggleSelected(e)}
-          >
-            {e.name}
-          </StyledEquipmentItem>
-        ))}
-      </FlexBox>
-    )
-  }
+  return (
+    <FlexBox
+      direction="row"
+      wrap="wrap"
+      justify="center"
+      height="100%"
+      padding="40px"
+    >
+      {allEquipments.map((e: Equipment) => (
+        <StyledEquipmentItem
+          key={e.id}
+          isSelected={isSelected(e)}
+          onClick={() => toggleSelected(e)}
+        >
+          {e.name}
+        </StyledEquipmentItem>
+      ))}
+    </FlexBox>
+  )
 }

@@ -15,19 +15,19 @@ import { SelectedBodyAreaMoveScores } from '../selectors/bodyAreaMoveScores'
 import { SelectedEquipmentDisplay } from '../selectors/equipmentMultiSelect'
 import { DestructiveButton } from '../styled-components/buttons'
 import { FlexBox, MainText, Spacer } from '../styled-components/styled'
-import FileUploader from './fileUploader'
-import CheckBoxes from './inputs/checkBoxes'
-import RadioButtons from './inputs/radioButtons'
-import TextAreaInput from './inputs/textAreaInput'
-import TextInput from './inputs/textInput'
+import FileUploader from '../forms/fileUploader'
+import CheckBoxes from '../forms/inputs/checkBoxes'
+import RadioButtons from '../forms/inputs/radioButtons'
+import TextAreaInput from '../forms/inputs/textAreaInput'
+import TextInput from '../forms/inputs/textInput'
 import {
   ExampleText,
   StyledForm,
   StyledInputGroup,
   StyledLabel,
   SubmitButton,
-} from './styled'
-import { useFormState } from './useFormState'
+} from '../forms/styled'
+import { useFormState } from '../forms/useFormState'
 
 interface CreateEditMoveProps {
   readonly move?: Move
@@ -37,30 +37,41 @@ interface CreateEditMoveProps {
 const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
   const { loading, error, data } = useQuery(MOVE_TYPES_QUERY)
 
-  const [createMove] = useMutation(CREATE_OFFICIAL_MOVE_MUTATION, {
-    update(cache, { data: { createMove } }) {
-      cache.modify({
-        fields: {
-          standardMoves(prevMoves = []) {
-            const newMoveRef = cache.writeFragment({
-              data: createMove,
-              fragment: NEW_MOVE_FRAGMENT,
-            })
-            return [newMoveRef, ...prevMoves]
+  const [createMove, { loading: mutateMoveInProgress }] = useMutation(
+    CREATE_OFFICIAL_MOVE_MUTATION,
+    {
+      update(cache, { data: { createMove } }) {
+        console.log('updating')
+        console.log(createMove)
+        cache.modify({
+          fields: {
+            standardMoves(prevMoves = []) {
+              const newMoveRef = cache.writeFragment({
+                data: createMove,
+                fragment: NEW_MOVE_FRAGMENT,
+              })
+              return [newMoveRef, ...prevMoves]
+            },
           },
-        },
-      })
+        })
+      },
+      onCompleted() {
+        showToast('New Move Added', 'Success')
+        onComplete && onComplete()
+      },
+      onError() {
+        showToast('Error creating move!', 'Error')
+      },
     },
-    onCompleted: () => {
-      showToast('New Move Added', 'Success')
-      onComplete && onComplete()
-    },
-  })
+  )
 
   const [updateMove] = useMutation(UPDATE_OFFICIAL_MOVE_MUTATION, {
-    onCompleted: () => {
+    onCompleted() {
       showToast('Move Updated', 'Success')
       onComplete && onComplete()
+    },
+    onError() {
+      showToast('API error updating move!', 'Error')
     },
   })
 
@@ -256,9 +267,9 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
         </FlexBox>
 
         <SubmitButton
-          disabled={!formDirty()}
-          loading={false}
-          text={move ? 'Update Move' : 'Add Move'}
+          disabled={!formDirty() || mutateMoveInProgress}
+          loading={mutateMoveInProgress}
+          text={move ? 'Update Move' : 'Create New Move'}
         />
       </StyledForm>
     )

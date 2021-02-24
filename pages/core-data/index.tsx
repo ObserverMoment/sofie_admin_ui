@@ -3,11 +3,9 @@ import { FlexBox, Title } from '../../components/styled-components/styled'
 
 export default function Overview() {
   return (
-    <FlexBox>
-      <Title>Overview dashboard</Title>
-      <Title>Summary components</Title>
-      <Title>Useage components</Title>
-      <Title>Data on popular moves etc</Title>
+    <FlexBox align="center">
+      <Title colorType="grey">Overview</Title>
+      <Title colorType="grey">Usage and Popularity Analytics</Title>
     </FlexBox>
   )
 }

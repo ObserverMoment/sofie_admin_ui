@@ -42,7 +42,7 @@ const GlobalStyle = createGlobalStyle`
     }}
 `
 
-// initializeFirebase return ref to firebase.auth()
+// initializeFirebase returns ref to firebase.auth()
 const firebaseAuth = initializeFirebase()
 const apolloClient = createApolloClient()
 
@@ -51,14 +51,23 @@ export default function App({ Component, pageProps }) {
 
   useEffect(() => {
     if (nookies.get().token) {
+      console.log('Has nookie, so authed')
       setAuthed(true)
+    } else {
+      console.log('No nookie, not authed and clear cache')
+      setAuthed(false)
+      apolloClient.resetStore()
     }
     const unsubscribe = firebaseAuth.onIdTokenChanged(async (user) => {
+      console.log('onIdTokenChanged')
       nookies.destroy(null, 'token')
       if (!user) {
+        console.log('Not authed and clear cache')
         setAuthed(false)
+        apolloClient.resetStore()
       } else {
-        const newToken = await user.getIdToken(true)
+        console.log('Authed - get new token')
+        const newToken = await user.getIdToken()
         nookies.set(null, 'token', newToken)
         setAuthed(true)
       }
@@ -67,14 +76,14 @@ export default function App({ Component, pageProps }) {
     return () => unsubscribe()
   }, [])
 
-  // force refresh the token every 10 minutes while mounted
+  // force refresh the token every 30 minutes while mounted
   // https://github.com/colinhacks/next-firebase-ssr/blob/master/auth.tsx
   useEffect(() => {
     const handle = setInterval(async () => {
-      console.log(`refreshing token...`)
+      console.log('refreshing token...')
       const user = firebaseAuth.currentUser
       if (user) await user.getIdToken(true)
-    }, 10 * 60 * 1000)
+    }, 30 * 60 * 1000)
 
     return () => clearInterval(handle)
   }, [])

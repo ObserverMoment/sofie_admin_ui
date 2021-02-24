@@ -8,8 +8,6 @@ import { MOVE_TYPES_QUERY } from '../../graphql/move'
 export default function MoveTypes() {
   const { loading, error, data } = useQuery(MOVE_TYPES_QUERY)
 
-  console.log(data)
-
   if (error) {
     return <ErrorMessage message={error.message} />
   } else if (loading) {

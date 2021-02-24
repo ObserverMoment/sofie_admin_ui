@@ -4,7 +4,7 @@ import { FlexBox, Title } from '../../components/styled-components/styled'
 export default function OfficialContentEvents() {
   return (
     <FlexBox>
-      <Title>OfficialContentEvents</Title>
+      <Title colorType="grey">Official Events</Title>
     </FlexBox>
   )
 }

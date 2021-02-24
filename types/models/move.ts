@@ -35,7 +35,6 @@ export interface MoveType {
 }
 
 export interface BodyAreaMoveScore {
-  id: string
   bodyArea: BodyArea
   score: number
 }
@@ -48,4 +47,6 @@ export interface CreateBodyAreaMoveScoreInput {
 export interface BodyArea {
   id: string
   name: string
+  frontBack: 'FRONT' | 'BACK'
+  upperLower: 'UPPER' | 'LOWER'
 }

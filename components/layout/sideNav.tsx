@@ -8,7 +8,6 @@ import {
   HomeIcon,
   SignOutIcon,
   SpotMeLogo,
-  UsersIcon,
 } from '../images'
 import { MyButton, MyLink } from '../styled-components/buttons'
 import { FlexBox, Spacer, TinyText } from '../styled-components/styled'
@@ -18,7 +17,6 @@ const primaryRoutes = [
   { text: 'Dashboard', link: '/', icon: HomeIcon },
   { text: 'Core Data', link: '/core-data', icon: DataIcon },
   { text: 'Core Content', link: '/core-content', icon: ContentIcon },
-  { text: 'Users', link: '/users', icon: UsersIcon },
 ]
 
 //// Styled Components ////
@@ -102,7 +100,7 @@ const PrimaryNavItem = styled.a<NavItemProps>`
 //// React Components ////
 export const LogoMenuAndSideNav = () => (
   <SideNavContainer>
-    <Spacer bottom="8px" />
+    <Spacer bottom="8px" top="8px" />
     <MyLink
       href="/"
       content={

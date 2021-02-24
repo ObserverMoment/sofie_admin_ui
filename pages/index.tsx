@@ -1,10 +1,13 @@
 import React from 'react'
-import { FlexBox, Title } from '../components/styled-components/styled'
+import { FlexBox, Padding, Title } from '../components/styled-components/styled'
 
 export default function Home() {
   return (
-    <FlexBox>
-      <Title>Dashboard</Title>
-    </FlexBox>
+    <Padding padding="50px">
+      <FlexBox align="center">
+        <Title colorType="grey">Dashboard</Title>
+        <Title colorType="grey">Analytics Summary</Title>
+      </FlexBox>
+    </Padding>
   )
 }

@@ -7,16 +7,16 @@ import {
 } from '../../graphql/equipment'
 import { Equipment } from '../../types/models/equipment'
 import { showToast } from '../notifications'
-import RadioButtons from './inputs/radioButtons'
-import TextInput from './inputs/textInput'
+import RadioButtons from '../forms/inputs/radioButtons'
+import TextInput from '../forms/inputs/textInput'
 import {
   ExampleText,
   StyledForm,
   StyledInputGroup,
   StyledLabel,
   SubmitButton,
-} from './styled'
-import { useFormState } from './useFormState'
+} from '../forms/styled'
+import { useFormState } from '../forms/useFormState'
 
 interface CreateEditEquipmentProps {
   readonly equipment?: Equipment
@@ -27,30 +27,39 @@ const CreateEditEquipment = ({
   equipment,
   onComplete,
 }: CreateEditEquipmentProps) => {
-  const [createEquipment] = useMutation(CREATE_EQUIPMENT_MUTATION, {
-    update(cache, { data: { createEquipment } }) {
-      cache.modify({
-        fields: {
-          equipments(prevEquipments = []) {
-            const newEquipmentRef = cache.writeFragment({
-              data: createEquipment,
-              fragment: NEW_EQUIPMENT_FRAGMENT,
-            })
-            return [newEquipmentRef, ...prevEquipments]
+  const [createEquipment, { loading: mutateEquipmentInProgress }] = useMutation(
+    CREATE_EQUIPMENT_MUTATION,
+    {
+      update(cache, { data: { createEquipment } }) {
+        cache.modify({
+          fields: {
+            equipments(prevEquipments = []) {
+              const newEquipmentRef = cache.writeFragment({
+                data: createEquipment,
+                fragment: NEW_EQUIPMENT_FRAGMENT,
+              })
+              return [newEquipmentRef, ...prevEquipments]
+            },
           },
-        },
-      })
+        })
+      },
+      onCompleted() {
+        showToast('New Equipment Added', 'Success')
+        onComplete && onComplete()
+      },
+      onError() {
+        showToast('API error creating equipment!', 'Error')
+      },
     },
-    onCompleted() {
-      showToast('New Equipment Added', 'Success')
-      onComplete && onComplete()
-    },
-  })
+  )
 
   const [updateEquipment] = useMutation(UPDATE_EQUIPMENT_MUTATION, {
-    onCompleted: () => {
+    onCompleted() {
       showToast('Equipment Updated', 'Success')
       onComplete && onComplete()
+    },
+    onError() {
+      showToast('API error updating equipment!', 'Error')
     },
   })
 
@@ -134,8 +143,8 @@ const CreateEditEquipment = ({
       </StyledInputGroup>
 
       <SubmitButton
-        disabled={!formDirty()}
-        loading={false}
+        disabled={!formDirty() || mutateEquipmentInProgress}
+        loading={mutateEquipmentInProgress}
         text={equipment ? 'Update Equipment' : 'Add Equipment'}
       />
     </StyledForm>

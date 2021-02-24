@@ -28,7 +28,7 @@ interface StyledButtonProps {
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
-  padding: ${(props) => props.padding || '5px 12px'};
+  padding: ${(props) => props.padding || '10px 16px'};
   margin: 0;
   border: none;
   opacity: 1;

@@ -18,7 +18,7 @@ const LoginModal = ({ isOpen }) => {
           exit={'exit'}
           variants={modalVariant}
         >
-          <ModalContainer variants={containerVariant}>
+          <ModalContainer width="400px" variants={containerVariant}>
             <LoginForm />
           </ModalContainer>
         </Overlay>

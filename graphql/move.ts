@@ -44,7 +44,10 @@ export const STANDARD_MOVES_QUERY = gql`
 // For sending to the API
 // Excludes the id field - add it manually when doing a create op (vs an update op)
 export const genMoveJson = (move: Move): MoveInput => ({
-  ...move,
+  name: move.name,
+  searchTerms: move.searchTerms || null,
+  description: move.description || null,
+  demoVideoUrl: move.demoVideoUrl || null,
   scope: 'STANDARD',
   validRepTypes: move.validRepTypes.includes('TIME')
     ? move.validRepTypes
@@ -88,6 +91,17 @@ export const MOVE_TYPES_QUERY = gql`
       name
       description
       imageUrl
+    }
+  }
+`
+
+export const BODY_AREAS_QUERY = gql`
+  query bodyAreas {
+    bodyAreas {
+      id
+      name
+      frontBack
+      upperLower
     }
   }
 `
