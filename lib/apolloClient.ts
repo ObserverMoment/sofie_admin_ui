@@ -45,7 +45,7 @@ const authLink = setContext(async (_, { headers }) => {
 // 'https://spotme-api-sandbox.herokuapp.com/'
 // 'http://localhost:4000/'
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/',
+  uri: process.env.NEXT_PUBLIC_API_URL,
 })
 
 export function createApolloClient() {
