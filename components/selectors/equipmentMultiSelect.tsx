@@ -16,6 +16,10 @@ import equal from 'deep-equal'
 import { DarkButton } from '../styled-components/buttons'
 import Modal from '../layout/modal'
 import { Equipment } from '../../types/models/equipment'
+import {
+  ClickableHighlightedBox,
+  HighlightedBox,
+} from '../styled-components/cards'
 
 //// Display Elements - shows already selected items in a simple UI with a button to open the selector ////
 //// Usually what the user will see first - before they open the selector if they need to make edits ////
@@ -98,22 +102,6 @@ export const SelectedEquipmentDisplay = ({
   }
 }
 
-//// Single Selected Equipment Display UI ////
-const StyledSelectedEquipmentDisplayItem = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
-  direction: row;
-  padding: 8px 12px;
-  border: 1px solid ${(p) => p.theme.colors.highlight};
-  border-radius: 6px;
-  margin: 0 4px 4px 0;
-  :hover {
-    cursor: pointer;
-  }
-`
-
 interface SelectedEquipmentDisplayItemProps {
   equipment: Equipment
   removeEquipment: (equipment: Equipment) => void
@@ -123,13 +111,11 @@ const SelectedEquipmentDisplayItem = ({
   equipment,
   removeEquipment,
 }: SelectedEquipmentDisplayItemProps) => (
-  <StyledSelectedEquipmentDisplayItem
-    onClick={() => removeEquipment(equipment)}
-  >
-    <TinyText bold>{equipment.name}</TinyText>
-    <Spacer right="3px" />
-    <CloseCircleIcon width={11} />
-  </StyledSelectedEquipmentDisplayItem>
+  <ClickableHighlightedBox onClick={() => removeEquipment(equipment)}>
+    <MainText colorType="primaryLight">{equipment.name}</MainText>
+    <Spacer right="6px" />
+    <CloseCircleIcon colorType="primaryLight" width={11} />
+  </ClickableHighlightedBox>
 )
 
 //////////////////

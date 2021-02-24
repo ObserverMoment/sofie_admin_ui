@@ -8,7 +8,7 @@ export const theme = {
     primaryLight: '#fafafa',
     pureWhite: '#ffffff',
     grey: '#868686',
-    highlight: '#167974',
+    highlight: '#0940b8',
     destructive: '#bb2020',
     info: '#054894',
     success: '#167974',
@@ -25,6 +25,7 @@ export type ColorTypes =
   | 'highlight'
   | 'destructive'
   | 'grey'
+  | 'success'
 
 interface TextProps {
   readonly bold?: boolean

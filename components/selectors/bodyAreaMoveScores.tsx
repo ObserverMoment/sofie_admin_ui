@@ -11,6 +11,7 @@ import Modal from '../layout/modal'
 import { LoadingSpinner } from '../loadingIndicators'
 import { showToast } from '../notifications'
 import { DarkButton, HighlightButton } from '../styled-components/buttons'
+import { HighlightedBox } from '../styled-components/cards'
 import {
   FlexBox,
   MainText,
@@ -41,6 +42,10 @@ export const SelectedBodyAreaMoveScores = ({
     setOpeneditor(false)
   }
 
+  const assignedBodyAreaScore = bodyAreaMoveScores
+    .map((bam) => bam.score)
+    .reduce<number>((a, b) => a + b, 0)
+
   if (error) {
     showToast(`Error retrieving data`, 'Error', 5000)
     console.error(error)
@@ -58,16 +63,18 @@ export const SelectedBodyAreaMoveScores = ({
           </DarkButton>
           <Spacer right="10px" />
           {bodyAreaMoveScores.length ? (
-            <TinyText bold>
-              {bodyAreaMoveScores
-                .map((bam) => bam.score)
-                .reduce<number>((a, b) => a + b, 0)}
-              % assigned
-            </TinyText>
+            <MainText
+              colorType={
+                assignedBodyAreaScore === 100 ? 'success' : 'destructive'
+              }
+              bold
+            >
+              {assignedBodyAreaScore}% assigned
+            </MainText>
           ) : (
-            <TinyText bold colorType="grey">
+            <MainText bold colorType="destructive">
               0% Assigned
-            </TinyText>
+            </MainText>
           )}
         </FlexBox>
 
@@ -103,27 +110,14 @@ export const SelectedBodyAreaMoveScores = ({
   }
 }
 
-//// Single Selected Equipment Display UI ////
-const StyledBodyAreaMoveScoreItem = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
-  direction: row;
-  padding: 8px 12px;
-  border: 1px solid ${(p) => p.theme.colors.highlight};
-  border-radius: 3px;
-  margin: 0 4px 4px 0;
-`
-
 const SelectedBodyAreaMoveScoreItem = ({
   bodyAreaMoveScore,
 }: {
   bodyAreaMoveScore: BodyAreaMoveScore
 }) => (
-  <StyledBodyAreaMoveScoreItem>
-    <MainText>{`${bodyAreaMoveScore.bodyArea.name}: ${bodyAreaMoveScore.score}`}</MainText>
-  </StyledBodyAreaMoveScoreItem>
+  <HighlightedBox>
+    <MainText colorType="primaryLight">{`${bodyAreaMoveScore.bodyArea.name}: ${bodyAreaMoveScore.score}%`}</MainText>
+  </HighlightedBox>
 )
 
 //////////////////

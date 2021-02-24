@@ -17,7 +17,7 @@ import {
   faTimesCircle,
   faEdit,
 } from '@fortawesome/free-solid-svg-icons'
-import { theme } from './styled-components/styled'
+import { ColorTypes, theme } from './styled-components/styled'
 
 export const SpotMeLogo = ({ width = 40, height = 40 }) => (
   <img src="/spotme_logo.svg" alt="logo" width={width} height={height} />
@@ -33,29 +33,70 @@ export const UserAvatar = ({ width = 30 }) => (
 )
 
 /// Icons
-export const HomeIcon = ({ width = 30 }) => (
-  <FontAwesomeIcon icon={faChartBar} width={width + 8} />
+
+interface IconProps {
+  width?: number
+  colorType?: ColorTypes
+}
+
+export const HomeIcon = ({
+  width = 30,
+  colorType = 'primaryDark',
+}: IconProps) => (
+  <FontAwesomeIcon
+    icon={faChartBar}
+    width={width + 8}
+    color={theme.colors[colorType]}
+  />
 )
-export const DataIcon = ({ width = 30 }) => (
-  <FontAwesomeIcon icon={faDatabase} width={width} />
+export const DataIcon = ({ width = 30, colorType = 'primaryDark' }) => (
+  <FontAwesomeIcon
+    icon={faDatabase}
+    width={width}
+    color={theme.colors[colorType]}
+  />
 )
-export const ContentIcon = ({ width = 30 }) => (
-  <FontAwesomeIcon icon={faClipboardList} width={width} />
+export const ContentIcon = ({ width = 30, colorType = 'primaryDark' }) => (
+  <FontAwesomeIcon
+    icon={faClipboardList}
+    width={width}
+    color={theme.colors[colorType]}
+  />
 )
-export const UsersIcon = ({ width = 30 }) => (
-  <FontAwesomeIcon icon={faUsers} width={width + 12} />
+export const UsersIcon = ({ width = 30, colorType = 'primaryDark' }) => (
+  <FontAwesomeIcon
+    icon={faUsers}
+    width={width + 12}
+    color={theme.colors[colorType]}
+  />
 )
-export const SignOutIcon = ({ width = 30 }) => (
-  <FontAwesomeIcon icon={faSignOutAlt} width={width} />
+export const SignOutIcon = ({ width = 30, colorType = 'primaryDark' }) => (
+  <FontAwesomeIcon
+    icon={faSignOutAlt}
+    width={width}
+    color={theme.colors[colorType]}
+  />
 )
-export const CloseWindowIcon = ({ width = 30 }) => (
-  <FontAwesomeIcon icon={faWindowClose} width={width} />
+export const CloseWindowIcon = ({ width = 30, colorType = 'primaryDark' }) => (
+  <FontAwesomeIcon
+    icon={faWindowClose}
+    width={width}
+    color={theme.colors[colorType]}
+  />
 )
-export const CloseCircleIcon = ({ width = 30 }) => (
-  <FontAwesomeIcon icon={faTimesCircle} width={width} />
+export const CloseCircleIcon = ({ width = 30, colorType = 'primaryDark' }) => (
+  <FontAwesomeIcon
+    icon={faTimesCircle}
+    width={width}
+    color={theme.colors[colorType]}
+  />
 )
-export const EditIcon = ({ width = 30 }) => (
-  <FontAwesomeIcon icon={faEdit} width={width} />
+export const EditIcon = ({ width = 30, colorType = 'primarkDark' }) => (
+  <FontAwesomeIcon
+    icon={faEdit}
+    width={width}
+    color={theme.colors[colorType]}
+  />
 )
 
 type SortType = 'Sort' | 'Up' | 'Down'
