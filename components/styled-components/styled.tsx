@@ -8,7 +8,7 @@ export const theme = {
     primaryLight: '#fafafa',
     pureWhite: '#ffffff',
     grey: '#868686',
-    highlight: '#0940b8',
+    highlight: '#056e8e',
     destructive: '#bb2020',
     info: '#054894',
     success: '#167974',
