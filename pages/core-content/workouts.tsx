@@ -9,6 +9,7 @@ import {
   Title,
 } from '../../components/styled-components/styled'
 import { OFFICIAL_WORKOUTS_QUERY } from '../../graphql/workout'
+import { Workout } from '../../types/models/workout'
 
 export default function Workouts() {
   const [{ isOpen, title }, setModalState] = useState({
