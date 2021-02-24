@@ -8,10 +8,6 @@ export const StyledForm = styled.form`
   padding: 16px 10px;
 `
 
-// Label
-// Input
-// Errors
-// Example / requirements
 export const StyledInputGroup = styled.div`
   display: flex;
   flex-direction: column;

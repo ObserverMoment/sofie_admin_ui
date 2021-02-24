@@ -1,4 +1,4 @@
-interface WorkoutProgram {
+export interface WorkoutProgram {
   id: string
   createdAt: Date
   name: string

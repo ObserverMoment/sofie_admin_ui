@@ -1,4 +1,4 @@
-interface WorkoutType {
+export interface WorkoutType {
   id: string
   name: string
   subtitle: string
@@ -8,7 +8,7 @@ interface WorkoutType {
   workouts: Workout[]
 }
 
-interface Workout {
+export interface Workout {
   id: string
   createdAt: Date
   name: string
