@@ -126,7 +126,12 @@ export const PrimaryNav = ({ signOut }) => {
             href={link}
             isActive={`/${baseRoute}` === link}
           >
-            <Icon width={20} colorType="primaryLight" />
+            <Icon
+              width={20}
+              colorType={
+                `/${baseRoute}` === link ? 'primaryDark' : 'primaryLight'
+              }
+            />
             <Spacer bottom="3px" />
             <TinyText>{text}</TinyText>
           </PrimaryNavItem>
