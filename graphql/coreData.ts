@@ -22,14 +22,15 @@ export const WORKOUT_GOALS_QUERY = gql`
   }
 `
 
-export const WORKOUT_TYPES_QUERY = gql`
-  query workoutTypes {
-    workoutTypes {
+export const WORKOUT_SECTION_TYPES_QUERY = gql`
+  query workoutSectionTypes {
+    workoutSectionTypes {
       id
       name
       subtitle
       description
-      scoreType
+      imageUri
+      validRepTypes
     }
   }
 `

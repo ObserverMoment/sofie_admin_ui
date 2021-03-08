@@ -7,11 +7,11 @@ export const OFFICIAL_WORKOUT_PROGRAMS_QUERY = gql`
       createdAt
       name
       description
-      imageUrl
-      videoUrl
-      videoThumbUrl
-      youtubeVideoUrl
-      scope
+      coverImageUri
+      introVideoUri
+      introVideoThumbUri
+      introAudioUri
+      contentAccessScope
     }
   }
 `

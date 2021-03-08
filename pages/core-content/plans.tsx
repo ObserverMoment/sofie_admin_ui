@@ -40,6 +40,7 @@ export default function WorkoutPlans() {
   } else {
     return (
       <FlexBox direction="row" justify="center" wrap="wrap">
+        <Title colorType="grey">Official Plans</Title>
         {data.officialWorkoutPrograms.map((wp: WorkoutProgram) => (
           <WorkoutProgramSummaryCard
             workoutProgram={wp}
@@ -68,12 +69,12 @@ export const WorkoutProgramSummaryCard = ({
     <FlexBox>
       <Title>{workoutProgram.name}</Title>
       <MainText>{workoutProgram.description}</MainText>
-      {workoutProgram.imageUrl && (
+      {workoutProgram.coverImageUri && (
         <FlexBox align="center">
           <img
             style={{ borderRadius: '20px' }}
             height="100px"
-            src={`https://ucarecdn.com/${workoutProgram.imageUrl}/`}
+            src={`https://ucarecdn.com/${workoutProgram.coverImageUri}/`}
           />
         </FlexBox>
       )}

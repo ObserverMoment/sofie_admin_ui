@@ -99,6 +99,7 @@ const CreateEditEquipment = ({
       })
     }
   }
+  console.log(formState)
 
   return (
     <StyledForm onSubmit={onSubmit}>

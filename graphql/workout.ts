@@ -8,15 +8,12 @@ export const OFFICIAL_WORKOUTS_QUERY = gql`
       name
       summary
       description
-      demoVideoUrl
-      demoVideoThumbUrl
-      youtubeVideoUrl
-      spotifyAudio
-      imageUrl
-      scope
-      timecap
+      introVideoUri
+      introVideoThumbUri
+      introAudioUri
+      coverImageUri
+      contentAccessScope
       difficultyLevel
-      scope
     }
   }
 `

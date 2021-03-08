@@ -1,26 +1,26 @@
-export interface WorkoutType {
+type WorkoutMoveRepType = 'REPS' | 'CALORIES' | 'DISTANCE' | 'TIME'
+
+export interface WorkoutSectionType {
   id: string
   name: string
   subtitle: string
   description: string
-  placeholderImageUrl: string
-  scoreType: 'AMREPS' | 'FORTIME' | 'FORLOAD'
-  workouts: Workout[]
+  imageUri: string
+  validRepTypes: WorkoutMoveRepType[]
 }
 
 export interface Workout {
   id: string
   createdAt: Date
+  archived: boolean
   name: string
   summary: string
   description: string
   timecap: number
-  demoVideoUrl: string
-  demoVideoThumbUrl: string
-  youtubeVideoUrl: string
-  spotifyAudio: string
-  imageUrl: string
-  workoutType: WorkoutType
+  introVideoUri: string
+  introVideoThumbUrl: string
+  introAudioUrl: string
+  coverImageUri: string
   difficultyLevel: number
-  scope: 'OFFICIAL' | 'PUBLIC' | 'PRIVATE'
+  contentAccessScope: 'OFFICIAL' | 'PUBLIC' | 'PRIVATE'
 }

@@ -40,6 +40,7 @@ export default function Workouts() {
   } else {
     return (
       <FlexBox direction="row" justify="center" wrap="wrap">
+        <Title colorType="grey">Official Workouts</Title>
         {data.officialWorkouts.map((w: Workout) => (
           <WorkoutSummaryCard workout={w} handleCardClick={handleCardClick} />
         ))}
@@ -65,12 +66,12 @@ export const WorkoutSummaryCard = ({
     <FlexBox>
       <Title>{workout.name}</Title>
       <MainText>{workout.description}</MainText>
-      {workout.imageUrl && (
+      {workout.coverImageUri && (
         <FlexBox align="center">
           <img
             style={{ borderRadius: '20px' }}
             height="100px"
-            src={`https://ucarecdn.com/${workout.imageUrl}/`}
+            src={`https://ucarecdn.com/${workout.coverImageUri}/`}
           />
         </FlexBox>
       )}

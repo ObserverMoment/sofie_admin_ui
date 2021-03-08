@@ -1,11 +1,12 @@
 export interface WorkoutProgram {
   id: string
   createdAt: Date
+  archived: boolean
   name: string
   description: string
-  imageUrl: string
-  videoUrl: string
-  videoThumbUrl: string
-  youtubeVideoUrl: string
-  scope: 'OFFICIAL' | 'PUBLIC' | 'PRIVATE'
+  coverImageUri: string
+  introVideoUri: string
+  introVideoThumbUri: string
+  introAudioUri: string
+  contentAccessScope: 'OFFICIAL' | 'PUBLIC' | 'PRIVATE'
 }

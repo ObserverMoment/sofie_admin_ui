@@ -13,7 +13,7 @@ import {
 import Modal from '../../components/layout/modal'
 import { STANDARD_MOVES_QUERY } from '../../graphql/move'
 import { CreateButton } from '../../components/styled-components/buttons'
-import { BodyArea, BodyAreaMoveScore, Move } from '../../types/models/move'
+import { BodyAreaMoveScore, Move } from '../../types/models/move'
 import { Equipment } from '../../types/models/equipment'
 
 const ScoreTotal = styled.div`
@@ -90,7 +90,7 @@ export default function Moves() {
             {
               id: 'moveType',
               Header: 'Type',
-              accessor: ({ moveType }) => moveType.name,
+              accessor: ({ MoveType }) => MoveType.name,
             },
             {
               id: 'validRepTypes', // accessor is the "key" in the data
@@ -99,38 +99,36 @@ export default function Moves() {
               disableSortBy: true,
             },
             {
-              id: 'demoVideoUrl', // accessor is the "key" in the data
+              id: 'demoVideoUri', // accessor is the "key" in the data
               Header: 'Video?',
-              accessor: ({ demoVideoUrl }) => (demoVideoUrl ? 'YES' : 'NO'),
+              accessor: ({ demoVideoUri }) => (demoVideoUri ? 'YES' : 'NO'),
             },
             {
-              id: 'requiredEquipments', // accessor is the "key" in the data
+              id: 'RequiredEquipments', // accessor is the "key" in the data
               Header: 'Required',
-              accessor: ({ requiredEquipments }) =>
-                requiredEquipments.map((e: Equipment) => e.name).join(', '),
+              accessor: ({ RequiredEquipments }) =>
+                RequiredEquipments.map((e: Equipment) => e.name).join(', '),
               disableSortBy: true,
             },
             {
-              id: 'selectableEquipments', // accessor is the "key" in the data
+              id: 'SelectableEquipments', // accessor is the "key" in the data
               Header: 'Selectable',
-              accessor: ({ selectableEquipments }) =>
-                selectableEquipments.map((e: Equipment) => e.name).join(', '),
+              accessor: ({ SelectableEquipments }) =>
+                SelectableEquipments.map((e: Equipment) => e.name).join(', '),
               disableSortBy: true,
             },
             {
-              id: 'bodyAreaMoveScores', // accessor is the "key" in the data
+              id: 'BodyAreaMoveScores', // accessor is the "key" in the data
               Header: 'Body Areas',
-              accessor: ({ bodyAreaMoveScores }) => (
+              accessor: ({ BodyAreaMoveScores }) => (
                 <FlexBox direction="row" wrap="wrap" align="center">
                   <div>
-                    {bodyAreaMoveScores
-                      .map(
-                        (bams: BodyAreaMoveScore) =>
-                          `${bams.bodyArea.name}: ${bams.score}%`,
-                      )
-                      .join(', ')}
+                    {BodyAreaMoveScores.map(
+                      (bams: BodyAreaMoveScore) =>
+                        `${bams.BodyArea.name}: ${bams.score}%`,
+                    ).join(', ')}
                   </div>
-                  {buildScoreTotal(bodyAreaMoveScores)}
+                  {buildScoreTotal(BodyAreaMoveScores)}
                 </FlexBox>
               ),
 

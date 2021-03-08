@@ -41,8 +41,6 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
     CREATE_OFFICIAL_MOVE_MUTATION,
     {
       update(cache, { data: { createMove } }) {
-        console.log('updating')
-        console.log(createMove)
         cache.modify({
           fields: {
             standardMoves(prevMoves = []) {
@@ -77,8 +75,8 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
 
   const { formState, formDirty, getFormData } = useFormState<Move>([
     {
-      key: 'moveType',
-      value: move?.moveType,
+      key: 'MoveType',
+      value: move?.MoveType,
     },
     {
       key: 'name',
@@ -93,24 +91,24 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
       value: move?.description,
     },
     {
-      key: 'demoVideoUrl',
-      value: move?.demoVideoUrl,
+      key: 'demoVideoUri',
+      value: move?.demoVideoUri,
     },
     {
       key: 'validRepTypes',
       value: move ? move.validRepTypes : [],
     },
     {
-      key: 'requiredEquipments',
-      value: move ? move.requiredEquipments : [],
+      key: 'RequiredEquipments',
+      value: move ? move.RequiredEquipments : [],
     },
     {
-      key: 'selectableEquipments',
-      value: move ? move.selectableEquipments : [],
+      key: 'SelectableEquipments',
+      value: move ? move.SelectableEquipments : [],
     },
     {
-      key: 'bodyAreaMoveScores',
-      value: move ? move.bodyAreaMoveScores : [],
+      key: 'BodyAreaMoveScores',
+      value: move ? move.BodyAreaMoveScores : [],
     },
   ])
 
@@ -148,14 +146,14 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
         <FlexBox direction="row">
           <FlexBox direction="column" width="50%">
             <StyledInputGroup>
-              <StyledLabel htmlFor="moveType">Type</StyledLabel>
+              <StyledLabel htmlFor="MoveType">Type</StyledLabel>
               <RadioButtons<MoveType>
                 options={data.moveTypes.map((mt: MoveType) => ({
                   value: mt,
                   label: mt.name,
                 }))}
-                value={formState.moveType.value}
-                setValue={formState.moveType.setValue}
+                value={formState.MoveType.value}
+                setValue={formState.MoveType.setValue}
               />
             </StyledInputGroup>
 
@@ -208,15 +206,15 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
           </FlexBox>
           <FlexBox direction="column" width="50%">
             <StyledInputGroup>
-              <StyledLabel htmlFor="demoVideoUrl">Demo Video</StyledLabel>
-              {formState.demoVideoUrl.value ? (
+              <StyledLabel htmlFor="demoVideoUri">Demo Video</StyledLabel>
+              {formState.demoVideoUri.value ? (
                 <FlexBox direction="row" align="center">
                   <SuccessIcon />
                   <Spacer right="4px" />
                   <MainText>Video Uploaded</MainText>
                   <Spacer right="40px" />
                   <DestructiveButton
-                    onClick={() => formState.demoVideoUrl.setValue(null)}
+                    onClick={() => formState.demoVideoUri.setValue(null)}
                   >
                     Remove
                   </DestructiveButton>
@@ -224,7 +222,7 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
               ) : (
                 <FileUploader
                   onUploadComplete={({ uuid }) =>
-                    formState.demoVideoUrl.setValue(uuid)
+                    formState.demoVideoUri.setValue(uuid)
                   }
                   allowedFileTypes="mp4"
                   onError={(message) => showToast(message, 'Error', 5000)}
@@ -233,23 +231,23 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
             </StyledInputGroup>
 
             <StyledInputGroup>
-              <StyledLabel htmlFor="requiredEquipments">
+              <StyledLabel htmlFor="RequiredEquipments">
                 Required Equipment
               </StyledLabel>
               <SelectedEquipmentDisplay
-                selectedEquipments={formState.requiredEquipments.value}
-                updateSelectedEquipments={formState.requiredEquipments.setValue}
+                selectedEquipments={formState.RequiredEquipments.value}
+                updateSelectedEquipments={formState.RequiredEquipments.setValue}
               />
             </StyledInputGroup>
 
             <StyledInputGroup>
-              <StyledLabel htmlFor="selectableEquipments">
+              <StyledLabel htmlFor="SelectableEquipments">
                 Selectable Equipment
               </StyledLabel>
               <SelectedEquipmentDisplay
-                selectedEquipments={formState.selectableEquipments.value}
+                selectedEquipments={formState.SelectableEquipments.value}
                 updateSelectedEquipments={
-                  formState.selectableEquipments.setValue
+                  formState.SelectableEquipments.setValue
                 }
               />
             </StyledInputGroup>
@@ -259,8 +257,8 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
                 Body Area Move Scores
               </StyledLabel>
               <SelectedBodyAreaMoveScores
-                bodyAreaMoveScores={formState.bodyAreaMoveScores.value}
-                updateBodyAreaMoveScores={formState.bodyAreaMoveScores.setValue}
+                bodyAreaMoveScores={formState.BodyAreaMoveScores.value}
+                updateBodyAreaMoveScores={formState.BodyAreaMoveScores.setValue}
               />
             </StyledInputGroup>
           </FlexBox>

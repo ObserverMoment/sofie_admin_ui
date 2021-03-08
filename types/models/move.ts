@@ -3,44 +3,45 @@ import { Equipment } from './equipment'
 export interface Move {
   id: string
   name: string
+  archived: boolean
   description: string
   searchTerms: string
-  moveType: MoveType
+  MoveType: MoveType
   scope: 'STANDARD' | 'CUSTOM'
   validRepTypes: Array<string>
-  demoVideoUrl: string
-  requiredEquipments: Array<Equipment>
-  selectableEquipments: Array<Equipment>
-  bodyAreaMoveScores: Array<BodyAreaMoveScore>
+  demoVideoUri: string
+  RequiredEquipments: Array<Equipment>
+  SelectableEquipments: Array<Equipment>
+  BodyAreaMoveScores: Array<BodyAreaMoveScore>
 }
 
 export interface MoveInput {
   name: string
   description?: string
   searchTerms?: string
-  moveType: string // MoveType Id
+  MoveType: string // MoveType Id
   scope: 'STANDARD' | 'CUSTOM'
   validRepTypes: string[]
-  demoVideoUrl?: string
-  requiredEquipments?: string[] // Equipment Ids
-  selectableEquipments?: string[] // Equipment Ids
-  bodyAreaMoveScores?: Array<CreateBodyAreaMoveScoreInput>
+  demoVideoUri?: string
+  RequiredEquipments?: string[] // Equipment Ids
+  SelectableEquipments?: string[] // Equipment Ids
+  BodyAreaMoveScores?: Array<CreateBodyAreaMoveScoreInput>
 }
 
 export interface MoveType {
   id: string
   name: string
   description: string
-  imageUrl: string
+  imageUri: string
 }
 
 export interface BodyAreaMoveScore {
-  bodyArea: BodyArea
+  BodyArea: BodyArea
   score: number
 }
 
 export interface CreateBodyAreaMoveScoreInput {
-  bodyArea: string // BodyArea Id
+  BodyArea: string // BodyArea Id
   score: number
 }
 

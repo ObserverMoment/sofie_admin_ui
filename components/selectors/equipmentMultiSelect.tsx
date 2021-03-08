@@ -5,21 +5,12 @@ import { EQUIPMENT_QUERY } from '../../graphql/equipment'
 import { CloseCircleIcon, PlusIcon } from '../images'
 import { LoadingSpinner } from '../loadingIndicators'
 import { showToast } from '../notifications'
-import {
-  FlexBox,
-  MainText,
-  Padding,
-  Spacer,
-  TinyText,
-} from '../styled-components/styled'
+import { FlexBox, MainText, Padding, Spacer } from '../styled-components/styled'
 import equal from 'deep-equal'
 import { DarkButton } from '../styled-components/buttons'
 import Modal from '../layout/modal'
 import { Equipment } from '../../types/models/equipment'
-import {
-  ClickableHighlightedBox,
-  HighlightedBox,
-} from '../styled-components/cards'
+import { ClickableHighlightedBox } from '../styled-components/cards'
 
 //// Display Elements - shows already selected items in a simple UI with a button to open the selector ////
 //// Usually what the user will see first - before they open the selector if they need to make edits ////

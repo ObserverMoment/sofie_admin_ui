@@ -27,9 +27,9 @@ export default function MoveTypes() {
             disableSortBy: true,
           },
           {
-            id: 'imageUrl',
+            id: 'imageUri',
             Header: 'Has Image?',
-            accessor: ({ imageUrl }) => (imageUrl ? 'YES' : 'NO'),
+            accessor: ({ imageUri }) => (imageUri ? 'YES' : 'NO'),
             disableSortBy: true,
           },
         ]}

@@ -8,24 +8,24 @@ const moveFields = `
   name
   description
   searchTerms
-  moveType {
+  MoveType {
     id
     name
     description
-    imageUrl
+    imageUri
   }
   validRepTypes
-  demoVideoUrl
-  requiredEquipments {
+  demoVideoUri
+  RequiredEquipments {
     id
     name
   }
-  selectableEquipments {
+  SelectableEquipments {
     id
     name
   }
-  bodyAreaMoveScores {
-    bodyArea {
+  BodyAreaMoveScores {
+    BodyArea {
       id
       name
     }
@@ -47,16 +47,16 @@ export const genMoveJson = (move: Move): MoveInput => ({
   name: move.name,
   searchTerms: move.searchTerms || null,
   description: move.description || null,
-  demoVideoUrl: move.demoVideoUrl || null,
+  demoVideoUri: move.demoVideoUri || null,
   scope: 'STANDARD',
   validRepTypes: move.validRepTypes.includes('TIME')
     ? move.validRepTypes
     : ['TIME', ...move.validRepTypes], // TIME is always required, the API will throw an error if not present.
-  requiredEquipments: move.requiredEquipments.map((e: Equipment) => e.id),
-  selectableEquipments: move.selectableEquipments.map((e: Equipment) => e.id),
-  moveType: move.moveType.id,
-  bodyAreaMoveScores: move.bodyAreaMoveScores.map((bam: BodyAreaMoveScore) => ({
-    bodyArea: bam.bodyArea.id,
+  RequiredEquipments: move.RequiredEquipments.map((e: Equipment) => e.id),
+  SelectableEquipments: move.SelectableEquipments.map((e: Equipment) => e.id),
+  MoveType: move.MoveType.id,
+  BodyAreaMoveScores: move.BodyAreaMoveScores.map((bam: BodyAreaMoveScore) => ({
+    BodyArea: bam.BodyArea.id,
     score: bam.score,
   })),
 })
@@ -90,7 +90,7 @@ export const MOVE_TYPES_QUERY = gql`
       id
       name
       description
-      imageUrl
+      imageUri
     }
   }
 `

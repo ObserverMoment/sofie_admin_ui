@@ -17,7 +17,6 @@ import {
   MainText,
   Padding,
   Spacer,
-  TinyText,
   Title,
 } from '../styled-components/styled'
 
@@ -83,7 +82,7 @@ export const SelectedBodyAreaMoveScores = ({
           {bodyAreaMoveScores.length ? (
             bodyAreaMoveScores.map((bam) => (
               <SelectedBodyAreaMoveScoreItem
-                key={bam.bodyArea.name}
+                key={bam.BodyArea.name}
                 bodyAreaMoveScore={bam}
               />
             ))
@@ -116,7 +115,7 @@ const SelectedBodyAreaMoveScoreItem = ({
   bodyAreaMoveScore: BodyAreaMoveScore
 }) => (
   <HighlightedBox>
-    <MainText colorType="primaryLight">{`${bodyAreaMoveScore.bodyArea.name}: ${bodyAreaMoveScore.score}%`}</MainText>
+    <MainText colorType="primaryLight">{`${bodyAreaMoveScore.BodyArea.name}: ${bodyAreaMoveScore.score}%`}</MainText>
   </HighlightedBox>
 )
 
@@ -169,8 +168,8 @@ export const BodyAreaScoresEditor = ({
   >(
     allBodyAreas.map(
       (ba) =>
-        bodyAreaMoveScores.find((bam) => bam.bodyArea.name === ba.name) || {
-          bodyArea: ba,
+        bodyAreaMoveScores.find((bam) => bam.BodyArea.name === ba.name) || {
+          BodyArea: ba,
           score: 0,
         },
     ),
@@ -180,7 +179,7 @@ export const BodyAreaScoresEditor = ({
   function saveUpdatesInternally(bodyArea: BodyArea, score: number) {
     updateActiveBodyAreaScores(
       activeBodyAreaScores.map((bam) =>
-        bam.bodyArea.name === bodyArea.name ? { ...bam, score: score } : bam,
+        bam.BodyArea.name === bodyArea.name ? { ...bam, score: score } : bam,
       ),
     )
   }
@@ -192,7 +191,7 @@ export const BodyAreaScoresEditor = ({
 
   function getScore(bodyArea: BodyArea) {
     return activeBodyAreaScores.find(
-      (bam) => bam.bodyArea.name === bodyArea.name,
+      (bam) => bam.BodyArea.name === bodyArea.name,
     ).score
   }
 
