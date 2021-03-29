@@ -2,8 +2,8 @@ import { useMutation } from '@apollo/client'
 import React from 'react'
 import {
   CREATE_EQUIPMENT_MUTATION,
-  NEW_EQUIPMENT_FRAGMENT,
   UPDATE_EQUIPMENT_MUTATION,
+  EQUIPMENT_FIELDS_FRAGMENT,
 } from '../../graphql/equipment'
 import { Equipment } from '../../types/models/equipment'
 import { showToast } from '../notifications'
@@ -36,7 +36,7 @@ const CreateEditEquipment = ({
             equipments(prevEquipments = []) {
               const newEquipmentRef = cache.writeFragment({
                 data: createEquipment,
-                fragment: NEW_EQUIPMENT_FRAGMENT,
+                fragment: EQUIPMENT_FIELDS_FRAGMENT,
               })
               return [newEquipmentRef, ...prevEquipments]
             },

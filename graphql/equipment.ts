@@ -1,39 +1,37 @@
 import { gql } from '@apollo/client'
 
-const equipmentFields = `
-  id
-  name
-  altNames
-  loadAdjustable
+export const EQUIPMENT_FIELDS_FRAGMENT = gql`
+  fragment EquipmentFields on Equipment {
+    id
+    name
+    altNames
+    loadAdjustable
+  }
 `
 
 export const EQUIPMENT_QUERY = gql`
   query equipments {
     equipments {
-      ${equipmentFields}
+      ...EquipmentFields
     }
   }
+  ${EQUIPMENT_FIELDS_FRAGMENT}
 `
 
 export const CREATE_EQUIPMENT_MUTATION = gql`
   mutation createEquipment($data: CreateEquipmentInput!) {
     createEquipment(data: $data) {
-      ${equipmentFields}
+      ...EquipmentFields
     }
   }
-`
-
-export const NEW_EQUIPMENT_FRAGMENT = gql`
-  fragment NewEquipment on Equipment {
-    id
-    type
-  }
+  ${EQUIPMENT_FIELDS_FRAGMENT}
 `
 
 export const UPDATE_EQUIPMENT_MUTATION = gql`
   mutation updateEquipment($data: UpdateEquipmentInput!) {
     updateEquipment(data: $data) {
-      ${equipmentFields}
+      ...EquipmentFields
     }
   }
+  ${EQUIPMENT_FIELDS_FRAGMENT}
 `
