@@ -1,35 +1,28 @@
 import React from 'react'
 import { toast } from 'react-toastify'
-import { ErrorIcon, InfoIcon, SuccessIcon } from './images'
-import { FlexBox, MainText, Spacer } from './styled-components/styled'
+import { FlexBox, MainText, theme } from './styled-components/styled'
 
-type ToastIcon = 'Success' | 'Info' | 'Error'
-const toastIcons = {
-  Success: SuccessIcon,
-  Info: InfoIcon,
-  Error: ErrorIcon,
+type ToastType = 'Success' | 'Info' | 'Error'
+const colors = {
+  Success: theme.colors.success,
+  Info: theme.colors.highlight,
+  Error: theme.colors.destructive,
 }
-
-const ToastComponent = ({ message, icon: Icon }) => (
-  <FlexBox direction="row" justify="space-evenly" align="center">
-    <Icon width={20} />
-    <Spacer right="4px" />
-    <MainText>{message}</MainText>
-  </FlexBox>
-)
 
 export const showToast = (
   message: string,
-  iconType: ToastIcon = 'Info',
+  type: ToastType = 'Info',
   closeAfter?: number,
 ) =>
-  toast(<ToastComponent message={message} icon={toastIcons[iconType]} />, {
+  toast(<MainText colorType="primaryLight">{message}</MainText>, {
     hideProgressBar: true,
     autoClose: closeAfter || 2000,
+    closeButton: false,
     style: {
       fontFamily: "'Nunito Sans',sans-serif",
       display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
+      alignItems: 'start',
+      backgroundColor: colors[type],
+      borderRadius: '10px',
     },
   })

@@ -100,6 +100,7 @@ interface FlexProps {
   readonly width?: string
   readonly height?: string
   readonly padding?: string
+  readonly backgroundColor?: string
 }
 
 export const FlexBox = styled.div<FlexProps>`
@@ -112,6 +113,7 @@ export const FlexBox = styled.div<FlexProps>`
   width: ${(props) => props.width || 'auto'};
   height: ${(props) => props.height || 'auto'};
   flex-grow: 1;
+  background-color: ${(props) => props.backgroundColor || 'none'};
 `
 
 interface PaddingProps {
