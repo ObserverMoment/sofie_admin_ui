@@ -3,42 +3,45 @@ import { gql } from '@apollo/client'
 import { Equipment } from '../types/models/equipment'
 import { BodyAreaMoveScore, MoveInput, Move } from '../types/models/move'
 
-const moveFields = `
-  id
-  name
-  description
-  searchTerms
-  MoveType {
+export const MOVE_FIELDS_FRAGMENT = gql`
+  fragment MoveFields on Move {
     id
     name
     description
-    imageUri
-  }
-  validRepTypes
-  demoVideoUri
-  RequiredEquipments {
-    id
-    name
-  }
-  SelectableEquipments {
-    id
-    name
-  }
-  BodyAreaMoveScores {
-    BodyArea {
+    searchTerms
+    MoveType {
+      id
+      name
+      description
+      imageUri
+    }
+    validRepTypes
+    demoVideoUri
+    RequiredEquipments {
       id
       name
     }
-    score
+    SelectableEquipments {
+      id
+      name
+    }
+    BodyAreaMoveScores {
+      BodyArea {
+        id
+        name
+      }
+      score
+    }
   }
 `
 
 export const STANDARD_MOVES_QUERY = gql`
   query standardMoves {
     standardMoves {
-      ${moveFields}
+      ...MoveFields
     }
   }
+  ${MOVE_FIELDS_FRAGMENT}
 `
 
 // For sending to the API
@@ -61,27 +64,22 @@ export const genMoveJson = (move: Move): MoveInput => ({
   })),
 })
 
-export const CREATE_OFFICIAL_MOVE_MUTATION = gql`
+export const CREATE_STANDARD_MOVE_MUTATION = gql`
   mutation createMove($data: CreateMoveInput!) {
     createMove(data: $data) {
-      ${moveFields}
+      ...MoveFields
     }
   }
+  ${MOVE_FIELDS_FRAGMENT}
 `
 
-export const NEW_MOVE_FRAGMENT = gql`
-  fragment NewMove on Move {
-    id
-    type
-  }
-`
-
-export const UPDATE_OFFICIAL_MOVE_MUTATION = gql`
-  mutation deepUpdateMove($data: DeepUpdateMoveInput!) {
-    deepUpdateMove(data: $data) {
-      ${moveFields}
+export const UPDATE_STANDARD_MOVE_MUTATION = gql`
+  mutation updateMove($data: UpdateMoveInput!) {
+    updateMove(data: $data) {
+      ...MoveFields
     }
   }
+  ${MOVE_FIELDS_FRAGMENT}
 `
 
 export const MOVE_TYPES_QUERY = gql`

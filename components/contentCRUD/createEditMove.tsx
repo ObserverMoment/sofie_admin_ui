@@ -1,11 +1,11 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import React from 'react'
 import {
-  CREATE_OFFICIAL_MOVE_MUTATION,
+  CREATE_STANDARD_MOVE_MUTATION,
   genMoveJson,
+  MOVE_FIELDS_FRAGMENT,
   MOVE_TYPES_QUERY,
-  NEW_MOVE_FRAGMENT,
-  UPDATE_OFFICIAL_MOVE_MUTATION,
+  UPDATE_STANDARD_MOVE_MUTATION,
 } from '../../graphql/move'
 import { Move, MoveType } from '../../types/models/move'
 import { SuccessIcon } from '../images'
@@ -38,7 +38,7 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
   const { loading, error, data } = useQuery(MOVE_TYPES_QUERY)
 
   const [createMove, { loading: mutateMoveInProgress }] = useMutation(
-    CREATE_OFFICIAL_MOVE_MUTATION,
+    CREATE_STANDARD_MOVE_MUTATION,
     {
       update(cache, { data: { createMove } }) {
         cache.modify({
@@ -46,7 +46,7 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
             standardMoves(prevMoves = []) {
               const newMoveRef = cache.writeFragment({
                 data: createMove,
-                fragment: NEW_MOVE_FRAGMENT,
+                fragment: MOVE_FIELDS_FRAGMENT,
               })
               return [newMoveRef, ...prevMoves]
             },
@@ -63,7 +63,7 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
     },
   )
 
-  const [updateMove] = useMutation(UPDATE_OFFICIAL_MOVE_MUTATION, {
+  const [updateMove] = useMutation(UPDATE_STANDARD_MOVE_MUTATION, {
     onCompleted() {
       showToast('Move Updated', 'Success')
       onComplete && onComplete()
@@ -111,8 +111,6 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
       value: move ? move.BodyAreaMoveScores : [],
     },
   ])
-
-  console.log(formState)
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
