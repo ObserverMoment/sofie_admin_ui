@@ -25,7 +25,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
         console.log(
           'Request not authenticated - force sign out to refresh token state',
         )
-        signOut()
+        signOut().then(() => nookies.destroy(null, 'token'))
         showToast('Access not granted, try signing in again', 'Error', 5000)
       }
     })
@@ -36,7 +36,7 @@ const authLink = setContext(async (_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: nookies.get().token,
+      authorization: `Bearer ${nookies.get().token}`,
       'user-type': 'ADMIN',
     },
   }

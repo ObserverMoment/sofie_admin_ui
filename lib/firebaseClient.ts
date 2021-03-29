@@ -1,5 +1,6 @@
 import firebaseClient from 'firebase/app'
 import 'firebase/auth'
+import nookies from 'nookies'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -30,6 +31,7 @@ const signIn = async (email: string, password: string) => {
 const signOut = async () => {
   try {
     await firebaseClient.auth().signOut()
+    nookies.destroy(null, 'token')
   } catch (err) {
     console.error(err)
     throw err
