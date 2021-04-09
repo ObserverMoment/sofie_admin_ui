@@ -1,4 +1,4 @@
-import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import React from 'react'
 import {
   CREATE_STANDARD_MOVE_MUTATION,
@@ -13,7 +13,7 @@ import { LoadingSpinner } from '../loadingIndicators'
 import { showToast } from '../notifications'
 import { SelectedBodyAreaMoveScores } from '../selectors/bodyAreaMoveScores'
 import { SelectedEquipmentDisplay } from '../selectors/equipmentMultiSelect'
-import { DestructiveButton } from '../styled-components/buttons'
+import { DestructiveButton, LightButton } from '../styled-components/buttons'
 import { FlexBox, MainText, Spacer } from '../styled-components/styled'
 import FileUploader from '../forms/fileUploader'
 import CheckBoxes from '../forms/inputs/checkBoxes'
@@ -293,8 +293,7 @@ const CreateEditMove = ({
           text={move ? 'Save Updates' : 'Create New Move'}
         />
         <FlexBox direction="row" justify="center" padding="10px 0 0 0">
-          <DestructiveButton
-            children="Cancel"
+          <LightButton
             onClick={() => {
               if (formDirty()) {
                 getConfirmation({
@@ -307,7 +306,9 @@ const CreateEditMove = ({
                 handleClose()
               }
             }}
-          />
+          >
+            <MainText>Cancel</MainText>
+          </LightButton>
         </FlexBox>
       </StyledForm>
     )
