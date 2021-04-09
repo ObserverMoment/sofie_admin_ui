@@ -16,6 +16,7 @@ import { createApolloClient } from '../lib/apolloClient'
 import { initializeFirebase } from '../lib/firebaseClient'
 import nookies from 'nookies'
 import LoginModal from '../components/layout/loginModal'
+import { ConfirmationDialogProvider } from '../lib/dialogHookProvider'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -123,15 +124,19 @@ export default function App({ Component, pageProps }) {
       </Head>
       <GlobalStyle />
       <ApolloProvider client={apolloClient}>
-        <PageContainer>
-          <LogoMenuAndSideNav />
-          <FlexBox align="center">
-            <TopNav />
-            <MainContent>{authed && <Component {...pageProps} />}</MainContent>
-            <ToastContainer style={{ width: '360px' }} />
-          </FlexBox>
-          <LoginModal isOpen={!authed} />
-        </PageContainer>
+        <ConfirmationDialogProvider>
+          <PageContainer>
+            <LogoMenuAndSideNav />
+            <FlexBox align="center">
+              <TopNav />
+              <MainContent>
+                {authed && <Component {...pageProps} />}
+              </MainContent>
+              <ToastContainer style={{ width: '360px' }} />
+            </FlexBox>
+            <LoginModal isOpen={!authed} />
+          </PageContainer>
+        </ConfirmationDialogProvider>
       </ApolloProvider>
     </ThemeProvider>
   )

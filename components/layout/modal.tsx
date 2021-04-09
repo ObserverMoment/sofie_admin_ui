@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, PropsWithChildren } from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import { CloseWindowIcon } from '../images'
@@ -7,7 +7,7 @@ import { useOnClickOutside } from '../../lib/utils'
 import { HighlightButton } from '../styled-components/buttons'
 import { MainText } from '../styled-components/styled'
 
-export const Overlay = styled(motion.div)`
+export const ModalOverlay = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
@@ -63,10 +63,10 @@ export const containerVariant = {
 }
 
 interface ModalProps {
-  handleClose: () => void
-  children: React.ReactChildren
+  handleClose?: () => void
   isOpen: boolean
   disableClickOutsideClose?: boolean
+  disableCloseButton?: boolean
   width: string
   closeOnDone?: boolean // Displays 'Done' button rather than exit button to indicate changes are saved.
 }
@@ -76,38 +76,45 @@ const Modal = ({
   children,
   isOpen,
   disableClickOutsideClose = false,
+  // Useful if you want to handle closing the modal from the children instead.
+  // I.e in the case of forms - you may want to warn user that changes have not been saved.
+  disableCloseButton = false,
   width = 'auto',
   closeOnDone = false,
-}) => {
+}: PropsWithChildren<ModalProps>) => {
   const ref = useRef()
   useOnClickOutside(ref, () => {
-    isOpen && !disableClickOutsideClose ? handleClose() : () => {}
+    isOpen && handleClose && !disableClickOutsideClose
+      ? handleClose()
+      : () => {}
   })
 
   return ReactDOM.createPortal(
     <AnimatePresence>
       {isOpen && (
-        <Overlay
+        <ModalOverlay
           initial={'initial'}
           animate={'isOpen'}
           exit={'exit'}
           variants={modalVariant}
         >
           <ModalContainer variants={containerVariant} ref={ref} width={width}>
-            <CloseButton>
-              {closeOnDone ? (
-                <HighlightButton onClick={handleClose}>
-                  <MainText bold>Done</MainText>
-                </HighlightButton>
-              ) : (
-                <div onClick={handleClose}>
-                  <CloseWindowIcon />
-                </div>
-              )}
-            </CloseButton>
+            {!disableCloseButton && (
+              <CloseButton>
+                {closeOnDone ? (
+                  <HighlightButton onClick={handleClose}>
+                    <MainText bold>Done</MainText>
+                  </HighlightButton>
+                ) : (
+                  <div onClick={handleClose}>
+                    <CloseWindowIcon />
+                  </div>
+                )}
+              </CloseButton>
+            )}
             {children}
           </ModalContainer>
-        </Overlay>
+        </ModalOverlay>
       )}
     </AnimatePresence>,
 

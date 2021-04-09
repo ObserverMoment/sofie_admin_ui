@@ -28,13 +28,21 @@ import {
   SubmitButton,
 } from '../forms/styled'
 import { useFormState } from '../forms/useFormState'
+import { defaultVideoEncoding } from '../../lib/uploadcare'
+import { useConfirmationDialog } from '../../lib/dialogHookProvider'
 
 interface CreateEditMoveProps {
   readonly move?: Move
   readonly onComplete?: () => void
+  readonly handleClose: () => void
 }
 
-const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
+const CreateEditMove = ({
+  move,
+  onComplete,
+  handleClose,
+}: CreateEditMoveProps) => {
+  const getConfirmation = useConfirmationDialog()
   const { loading, error, data } = useQuery(MOVE_TYPES_QUERY)
 
   const [createMove, { loading: mutateMoveInProgress }] = useMutation(
@@ -219,9 +227,26 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
                 </FlexBox>
               ) : (
                 <FileUploader
-                  onUploadComplete={({ uuid }) =>
+                  onUploadComplete={({ uuid }) => {
                     formState.demoVideoUri.setValue(uuid)
-                  }
+                    /// Run video encoding and get back the processed UUID
+                    defaultVideoEncoding(uuid).then((processedId) => {
+                      if (processedId) {
+                        formState.demoVideoUri.setValue(processedId)
+                        showToast(
+                          'File uploaded and processed!',
+                          'Success',
+                          5000,
+                        )
+                      } else {
+                        showToast(
+                          'File uploaded but processing failed!',
+                          'Error',
+                          5000,
+                        )
+                      }
+                    })
+                  }}
                   allowedFileTypes="mp4"
                   onError={(message) => showToast(message, 'Error', 5000)}
                 />
@@ -265,8 +290,25 @@ const CreateEditMove = ({ move, onComplete }: CreateEditMoveProps) => {
         <SubmitButton
           disabled={!formDirty() || mutateMoveInProgress}
           loading={mutateMoveInProgress}
-          text={move ? 'Update Move' : 'Create New Move'}
+          text={move ? 'Save Updates' : 'Create New Move'}
         />
+        <FlexBox direction="row" justify="center" padding="10px 0 0 0">
+          <DestructiveButton
+            children="Cancel"
+            onClick={() => {
+              if (formDirty) {
+                getConfirmation({
+                  title: 'You have unsaved changes.',
+                  message:
+                    'Are you sure you want to close this form? Changes will not be saved',
+                  onConfirm: handleClose,
+                })
+              } else {
+                handleClose()
+              }
+            }}
+          />
+        </FlexBox>
       </StyledForm>
     )
   }

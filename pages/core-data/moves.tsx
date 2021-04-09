@@ -29,7 +29,7 @@ const ScoreTotal = styled.div`
 export default function Moves() {
   const [{ isOpen, title }, setModalState] = useState({
     isOpen: false,
-    title: 'Move',
+    title: '',
   })
 
   const { loading, error, data } = useQuery(STANDARD_MOVES_QUERY)
@@ -78,9 +78,15 @@ export default function Moves() {
               accessor: 'name', // accessor is the "key" in the data
             },
             {
+              id: 'description',
               Header: 'Description',
-              accessor: 'description',
               disableSortBy: true,
+              accessor: ({ description }) =>
+                description
+                  ? `${description.substring(0, 150)}${
+                      description.length > 150 ? '...' : ''
+                    }`
+                  : '',
             },
             {
               Header: 'Search Terms',
@@ -139,17 +145,18 @@ export default function Moves() {
         />
         <Modal
           isOpen={isOpen}
-          handleClose={() =>
-            setModalState({ isOpen: false, title: 'Equipment' })
-          }
+          disableCloseButton={true}
           disableClickOutsideClose={true}
           width="90vw"
         >
           <div>
-            <Title>{title}</Title>
+            <FlexBox direction="row" align="space-between">
+              <Title>{title}</Title>
+            </FlexBox>
             <CreateEditMove
               move={activeMoveData}
               onComplete={() => setModalState({ isOpen: false, title: '' })}
+              handleClose={() => setModalState({ isOpen: false, title: '' })}
             />
           </div>
         </Modal>

@@ -304,7 +304,6 @@ const BodyAreaScoreEditor = ({
       name={bodyArea.name}
       value={score.toString()}
       setValue={(value: string) => {
-        console.log(value)
         updateBodyAreaScore(bodyArea, parseInt(value))
       }}
       max={100}

@@ -5,14 +5,14 @@ import {
   containerVariant,
   ModalContainer,
   modalVariant,
-  Overlay,
+  ModalOverlay,
 } from './modal'
 
 const LoginModal = ({ isOpen }) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <Overlay
+        <ModalOverlay
           initial={'initial'}
           animate={'isOpen'}
           exit={'exit'}
@@ -21,7 +21,7 @@ const LoginModal = ({ isOpen }) => {
           <ModalContainer width="400px" variants={containerVariant}>
             <LoginForm />
           </ModalContainer>
-        </Overlay>
+        </ModalOverlay>
       )}
     </AnimatePresence>
   )
