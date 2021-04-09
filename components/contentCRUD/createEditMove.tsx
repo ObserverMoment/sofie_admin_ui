@@ -296,7 +296,7 @@ const CreateEditMove = ({
           <DestructiveButton
             children="Cancel"
             onClick={() => {
-              if (formDirty) {
+              if (formDirty()) {
                 getConfirmation({
                   title: 'You have unsaved changes.',
                   message:

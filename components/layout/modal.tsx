@@ -67,7 +67,7 @@ interface ModalProps {
   isOpen: boolean
   disableClickOutsideClose?: boolean
   disableCloseButton?: boolean
-  width: string
+  width?: string
   closeOnDone?: boolean // Displays 'Done' button rather than exit button to indicate changes are saved.
 }
 
