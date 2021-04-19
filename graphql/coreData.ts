@@ -29,7 +29,6 @@ export const WORKOUT_SECTION_TYPES_QUERY = gql`
       name
       subtitle
       description
-      imageUri
       validRepTypes
     }
   }

@@ -14,7 +14,7 @@ const subRoutes = {
     { text: 'Move Types', link: `${coreDataBasePath}/move-types` },
     { text: 'Body Areas', link: `${coreDataBasePath}/body-areas` },
     { text: 'Workout Types', link: `${coreDataBasePath}/workout-types` },
-    { text: 'Programme Goals', link: `${coreDataBasePath}/programme-goals` },
+    { text: 'Workout Goals', link: `${coreDataBasePath}/workout-goals` },
   ],
   'core-content': [
     { text: 'Overview', link: coreContentBasePath },

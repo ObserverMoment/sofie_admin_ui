@@ -20,10 +20,14 @@ export const MOVE_FIELDS_FRAGMENT = gql`
     RequiredEquipments {
       id
       name
+      altNames
+      loadAdjustable
     }
     SelectableEquipments {
       id
       name
+      altNames
+      loadAdjustable
     }
     BodyAreaMoveScores {
       BodyArea {
