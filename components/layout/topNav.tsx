@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
@@ -63,14 +64,16 @@ export const TopNav = () => {
   return routes ? (
     <TopNavContainer>
       {routes.map(({ text, link }) => (
-        <TopNavItem key={text} href={link} isActive={route === link}>
-          <MainText
-            bold
-            colorType={route === link ? 'primaryLight' : 'primaryDark'}
-          >
-            {text}
-          </MainText>
-        </TopNavItem>
+        <Link key={text} href={link} passHref>
+          <TopNavItem isActive={route === link}>
+            <MainText
+              bold
+              colorType={route === link ? 'primaryLight' : 'primaryDark'}
+            >
+              {text}
+            </MainText>
+          </TopNavItem>
+        </Link>
       ))}
     </TopNavContainer>
   ) : null

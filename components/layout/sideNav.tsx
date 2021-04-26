@@ -1,6 +1,8 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
+import { useApollo } from '../../lib/apolloClient'
 import { signOut } from '../../lib/firebaseClient'
 import {
   ContentIcon,
@@ -109,11 +111,11 @@ export const LogoMenuAndSideNav = () => (
         </FlexBox>
       }
     />
-    <PrimaryNav signOut={signOut} />
+    <PrimaryNav />
   </SideNavContainer>
 )
 
-export const PrimaryNav = ({ signOut }) => {
+export const PrimaryNav = () => {
   const { route } = useRouter()
   const baseRoute = route.split('/')[1]
 
@@ -121,20 +123,18 @@ export const PrimaryNav = ({ signOut }) => {
     <PrimaryNavContainer>
       <NavItemsGroupContainer expand>
         {primaryRoutes.map(({ text, link, icon: Icon }) => (
-          <PrimaryNavItem
-            key={text}
-            href={link}
-            isActive={`/${baseRoute}` === link}
-          >
-            <Icon
-              width={20}
-              colorType={
-                `/${baseRoute}` === link ? 'primaryDark' : 'primaryLight'
-              }
-            />
-            <Spacer bottom="3px" />
-            <TinyText>{text}</TinyText>
-          </PrimaryNavItem>
+          <Link key={text} href={link} passHref>
+            <PrimaryNavItem isActive={`/${baseRoute}` === link}>
+              <Icon
+                width={20}
+                colorType={
+                  `/${baseRoute}` === link ? 'primaryDark' : 'primaryLight'
+                }
+              />
+              <Spacer bottom="3px" />
+              <TinyText>{text}</TinyText>
+            </PrimaryNavItem>
+          </Link>
         ))}
       </NavItemsGroupContainer>
       <NavItemsGroupContainer>

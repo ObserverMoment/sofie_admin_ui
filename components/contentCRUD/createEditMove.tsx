@@ -35,6 +35,7 @@ import {
   useUpdateMoveMutation,
   WorkoutMoveRepType,
 } from '../../graphql/generated_types'
+import { newObjectRefFragment } from '../../lib/apolloClient'
 
 interface CreateEditMoveProps {
   readonly move?: Move
@@ -50,15 +51,15 @@ const CreateEditMove = ({
   const getConfirmation = useConfirmationDialog()
   const { loading, error, data } = useMoveTypesQuery()
 
-  const [createMove, { loading: mutateMoveInProgress }] = useCreateMoveMutation(
+  const [createMove, { loading: createMoveInProgress }] = useCreateMoveMutation(
     {
       update(cache, { data: { createMove } }) {
         cache.modify({
           fields: {
             standardMoves(prevMoves = []) {
-              const newMoveRef = cache.writeQuery({
+              const newMoveRef = cache.writeFragment({
                 data: createMove,
-                query: StandardMovesDocument,
+                fragment: newObjectRefFragment,
               })
               return [newMoveRef, ...prevMoves]
             },
@@ -75,15 +76,17 @@ const CreateEditMove = ({
     },
   )
 
-  const [updateMove] = useUpdateMoveMutation({
-    onCompleted() {
-      showToast('Move Updated', 'Success')
-      onComplete && onComplete()
+  const [updateMove, { loading: updateMoveInProgress }] = useUpdateMoveMutation(
+    {
+      onCompleted() {
+        showToast('Move Updated', 'Success')
+        onComplete && onComplete()
+      },
+      onError() {
+        showToast('API error updating move!', 'Error')
+      },
     },
-    onError() {
-      showToast('API error updating move!', 'Error')
-    },
-  })
+  )
 
   const { formState, formDirty, getFormData } = useFormState<Move>([
     {
@@ -130,15 +133,16 @@ const CreateEditMove = ({
       updateMove({
         variables: {
           data: {
+            // JSON is the same as for create, but with the ID added.
             id: move.id,
-            ...genUpdateMoveJson(getFormData()),
+            ...genCreateMoveJson(getFormData()),
           },
         },
       })
     } else {
       createMove({
         variables: {
-          data: { ...genCreateMoveJson(getFormData()) },
+          data: genCreateMoveJson(getFormData()),
         },
       })
     }
@@ -284,6 +288,7 @@ const CreateEditMove = ({
                 Body Area Move Scores
               </StyledLabel>
               <SelectedBodyAreaMoveScores
+                move={move}
                 bodyAreaMoveScores={formState.BodyAreaMoveScores.value}
                 updateBodyAreaMoveScores={formState.BodyAreaMoveScores.setValue}
               />
@@ -292,8 +297,10 @@ const CreateEditMove = ({
         </FlexBox>
 
         <SubmitButton
-          disabled={!formDirty() || mutateMoveInProgress}
-          loading={mutateMoveInProgress}
+          disabled={
+            !formDirty() || createMoveInProgress || updateMoveInProgress
+          }
+          loading={createMoveInProgress || updateMoveInProgress}
           text={move ? 'Save Updates' : 'Create New Move'}
         />
         <FlexBox direction="row" justify="center" padding="10px 0 0 0">
@@ -321,29 +328,6 @@ const CreateEditMove = ({
 
 // For sending to the API
 const genCreateMoveJson = (move: Move): CreateMoveInput => ({
-  name: move.name,
-  searchTerms: move.searchTerms || null,
-  description: move.description || null,
-  demoVideoUri: move.demoVideoUri || null,
-  scope: MoveScope.Standard,
-  validRepTypes: move.validRepTypes.includes(WorkoutMoveRepType.Time)
-    ? move.validRepTypes
-    : [WorkoutMoveRepType.Time, ...move.validRepTypes], // TIME is always required, the API will throw an error if not present.
-  RequiredEquipments: move.RequiredEquipments.map((e: Equipment) => ({
-    id: e.id,
-  })),
-  SelectableEquipments: move.SelectableEquipments.map((e: Equipment) => ({
-    id: e.id,
-  })),
-  MoveType: { id: move.MoveType.id },
-  BodyAreaMoveScores: move.BodyAreaMoveScores.map((bam: BodyAreaMoveScore) => ({
-    BodyArea: { id: bam.BodyArea.id },
-    score: bam.score,
-  })),
-})
-
-const genUpdateMoveJson = (move: Move): UpdateMoveInput => ({
-  id: move.id,
   name: move.name,
   searchTerms: move.searchTerms || null,
   description: move.description || null,

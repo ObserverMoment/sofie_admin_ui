@@ -14,9 +14,9 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { createApolloClient } from '../lib/apolloClient'
 import { initializeFirebase } from '../lib/firebaseClient'
-import nookies from 'nookies'
 import LoginModal from '../components/layout/loginModal'
 import { ConfirmationDialogProvider } from '../lib/dialogHookProvider'
+import { LoadingDots } from '../components/loadingIndicators'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -47,44 +47,37 @@ const GlobalStyle = createGlobalStyle`
 const firebaseAuth = initializeFirebase()
 const apolloClient = createApolloClient()
 
+type AuthState = 'loading' | 'authed' | 'unauthed'
+type CacheState = 'shouldClear' | 'authed' | 'unauthed'
+
 export default function App({ Component, pageProps }) {
-  const [authed, setAuthed] = useState<boolean>(false)
+  const [authedState, setAuthedState] = useState<AuthState>('loading')
 
   useEffect(() => {
-    if (nookies.get().token) {
-      console.log('Has nookie, so authed')
-      setAuthed(true)
-    } else {
-      console.log('No nookie, not authed and clear cache')
-      setAuthed(false)
-      apolloClient.resetStore()
-    }
     const unsubscribe = firebaseAuth.onIdTokenChanged(async (user) => {
-      console.log('onIdTokenChanged')
-      nookies.destroy(null, 'token')
+      console.log('Listener: onIdTokenChanged')
       if (!user) {
-        console.log('Not authed and clear cache')
-        setAuthed(false)
-        apolloClient.resetStore()
+        console.log('Not authed')
+        setAuthedState('unauthed')
+        console.log('Clearing local data')
+        apolloClient.clearStore()
       } else {
-        console.log('Authed - get new token')
-        const newToken = await user.getIdToken()
-        nookies.set(null, 'token', newToken)
-        setAuthed(true)
+        console.log('Authed')
+        setAuthedState('authed')
       }
     })
 
     return () => unsubscribe()
   }, [])
 
-  // force refresh the token every 30 minutes while mounted
+  // Force refresh the token every 15 minutes while mounted
   // https://github.com/colinhacks/next-firebase-ssr/blob/master/auth.tsx
   useEffect(() => {
     const handle = setInterval(async () => {
-      console.log('refreshing token...')
+      console.log('Refreshing token...')
       const user = firebaseAuth.currentUser
       if (user) await user.getIdToken(true)
-    }, 30 * 60 * 1000)
+    }, 15 * 60 * 1000)
 
     return () => clearInterval(handle)
   }, [])
@@ -127,14 +120,19 @@ export default function App({ Component, pageProps }) {
         <ConfirmationDialogProvider>
           <PageContainer>
             <LogoMenuAndSideNav />
-            <FlexBox align="center">
-              <TopNav />
-              <MainContent>
-                {authed && <Component {...pageProps} />}
-              </MainContent>
-              <ToastContainer style={{ width: '360px' }} />
-            </FlexBox>
-            <LoginModal isOpen={!authed} />
+            {authedState === 'authed' ? (
+              <FlexBox align="center">
+                <TopNav />
+                <MainContent>
+                  <Component {...pageProps} />
+                </MainContent>
+                <ToastContainer style={{ width: '360px' }} />
+              </FlexBox>
+            ) : (
+              <LoadingDots width={40} />
+            )}
+
+            <LoginModal isOpen={authedState === 'unauthed'} />
           </PageContainer>
         </ConfirmationDialogProvider>
       </ApolloProvider>

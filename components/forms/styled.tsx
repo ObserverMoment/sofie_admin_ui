@@ -121,9 +121,7 @@ export const SubmitButton = ({
 }: SubmitButtonProps) => (
   <FlexBox direction="row" justify="center">
     {loading ? (
-      <StyledSubmitButton disabled={true}>
-        <LoadingDots width={20} height={20} />
-      </StyledSubmitButton>
+      <LoadingDots width={30} height={20} />
     ) : (
       <StyledSubmitButton disabled={disabled}>{text}</StyledSubmitButton>
     )}

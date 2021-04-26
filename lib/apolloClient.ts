@@ -1,17 +1,22 @@
 import { useMemo } from 'react'
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client'
+import {
+  ApolloClient,
+  createHttpLink,
+  gql,
+  InMemoryCache,
+  NormalizedCacheObject,
+} from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
-import nookies from 'nookies'
 import merge from 'deepmerge'
 import isEqual from 'lodash.isequal'
-import { signOut } from './firebaseClient'
+import { getIdToken, signOut } from './firebaseClient'
 import { showToast } from '../components/notifications'
 
 // https://github.com/vercel/next.js/blob/canary/examples/with-apollo/lib/apolloClient.js
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
-let apolloClient
+let apolloClient: ApolloClient<NormalizedCacheObject>
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -25,7 +30,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
         console.log(
           'Request not authenticated - force sign out to refresh token state',
         )
-        signOut().then(() => nookies.destroy(null, 'token'))
+        signOut()
         showToast('Access not granted, try signing in again', 'Error', 5000)
       }
     })
@@ -33,10 +38,11 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 })
 
 const authLink = setContext(async (_, { headers }) => {
+  const token = await getIdToken()
   return {
     headers: {
       ...headers,
-      authorization: `Bearer ${nookies.get().token}`,
+      authorization: `Bearer ${token}`,
       'user-type': 'ADMIN',
     },
   }
@@ -78,6 +84,7 @@ export function initializeApollo(initialState = null) {
     })
 
     // Restore the cache with the merged data
+    // Restore also refetches all existing queries.
     _apolloClient.cache.restore(data)
   }
   // For SSG and SSR always create a new Apollo Client
@@ -98,6 +105,18 @@ export function addApolloState(client, pageProps) {
 
 export function useApollo(pageProps = {}) {
   const state = pageProps[APOLLO_STATE_PROP_NAME]
-  const store = useMemo(() => initializeApollo(state), [state])
-  return store
+  const apolloClient = useMemo(() => initializeApollo(state), [state])
+  return apolloClient
 }
+
+// Use this fragment when we just need to get back a ref for data already written to cache
+// So that we can update the necessary query fields.
+// https://www.apollographql.com/docs/react/caching/cache-interaction/#example-updating-the-cache-after-a-mutation
+// Apollo mutations automatically update the normalized cache.
+// Here we are simply retrieving a ref to the newly created object
+// and adding it to the equipments field which will cause the equipments query hook to update.
+export const newObjectRefFragment = gql`
+  fragment NewEquipment on Equipment {
+    id
+  }
+`

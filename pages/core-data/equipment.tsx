@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 import { LoadingSpinner } from '../../components/loadingIndicators'
 import InteractiveTable from '../../components/interactiveTable'

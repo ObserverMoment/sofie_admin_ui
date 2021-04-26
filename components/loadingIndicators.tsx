@@ -17,7 +17,7 @@ export const LoadingSpinner = ({ height = 60, width = 60 }) => (
 
 export const LoadingDots = ({ height = 60, width = 60 }) => (
   <FlexBox justify="center" align="center" width="100%" height="100%">
-    <Padding padding="40px">
+    <Padding padding="8px">
       <Loader
         type="ThreeDots"
         color="rgba(45, 49, 92, 0.7)"

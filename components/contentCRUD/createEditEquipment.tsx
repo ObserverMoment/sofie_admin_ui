@@ -13,9 +13,12 @@ import { useFormState } from '../forms/useFormState'
 import {
   CreateEquipmentDocument,
   Equipment,
+  EquipmentsDocument,
   useCreateEquipmentMutation,
   useUpdateEquipmentMutation,
 } from '../../graphql/generated_types'
+import { gql } from '@apollo/client'
+import { newObjectRefFragment } from '../../lib/apolloClient'
 
 interface CreateEditEquipmentProps {
   readonly equipment?: Equipment
@@ -28,15 +31,19 @@ const CreateEditEquipment = ({
 }: CreateEditEquipmentProps) => {
   const [
     createEquipment,
-    { loading: mutateEquipmentInProgress },
+    { loading: createEquipmentInProgress },
   ] = useCreateEquipmentMutation({
     update(cache, { data: { createEquipment } }) {
       cache.modify({
         fields: {
           equipments(prevEquipments = []) {
-            const newEquipmentRef = cache.writeQuery({
+            // https://www.apollographql.com/docs/react/caching/cache-interaction/#example-updating-the-cache-after-a-mutation
+            // Apollo mutations automatically update the normalized cache.
+            // Here we are simply retrieving a ref to the newly created object
+            // and adding it to the equipments field which will cause the equipments query hook to update.
+            const newEquipmentRef = cache.writeFragment({
               data: createEquipment,
-              query: CreateEquipmentDocument,
+              fragment: newObjectRefFragment,
             })
             return [newEquipmentRef, ...prevEquipments]
           },
@@ -52,7 +59,10 @@ const CreateEditEquipment = ({
     },
   })
 
-  const [updateEquipment] = useUpdateEquipmentMutation({
+  const [
+    updateEquipment,
+    { loading: updateEquipmentInProgress },
+  ] = useUpdateEquipmentMutation({
     onCompleted() {
       showToast('Equipment Updated', 'Success')
       onComplete && onComplete()
@@ -98,7 +108,6 @@ const CreateEditEquipment = ({
       })
     }
   }
-  console.log(formState)
 
   return (
     <StyledForm onSubmit={onSubmit}>
@@ -143,8 +152,10 @@ const CreateEditEquipment = ({
       </StyledInputGroup>
 
       <SubmitButton
-        disabled={!formDirty() || mutateEquipmentInProgress}
-        loading={mutateEquipmentInProgress}
+        disabled={
+          !formDirty() || createEquipmentInProgress || updateEquipmentInProgress
+        }
+        loading={createEquipmentInProgress || updateEquipmentInProgress}
         text={equipment ? 'Update Equipment' : 'Add Equipment'}
       />
     </StyledForm>
