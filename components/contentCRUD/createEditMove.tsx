@@ -1,13 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client'
 import React from 'react'
-import {
-  CREATE_STANDARD_MOVE_MUTATION,
-  genMoveJson,
-  MOVE_FIELDS_FRAGMENT,
-  MOVE_TYPES_QUERY,
-  UPDATE_STANDARD_MOVE_MUTATION,
-} from '../../graphql/move'
-import { Move, MoveType } from '../../types/models/move'
 import { SuccessIcon } from '../images'
 import { LoadingSpinner } from '../loadingIndicators'
 import { showToast } from '../notifications'
@@ -30,6 +21,20 @@ import {
 import { useFormState } from '../forms/useFormState'
 import { defaultVideoEncoding } from '../../lib/uploadcare'
 import { useConfirmationDialog } from '../../lib/dialogHookProvider'
+import {
+  BodyAreaMoveScore,
+  CreateMoveInput,
+  Equipment,
+  Move,
+  MoveScope,
+  MoveType,
+  StandardMovesDocument,
+  UpdateMoveInput,
+  useCreateMoveMutation,
+  useMoveTypesQuery,
+  useUpdateMoveMutation,
+  WorkoutMoveRepType,
+} from '../../graphql/generated_types'
 
 interface CreateEditMoveProps {
   readonly move?: Move
@@ -43,18 +48,17 @@ const CreateEditMove = ({
   handleClose,
 }: CreateEditMoveProps) => {
   const getConfirmation = useConfirmationDialog()
-  const { loading, error, data } = useQuery(MOVE_TYPES_QUERY)
+  const { loading, error, data } = useMoveTypesQuery()
 
-  const [createMove, { loading: mutateMoveInProgress }] = useMutation(
-    CREATE_STANDARD_MOVE_MUTATION,
+  const [createMove, { loading: mutateMoveInProgress }] = useCreateMoveMutation(
     {
       update(cache, { data: { createMove } }) {
         cache.modify({
           fields: {
             standardMoves(prevMoves = []) {
-              const newMoveRef = cache.writeFragment({
+              const newMoveRef = cache.writeQuery({
                 data: createMove,
-                fragment: MOVE_FIELDS_FRAGMENT,
+                query: StandardMovesDocument,
               })
               return [newMoveRef, ...prevMoves]
             },
@@ -71,7 +75,7 @@ const CreateEditMove = ({
     },
   )
 
-  const [updateMove] = useMutation(UPDATE_STANDARD_MOVE_MUTATION, {
+  const [updateMove] = useUpdateMoveMutation({
     onCompleted() {
       showToast('Move Updated', 'Success')
       onComplete && onComplete()
@@ -127,14 +131,14 @@ const CreateEditMove = ({
         variables: {
           data: {
             id: move.id,
-            ...genMoveJson(getFormData()),
+            ...genUpdateMoveJson(getFormData()),
           },
         },
       })
     } else {
       createMove({
         variables: {
-          data: { ...genMoveJson(getFormData()) },
+          data: { ...genCreateMoveJson(getFormData()) },
         },
       })
     }
@@ -314,5 +318,51 @@ const CreateEditMove = ({
     )
   }
 }
+
+// For sending to the API
+const genCreateMoveJson = (move: Move): CreateMoveInput => ({
+  name: move.name,
+  searchTerms: move.searchTerms || null,
+  description: move.description || null,
+  demoVideoUri: move.demoVideoUri || null,
+  scope: MoveScope.Standard,
+  validRepTypes: move.validRepTypes.includes(WorkoutMoveRepType.Time)
+    ? move.validRepTypes
+    : [WorkoutMoveRepType.Time, ...move.validRepTypes], // TIME is always required, the API will throw an error if not present.
+  RequiredEquipments: move.RequiredEquipments.map((e: Equipment) => ({
+    id: e.id,
+  })),
+  SelectableEquipments: move.SelectableEquipments.map((e: Equipment) => ({
+    id: e.id,
+  })),
+  MoveType: { id: move.MoveType.id },
+  BodyAreaMoveScores: move.BodyAreaMoveScores.map((bam: BodyAreaMoveScore) => ({
+    BodyArea: { id: bam.BodyArea.id },
+    score: bam.score,
+  })),
+})
+
+const genUpdateMoveJson = (move: Move): UpdateMoveInput => ({
+  id: move.id,
+  name: move.name,
+  searchTerms: move.searchTerms || null,
+  description: move.description || null,
+  demoVideoUri: move.demoVideoUri || null,
+  scope: MoveScope.Standard,
+  validRepTypes: move.validRepTypes.includes(WorkoutMoveRepType.Time)
+    ? move.validRepTypes
+    : [WorkoutMoveRepType.Time, ...move.validRepTypes], // TIME is always required, the API will throw an error if not present.
+  RequiredEquipments: move.RequiredEquipments.map((e: Equipment) => ({
+    id: e.id,
+  })),
+  SelectableEquipments: move.SelectableEquipments.map((e: Equipment) => ({
+    id: e.id,
+  })),
+  MoveType: { id: move.MoveType.id },
+  BodyAreaMoveScores: move.BodyAreaMoveScores.map((bam: BodyAreaMoveScore) => ({
+    BodyArea: { id: bam.BodyArea.id },
+    score: bam.score,
+  })),
+})
 
 export default CreateEditMove

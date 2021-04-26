@@ -1,12 +1,11 @@
-import { useQuery } from '@apollo/client'
 import React from 'react'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingSpinner } from '../../components/loadingIndicators'
-import { WORKOUT_GOALS_QUERY } from '../../graphql/coreData'
+import { useWorkoutGoalsQuery } from '../../graphql/generated_types'
 
 export default function WorkoutGoals() {
-  const { loading, error, data } = useQuery(WORKOUT_GOALS_QUERY)
+  const { loading, error, data } = useWorkoutGoalsQuery()
 
   if (error) {
     return <ErrorMessage message={error.message} />

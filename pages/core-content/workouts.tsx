@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 import { LoadingSpinner } from '../../components/loadingIndicators'
 import { showToast } from '../../components/notifications'
@@ -8,8 +7,10 @@ import {
   MainText,
   Title,
 } from '../../components/styled-components/styled'
-import { OFFICIAL_WORKOUTS_QUERY } from '../../graphql/workout'
-import { Workout } from '../../types/models/workout'
+import {
+  useOfficialWorkoutsQuery,
+  WorkoutSummary,
+} from '../../graphql/generated_types'
 
 export default function Workouts() {
   const [{ isOpen, title }, setModalState] = useState({
@@ -17,11 +18,11 @@ export default function Workouts() {
     title: 'Workout',
   })
 
-  const { loading, error, data } = useQuery(OFFICIAL_WORKOUTS_QUERY)
+  const { loading, error, data } = useOfficialWorkoutsQuery()
 
   const [activeWorkoutData, setActiveWorkoutData] = useState(null)
 
-  function handleCardClick(data: Workout) {
+  function handleCardClick(data: WorkoutSummary) {
     setActiveWorkoutData(data)
     setModalState({ isOpen: true, title: 'Workout' })
   }
@@ -41,8 +42,11 @@ export default function Workouts() {
     return (
       <FlexBox direction="row" justify="center" wrap="wrap">
         <Title colorType="grey">Official Workouts</Title>
-        {data.officialWorkouts.map((w: Workout) => (
-          <WorkoutSummaryCard workout={w} handleCardClick={handleCardClick} />
+        {data.officialWorkouts.map((w: WorkoutSummary) => (
+          <WorkoutSummaryCard
+            workoutSummary={w}
+            handleCardClick={handleCardClick}
+          />
         ))}
       </FlexBox>
     )
@@ -50,28 +54,28 @@ export default function Workouts() {
 }
 
 interface WorkoutSummaryCardProps {
-  workout: Workout
-  handleCardClick: (workout: Workout) => void
+  workoutSummary: WorkoutSummary
+  handleCardClick: (workoutSummary: WorkoutSummary) => void
 }
 
 export const WorkoutSummaryCard = ({
-  workout,
+  workoutSummary,
   handleCardClick,
 }: WorkoutSummaryCardProps) => (
   <SummaryCard
     maxWidth="300px"
     margin="10px"
-    onClick={() => handleCardClick(workout)}
+    onClick={() => handleCardClick(workoutSummary)}
   >
     <FlexBox>
-      <Title>{workout.name}</Title>
-      <MainText>{workout.description}</MainText>
-      {workout.coverImageUri && (
+      <Title>{workoutSummary.name}</Title>
+      <MainText>{workoutSummary.description}</MainText>
+      {workoutSummary.coverImageUri && (
         <FlexBox align="center">
           <img
             style={{ borderRadius: '20px' }}
             height="100px"
-            src={`https://ucarecdn.com/${workout.coverImageUri}/`}
+            src={`https://ucarecdn.com/${workoutSummary.coverImageUri}/`}
           />
         </FlexBox>
       )}

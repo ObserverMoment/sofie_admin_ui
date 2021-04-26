@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import CreateEditMove from '../../components/contentCRUD/createEditMove'
@@ -11,10 +10,13 @@ import {
   Title,
 } from '../../components/styled-components/styled'
 import Modal from '../../components/layout/modal'
-import { STANDARD_MOVES_QUERY } from '../../graphql/move'
 import { CreateButton } from '../../components/styled-components/buttons'
-import { BodyAreaMoveScore, Move } from '../../types/models/move'
-import { Equipment } from '../../types/models/equipment'
+import {
+  BodyAreaMoveScore,
+  Equipment,
+  Move,
+  useStandardMovesQuery,
+} from '../../graphql/generated_types'
 
 const ScoreTotal = styled.div`
   padding: 3px;
@@ -32,7 +34,7 @@ export default function Moves() {
     title: '',
   })
 
-  const { loading, error, data } = useQuery(STANDARD_MOVES_QUERY)
+  const { loading, error, data } = useStandardMovesQuery()
 
   const [activeMoveData, setActiveMoveData] = useState(null)
 

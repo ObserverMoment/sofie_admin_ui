@@ -1,0 +1,21 @@
+fragment EquipmentFields on Equipment {
+  id
+  name
+  altNames
+  loadAdjustable
+}
+
+fragment BodyAreaFields on BodyArea {
+  id
+  name
+  altNames
+  frontBack
+  upperLower
+}
+
+fragment MoveTypeFields on MoveType {
+  id
+  name
+  description
+  imageUri
+}

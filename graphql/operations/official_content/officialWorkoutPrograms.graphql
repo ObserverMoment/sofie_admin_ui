@@ -1,0 +1,13 @@
+query officialWorkoutPrograms {
+  officialWorkoutPrograms {
+    id
+    createdAt
+    name
+    description
+    coverImageUri
+    introVideoUri
+    introVideoThumbUri
+    introAudioUri
+    contentAccessScope
+  }
+}

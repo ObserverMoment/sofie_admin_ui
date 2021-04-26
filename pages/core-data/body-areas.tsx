@@ -1,12 +1,11 @@
-import { useQuery } from '@apollo/client'
 import React from 'react'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingSpinner } from '../../components/loadingIndicators'
-import { BODYAREAS_QUERY } from '../../graphql/coreData'
+import { useBodyAreasQuery } from '../../graphql/generated_types'
 
 export default function BodyAreas() {
-  const { loading, error, data } = useQuery(BODYAREAS_QUERY)
+  const { loading, error, data } = useBodyAreasQuery()
 
   if (error) {
     return <ErrorMessage message={error.message} />

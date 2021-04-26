@@ -8,8 +8,10 @@ import {
   MainText,
   Title,
 } from '../../components/styled-components/styled'
-import { OFFICIAL_WORKOUT_PROGRAMS_QUERY } from '../../graphql/workoutProgram'
-import { WorkoutProgram } from '../../types/models/workoutProgram'
+import {
+  useOfficialWorkoutProgramsQuery,
+  WorkoutProgram,
+} from '../../graphql/generated_types'
 
 export default function WorkoutPlans() {
   const [{ isOpen, title }, setModalState] = useState({
@@ -17,7 +19,7 @@ export default function WorkoutPlans() {
     title: 'Workout Plan',
   })
 
-  const { loading, error, data } = useQuery(OFFICIAL_WORKOUT_PROGRAMS_QUERY)
+  const { loading, error, data } = useOfficialWorkoutProgramsQuery()
 
   const [activeWorkoutPlanData, setActiveWorkoutPlanData] = useState(null)
 

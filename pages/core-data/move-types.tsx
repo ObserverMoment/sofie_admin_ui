@@ -1,12 +1,11 @@
-import { gql, useQuery } from '@apollo/client'
 import React from 'react'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingSpinner } from '../../components/loadingIndicators'
-import { MOVE_TYPES_QUERY } from '../../graphql/move'
+import { useMoveTypesQuery } from '../../graphql/generated_types'
 
 export default function MoveTypes() {
-  const { loading, error, data } = useQuery(MOVE_TYPES_QUERY)
+  const { loading, error, data } = useMoveTypesQuery()
 
   if (error) {
     return <ErrorMessage message={error.message} />

@@ -6,9 +6,8 @@ import { FlexBox, Title } from '../../components/styled-components/styled'
 import Modal from '../../components/layout/modal'
 import CreateEditEquipment from '../../components/contentCRUD/createEditEquipment'
 import { showToast } from '../../components/notifications'
-import { EQUIPMENT_QUERY } from '../../graphql/equipment'
 import { CreateButton } from '../../components/styled-components/buttons'
-import { Equipment } from '../../types/models/equipment'
+import { Equipment, useEquipmentsQuery } from '../../graphql/generated_types'
 
 export default function EquipmentData() {
   const [{ isOpen, title }, setModalState] = useState({
@@ -16,7 +15,7 @@ export default function EquipmentData() {
     title: 'Equipment',
   })
 
-  const { loading, error, data } = useQuery(EQUIPMENT_QUERY)
+  const { loading, error, data } = useEquipmentsQuery()
 
   const [activeEquipmentData, setActiveEquipmentData] = useState(null)
 

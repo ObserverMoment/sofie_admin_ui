@@ -54,22 +54,22 @@ const LoginForm = () => {
         <StyledInputGroup>
           <StyledLabel htmlFor="Email">Email</StyledLabel>
           <StyledTextInput
+            {...register('email', { required: true, maxLength: 200 })}
             type="email"
             placeholder="Email"
             name="email"
             size={40}
-            ref={register({ required: true, maxLength: 200 })}
           />
         </StyledInputGroup>
 
         <StyledInputGroup>
           <StyledLabel htmlFor="Password">Password</StyledLabel>
           <StyledTextInput
+            {...register('password', { required: true, maxLength: 200 })}
             type="password"
             placeholder="Password"
             name="password"
             size={40}
-            ref={register({ required: true, maxLength: 200 })}
           />
         </StyledInputGroup>
 

@@ -1,7 +1,6 @@
 import { useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { EQUIPMENT_QUERY } from '../../graphql/equipment'
 import { CloseCircleIcon, PlusIcon } from '../images'
 import { LoadingSpinner } from '../loadingIndicators'
 import { showToast } from '../notifications'
@@ -9,8 +8,8 @@ import { FlexBox, MainText, Padding, Spacer } from '../styled-components/styled'
 import equal from 'deep-equal'
 import { DarkButton } from '../styled-components/buttons'
 import Modal from '../layout/modal'
-import { Equipment } from '../../types/models/equipment'
 import { ClickableHighlightedBox } from '../styled-components/cards'
+import { Equipment, useEquipmentsQuery } from '../../graphql/generated_types'
 
 //// Display Elements - shows already selected items in a simple UI with a button to open the selector ////
 //// Usually what the user will see first - before they open the selector if they need to make edits ////
@@ -25,7 +24,7 @@ export const SelectedEquipmentDisplay = ({
 }: SelectedEquipmentDisplayProps) => {
   const [openSelector, setOpenSelector] = useState(false)
 
-  const { loading, error, data } = useQuery(EQUIPMENT_QUERY)
+  const { loading, error, data } = useEquipmentsQuery()
 
   function isSelected(v: Equipment) {
     return selectedEquipments.some((s) => equal(s, v))

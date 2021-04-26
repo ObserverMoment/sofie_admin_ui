@@ -1,10 +1,12 @@
 //// Display Elements - shows already selected body area move scores in a simple UI with a button to open the editor selector ////
-
-import { useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { BODY_AREAS_QUERY } from '../../graphql/move'
-import { BodyArea, BodyAreaMoveScore } from '../../types/models/move'
+import {
+  BodyArea,
+  BodyAreaMoveScore,
+  Move,
+  useBodyAreasQuery,
+} from '../../graphql/generated_types'
 import NumberInput from '../forms/inputs/numberInput'
 import { EditIcon } from '../images'
 import Modal from '../layout/modal'
@@ -22,17 +24,19 @@ import {
 
 //// Usually what the user will see first - before they open the selector if they need to make edits ////
 interface SelectedBodyAreaMoveScoresProps {
+  move: Move
   bodyAreaMoveScores: BodyAreaMoveScore[]
   updateBodyAreaMoveScores: (updated: BodyAreaMoveScore[]) => void
 }
 
 export const SelectedBodyAreaMoveScores = ({
+  move,
   bodyAreaMoveScores,
   updateBodyAreaMoveScores,
 }: SelectedBodyAreaMoveScoresProps) => {
   const [openEditor, setOpeneditor] = useState(false)
 
-  const { loading, error, data } = useQuery(BODY_AREAS_QUERY)
+  const { loading, error, data } = useBodyAreasQuery()
 
   function handleUpdateBodyAreaMoveScores(
     updatedBodyAreaMoveScores: BodyAreaMoveScore[],
@@ -99,6 +103,7 @@ export const SelectedBodyAreaMoveScores = ({
           width="90vw"
         >
           <BodyAreaScoresEditor
+            move={move}
             allBodyAreas={data.bodyAreas}
             bodyAreaMoveScores={bodyAreaMoveScores}
             updateBodyAreaMoveScores={handleUpdateBodyAreaMoveScores}
@@ -123,6 +128,7 @@ const SelectedBodyAreaMoveScoreItem = ({
 //// The selector that opens in a modal - allowing equipment selection to be toggled on / off ////
 //////////////////
 interface BodyAreaScoresEditorProps {
+  move: Move
   allBodyAreas: BodyArea[]
   bodyAreaMoveScores: BodyAreaMoveScore[]
   updateBodyAreaMoveScores: (updated: BodyAreaMoveScore[]) => void
@@ -145,6 +151,7 @@ const BodyAreaGroupWrapper = styled(FlexBox)`
 
 // Container for multiple bodyAreaMoveScores and display showing remaining points to assign
 export const BodyAreaScoresEditor = ({
+  move,
   allBodyAreas,
   bodyAreaMoveScores,
   updateBodyAreaMoveScores,
@@ -169,6 +176,7 @@ export const BodyAreaScoresEditor = ({
     allBodyAreas.map(
       (ba) =>
         bodyAreaMoveScores.find((bam) => bam.BodyArea.name === ba.name) || {
+          Move: move,
           BodyArea: ba,
           score: 0,
         },

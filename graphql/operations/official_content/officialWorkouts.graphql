@@ -1,0 +1,14 @@
+query officialWorkouts {
+  officialWorkouts {
+    id
+    createdAt
+    name
+    description
+    introVideoUri
+    introVideoThumbUri
+    introAudioUri
+    coverImageUri
+    contentAccessScope
+    difficultyLevel
+  }
+}

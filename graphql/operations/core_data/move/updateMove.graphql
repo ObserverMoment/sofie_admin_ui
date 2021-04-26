@@ -1,0 +1,25 @@
+mutation updateMove($data: UpdateMoveInput!) {
+  updateMove(data: $data) {
+    id
+    name
+    description
+    searchTerms
+    MoveType {
+      ...MoveTypeFields
+    }
+    validRepTypes
+    demoVideoUri
+    RequiredEquipments {
+      ...EquipmentFields
+    }
+    SelectableEquipments {
+      ...EquipmentFields
+    }
+    BodyAreaMoveScores {
+      BodyArea {
+        ...BodyAreaFields
+      }
+      score
+    }
+  }
+}

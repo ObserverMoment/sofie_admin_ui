@@ -1,0 +1,5 @@
+mutation createEquipment($data: CreateEquipmentInput!) {
+  createEquipment(data: $data) {
+    ...EquipmentFields
+  }
+}

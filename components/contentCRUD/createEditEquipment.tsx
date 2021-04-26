@@ -1,11 +1,4 @@
-import { useMutation } from '@apollo/client'
 import React from 'react'
-import {
-  CREATE_EQUIPMENT_MUTATION,
-  UPDATE_EQUIPMENT_MUTATION,
-  EQUIPMENT_FIELDS_FRAGMENT,
-} from '../../graphql/equipment'
-import { Equipment } from '../../types/models/equipment'
 import { showToast } from '../notifications'
 import RadioButtons from '../forms/inputs/radioButtons'
 import TextInput from '../forms/inputs/textInput'
@@ -17,6 +10,12 @@ import {
   SubmitButton,
 } from '../forms/styled'
 import { useFormState } from '../forms/useFormState'
+import {
+  CreateEquipmentDocument,
+  Equipment,
+  useCreateEquipmentMutation,
+  useUpdateEquipmentMutation,
+} from '../../graphql/generated_types'
 
 interface CreateEditEquipmentProps {
   readonly equipment?: Equipment
@@ -27,33 +26,33 @@ const CreateEditEquipment = ({
   equipment,
   onComplete,
 }: CreateEditEquipmentProps) => {
-  const [createEquipment, { loading: mutateEquipmentInProgress }] = useMutation(
-    CREATE_EQUIPMENT_MUTATION,
-    {
-      update(cache, { data: { createEquipment } }) {
-        cache.modify({
-          fields: {
-            equipments(prevEquipments = []) {
-              const newEquipmentRef = cache.writeFragment({
-                data: createEquipment,
-                fragment: EQUIPMENT_FIELDS_FRAGMENT,
-              })
-              return [newEquipmentRef, ...prevEquipments]
-            },
+  const [
+    createEquipment,
+    { loading: mutateEquipmentInProgress },
+  ] = useCreateEquipmentMutation({
+    update(cache, { data: { createEquipment } }) {
+      cache.modify({
+        fields: {
+          equipments(prevEquipments = []) {
+            const newEquipmentRef = cache.writeQuery({
+              data: createEquipment,
+              query: CreateEquipmentDocument,
+            })
+            return [newEquipmentRef, ...prevEquipments]
           },
-        })
-      },
-      onCompleted() {
-        showToast('New Equipment Added', 'Success')
-        onComplete && onComplete()
-      },
-      onError() {
-        showToast('API error creating equipment!', 'Error')
-      },
+        },
+      })
     },
-  )
+    onCompleted() {
+      showToast('New Equipment Added', 'Success')
+      onComplete && onComplete()
+    },
+    onError() {
+      showToast('API error creating equipment!', 'Error')
+    },
+  })
 
-  const [updateEquipment] = useMutation(UPDATE_EQUIPMENT_MUTATION, {
+  const [updateEquipment] = useUpdateEquipmentMutation({
     onCompleted() {
       showToast('Equipment Updated', 'Success')
       onComplete && onComplete()
