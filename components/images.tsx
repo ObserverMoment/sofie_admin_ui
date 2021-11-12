@@ -19,8 +19,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { ColorTypes, theme } from './styled-components/styled'
 
-export const SpotMeLogo = ({ width = 40, height = 40 }) => (
-  <img src="/spotme_logo.svg" alt="logo" width={width} height={height} />
+export const Logo = ({ width = 40, height = 40 }) => (
+  <img src="/logo.svg" alt="logo" width={width} height={height} />
 )
 
 export const UserAvatar = ({ width = 30 }) => (
