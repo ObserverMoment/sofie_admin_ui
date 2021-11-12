@@ -29,11 +29,19 @@ export type ColorTypes =
 
 interface TextProps {
   readonly bold?: boolean
+  readonly textAlign?:
+    | 'left'
+    | 'right'
+    | 'center'
+    | 'justify'
+    | 'initial'
+    | 'inherit'
   readonly colorType?: ColorTypes
 }
 
 export const Title = styled.h1<TextProps>`
   font-size: 26px;
+  font-weight: normal;
   margin: 0px;
   color: ${(props) =>
     props.colorType
@@ -52,6 +60,7 @@ export const SubTitle = styled.h2<TextProps>`
 
 export const MainText = styled.span<TextProps>`
   font-size: 15px;
+  text-align: ${(props) => props.textAlign || 'left'};
   color: ${(props) =>
     props.colorType
       ? props.theme.colors[props.colorType]
@@ -151,7 +160,7 @@ export const SizedBox = styled.div<SizedBoxProps>`
 export const ElevatedBox = styled.div<FlexProps>`
   box-shadow: 0px 8px 20px rgb(0 0 0 / 9%);
   border-radius: 6px;
-  padding: 12px;
+  padding: 16px;
   margin: 6px;
   display: flex;
   flex-direction: ${(props) => props.direction || 'column'};

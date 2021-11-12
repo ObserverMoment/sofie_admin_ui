@@ -17,7 +17,6 @@ export const StyledInputGroup = styled.div`
 
 export const StyledLabel = styled.label`
   font-size: 16px;
-  font-weight: bold;
   margin-bottom: 4px;
 `
 
@@ -94,7 +93,7 @@ export const ExampleText = styled.span`
 export const StyledSubmitButton = styled.button`
   font-size: 16px;
   padding: 10px 14px;
-  font-weight: bold;
+
   outline: none;
   color: ${(props) => props.theme.colors.primaryLight};
   background-color: ${(props) => props.theme.colors.primaryDark};

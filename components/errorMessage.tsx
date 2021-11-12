@@ -8,14 +8,15 @@ import {
 } from './styled-components/styled'
 
 const ErrorMessage = ({ message }: { message: string }) => (
-  <ElevatedBox direction="row" align="center">
+  <ElevatedBox direction="row" justify="center">
     <ErrorIcon width={28} />
-    <Spacer right="8px" />
     <FlexBox>
-      <MainText bold colorType="destructive">
+      <Spacer bottom="16px" />
+      <MainText colorType="destructive" textAlign="center">
         {message}
       </MainText>
-      <MainText bold colorType="destructive">
+      <Spacer bottom="8px" />
+      <MainText colorType="destructive" textAlign="center">
         You can contact us on slack [group] or at [email] for assistance.
       </MainText>
     </FlexBox>

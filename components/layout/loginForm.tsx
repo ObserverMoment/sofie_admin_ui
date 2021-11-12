@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import ErrorMessage from '../errorMessage'
-import { SpotMeLogo } from '../images'
+import { Logo } from '../images'
 import { FlexBox, Spacer, Title } from '../styled-components/styled'
 import {
   StyledForm,
@@ -40,16 +40,12 @@ const LoginForm = () => {
 
   return (
     <LoginFormContainer>
-      <FlexBox direction="row" align="center" justify="center">
-        <SpotMeLogo />
-        <Spacer right="8px" />
+      <FlexBox direction="column" align="center" justify="center">
+        <Logo />
+        <Spacer bottom="8px" />
         <Title>Sign In</Title>
       </FlexBox>
-      {globalError && (
-        <FlexBox direction="row">
-          <ErrorMessage message={globalError} />
-        </FlexBox>
-      )}
+      {globalError && <ErrorMessage message={globalError} />}
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <StyledInputGroup>
           <StyledLabel htmlFor="Email">Email</StyledLabel>

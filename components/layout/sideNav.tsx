@@ -4,13 +4,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useApollo } from '../../lib/apolloClient'
 import { signOut } from '../../lib/firebaseClient'
-import {
-  ContentIcon,
-  DataIcon,
-  HomeIcon,
-  SignOutIcon,
-  SpotMeLogo,
-} from '../images'
+import { ContentIcon, DataIcon, HomeIcon, SignOutIcon, Logo } from '../images'
 import { MyButton, MyLink } from '../styled-components/buttons'
 import { FlexBox, Spacer, TinyText } from '../styled-components/styled'
 
@@ -107,7 +101,7 @@ export const LogoMenuAndSideNav = () => (
       href="/"
       content={
         <FlexBox justify="center" align="center">
-          <SpotMeLogo width={40} height={40} />
+          <Logo width={30} height={30} invert={true} />
         </FlexBox>
       }
     />
@@ -126,7 +120,7 @@ export const PrimaryNav = () => {
           <Link key={text} href={link} passHref>
             <PrimaryNavItem isActive={`/${baseRoute}` === link}>
               <Icon
-                width={20}
+                width={16}
                 colorType={
                   `/${baseRoute}` === link ? 'primaryDark' : 'primaryLight'
                 }

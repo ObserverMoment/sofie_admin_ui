@@ -28,8 +28,6 @@ import {
   Move,
   MoveScope,
   MoveType,
-  StandardMovesDocument,
-  UpdateMoveInput,
   useCreateMoveMutation,
   useMoveTypesQuery,
   useUpdateMoveMutation,
