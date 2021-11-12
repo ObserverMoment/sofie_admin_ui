@@ -55,8 +55,8 @@ export const SelectedEquipmentDisplay = ({
       <div>
         <DarkButton onClick={() => setOpenSelector(true)}>
           <PlusIcon width={12} />
-          <Spacer right="2px" />
-          <MainText>Add</MainText>
+          <Spacer right="8px" />
+          <MainText colorType="primaryLight">Add</MainText>
         </DarkButton>
         <Spacer bottom="6px" />
         <FlexBox direction="row" wrap="wrap">

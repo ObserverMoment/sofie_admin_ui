@@ -67,7 +67,6 @@ export const TopNav = () => {
         <Link key={text} href={link} passHref>
           <TopNavItem isActive={route === link}>
             <MainText
-              bold
               colorType={route === link ? 'primaryLight' : 'primaryDark'}
             >
               {text}

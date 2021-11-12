@@ -61,8 +61,8 @@ export const SelectedBodyAreaMoveScores = ({
         <FlexBox direction="row" align="center">
           <DarkButton onClick={() => setOpeneditor(true)}>
             <EditIcon width={12} />
-            <Spacer right="2px" />
-            <MainText>Edit</MainText>
+            <Spacer right="8px" />
+            <MainText colorType="primaryLight">Edit</MainText>
           </DarkButton>
           <Spacer right="10px" />
           {bodyAreaMoveScores.length ? (
