@@ -13,7 +13,7 @@ import { TopNav } from '../components/layout/topNav'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { createApolloClient } from '../lib/apolloClient'
-import { initializeFirebase } from '../lib/firebaseClient'
+import { auth } from '../lib/firebaseClient'
 import LoginModal from '../components/layout/loginModal'
 import { ConfirmationDialogProvider } from '../lib/dialogHookProvider'
 import { LoadingDots } from '../components/loadingIndicators'
@@ -44,7 +44,6 @@ const GlobalStyle = createGlobalStyle`
 `
 
 // initializeFirebase returns ref to firebase.auth()
-const firebaseAuth = initializeFirebase()
 const apolloClient = createApolloClient()
 
 type AuthState = 'loading' | 'authed' | 'unauthed'
@@ -54,7 +53,7 @@ export default function App({ Component, pageProps }) {
   const [authedState, setAuthedState] = useState<AuthState>('loading')
 
   useEffect(() => {
-    const unsubscribe = firebaseAuth.onIdTokenChanged(async (user) => {
+    const unsubscribe = auth.onIdTokenChanged(async (user) => {
       console.log('Listener: onIdTokenChanged')
       if (!user) {
         console.log('Not authed')
@@ -75,7 +74,7 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     const handle = setInterval(async () => {
       console.log('Refreshing token...')
-      const user = firebaseAuth.currentUser
+      const user = auth.currentUser
       if (user) await user.getIdToken(true)
     }, 15 * 60 * 1000)
 
@@ -85,7 +84,7 @@ export default function App({ Component, pageProps }) {
   return (
     <ThemeProvider theme={theme}>
       <Head>
-        <title>SpotMe Fitness Admin Dashboard</title>
+        <title>Sofie Admin</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -111,9 +110,6 @@ export default function App({ Component, pageProps }) {
           href="/favicon-16x16.png"
         />
         <link rel="manifest" href="/site.webmanifest" />
-        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
-        <meta name="msapplication-TileColor" content="#2b5797" />
-        <meta name="theme-color" content="#ffffff" />
       </Head>
       <GlobalStyle />
       <ApolloProvider client={apolloClient}>

@@ -1,6 +1,10 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client'
-import firebaseClient from 'firebase/app'
-import 'firebase/auth'
+import { initializeApp } from 'firebase/app'
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut as fbSignOut,
+  getIdToken as fbGetIdToken,
+} from 'firebase/auth'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -10,17 +14,13 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 }
 
-const initializeFirebase = () => {
-  if (!firebaseClient.apps.length) {
-    firebaseClient.initializeApp(firebaseConfig)
-  }
-  return firebaseClient.auth()
-}
+const firebaseApp = initializeApp(firebaseConfig)
+const auth = getAuth(firebaseApp)
 
 // Client side sign in
 const signIn = async (email: string, password: string) => {
   try {
-    await firebaseClient.auth().signInWithEmailAndPassword(email, password)
+    await signInWithEmailAndPassword(auth, email, password)
   } catch (err) {
     console.error(err)
     throw err
@@ -30,7 +30,7 @@ const signIn = async (email: string, password: string) => {
 // Client side sign out
 const signOut = async () => {
   try {
-    await firebaseClient.auth().signOut()
+    await fbSignOut(auth)
   } catch (err) {
     console.error(err)
     throw err
@@ -39,8 +39,8 @@ const signOut = async () => {
 
 const getIdToken = async () => {
   try {
-    if (firebaseClient.auth().currentUser) {
-      return await firebaseClient.auth().currentUser.getIdToken()
+    if (auth.currentUser) {
+      return await fbGetIdToken(auth.currentUser)
     }
   } catch (err) {
     console.error(err)
@@ -48,4 +48,4 @@ const getIdToken = async () => {
   }
 }
 
-export { signIn, signOut, getIdToken, initializeFirebase }
+export { firebaseApp, auth, signIn, signOut, getIdToken }
