@@ -1,5 +1,5 @@
 query bodyAreas {
   bodyAreas {
-    ...BodyAreaFields
+    ...BodyArea
   }
 }

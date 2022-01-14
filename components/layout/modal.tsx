@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { CloseWindowIcon } from '../images'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useOnClickOutside } from '../../lib/utils'
-import { HighlightButton } from '../styled-components/buttons'
+import { HighlightButton, LightButton } from '../styled-components/buttons'
 import { MainText } from '../styled-components/styled'
 
 export const ModalOverlay = styled(motion.div)`
@@ -102,9 +102,9 @@ const Modal = ({
             {!disableCloseButton && (
               <CloseButton>
                 {closeOnDone ? (
-                  <HighlightButton onClick={handleClose}>
-                    <MainText bold>Done</MainText>
-                  </HighlightButton>
+                  <LightButton onClick={handleClose}>
+                    <MainText>Done</MainText>
+                  </LightButton>
                 ) : (
                   <div onClick={handleClose}>
                     <CloseWindowIcon />

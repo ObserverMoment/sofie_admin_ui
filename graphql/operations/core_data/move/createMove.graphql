@@ -5,19 +5,19 @@ mutation createMove($data: CreateMoveInput!) {
     description
     searchTerms
     MoveType {
-      ...MoveTypeFields
+      ...MoveType
     }
     validRepTypes
     demoVideoUri
     RequiredEquipments {
-      ...EquipmentFields
+      ...Equipment
     }
     SelectableEquipments {
-      ...EquipmentFields
+      ...Equipment
     }
     BodyAreaMoveScores {
       BodyArea {
-        ...BodyAreaFields
+        ...BodyArea
       }
       score
     }

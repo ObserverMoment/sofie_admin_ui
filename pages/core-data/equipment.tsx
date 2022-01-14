@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { LoadingSpinner } from '../../components/loadingIndicators'
 import InteractiveTable from '../../components/interactiveTable'
-import { FlexBox, Title } from '../../components/styled-components/styled'
+import {
+  FlexBox,
+  Padding,
+  Title,
+} from '../../components/styled-components/styled'
 import Modal from '../../components/layout/modal'
 import CreateEditEquipment from '../../components/contentCRUD/createEditEquipment'
 import { showToast } from '../../components/notifications'
@@ -37,9 +41,12 @@ export default function EquipmentData() {
   } else {
     return (
       <FlexBox>
-        <FlexBox direction="row" justify="center">
-          <CreateButton onClick={handleAddNewClick} />
-        </FlexBox>
+        <Padding>
+          <FlexBox direction="row" justify="center">
+            <CreateButton onClick={handleAddNewClick} />
+          </FlexBox>
+        </Padding>
+
         <InteractiveTable
           handleRowClick={(data) => handleRowClick(data)}
           columnMapping={[

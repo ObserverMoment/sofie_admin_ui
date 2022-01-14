@@ -1,16 +1,11 @@
 import React from 'react'
-import Loader from 'react-loader-spinner'
+import { TailSpin, ThreeDots } from 'react-loading-icons'
 import { FlexBox, Padding } from './styled-components/styled'
 
 export const LoadingSpinner = ({ height = 60, width = 60 }) => (
   <FlexBox justify="center" align="center" width="100%" height="100%">
     <Padding padding="40px">
-      <Loader
-        type="Oval"
-        color="rgba(45, 49, 92, 0.7)"
-        height={height}
-        width={width}
-      />
+      <TailSpin height={height} width={width} stroke="#353535" />
     </Padding>
   </FlexBox>
 )
@@ -18,11 +13,11 @@ export const LoadingSpinner = ({ height = 60, width = 60 }) => (
 export const LoadingDots = ({ height = 60, width = 60 }) => (
   <FlexBox justify="center" align="center" width="100%" height="100%">
     <Padding padding="8px">
-      <Loader
-        type="ThreeDots"
-        color="rgba(45, 49, 92, 0.7)"
+      <ThreeDots
         height={height}
         width={width}
+        stroke="#353535"
+        fill="#353535"
       />
     </Padding>
   </FlexBox>

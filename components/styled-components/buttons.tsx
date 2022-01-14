@@ -32,12 +32,13 @@ export const StyledButton = styled.button<StyledButtonProps>`
   margin: 0;
   border: none;
   opacity: 1;
-  border-radius: 100px;
+  border-radius: 4px;
   display: flex;
   flex-direction: ${(props) => props.flexDirection || 'row'};
   justify-content: center;
   align-items: center;
   outline: none;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   background-color: ${(props) => props.theme.colors[props.colorType]};
   color: ${(props) =>
     props.colorType === 'primaryLight'

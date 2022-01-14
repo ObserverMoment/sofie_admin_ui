@@ -12,7 +12,7 @@ import { FlexBox, Spacer, TinyText } from '../styled-components/styled'
 const primaryRoutes = [
   { text: 'Dashboard', link: '/', icon: HomeIcon },
   { text: 'Core Data', link: '/core-data', icon: DataIcon },
-  { text: 'Core Content', link: '/core-content', icon: ContentIcon },
+  { text: 'Public Content', link: '/public-content', icon: ContentIcon },
 ]
 
 //// Styled Components ////
@@ -27,7 +27,6 @@ const SideNavContainer = styled.div`
   flex-direction: column;
   height: 100vh;
   width: ${(props) => props.theme.spacing.sideNavWidth};
-  border-radius: 0 10px 10px 0;
   background-color: ${(props) => props.theme.colors.primaryDark};
 `
 
@@ -74,7 +73,6 @@ const PrimaryNavItem = styled.a<NavItemProps>`
   height: 74px;
   width: 100%;
   opacity: 1;
-  border-radius: 10px 0 0 10px;
   i {
     color: ${(props) =>
       props.isActive
