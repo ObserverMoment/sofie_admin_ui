@@ -1,0 +1,10 @@
+query adminPublicWorkoutPlans($status: PublicContentValidationStatus!) {
+  adminPublicWorkoutPlans(status: $status) {
+    WorkoutPlan {
+      id
+    }
+    metaData {
+      ...WorkoutPlanMetaData
+    }
+  }
+}

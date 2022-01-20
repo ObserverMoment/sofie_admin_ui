@@ -8,7 +8,7 @@ import {
   Title,
 } from '../../components/styled-components/styled'
 import {
-  useOfficialWorkoutsQuery,
+  usePublicWorkoutsQuery,
   WorkoutSummary,
 } from '../../graphql/generated_types'
 
@@ -18,18 +18,13 @@ export default function Workouts() {
     title: 'Workout',
   })
 
-  const { loading, error, data } = useOfficialWorkoutsQuery()
+  const { loading, error, data } = usePublicWorkoutsQuery()
 
   const [activeWorkoutData, setActiveWorkoutData] = useState(null)
 
   function handleCardClick(data: WorkoutSummary) {
     setActiveWorkoutData(data)
     setModalState({ isOpen: true, title: 'Workout' })
-  }
-
-  function handleAddNewClick() {
-    setActiveWorkoutData(null)
-    setModalState({ isOpen: true, title: 'Create Workout' })
   }
 
   if (error) {
@@ -41,8 +36,7 @@ export default function Workouts() {
   } else {
     return (
       <FlexBox direction="row" justify="center" wrap="wrap">
-        <Title colorType="grey">Official Workouts</Title>
-        {data.officialWorkouts.map((w: WorkoutSummary) => (
+        {data.publicWorkouts.map((w: WorkoutSummary) => (
           <WorkoutSummaryCard
             workoutSummary={w}
             handleCardClick={handleCardClick}

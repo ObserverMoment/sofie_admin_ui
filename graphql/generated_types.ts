@@ -1,10 +1,11 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions =  {}
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -13,28 +14,62 @@ export type Scalars = {
   Int: number;
   Float: number;
   DateTime: any;
+  JSON: any;
 };
 
-export type BodyArea = {
-  __typename?: 'BodyArea';
+export type AddDocumentToSkillInput = {
   id: Scalars['ID'];
-  name: Scalars['String'];
-  altNames?: Maybe<Scalars['String']>;
-  frontBack: BodyAreaFrontBack;
-  upperLower: BodyAreaUpperLower;
+  uri: Scalars['String'];
+};
+
+export type AddWorkoutPlanToClubInput = {
+  WorkoutPlan: ConnectRelationInput;
+  id: Scalars['ID'];
+};
+
+export type AddWorkoutPlanToCollectionInput = {
+  WorkoutPlan: ConnectRelationInput;
+  collectionId: Scalars['ID'];
+};
+
+export type AddWorkoutToClubInput = {
+  Workout: ConnectRelationInput;
+  id: Scalars['ID'];
+};
+
+export type AddWorkoutToCollectionInput = {
+  Workout: ConnectRelationInput;
+  collectionId: Scalars['ID'];
 };
 
 /** Enums */
+export enum BenchmarkType {
+  Amrap = 'AMRAP',
+  Fastesttime = 'FASTESTTIME',
+  Maxload = 'MAXLOAD',
+  Unbrokenreps = 'UNBROKENREPS',
+  Unbrokentime = 'UNBROKENTIME'
+}
+
+export type BodyArea = {
+  __typename?: 'BodyArea';
+  altNames?: Maybe<Scalars['String']>;
+  frontBack: BodyAreaFrontBack;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  upperLower: BodyAreaUpperLower;
+};
+
 export enum BodyAreaFrontBack {
   Back = 'BACK',
-  Front = 'FRONT',
-  Both = 'BOTH'
+  Both = 'BOTH',
+  Front = 'FRONT'
 }
 
 export type BodyAreaMoveScore = {
   __typename?: 'BodyAreaMoveScore';
-  Move: Move;
   BodyArea: BodyArea;
+  Move: Move;
   score: Scalars['Int'];
 };
 
@@ -49,348 +84,588 @@ export enum BodyAreaUpperLower {
   Upper = 'UPPER'
 }
 
+export type BodyTrackingEntry = {
+  __typename?: 'BodyTrackingEntry';
+  bodyweight?: Maybe<Scalars['Float']>;
+  bodyweightUnit?: Maybe<BodyweightUnit>;
+  createdAt: Scalars['DateTime'];
+  fatPercent?: Maybe<Scalars['Float']>;
+  id: Scalars['ID'];
+  note?: Maybe<Scalars['String']>;
+  photoUris: Array<Scalars['String']>;
+};
+
+export enum BodyweightUnit {
+  Kg = 'KG',
+  Lb = 'LB'
+}
+
+export type CheckClubInviteTokenResult = ClubInviteTokenData | InviteTokenError;
+
+export type Club = {
+  __typename?: 'Club';
+  Admins: Array<UserAvatarData>;
+  ClubInviteTokens?: Maybe<Array<ClubInviteToken>>;
+  Members: Array<UserAvatarData>;
+  Owner: UserAvatarData;
+  WorkoutPlans?: Maybe<Array<WorkoutPlanSummary>>;
+  Workouts?: Maybe<Array<WorkoutSummary>>;
+  contentAccessScope: ContentAccessScope;
+  coverImageUri?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  introAudioUri?: Maybe<Scalars['String']>;
+  introVideoThumbUri?: Maybe<Scalars['String']>;
+  introVideoUri?: Maybe<Scalars['String']>;
+  location?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+};
+
+export type ClubAnnouncement = {
+  __typename?: 'ClubAnnouncement';
+  User: UserAvatarData;
+  audioUri?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  imageUri?: Maybe<Scalars['String']>;
+  videoThumbUri?: Maybe<Scalars['String']>;
+  videoUri?: Maybe<Scalars['String']>;
+};
+
+export type ClubChatSummary = {
+  __typename?: 'ClubChatSummary';
+  Admins: Array<UserAvatarData>;
+  Members: Array<UserAvatarData>;
+  Owner: UserAvatarData;
+  coverImageUri?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+export type ClubInviteToken = {
+  __typename?: 'ClubInviteToken';
+  active: Scalars['Boolean'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  inviteLimit: Scalars['Int'];
+  joinedUserIds: Array<Scalars['String']>;
+  name: Scalars['String'];
+};
+
+export type ClubInviteTokenData = {
+  __typename?: 'ClubInviteTokenData';
+  Club: ClubSummary;
+  introAudioUri?: Maybe<Scalars['String']>;
+  introVideoThumbUri?: Maybe<Scalars['String']>;
+  introVideoUri?: Maybe<Scalars['String']>;
+  token: Scalars['String'];
+};
+
+export type ClubInviteTokens = {
+  __typename?: 'ClubInviteTokens';
+  id: Scalars['ID'];
+  tokens: Array<ClubInviteToken>;
+};
+
+export type ClubMemberSummary = {
+  __typename?: 'ClubMemberSummary';
+  avatarUri?: Maybe<Scalars['String']>;
+  countryCode?: Maybe<Scalars['String']>;
+  displayName: Scalars['String'];
+  id: Scalars['ID'];
+  skills: Array<Scalars['String']>;
+  tagline?: Maybe<Scalars['String']>;
+  townCity?: Maybe<Scalars['String']>;
+};
+
+export type ClubMembers = {
+  __typename?: 'ClubMembers';
+  Admins: Array<ClubMemberSummary>;
+  Members: Array<ClubMemberSummary>;
+  Owner: ClubMemberSummary;
+  id: Scalars['ID'];
+};
+
+export type ClubSummary = {
+  __typename?: 'ClubSummary';
+  Admins: Array<UserAvatarData>;
+  Owner: UserAvatarData;
+  contentAccessScope: ContentAccessScope;
+  coverImageUri?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  introAudioUri?: Maybe<Scalars['String']>;
+  introVideoThumbUri?: Maybe<Scalars['String']>;
+  introVideoUri?: Maybe<Scalars['String']>;
+  location?: Maybe<Scalars['String']>;
+  memberCount: Scalars['Int'];
+  name: Scalars['String'];
+  planCount: Scalars['Int'];
+  workoutCount: Scalars['Int'];
+};
+
+export type ClubWorkoutPlans = {
+  __typename?: 'ClubWorkoutPlans';
+  id: Scalars['ID'];
+  workoutPlans: Array<WorkoutPlanSummary>;
+};
+
+export type ClubWorkouts = {
+  __typename?: 'ClubWorkouts';
+  id: Scalars['ID'];
+  workouts: Array<WorkoutSummary>;
+};
+
+export type Collection = {
+  __typename?: 'Collection';
+  WorkoutPlans: Array<WorkoutPlanSummary>;
+  Workouts: Array<WorkoutSummary>;
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+export type CompletedWorkoutPlanDayWorkout = {
+  __typename?: 'CompletedWorkoutPlanDayWorkout';
+  id: Scalars['ID'];
+  loggedWorkoutId: Scalars['ID'];
+  workoutPlanDayWorkoutId: Scalars['ID'];
+};
+
 export type ConnectRelationInput = {
   id: Scalars['ID'];
 };
 
 export enum ContentAccessScope {
   Private = 'PRIVATE',
-  Public = 'PUBLIC',
-  Group = 'GROUP',
-  Official = 'OFFICIAL'
+  Public = 'PUBLIC'
 }
 
-export type CreateEquipmentInput = {
+export type CopyWorkoutPlanDayToAnotherDayInput = {
+  copyToDay: Scalars['Int'];
+  id: Scalars['ID'];
+};
+
+export type CreateBodyTrackingEntryInput = {
+  bodyweight?: InputMaybe<Scalars['Float']>;
+  bodyweightUnit?: InputMaybe<BodyweightUnit>;
+  fatPercent?: InputMaybe<Scalars['Float']>;
+  note?: InputMaybe<Scalars['String']>;
+  photoUris?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type CreateClubAnnouncementInput = {
+  Club: ConnectRelationInput;
+  audioUri?: InputMaybe<Scalars['String']>;
+  description: Scalars['String'];
+  imageUri?: InputMaybe<Scalars['String']>;
+  videoThumbUri?: InputMaybe<Scalars['String']>;
+  videoUri?: InputMaybe<Scalars['String']>;
+};
+
+export type CreateClubInput = {
+  description?: InputMaybe<Scalars['String']>;
+  location?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
-  altNames?: Maybe<Scalars['String']>;
+};
+
+export type CreateClubInviteTokenInput = {
+  clubId: Scalars['ID'];
+  inviteLimit: Scalars['Int'];
+  name: Scalars['String'];
+};
+
+export type CreateClubTimelinePostInput = {
+  caption?: InputMaybe<Scalars['String']>;
+  clubId: Scalars['String'];
+  object: Scalars['String'];
+  tags?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type CreateCollectionInput = {
+  description?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+};
+
+export type CreateCompletedWorkoutPlanDayWorkoutInput = {
+  loggedWorkoutId: Scalars['ID'];
+  workoutPlanDayWorkoutId: Scalars['ID'];
+  workoutPlanEnrolmentId: Scalars['ID'];
+};
+
+export type CreateEquipmentInput = {
+  altNames?: InputMaybe<Scalars['String']>;
   loadAdjustable: Scalars['Boolean'];
+  name: Scalars['String'];
 };
 
 export type CreateGymProfileInput = {
+  Equipments?: InputMaybe<Array<ConnectRelationInput>>;
+  description?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  Equipments: Array<Scalars['ID']>;
+};
+
+export type CreateJournalGoalInput = {
+  deadline?: InputMaybe<Scalars['DateTime']>;
+  description?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+};
+
+export type CreateJournalMoodInput = {
+  energyScore: Scalars['Int'];
+  moodScore: Scalars['Int'];
+  tags?: InputMaybe<Array<Scalars['String']>>;
+  textNote?: InputMaybe<Scalars['String']>;
+};
+
+export type CreateJournalNoteInput = {
+  textNote?: InputMaybe<Scalars['String']>;
+  voiceNoteUri?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateLoggedWorkoutInput = {
+  GymProfile?: InputMaybe<ConnectRelationInput>;
+  LoggedWorkoutSections: Array<CreateLoggedWorkoutSectionInLoggedWorkoutInput>;
+  ScheduledWorkout?: InputMaybe<ConnectRelationInput>;
+  Workout?: InputMaybe<ConnectRelationInput>;
+  WorkoutGoals: Array<ConnectRelationInput>;
+  WorkoutPlanDayWorkout?: InputMaybe<ConnectRelationInput>;
+  WorkoutPlanEnrolment?: InputMaybe<ConnectRelationInput>;
   completedOn: Scalars['DateTime'];
   name: Scalars['String'];
-  note?: Maybe<Scalars['String']>;
-  imageUri?: Maybe<Scalars['String']>;
-  LoggedWorkoutSections: Array<CreateLoggedWorkoutSectionInLoggedWorkoutInput>;
-  Workout: Scalars['ID'];
-  ScheduledWorkout?: Maybe<Scalars['ID']>;
-  GymProfile?: Maybe<Scalars['ID']>;
-  WorkoutProgramWorkout?: Maybe<Scalars['ID']>;
-  WorkoutProgramEnrolment?: Maybe<Scalars['ID']>;
+  note?: InputMaybe<Scalars['String']>;
 };
 
-export type CreateLoggedWorkoutMoveInLoggedSetInput = {
-  sortPosition: Scalars['Int'];
-  timeTakenMs?: Maybe<Scalars['Int']>;
+export type CreateLoggedWorkoutMoveInLoggedWorkoutSetInput = {
+  Equipment?: InputMaybe<ConnectRelationInput>;
+  Move: ConnectRelationInput;
+  distanceUnit?: InputMaybe<DistanceUnit>;
+  loadAmount?: InputMaybe<Scalars['Float']>;
+  loadUnit?: InputMaybe<LoadUnit>;
   repType: WorkoutMoveRepType;
   reps: Scalars['Float'];
-  distanceUnit?: Maybe<DistanceUnit>;
-  loadAmount?: Maybe<Scalars['Float']>;
-  loadUnit?: Maybe<LoadUnit>;
-  Move: Scalars['ID'];
-  Equipment?: Maybe<Scalars['ID']>;
-};
-
-export type CreateLoggedWorkoutMoveInput = {
   sortPosition: Scalars['Int'];
-  timeTakenMs?: Maybe<Scalars['Int']>;
-  repType: WorkoutMoveRepType;
-  reps: Scalars['Float'];
-  distanceUnit?: Maybe<DistanceUnit>;
-  loadAmount?: Maybe<Scalars['Float']>;
-  loadUnit?: Maybe<LoadUnit>;
-  Move: Scalars['ID'];
-  Equipment?: Maybe<Scalars['ID']>;
-  LoggedWorkoutSet: Scalars['ID'];
+  timeUnit?: InputMaybe<TimeUnit>;
 };
 
 export type CreateLoggedWorkoutSectionInLoggedWorkoutInput = {
-  sectionIndex: Scalars['Int'];
-  roundIndex: Scalars['Int'];
-  timeTakenMs: Scalars['Int'];
-  note?: Maybe<Scalars['String']>;
-  WorkoutSectionType: Scalars['ID'];
-  LoggedWorkoutSets: Array<CreateLoggedWorkoutSetInLoggedSectionInput>;
+  LoggedWorkoutSets: Array<CreateLoggedWorkoutSetInLoggedWorkoutSectionInput>;
+  WorkoutSectionType: ConnectRelationInput;
+  name?: InputMaybe<Scalars['String']>;
+  repScore?: InputMaybe<Scalars['Int']>;
+  sortPosition: Scalars['Int'];
+  timeTakenSeconds: Scalars['Int'];
 };
 
-export type CreateLoggedWorkoutSectionInput = {
-  sectionIndex: Scalars['Int'];
-  roundIndex: Scalars['Int'];
-  timeTakenMs: Scalars['Int'];
-  note?: Maybe<Scalars['String']>;
-  WorkoutSectionType: Scalars['ID'];
-  LoggedWorkout: Scalars['ID'];
-};
-
-export type CreateLoggedWorkoutSetInLoggedSectionInput = {
-  setIndex: Scalars['Int'];
-  roundIndex: Scalars['Int'];
-  timeTakenMs?: Maybe<Scalars['Int']>;
-  LoggedWorkoutMoves: Array<CreateLoggedWorkoutMoveInLoggedSetInput>;
-};
-
-export type CreateLoggedWorkoutSetInput = {
-  setIndex: Scalars['Int'];
-  roundIndex: Scalars['Int'];
-  timeTakenMs?: Maybe<Scalars['Int']>;
-  LoggedWorkoutSection: Scalars['ID'];
+export type CreateLoggedWorkoutSetInLoggedWorkoutSectionInput = {
+  LoggedWorkoutMoves: Array<CreateLoggedWorkoutMoveInLoggedWorkoutSetInput>;
+  sectionRoundNumber: Scalars['Int'];
+  sortPosition: Scalars['Int'];
+  timeTakenSeconds?: InputMaybe<Scalars['Int']>;
 };
 
 export type CreateMoveInput = {
-  name: Scalars['String'];
-  searchTerms?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  demoVideoUri?: Maybe<Scalars['String']>;
-  demoVideoThumbUri?: Maybe<Scalars['String']>;
-  scope?: Maybe<MoveScope>;
+  BodyAreaMoveScores?: InputMaybe<Array<BodyAreaMoveScoreInput>>;
   MoveType: ConnectRelationInput;
+  RequiredEquipments?: InputMaybe<Array<ConnectRelationInput>>;
+  SelectableEquipments?: InputMaybe<Array<ConnectRelationInput>>;
+  demoVideoThumbUri?: InputMaybe<Scalars['String']>;
+  demoVideoUri?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  scope?: InputMaybe<MoveScope>;
+  searchTerms?: InputMaybe<Scalars['String']>;
   validRepTypes: Array<WorkoutMoveRepType>;
-  RequiredEquipments?: Maybe<Array<ConnectRelationInput>>;
-  SelectableEquipments?: Maybe<Array<ConnectRelationInput>>;
-  BodyAreaMoveScores?: Maybe<Array<BodyAreaMoveScoreInput>>;
 };
 
-export type CreateProgressJournalEntryInput = {
-  note?: Maybe<Scalars['String']>;
-  voiceNoteUri?: Maybe<Scalars['String']>;
-  bodyweight?: Maybe<Scalars['Float']>;
-  moodScore?: Maybe<Scalars['Float']>;
-  energyScore?: Maybe<Scalars['Float']>;
-  stressScore?: Maybe<Scalars['Float']>;
-  motivationScore?: Maybe<Scalars['Float']>;
-  progressPhotoUris?: Maybe<Array<Scalars['String']>>;
-  ProgressJournal: Scalars['ID'];
-};
-
-export type CreateProgressJournalGoalInput = {
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  deadline?: Maybe<Scalars['DateTime']>;
-  ProgressJournal: Scalars['ID'];
-  ProgressJournalGoalTags?: Maybe<Array<Scalars['ID']>>;
-};
-
-export type CreateProgressJournalGoalTagInput = {
-  tag: Scalars['String'];
-  hexColor: Scalars['String'];
-};
-
-export type CreateProgressJournalInput = {
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
+export type CreateScheduleForPlanEnrolmentInput = {
+  startDate: Scalars['DateTime'];
+  workoutPlanEnrolmentId: Scalars['ID'];
 };
 
 export type CreateScheduledWorkoutInput = {
+  GymProfile?: InputMaybe<ConnectRelationInput>;
+  Workout: ConnectRelationInput;
+  WorkoutPlanDayWorkout?: InputMaybe<ConnectRelationInput>;
+  WorkoutPlanEnrolment?: InputMaybe<ConnectRelationInput>;
+  note?: InputMaybe<Scalars['String']>;
   scheduledAt: Scalars['DateTime'];
-  note?: Maybe<Scalars['String']>;
-  Workout: Scalars['ID'];
-  GymProfile?: Maybe<Scalars['ID']>;
+};
+
+export type CreateSkillInput = {
+  experience?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+};
+
+export type CreateUserBenchmarkEntryInput = {
+  UserBenchmark: ConnectRelationInput;
+  completedOn: Scalars['DateTime'];
+  note?: InputMaybe<Scalars['String']>;
+  score: Scalars['Float'];
+  videoThumbUri?: InputMaybe<Scalars['String']>;
+  videoUri?: InputMaybe<Scalars['String']>;
+};
+
+export type CreateUserBenchmarkInput = {
+  benchmarkType: BenchmarkType;
+  description?: InputMaybe<Scalars['String']>;
+  equipmentInfo?: InputMaybe<Scalars['String']>;
+  loadUnit?: InputMaybe<LoadUnit>;
+  name: Scalars['String'];
 };
 
 export type CreateWorkoutInput = {
-  name: Scalars['String'];
-  difficultyLevel: DifficultyLevel;
   contentAccessScope: ContentAccessScope;
+  difficultyLevel?: InputMaybe<DifficultyLevel>;
+  name: Scalars['String'];
+};
+
+export type CreateWorkoutMoveInSetInput = {
+  Equipment?: InputMaybe<ConnectRelationInput>;
+  Move: ConnectRelationInput;
+  distanceUnit?: InputMaybe<DistanceUnit>;
+  loadAmount: Scalars['Float'];
+  loadUnit?: InputMaybe<LoadUnit>;
+  repType: WorkoutMoveRepType;
+  reps: Scalars['Float'];
+  sortPosition: Scalars['Int'];
+  timeUnit?: InputMaybe<TimeUnit>;
 };
 
 export type CreateWorkoutMoveInput = {
-  sortPosition: Scalars['Int'];
-  reps: Scalars['Float'];
-  repType: WorkoutMoveRepType;
-  distanceUnit?: Maybe<DistanceUnit>;
-  loadAmount: Scalars['Float'];
-  loadUnit?: Maybe<LoadUnit>;
-  timeUnit?: Maybe<TimeUnit>;
+  Equipment?: InputMaybe<ConnectRelationInput>;
   Move: ConnectRelationInput;
-  Equipment?: Maybe<ConnectRelationInput>;
   WorkoutSet: ConnectRelationInput;
+  distanceUnit?: InputMaybe<DistanceUnit>;
+  loadAmount: Scalars['Float'];
+  loadUnit?: InputMaybe<LoadUnit>;
+  repType: WorkoutMoveRepType;
+  reps: Scalars['Float'];
+  sortPosition: Scalars['Int'];
+  timeUnit?: InputMaybe<TimeUnit>;
 };
 
-export type CreateWorkoutProgramInput = {
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  coverImageUri?: Maybe<Scalars['String']>;
-  introVideoUri?: Maybe<Scalars['String']>;
-  introVideoThumbUri?: Maybe<Scalars['String']>;
-  introAudioUri?: Maybe<Scalars['String']>;
+export type CreateWorkoutPlanDayWithWorkoutInput = {
+  Workout: ConnectRelationInput;
+  WorkoutPlan: ConnectRelationInput;
+  dayNumber: Scalars['Int'];
+};
+
+export type CreateWorkoutPlanDayWorkoutInput = {
+  Workout: ConnectRelationInput;
+  WorkoutPlanDay: ConnectRelationInput;
+  note?: InputMaybe<Scalars['String']>;
+  sortPosition: Scalars['Int'];
+};
+
+export type CreateWorkoutPlanInput = {
   contentAccessScope: ContentAccessScope;
-  WorkoutGoals?: Maybe<Array<Scalars['ID']>>;
-  WorkoutProgramWorkouts?: Maybe<Array<CreateWorkoutProgramWorkoutInput>>;
+  name: Scalars['String'];
 };
 
-export type CreateWorkoutProgramReviewInput = {
+export type CreateWorkoutPlanReviewInput = {
+  WorkoutPlan: ConnectRelationInput;
+  comment?: InputMaybe<Scalars['String']>;
   score: Scalars['Float'];
-  comment?: Maybe<Scalars['String']>;
-  WorkoutProgram: Scalars['ID'];
-};
-
-export type CreateWorkoutProgramWorkoutInput = {
-  dayNumber: Scalars['Float'];
-  note?: Maybe<Scalars['String']>;
-  Workout: Scalars['ID'];
-  WorkoutProgram: Scalars['ID'];
 };
 
 export type CreateWorkoutSectionInput = {
-  name?: Maybe<Scalars['String']>;
-  note?: Maybe<Scalars['String']>;
-  rounds?: Maybe<Scalars['Int']>;
-  timecap?: Maybe<Scalars['Int']>;
-  sortPosition: Scalars['Int'];
-  introVideoUri?: Maybe<Scalars['String']>;
-  introVideoThumbUri?: Maybe<Scalars['String']>;
-  introAudioUri?: Maybe<Scalars['String']>;
-  classVideoUri?: Maybe<Scalars['String']>;
-  classVideoThumbUri?: Maybe<Scalars['String']>;
-  classAudioUri?: Maybe<Scalars['String']>;
-  outroVideoUri?: Maybe<Scalars['String']>;
-  outroVideoThumbUri?: Maybe<Scalars['String']>;
-  outroAudioUri?: Maybe<Scalars['String']>;
-  WorkoutSectionType: ConnectRelationInput;
   Workout: ConnectRelationInput;
-};
-
-export type CreateWorkoutSetGeneratorInput = {
-  type: WorkoutSetGeneratorType;
-  workoutMoveIndex: Scalars['Int'];
-  target: WorkoutSetGeneratorTarget;
-  roundFrequency: Scalars['Int'];
-  adjustAmount: Scalars['Float'];
-  WorkoutSet: ConnectRelationInput;
+  WorkoutSectionType: ConnectRelationInput;
+  classAudioUri?: InputMaybe<Scalars['String']>;
+  classVideoThumbUri?: InputMaybe<Scalars['String']>;
+  classVideoUri?: InputMaybe<Scalars['String']>;
+  introAudioUri?: InputMaybe<Scalars['String']>;
+  introVideoThumbUri?: InputMaybe<Scalars['String']>;
+  introVideoUri?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  note?: InputMaybe<Scalars['String']>;
+  rounds?: InputMaybe<Scalars['Int']>;
+  sortPosition: Scalars['Int'];
+  timecap?: InputMaybe<Scalars['Int']>;
 };
 
 export type CreateWorkoutSetInput = {
-  sortPosition: Scalars['Int'];
-  rounds?: Maybe<Scalars['Int']>;
-  duration?: Maybe<Scalars['Int']>;
   WorkoutSection: ConnectRelationInput;
+  duration?: InputMaybe<Scalars['Int']>;
+  sortPosition: Scalars['Int'];
 };
 
-export type CreateWorkoutSetIntervalBuyInInput = {
-  interval: Scalars['Int'];
-  WorkoutMove: CreateWorkoutMoveInput;
-  WorkoutSet: ConnectRelationInput;
+export type CreateWorkoutSetWithWorkoutMovesInput = {
+  workoutMoves: Array<CreateWorkoutMoveInSetInput>;
+  workoutSet: CreateWorkoutSetInput;
 };
 
 export type CreateWorkoutTagInput = {
   tag: Scalars['String'];
 };
 
+export type DeleteClubInviteTokenInput = {
+  clubId: Scalars['ID'];
+  tokenId: Scalars['ID'];
+};
+
+export type DeleteCompletedWorkoutPlanDayWorkoutInput = {
+  workoutPlanDayWorkoutId: Scalars['ID'];
+  workoutPlanEnrolmentId: Scalars['ID'];
+};
 
 export enum DifficultyLevel {
-  Light = 'LIGHT',
-  Challenging = 'CHALLENGING',
-  Intermediate = 'INTERMEDIATE',
   Advanced = 'ADVANCED',
-  Elite = 'ELITE'
+  Challenging = 'CHALLENGING',
+  Elite = 'ELITE',
+  Intermediate = 'INTERMEDIATE',
+  Light = 'LIGHT'
 }
 
 export enum DistanceUnit {
-  Metres = 'METRES',
   Kilometres = 'KILOMETRES',
-  Yards = 'YARDS',
-  Miles = 'MILES'
+  Metres = 'METRES',
+  Miles = 'MILES',
+  Yards = 'YARDS'
 }
 
 export type Equipment = {
   __typename?: 'Equipment';
-  id: Scalars['ID'];
-  name: Scalars['String'];
   altNames?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
   loadAdjustable: Scalars['Boolean'];
+  name: Scalars['String'];
 };
 
 export enum Gender {
-  Male = 'MALE',
   Female = 'FEMALE',
+  Male = 'MALE',
   Nonbinary = 'NONBINARY',
-  None = 'NONE'
+  Pnts = 'PNTS'
 }
 
 export type GymProfile = {
   __typename?: 'GymProfile';
+  Equipments: Array<Equipment>;
+  description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
+};
+
+export type InviteTokenError = {
+  __typename?: 'InviteTokenError';
+  message: Scalars['String'];
+};
+
+export enum JoinClubRequestStatus {
+  Accepted = 'ACCEPTED',
+  Pending = 'PENDING',
+  Rejected = 'REJECTED'
+}
+
+export type JournalGoal = {
+  __typename?: 'JournalGoal';
+  completedDate?: Maybe<Scalars['DateTime']>;
+  createdAt: Scalars['DateTime'];
+  deadline?: Maybe<Scalars['DateTime']>;
   description?: Maybe<Scalars['String']>;
-  Equipments: Array<Equipment>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+export type JournalMood = {
+  __typename?: 'JournalMood';
+  createdAt: Scalars['DateTime'];
+  energyScore: Scalars['Int'];
+  id: Scalars['ID'];
+  moodScore: Scalars['Int'];
+  tags: Array<Scalars['String']>;
+  textNote?: Maybe<Scalars['String']>;
+};
+
+export type JournalNote = {
+  __typename?: 'JournalNote';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  textNote?: Maybe<Scalars['String']>;
+  voiceNoteUri?: Maybe<Scalars['String']>;
+};
+
+export type LifetimeLogStatsSummary = {
+  __typename?: 'LifetimeLogStatsSummary';
+  minutesWorked: Scalars['Int'];
+  sessionsLogged: Scalars['Int'];
 };
 
 export enum LoadUnit {
+  Bodyweightpercent = 'BODYWEIGHTPERCENT',
   Kg = 'KG',
   Lb = 'LB',
-  Bodyweightpercent = 'BODYWEIGHTPERCENT'
+  Percentmax = 'PERCENTMAX'
 }
 
 export type LoggedWorkout = {
   __typename?: 'LoggedWorkout';
-  id: Scalars['ID'];
+  GymProfile?: Maybe<GymProfile>;
+  LoggedWorkoutSections: Array<LoggedWorkoutSection>;
+  User?: Maybe<UserAvatarData>;
+  WorkoutGoals: Array<WorkoutGoal>;
   completedOn: Scalars['DateTime'];
+  id: Scalars['ID'];
   name: Scalars['String'];
   note?: Maybe<Scalars['String']>;
-  imageUri?: Maybe<Scalars['String']>;
-  LoggedWorkoutSections: Array<LoggedWorkoutSection>;
-  Workout: Workout;
-  ScheduledWorkout?: Maybe<ScheduledWorkout>;
-  GymProfile?: Maybe<GymProfile>;
-  WorkoutProgramWorkout?: Maybe<WorkoutProgramWorkout>;
-  WorkoutProgramEnrolment?: Maybe<WorkoutProgramWorkout>;
+  workoutId?: Maybe<Scalars['ID']>;
 };
 
 export type LoggedWorkoutMove = {
   __typename?: 'LoggedWorkoutMove';
+  Equipment?: Maybe<Equipment>;
+  Move: Move;
+  distanceUnit: DistanceUnit;
   id: Scalars['ID'];
-  sortPosition: Scalars['Int'];
-  timeTakenMs?: Maybe<Scalars['Int']>;
+  loadAmount: Scalars['Float'];
+  loadUnit: LoadUnit;
   repType: WorkoutMoveRepType;
   reps: Scalars['Float'];
-  distanceUnit: DistanceUnit;
-  loadAmount?: Maybe<Scalars['Float']>;
-  loadUnit: LoadUnit;
-  Move: Move;
-  Equipment?: Maybe<Equipment>;
+  sortPosition: Scalars['Int'];
+  timeUnit: TimeUnit;
 };
 
 export type LoggedWorkoutSection = {
   __typename?: 'LoggedWorkoutSection';
-  id: Scalars['ID'];
-  setIndex: Scalars['Int'];
-  roundIndex: Scalars['Int'];
-  timeTakenMs: Scalars['Int'];
-  note?: Maybe<Scalars['String']>;
-  WorkoutSectionType: WorkoutSectionType;
   LoggedWorkoutSets: Array<LoggedWorkoutSet>;
-  LoggedWorkout: LoggedWorkout;
+  WorkoutSectionType: WorkoutSectionType;
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  repScore?: Maybe<Scalars['Int']>;
+  sortPosition: Scalars['Int'];
+  timeTakenSeconds: Scalars['Int'];
 };
 
 export type LoggedWorkoutSet = {
   __typename?: 'LoggedWorkoutSet';
-  id: Scalars['ID'];
-  setIndex: Scalars['Int'];
-  roundIndex: Scalars['Int'];
-  timeTakenMs?: Maybe<Scalars['Int']>;
   LoggedWorkoutMoves: Array<LoggedWorkoutMove>;
+  id: Scalars['ID'];
+  sectionRoundNumber: Scalars['Int'];
+  sortPosition: Scalars['Int'];
+  timeTakenSeconds?: Maybe<Scalars['Int']>;
 };
 
 export type Move = {
   __typename?: 'Move';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  searchTerms?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  demoVideoUri?: Maybe<Scalars['String']>;
-  demoVideoThumbUri?: Maybe<Scalars['String']>;
-  scope: MoveScope;
+  BodyAreaMoveScores: Array<BodyAreaMoveScore>;
   MoveType: MoveType;
-  validRepTypes: Array<WorkoutMoveRepType>;
   RequiredEquipments: Array<Equipment>;
   SelectableEquipments: Array<Equipment>;
-  BodyAreaMoveScores: Array<BodyAreaMoveScore>;
+  archived: Scalars['Boolean'];
+  demoVideoThumbUri?: Maybe<Scalars['String']>;
+  demoVideoUri?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  scope: MoveScope;
+  searchTerms?: Maybe<Scalars['String']>;
+  validRepTypes: Array<WorkoutMoveRepType>;
 };
 
 /**
@@ -398,103 +673,243 @@ export type Move = {
  * Custom moves are created by users.
  */
 export enum MoveScope {
-  Standard = 'STANDARD',
-  Custom = 'CUSTOM'
+  Custom = 'CUSTOM',
+  Standard = 'STANDARD'
 }
-
-export type MoveSummary = {
-  __typename?: 'MoveSummary';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  RequiredEquipments: Array<Equipment>;
-};
 
 export type MoveType = {
   __typename?: 'MoveType';
-  id: Scalars['ID'];
-  name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
   imageUri?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+};
+
+export type MoveWorkoutPlanDayToAnotherDayInput = {
+  id: Scalars['ID'];
+  moveToDay: Scalars['Int'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addDocumentToSkill: Skill;
+  addUserToClubViaInviteToken: Scalars['ID'];
+  addWorkoutPlanToClub: ClubWorkoutPlans;
+  addWorkoutPlanToCollection: Collection;
+  addWorkoutToClub: ClubWorkouts;
+  addWorkoutToCollection: Collection;
+  archiveCustomMoveById: Move;
+  archiveWorkoutById: Workout;
+  archiveWorkoutPlanById: WorkoutPlan;
+  clearScheduleForPlanEnrolment: WorkoutPlanEnrolment;
+  clearWorkoutPlanEnrolmentProgress: WorkoutPlanEnrolment;
+  copyWorkoutPlanDayToAnotherDay: WorkoutPlanDay;
+  createBodyTrackingEntry: BodyTrackingEntry;
+  createClub: ClubSummary;
+  createClubAnnouncement: ClubAnnouncement;
+  createClubInviteToken: ClubInviteTokens;
+  createClubTimelinePost: TimelinePostFullData;
+  createCollection: Collection;
+  createCompletedWorkoutPlanDayWorkout: WorkoutPlanEnrolment;
   createEquipment?: Maybe<Equipment>;
-  updateEquipment?: Maybe<Equipment>;
   createGymProfile: GymProfile;
-  updateGymProfile: GymProfile;
-  deleteGymProfileById?: Maybe<Scalars['ID']>;
-  createProgressJournal: ProgressJournal;
-  updateProgressJournal: ProgressJournal;
-  deleteProgressJournalById: Scalars['ID'];
-  createProgressJournalEntry: ProgressJournalEntry;
-  updateProgressJournalEntry: ProgressJournalEntry;
-  deleteProgressJournalEntryById: Scalars['ID'];
-  createProgressJournalGoal: ProgressJournalGoal;
-  updateProgressJournalGoal: ProgressJournalGoal;
-  deleteProgressJournalGoalById: Scalars['ID'];
-  createProgressJournalGoalTag: ProgressJournalGoalTag;
-  updateProgressJournalGoalTag: ProgressJournalGoalTag;
-  deleteProgressJournalGoalTagById: Scalars['ID'];
+  createJournalGoal: JournalGoal;
+  createJournalMood: JournalMood;
+  createJournalNote: JournalNote;
   createLoggedWorkout: LoggedWorkout;
-  updateLoggedWorkout: LoggedWorkout;
-  deleteLoggedWorkoutById: Scalars['ID'];
-  createLoggedWorkoutSection: LoggedWorkoutSection;
-  updateLoggedWorkoutSection: LoggedWorkoutSection;
-  deleteLoggedWorkoutSectionById: Scalars['ID'];
-  reorderLoggedWorkoutSections: Array<LoggedWorkoutSection>;
-  createLoggedWorkoutSet: LoggedWorkoutSet;
-  updateLoggedWorkoutSet: LoggedWorkoutSet;
-  deleteLoggedWorkoutSetById: Scalars['ID'];
-  reorderLoggedWorkoutSets: Array<LoggedWorkoutSet>;
-  createLoggedWorkoutMove: LoggedWorkoutMove;
-  updateLoggedWorkoutMove: LoggedWorkoutMove;
-  deleteLoggedWorkoutMoveById: Scalars['ID'];
-  reorderLoggedWorkoutMoves: Array<LoggedWorkoutMove>;
   createMove: Move;
-  updateMove: Move;
-  softDeleteMoveById: Scalars['ID'];
+  createScheduleForPlanEnrolment: WorkoutPlanEnrolment;
   createScheduledWorkout: ScheduledWorkout;
-  updateScheduledWorkout: ScheduledWorkout;
-  deleteScheduledWorkoutById: Scalars['ID'];
-  updateUser: User;
-  createWorkoutTag: WorkoutTag;
-  makeCopyWorkoutById: Workout;
+  createSkill: Skill;
+  createUserBenchmark: UserBenchmark;
+  createUserBenchmarkEntry: UserBenchmarkEntry;
   createWorkout: Workout;
-  updateWorkout: Workout;
-  duplicateWorkoutById: Workout;
-  softDeleteWorkoutById?: Maybe<Scalars['ID']>;
-  createWorkoutSection: WorkoutSection;
-  updateWorkoutSection: WorkoutSection;
-  deleteWorkoutSectionById: Scalars['ID'];
-  reorderWorkoutSections: Array<SortPositionUpdated>;
-  createWorkoutSet: WorkoutSet;
-  updateWorkoutSet: WorkoutSet;
-  duplicateWorkoutSetById: WorkoutSet;
-  deleteWorkoutSetById: Scalars['ID'];
-  reorderWorkoutSets: Array<SortPositionUpdated>;
-  createWorkoutSetIntervalBuyIn: WorkoutSetIntervalBuyIn;
-  updateWorkoutSetIntervalBuyIn: WorkoutSetIntervalBuyIn;
-  deleteWorkoutSetIntervalBuyInById: Scalars['ID'];
-  createWorkoutSetGenerator: WorkoutSetGenerator;
-  updateWorkoutSetGenerator: WorkoutSetGenerator;
-  deleteWorkoutSetGeneratorById: Scalars['ID'];
   createWorkoutMove: WorkoutMove;
-  updateWorkoutMove: WorkoutMove;
+  createWorkoutPlan: WorkoutPlan;
+  createWorkoutPlanDayWithWorkout: WorkoutPlanDay;
+  createWorkoutPlanDayWorkout: WorkoutPlanDayWorkout;
+  createWorkoutPlanEnrolment: WorkoutPlanEnrolmentWithPlan;
+  createWorkoutPlanReview: WorkoutPlanReview;
+  createWorkoutSection: WorkoutSection;
+  createWorkoutSet: WorkoutSet;
+  createWorkoutSetWithWorkoutMoves: WorkoutSet;
+  createWorkoutTag: WorkoutTag;
+  deleteBodyTrackingEntryById: Scalars['ID'];
+  deleteClub: Scalars['ID'];
+  deleteClubAnnouncement: Scalars['ID'];
+  deleteClubInviteToken: ClubInviteTokens;
+  deleteClubTimelinePost: Scalars['ID'];
+  deleteCollectionById: Scalars['ID'];
+  deleteCompletedWorkoutPlanDayWorkout: WorkoutPlanEnrolment;
+  deleteGymProfileById?: Maybe<Scalars['ID']>;
+  deleteJournalGoalById: Scalars['ID'];
+  deleteJournalMoodById: Scalars['ID'];
+  deleteJournalNoteById: Scalars['ID'];
+  deleteLoggedWorkoutById: Scalars['ID'];
+  deleteLoggedWorkoutMove: Scalars['ID'];
+  deleteScheduledWorkoutById: Scalars['ID'];
+  deleteSkillById: Scalars['ID'];
+  deleteUserBenchmark: Scalars['ID'];
+  deleteUserBenchmarkEntry: Scalars['ID'];
   deleteWorkoutMoveById: Scalars['ID'];
+  deleteWorkoutPlanDayWorkoutById: Scalars['ID'];
+  deleteWorkoutPlanDaysById: Array<Scalars['ID']>;
+  deleteWorkoutPlanEnrolmentById: Scalars['ID'];
+  deleteWorkoutPlanReviewById: Scalars['ID'];
+  deleteWorkoutSectionById: Scalars['ID'];
+  deleteWorkoutSetById: Scalars['ID'];
+  deleteWorkoutTagById: Scalars['ID'];
+  duplicateWorkoutById: Workout;
   duplicateWorkoutMoveById: WorkoutMove;
+  duplicateWorkoutSetById: WorkoutSet;
+  giveMemberAdminStatus: ClubMembers;
+  makeCopyWorkoutById: Workout;
+  moveWorkoutPlanDayToAnotherDay: WorkoutPlanDay;
+  removeDocumentFromSkill: Skill;
+  removeMemberAdminStatus: ClubMembers;
+  removeUserFromClub: ClubMembers;
+  removeWorkoutFromClub: ClubWorkouts;
+  removeWorkoutFromCollection: Collection;
+  removeWorkoutPlanFromClub: ClubWorkoutPlans;
+  removeWorkoutPlanFromCollection: Collection;
   reorderWorkoutMoves: Array<SortPositionUpdated>;
-  createWorkoutProgram: WorkoutProgram;
-  updateWorkoutProgram: WorkoutProgram;
-  softDeleteWorkoutProgramById: Scalars['ID'];
-  createWorkoutProgramWorkout: WorkoutProgramWorkout;
-  updateWorkoutProgramWorkout: WorkoutProgramWorkout;
-  deleteWorkoutProgramWorkoutById: Scalars['ID'];
-  createWorkoutProgramEnrolment: WorkoutProgramEnrolment;
-  deleteWorkoutProgramEnrolmentById: Scalars['ID'];
-  createWorkoutProgramReview: WorkoutProgramReview;
-  updateWorkoutProgramReview: WorkoutProgramReview;
-  deleteWorkoutProgramReviewById: Scalars['ID'];
+  reorderWorkoutPlanDayWorkouts: Array<SortPositionUpdated>;
+  reorderWorkoutSections: Array<SortPositionUpdated>;
+  reorderWorkoutSets: Array<SortPositionUpdated>;
+  softDeleteMoveById: Scalars['ID'];
+  softDeleteWorkoutPlanById: Scalars['ID'];
+  unarchiveCustomMoveById: Move;
+  unarchiveWorkoutById: Workout;
+  unarchiveWorkoutPlanById: WorkoutPlan;
+  updateBodyTrackingEntry: BodyTrackingEntry;
+  updateClubAnnouncement: ClubAnnouncement;
+  updateClubInviteToken: ClubInviteTokens;
+  updateClubSummary: ClubSummary;
+  updateCollection: Collection;
+  updateEquipment?: Maybe<Equipment>;
+  updateGymProfile: GymProfile;
+  updateJournalGoal: JournalGoal;
+  updateJournalMood: JournalMood;
+  updateJournalNote: JournalNote;
+  updateLoggedWorkout: LoggedWorkout;
+  updateLoggedWorkoutMove: LoggedWorkoutMove;
+  updateLoggedWorkoutSection: LoggedWorkoutSection;
+  updateLoggedWorkoutSet: LoggedWorkoutSet;
+  updateMove: Move;
+  updateScheduledWorkout: ScheduledWorkout;
+  updateSkill: Skill;
+  updateUserBenchmark: UserBenchmark;
+  updateUserBenchmarkEntry: UserBenchmarkEntry;
+  updateUserProfile: UpdateUserProfileResult;
+  updateWorkout: Workout;
+  updateWorkoutMove: WorkoutMove;
+  updateWorkoutMoves: Array<WorkoutMove>;
+  updateWorkoutPlan: WorkoutPlan;
+  updateWorkoutPlanDay: WorkoutPlanDay;
+  updateWorkoutPlanDayWorkout: WorkoutPlanDayWorkout;
+  updateWorkoutPlanReview: WorkoutPlanReview;
+  updateWorkoutSection: WorkoutSection;
+  updateWorkoutSet: WorkoutSet;
+  updateWorkoutTag: WorkoutTag;
+  userJoinPublicClub: Scalars['ID'];
+};
+
+
+export type MutationAddDocumentToSkillArgs = {
+  data: AddDocumentToSkillInput;
+};
+
+
+export type MutationAddUserToClubViaInviteTokenArgs = {
+  clubInviteTokenId: Scalars['ID'];
+  userId: Scalars['ID'];
+};
+
+
+export type MutationAddWorkoutPlanToClubArgs = {
+  clubId: Scalars['ID'];
+  workoutPlanId: Scalars['ID'];
+};
+
+
+export type MutationAddWorkoutPlanToCollectionArgs = {
+  data: AddWorkoutPlanToCollectionInput;
+};
+
+
+export type MutationAddWorkoutToClubArgs = {
+  clubId: Scalars['ID'];
+  workoutId: Scalars['ID'];
+};
+
+
+export type MutationAddWorkoutToCollectionArgs = {
+  data: AddWorkoutToCollectionInput;
+};
+
+
+export type MutationArchiveCustomMoveByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationArchiveWorkoutByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationArchiveWorkoutPlanByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationClearScheduleForPlanEnrolmentArgs = {
+  enrolmentId: Scalars['ID'];
+};
+
+
+export type MutationClearWorkoutPlanEnrolmentProgressArgs = {
+  enrolmentId: Scalars['ID'];
+};
+
+
+export type MutationCopyWorkoutPlanDayToAnotherDayArgs = {
+  data: CopyWorkoutPlanDayToAnotherDayInput;
+};
+
+
+export type MutationCreateBodyTrackingEntryArgs = {
+  data: CreateBodyTrackingEntryInput;
+};
+
+
+export type MutationCreateClubArgs = {
+  data: CreateClubInput;
+};
+
+
+export type MutationCreateClubAnnouncementArgs = {
+  data: CreateClubAnnouncementInput;
+};
+
+
+export type MutationCreateClubInviteTokenArgs = {
+  data: CreateClubInviteTokenInput;
+};
+
+
+export type MutationCreateClubTimelinePostArgs = {
+  data: CreateClubTimelinePostInput;
+};
+
+
+export type MutationCreateCollectionArgs = {
+  data: CreateCollectionInput;
+};
+
+
+export type MutationCreateCompletedWorkoutPlanDayWorkoutArgs = {
+  data: CreateCompletedWorkoutPlanDayWorkoutInput;
 };
 
 
@@ -503,83 +918,23 @@ export type MutationCreateEquipmentArgs = {
 };
 
 
-export type MutationUpdateEquipmentArgs = {
-  data: UpdateEquipmentInput;
-};
-
-
 export type MutationCreateGymProfileArgs = {
   data: CreateGymProfileInput;
 };
 
 
-export type MutationUpdateGymProfileArgs = {
-  data: UpdateGymProfileInput;
+export type MutationCreateJournalGoalArgs = {
+  data: CreateJournalGoalInput;
 };
 
 
-export type MutationDeleteGymProfileByIdArgs = {
-  id: Scalars['ID'];
+export type MutationCreateJournalMoodArgs = {
+  data: CreateJournalMoodInput;
 };
 
 
-export type MutationCreateProgressJournalArgs = {
-  data: CreateProgressJournalInput;
-};
-
-
-export type MutationUpdateProgressJournalArgs = {
-  data: UpdateProgressJournalInput;
-};
-
-
-export type MutationDeleteProgressJournalByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationCreateProgressJournalEntryArgs = {
-  data: CreateProgressJournalEntryInput;
-};
-
-
-export type MutationUpdateProgressJournalEntryArgs = {
-  data: UpdateProgressJournalEntryInput;
-};
-
-
-export type MutationDeleteProgressJournalEntryByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationCreateProgressJournalGoalArgs = {
-  data: CreateProgressJournalGoalInput;
-};
-
-
-export type MutationUpdateProgressJournalGoalArgs = {
-  data: UpdateProgressJournalGoalInput;
-};
-
-
-export type MutationDeleteProgressJournalGoalByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationCreateProgressJournalGoalTagArgs = {
-  data: CreateProgressJournalGoalTagInput;
-};
-
-
-export type MutationUpdateProgressJournalGoalTagArgs = {
-  data: UpdateProgressJournalGoalTagInput;
-};
-
-
-export type MutationDeleteProgressJournalGoalTagByIdArgs = {
-  id: Scalars['ID'];
+export type MutationCreateJournalNoteArgs = {
+  data: CreateJournalNoteInput;
 };
 
 
@@ -588,88 +943,13 @@ export type MutationCreateLoggedWorkoutArgs = {
 };
 
 
-export type MutationUpdateLoggedWorkoutArgs = {
-  data: UpdateLoggedWorkoutInput;
-};
-
-
-export type MutationDeleteLoggedWorkoutByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationCreateLoggedWorkoutSectionArgs = {
-  data: CreateLoggedWorkoutSectionInput;
-};
-
-
-export type MutationUpdateLoggedWorkoutSectionArgs = {
-  data: UpdateLoggedWorkoutSectionInput;
-};
-
-
-export type MutationDeleteLoggedWorkoutSectionByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationReorderLoggedWorkoutSectionsArgs = {
-  data: Array<UpdateSortPositionInput>;
-};
-
-
-export type MutationCreateLoggedWorkoutSetArgs = {
-  data: CreateLoggedWorkoutSetInput;
-};
-
-
-export type MutationUpdateLoggedWorkoutSetArgs = {
-  data: UpdateLoggedWorkoutSetInput;
-};
-
-
-export type MutationDeleteLoggedWorkoutSetByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationReorderLoggedWorkoutSetsArgs = {
-  data: Array<UpdateSortPositionInput>;
-};
-
-
-export type MutationCreateLoggedWorkoutMoveArgs = {
-  data: CreateLoggedWorkoutMoveInput;
-};
-
-
-export type MutationUpdateLoggedWorkoutMoveArgs = {
-  data: UpdateLoggedWorkoutMoveInput;
-};
-
-
-export type MutationDeleteLoggedWorkoutMoveByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationReorderLoggedWorkoutMovesArgs = {
-  data: Array<UpdateSortPositionInput>;
-};
-
-
 export type MutationCreateMoveArgs = {
   data: CreateMoveInput;
 };
 
 
-export type MutationUpdateMoveArgs = {
-  data: UpdateMoveInput;
-};
-
-
-export type MutationSoftDeleteMoveByIdArgs = {
-  id: Scalars['ID'];
+export type MutationCreateScheduleForPlanEnrolmentArgs = {
+  data: CreateScheduleForPlanEnrolmentInput;
 };
 
 
@@ -678,28 +958,18 @@ export type MutationCreateScheduledWorkoutArgs = {
 };
 
 
-export type MutationUpdateScheduledWorkoutArgs = {
-  data: UpdateScheduledWorkoutInput;
+export type MutationCreateSkillArgs = {
+  data: CreateSkillInput;
 };
 
 
-export type MutationDeleteScheduledWorkoutByIdArgs = {
-  id: Scalars['ID'];
+export type MutationCreateUserBenchmarkArgs = {
+  data: CreateUserBenchmarkInput;
 };
 
 
-export type MutationUpdateUserArgs = {
-  data: UpdateUserInput;
-};
-
-
-export type MutationCreateWorkoutTagArgs = {
-  data: CreateWorkoutTagInput;
-};
-
-
-export type MutationMakeCopyWorkoutByIdArgs = {
-  id: Scalars['ID'];
+export type MutationCreateUserBenchmarkEntryArgs = {
+  data: CreateUserBenchmarkEntryInput;
 };
 
 
@@ -708,18 +978,33 @@ export type MutationCreateWorkoutArgs = {
 };
 
 
-export type MutationUpdateWorkoutArgs = {
-  data: UpdateWorkoutInput;
+export type MutationCreateWorkoutMoveArgs = {
+  data: CreateWorkoutMoveInput;
 };
 
 
-export type MutationDuplicateWorkoutByIdArgs = {
-  id: Scalars['ID'];
+export type MutationCreateWorkoutPlanArgs = {
+  data: CreateWorkoutPlanInput;
 };
 
 
-export type MutationSoftDeleteWorkoutByIdArgs = {
-  id: Scalars['ID'];
+export type MutationCreateWorkoutPlanDayWithWorkoutArgs = {
+  data: CreateWorkoutPlanDayWithWorkoutInput;
+};
+
+
+export type MutationCreateWorkoutPlanDayWorkoutArgs = {
+  data: CreateWorkoutPlanDayWorkoutInput;
+};
+
+
+export type MutationCreateWorkoutPlanEnrolmentArgs = {
+  workoutPlanId: Scalars['ID'];
+};
+
+
+export type MutationCreateWorkoutPlanReviewArgs = {
+  data: CreateWorkoutPlanReviewInput;
 };
 
 
@@ -728,32 +1013,132 @@ export type MutationCreateWorkoutSectionArgs = {
 };
 
 
-export type MutationUpdateWorkoutSectionArgs = {
-  data: UpdateWorkoutSectionInput;
-};
-
-
-export type MutationDeleteWorkoutSectionByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationReorderWorkoutSectionsArgs = {
-  data: Array<UpdateSortPositionInput>;
-};
-
-
 export type MutationCreateWorkoutSetArgs = {
   data: CreateWorkoutSetInput;
 };
 
 
-export type MutationUpdateWorkoutSetArgs = {
-  data: UpdateWorkoutSetInput;
+export type MutationCreateWorkoutSetWithWorkoutMovesArgs = {
+  data: CreateWorkoutSetWithWorkoutMovesInput;
 };
 
 
-export type MutationDuplicateWorkoutSetByIdArgs = {
+export type MutationCreateWorkoutTagArgs = {
+  data: CreateWorkoutTagInput;
+};
+
+
+export type MutationDeleteBodyTrackingEntryByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteClubArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteClubAnnouncementArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteClubInviteTokenArgs = {
+  data: DeleteClubInviteTokenInput;
+};
+
+
+export type MutationDeleteClubTimelinePostArgs = {
+  activityId: Scalars['ID'];
+};
+
+
+export type MutationDeleteCollectionByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteCompletedWorkoutPlanDayWorkoutArgs = {
+  data: DeleteCompletedWorkoutPlanDayWorkoutInput;
+};
+
+
+export type MutationDeleteGymProfileByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteJournalGoalByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteJournalMoodByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteJournalNoteByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteLoggedWorkoutByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteLoggedWorkoutMoveArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteScheduledWorkoutByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteSkillByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteUserBenchmarkArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteUserBenchmarkEntryArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteWorkoutMoveByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteWorkoutPlanDayWorkoutByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteWorkoutPlanDaysByIdArgs = {
+  ids: Array<Scalars['ID']>;
+};
+
+
+export type MutationDeleteWorkoutPlanEnrolmentByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteWorkoutPlanReviewByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteWorkoutSectionByIdArgs = {
   id: Scalars['ID'];
 };
 
@@ -763,52 +1148,12 @@ export type MutationDeleteWorkoutSetByIdArgs = {
 };
 
 
-export type MutationReorderWorkoutSetsArgs = {
-  data: Array<UpdateSortPositionInput>;
-};
-
-
-export type MutationCreateWorkoutSetIntervalBuyInArgs = {
-  data: CreateWorkoutSetIntervalBuyInInput;
-};
-
-
-export type MutationUpdateWorkoutSetIntervalBuyInArgs = {
-  data: UpdateWorkoutSetIntervalBuyInInput;
-};
-
-
-export type MutationDeleteWorkoutSetIntervalBuyInByIdArgs = {
+export type MutationDeleteWorkoutTagByIdArgs = {
   id: Scalars['ID'];
 };
 
 
-export type MutationCreateWorkoutSetGeneratorArgs = {
-  data: CreateWorkoutSetGeneratorInput;
-};
-
-
-export type MutationUpdateWorkoutSetGeneratorArgs = {
-  data: UpdateWorkoutSetGeneratorInput;
-};
-
-
-export type MutationDeleteWorkoutSetGeneratorByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationCreateWorkoutMoveArgs = {
-  data: CreateWorkoutMoveInput;
-};
-
-
-export type MutationUpdateWorkoutMoveArgs = {
-  data: UpdateWorkoutMoveInput;
-};
-
-
-export type MutationDeleteWorkoutMoveByIdArgs = {
+export type MutationDuplicateWorkoutByIdArgs = {
   id: Scalars['ID'];
 };
 
@@ -818,162 +1163,338 @@ export type MutationDuplicateWorkoutMoveByIdArgs = {
 };
 
 
+export type MutationDuplicateWorkoutSetByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationGiveMemberAdminStatusArgs = {
+  clubId: Scalars['ID'];
+  userId: Scalars['ID'];
+};
+
+
+export type MutationMakeCopyWorkoutByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationMoveWorkoutPlanDayToAnotherDayArgs = {
+  data: MoveWorkoutPlanDayToAnotherDayInput;
+};
+
+
+export type MutationRemoveDocumentFromSkillArgs = {
+  data: RemoveDocumentFromSkillInput;
+};
+
+
+export type MutationRemoveMemberAdminStatusArgs = {
+  clubId: Scalars['ID'];
+  userId: Scalars['ID'];
+};
+
+
+export type MutationRemoveUserFromClubArgs = {
+  clubId: Scalars['ID'];
+  userToRemoveId: Scalars['ID'];
+};
+
+
+export type MutationRemoveWorkoutFromClubArgs = {
+  clubId: Scalars['ID'];
+  workoutId: Scalars['ID'];
+};
+
+
+export type MutationRemoveWorkoutFromCollectionArgs = {
+  data: RemoveWorkoutFromCollectionInput;
+};
+
+
+export type MutationRemoveWorkoutPlanFromClubArgs = {
+  clubId: Scalars['ID'];
+  workoutPlanId: Scalars['ID'];
+};
+
+
+export type MutationRemoveWorkoutPlanFromCollectionArgs = {
+  data: RemoveWorkoutPlanFromCollectionInput;
+};
+
+
 export type MutationReorderWorkoutMovesArgs = {
   data: Array<UpdateSortPositionInput>;
 };
 
 
-export type MutationCreateWorkoutProgramArgs = {
-  data: CreateWorkoutProgramInput;
+export type MutationReorderWorkoutPlanDayWorkoutsArgs = {
+  data: Array<UpdateSortPositionInput>;
 };
 
 
-export type MutationUpdateWorkoutProgramArgs = {
-  data: UpdateWorkoutProgramInput;
+export type MutationReorderWorkoutSectionsArgs = {
+  data: Array<UpdateSortPositionInput>;
 };
 
 
-export type MutationSoftDeleteWorkoutProgramByIdArgs = {
+export type MutationReorderWorkoutSetsArgs = {
+  data: Array<UpdateSortPositionInput>;
+};
+
+
+export type MutationSoftDeleteMoveByIdArgs = {
   id: Scalars['ID'];
 };
 
 
-export type MutationCreateWorkoutProgramWorkoutArgs = {
-  data: CreateWorkoutProgramWorkoutInput;
-};
-
-
-export type MutationUpdateWorkoutProgramWorkoutArgs = {
-  data: UpdateWorkoutProgramWorkoutInput;
-};
-
-
-export type MutationDeleteWorkoutProgramWorkoutByIdArgs = {
+export type MutationSoftDeleteWorkoutPlanByIdArgs = {
   id: Scalars['ID'];
 };
 
 
-export type MutationCreateWorkoutProgramEnrolmentArgs = {
-  workoutProgramId: Scalars['ID'];
-};
-
-
-export type MutationDeleteWorkoutProgramEnrolmentByIdArgs = {
+export type MutationUnarchiveCustomMoveByIdArgs = {
   id: Scalars['ID'];
 };
 
 
-export type MutationCreateWorkoutProgramReviewArgs = {
-  data: CreateWorkoutProgramReviewInput;
-};
-
-
-export type MutationUpdateWorkoutProgramReviewArgs = {
-  data: UpdateWorkoutProgramReviewInput;
-};
-
-
-export type MutationDeleteWorkoutProgramReviewByIdArgs = {
+export type MutationUnarchiveWorkoutByIdArgs = {
   id: Scalars['ID'];
 };
 
-export type ProgressJournal = {
-  __typename?: 'ProgressJournal';
+
+export type MutationUnarchiveWorkoutPlanByIdArgs = {
   id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  ProgressJournalEntries?: Maybe<Array<ProgressJournalEntry>>;
-  ProgressJournalGoals?: Maybe<Array<ProgressJournalGoal>>;
 };
 
-export type ProgressJournalEntry = {
-  __typename?: 'ProgressJournalEntry';
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  note?: Maybe<Scalars['String']>;
-  voiceNoteUri?: Maybe<Scalars['String']>;
-  bodyweight?: Maybe<Scalars['Float']>;
-  moodScore?: Maybe<Scalars['Float']>;
-  energyScore?: Maybe<Scalars['Float']>;
-  stressScore?: Maybe<Scalars['Float']>;
-  motivationScore?: Maybe<Scalars['Float']>;
-  progressPhotoUris?: Maybe<Array<Scalars['String']>>;
-  ProgressJournal: ProgressJournal;
+
+export type MutationUpdateBodyTrackingEntryArgs = {
+  data: UpdateBodyTrackingEntryInput;
 };
 
-export type ProgressJournalGoal = {
-  __typename?: 'ProgressJournalGoal';
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  deadline?: Maybe<Scalars['DateTime']>;
-  completedDate?: Maybe<Scalars['DateTime']>;
-  ProgressJournalGoalTags?: Maybe<Array<ProgressJournalGoalTag>>;
+
+export type MutationUpdateClubAnnouncementArgs = {
+  data: UpdateClubAnnouncementInput;
 };
 
-export type ProgressJournalGoalTag = {
-  __typename?: 'ProgressJournalGoalTag';
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  tag: Scalars['String'];
-  hexColor: Scalars['String'];
+
+export type MutationUpdateClubInviteTokenArgs = {
+  data: UpdateClubInviteTokenInput;
+};
+
+
+export type MutationUpdateClubSummaryArgs = {
+  data: UpdateClubSummaryInput;
+};
+
+
+export type MutationUpdateCollectionArgs = {
+  data: UpdateCollectionInput;
+};
+
+
+export type MutationUpdateEquipmentArgs = {
+  data: UpdateEquipmentInput;
+};
+
+
+export type MutationUpdateGymProfileArgs = {
+  data: UpdateGymProfileInput;
+};
+
+
+export type MutationUpdateJournalGoalArgs = {
+  data: UpdateJournalGoalInput;
+};
+
+
+export type MutationUpdateJournalMoodArgs = {
+  data: UpdateJournalMoodInput;
+};
+
+
+export type MutationUpdateJournalNoteArgs = {
+  data: UpdateJournalNoteInput;
+};
+
+
+export type MutationUpdateLoggedWorkoutArgs = {
+  data: UpdateLoggedWorkoutInput;
+};
+
+
+export type MutationUpdateLoggedWorkoutMoveArgs = {
+  data: UpdateLoggedWorkoutMoveInput;
+};
+
+
+export type MutationUpdateLoggedWorkoutSectionArgs = {
+  data: UpdateLoggedWorkoutSectionInput;
+};
+
+
+export type MutationUpdateLoggedWorkoutSetArgs = {
+  data: UpdateLoggedWorkoutSetInput;
+};
+
+
+export type MutationUpdateMoveArgs = {
+  data: UpdateMoveInput;
+};
+
+
+export type MutationUpdateScheduledWorkoutArgs = {
+  data: UpdateScheduledWorkoutInput;
+};
+
+
+export type MutationUpdateSkillArgs = {
+  data: UpdateSkillInput;
+};
+
+
+export type MutationUpdateUserBenchmarkArgs = {
+  data: UpdateUserBenchmarkInput;
+};
+
+
+export type MutationUpdateUserBenchmarkEntryArgs = {
+  data: UpdateUserBenchmarkEntryInput;
+};
+
+
+export type MutationUpdateUserProfileArgs = {
+  data: UpdateUserProfileInput;
+};
+
+
+export type MutationUpdateWorkoutArgs = {
+  data: UpdateWorkoutInput;
+};
+
+
+export type MutationUpdateWorkoutMoveArgs = {
+  data: UpdateWorkoutMoveInput;
+};
+
+
+export type MutationUpdateWorkoutMovesArgs = {
+  data: Array<UpdateWorkoutMoveInput>;
+};
+
+
+export type MutationUpdateWorkoutPlanArgs = {
+  data: UpdateWorkoutPlanInput;
+};
+
+
+export type MutationUpdateWorkoutPlanDayArgs = {
+  data: UpdateWorkoutPlanDayInput;
+};
+
+
+export type MutationUpdateWorkoutPlanDayWorkoutArgs = {
+  data: UpdateWorkoutPlanDayWorkoutInput;
+};
+
+
+export type MutationUpdateWorkoutPlanReviewArgs = {
+  data: UpdateWorkoutPlanReviewInput;
+};
+
+
+export type MutationUpdateWorkoutSectionArgs = {
+  data: UpdateWorkoutSectionInput;
+};
+
+
+export type MutationUpdateWorkoutSetArgs = {
+  data: UpdateWorkoutSetInput;
+};
+
+
+export type MutationUpdateWorkoutTagArgs = {
+  data: UpdateWorkoutTagInput;
+};
+
+
+export type MutationUserJoinPublicClubArgs = {
+  clubId: Scalars['ID'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  validateToken: Scalars['Boolean'];
   bodyAreas: Array<BodyArea>;
-  equipments: Array<Equipment>;
-  moveTypes: Array<MoveType>;
-  workoutGoals: Array<WorkoutGoal>;
-  workoutSectionTypes: Array<WorkoutSectionType>;
-  userLoggedWorkouts: Array<LoggedWorkout>;
-  standardMoves: Array<Move>;
-  userCustomMoves: Array<Move>;
-  userProgressJournals: Array<ProgressJournal>;
-  progressJournalById: ProgressJournal;
-  progressJournalGoalTags: Array<ProgressJournalGoalTag>;
-  userScheduledWorkouts: Array<ScheduledWorkout>;
-  textSearchWorkouts?: Maybe<Array<TextSearchWorkoutResult>>;
-  textSearchWorkoutPrograms?: Maybe<Array<TextSearchWorkoutProgramResult>>;
-  textSearchCreatorPublicProfiles?: Maybe<Array<UserPublicProfile>>;
+  bodyTrackingEntries: Array<BodyTrackingEntry>;
+  checkClubInviteToken: CheckClubInviteTokenResult;
+  checkUniqueClubName: Scalars['Boolean'];
   checkUniqueDisplayName: Scalars['Boolean'];
-  authedUser: User;
+  checkUserClubMemberStatus: UserClubMemberStatus;
+  clubChatSummary: ClubChatSummary;
+  clubInviteTokens: ClubInviteTokens;
+  clubMembers: ClubMembers;
+  clubMembersFeedPosts: Array<TimelinePostFullData>;
+  clubSummaries: Array<ClubSummary>;
+  clubSummary: ClubSummary;
+  clubWorkoutPlans: ClubWorkoutPlans;
+  clubWorkouts: ClubWorkouts;
+  equipments: Array<Equipment>;
   gymProfiles: Array<GymProfile>;
-  userWorkoutTags: Array<WorkoutTag>;
-  userPublicProfiles?: Maybe<Array<UserPublicProfile>>;
-  userPublicProfileByUserId: UserPublicProfile;
-  officialWorkouts: Array<WorkoutSummary>;
+  journalGoals: Array<JournalGoal>;
+  journalMoods: Array<JournalMood>;
+  journalNotes: Array<JournalNote>;
+  lifetimeLogStatsSummary: LifetimeLogStatsSummary;
+  logCountByWorkout: Scalars['Int'];
+  loggedWorkoutById: LoggedWorkout;
+  moveTypes: Array<MoveType>;
+  publicClubs: Array<ClubSummary>;
+  publicWorkoutPlans: Array<WorkoutPlanSummary>;
   publicWorkouts: Array<WorkoutSummary>;
+  standardMoves: Array<Move>;
+  textSearchUserNames?: Maybe<Array<TextSearchResult>>;
+  textSearchUserProfiles?: Maybe<Array<UserProfileSummary>>;
+  textSearchWorkoutNames?: Maybe<Array<TextSearchResult>>;
+  textSearchWorkoutPlanNames?: Maybe<Array<TextSearchResult>>;
+  textSearchWorkoutPlans?: Maybe<Array<WorkoutPlanSummary>>;
+  textSearchWorkouts?: Maybe<Array<WorkoutSummary>>;
+  timelinePostsData: Array<TimelinePostObjectData>;
+  userArchivedCustomMoves: Array<Move>;
+  userArchivedWorkoutPlans: Array<WorkoutPlan>;
+  userArchivedWorkouts: Array<Workout>;
+  userAvatarById: UserAvatarData;
+  userAvatars: Array<UserAvatarData>;
+  userBenchmark: UserBenchmark;
+  userBenchmarks: Array<UserBenchmark>;
+  userClubs: Array<ClubSummary>;
+  userCollectionById: Collection;
+  userCollections: Array<Collection>;
+  userCustomMoves: Array<Move>;
+  userLoggedWorkouts: Array<LoggedWorkout>;
+  userProfile: UserProfile;
+  userProfiles: Array<UserProfileSummary>;
+  userPublicWorkoutPlans: Array<WorkoutPlanSummary>;
+  userPublicWorkouts: Array<WorkoutSummary>;
+  userScheduledWorkouts: Array<ScheduledWorkout>;
+  userWorkoutPlans: Array<WorkoutPlanSummary>;
+  userWorkoutTags: Array<WorkoutTag>;
   userWorkouts: Array<WorkoutSummary>;
+  validateToken: Scalars['Boolean'];
   workoutById: Workout;
-  officialWorkoutPrograms: Array<WorkoutProgram>;
-  publicWorkoutPrograms: Array<WorkoutProgram>;
-  workoutProgramById: WorkoutProgram;
-  userWorkoutPrograms: Array<WorkoutProgram>;
-  userWorkoutProgramEnrolments?: Maybe<Array<WorkoutProgramEnrolment>>;
+  workoutGoals: Array<WorkoutGoal>;
+  workoutPlanById: WorkoutPlan;
+  workoutPlanEnrolmentById: WorkoutPlanEnrolmentWithPlan;
+  workoutPlanEnrolments: Array<WorkoutPlanEnrolmentSummary>;
+  workoutSectionTypes: Array<WorkoutSectionType>;
 };
 
 
-export type QueryProgressJournalByIdArgs = {
-  progressJournalId: Scalars['ID'];
+export type QueryCheckClubInviteTokenArgs = {
+  id: Scalars['ID'];
 };
 
 
-export type QueryTextSearchWorkoutsArgs = {
-  text: Scalars['String'];
-};
-
-
-export type QueryTextSearchWorkoutProgramsArgs = {
-  text: Scalars['String'];
-};
-
-
-export type QueryTextSearchCreatorPublicProfilesArgs = {
-  text: Scalars['String'];
+export type QueryCheckUniqueClubNameArgs = {
+  name: Scalars['String'];
 };
 
 
@@ -982,7 +1503,159 @@ export type QueryCheckUniqueDisplayNameArgs = {
 };
 
 
-export type QueryUserPublicProfileByUserIdArgs = {
+export type QueryCheckUserClubMemberStatusArgs = {
+  clubId: Scalars['ID'];
+};
+
+
+export type QueryClubChatSummaryArgs = {
+  clubId: Scalars['ID'];
+};
+
+
+export type QueryClubInviteTokensArgs = {
+  clubId: Scalars['ID'];
+};
+
+
+export type QueryClubMembersArgs = {
+  clubId: Scalars['ID'];
+};
+
+
+export type QueryClubMembersFeedPostsArgs = {
+  clubId: Scalars['ID'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+};
+
+
+export type QueryClubSummariesArgs = {
+  ids: Array<Scalars['ID']>;
+};
+
+
+export type QueryClubSummaryArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryClubWorkoutPlansArgs = {
+  clubId: Scalars['ID'];
+};
+
+
+export type QueryClubWorkoutsArgs = {
+  clubId: Scalars['ID'];
+};
+
+
+export type QueryLifetimeLogStatsSummaryArgs = {
+  userId: Scalars['ID'];
+};
+
+
+export type QueryLogCountByWorkoutArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryLoggedWorkoutByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryPublicWorkoutPlansArgs = {
+  cursor?: InputMaybe<Scalars['ID']>;
+  filters?: InputMaybe<WorkoutPlanFiltersInput>;
+  take?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryPublicWorkoutsArgs = {
+  cursor?: InputMaybe<Scalars['ID']>;
+  filters?: InputMaybe<WorkoutFiltersInput>;
+  take?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryTextSearchUserNamesArgs = {
+  text: Scalars['String'];
+};
+
+
+export type QueryTextSearchUserProfilesArgs = {
+  text: Scalars['String'];
+};
+
+
+export type QueryTextSearchWorkoutNamesArgs = {
+  text: Scalars['String'];
+};
+
+
+export type QueryTextSearchWorkoutPlanNamesArgs = {
+  text: Scalars['String'];
+};
+
+
+export type QueryTextSearchWorkoutPlansArgs = {
+  text: Scalars['String'];
+};
+
+
+export type QueryTextSearchWorkoutsArgs = {
+  text: Scalars['String'];
+};
+
+
+export type QueryTimelinePostsDataArgs = {
+  postDataRequests: Array<TimelinePostDataRequestInput>;
+};
+
+
+export type QueryUserAvatarByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryUserAvatarsArgs = {
+  ids: Array<Scalars['ID']>;
+};
+
+
+export type QueryUserBenchmarkArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryUserCollectionByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryUserLoggedWorkoutsArgs = {
+  take?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryUserProfileArgs = {
+  userId: Scalars['ID'];
+};
+
+
+export type QueryUserProfilesArgs = {
+  cursor?: InputMaybe<Scalars['ID']>;
+  take?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryUserPublicWorkoutPlansArgs = {
+  userId: Scalars['ID'];
+};
+
+
+export type QueryUserPublicWorkoutsArgs = {
   userId: Scalars['ID'];
 };
 
@@ -992,24 +1665,63 @@ export type QueryWorkoutByIdArgs = {
 };
 
 
-export type QueryWorkoutProgramByIdArgs = {
+export type QueryWorkoutPlanByIdArgs = {
   id: Scalars['ID'];
 };
 
 
-export type QueryUserWorkoutProgramEnrolmentsArgs = {
-  workoutProgramId: Scalars['ID'];
+export type QueryWorkoutPlanEnrolmentByIdArgs = {
+  id: Scalars['ID'];
+};
+
+export type RemoveDocumentFromSkillInput = {
+  id: Scalars['ID'];
+};
+
+export type RemoveWorkoutFromClubInput = {
+  Workout: ConnectRelationInput;
+  id: Scalars['ID'];
+};
+
+export type RemoveWorkoutFromCollectionInput = {
+  Workout: ConnectRelationInput;
+  collectionId: Scalars['ID'];
+};
+
+export type RemoveWorkoutPlanFromClubInput = {
+  WorkoutPlan: ConnectRelationInput;
+  id: Scalars['ID'];
+};
+
+export type RemoveWorkoutPlanFromCollectionInput = {
+  WorkoutPlan: ConnectRelationInput;
+  collectionId: Scalars['ID'];
 };
 
 export type ScheduledWorkout = {
   __typename?: 'ScheduledWorkout';
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  scheduledAt: Scalars['DateTime'];
-  note?: Maybe<Scalars['String']>;
-  Workout: Workout;
-  LoggedWorkout?: Maybe<LoggedWorkout>;
   GymProfile?: Maybe<GymProfile>;
+  Workout?: Maybe<WorkoutSummary>;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  loggedWorkoutId?: Maybe<Scalars['ID']>;
+  note?: Maybe<Scalars['String']>;
+  scheduledAt: Scalars['DateTime'];
+  workoutPlanDayWorkoutId?: Maybe<Scalars['ID']>;
+  workoutPlanEnrolmentId?: Maybe<Scalars['ID']>;
+  workoutPlanName?: Maybe<Scalars['String']>;
+};
+
+export type Skill = {
+  __typename?: 'Skill';
+  awardingBody?: Maybe<Scalars['String']>;
+  certificateRef?: Maybe<Scalars['String']>;
+  certification?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  documentUri?: Maybe<Scalars['String']>;
+  experience?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
 };
 
 export type SortPositionUpdated = {
@@ -1018,28 +1730,10 @@ export type SortPositionUpdated = {
   sortPosition: Scalars['Int'];
 };
 
-export type TextSearchWorkoutProgramResult = {
-  __typename?: 'TextSearchWorkoutProgramResult';
+export type TextSearchResult = {
+  __typename?: 'TextSearchResult';
   id: Scalars['ID'];
-  scope: ContentAccessScope;
   name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  imageUri?: Maybe<Scalars['String']>;
-  User?: Maybe<User>;
-  WorkoutGoals: Array<WorkoutGoal>;
-  WorkoutProgramWorkouts?: Maybe<Array<WorkoutProgramWorkout>>;
-};
-
-export type TextSearchWorkoutResult = {
-  __typename?: 'TextSearchWorkoutResult';
-  id: Scalars['ID'];
-  scope: ContentAccessScope;
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  imageUri?: Maybe<Scalars['String']>;
-  difficultyLevel: Scalars['Int'];
-  timecap?: Maybe<Scalars['Int']>;
-  User?: Maybe<User>;
 };
 
 export enum TimeUnit {
@@ -1048,109 +1742,198 @@ export enum TimeUnit {
   Seconds = 'SECONDS'
 }
 
-export type UpdateEquipmentInput = {
+export type TimelinePostDataRequestInput = {
+  activityId: Scalars['String'];
+  objectId: Scalars['ID'];
+  objectType: TimelinePostType;
+  posterId: Scalars['ID'];
+};
+
+export type TimelinePostFullData = {
+  __typename?: 'TimelinePostFullData';
+  activityId: Scalars['String'];
+  caption?: Maybe<Scalars['String']>;
+  creator: TimelinePostObjectDataUser;
+  object: TimelinePostObjectDataObject;
+  postedAt: Scalars['DateTime'];
+  poster: TimelinePostObjectDataUser;
+  tags: Array<Scalars['String']>;
+};
+
+export type TimelinePostObjectData = {
+  __typename?: 'TimelinePostObjectData';
+  activityId: Scalars['String'];
+  creator: TimelinePostObjectDataUser;
+  object: TimelinePostObjectDataObject;
+  poster: TimelinePostObjectDataUser;
+};
+
+export type TimelinePostObjectDataObject = {
+  __typename?: 'TimelinePostObjectDataObject';
+  audioUri?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  altNames?: Maybe<Scalars['String']>;
-  loadAdjustable?: Maybe<Scalars['Boolean']>;
+  imageUri?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  type: TimelinePostType;
+  videoThumbUri?: Maybe<Scalars['String']>;
+  videoUri?: Maybe<Scalars['String']>;
+};
+
+export type TimelinePostObjectDataUser = {
+  __typename?: 'TimelinePostObjectDataUser';
+  avatarUri?: Maybe<Scalars['String']>;
+  displayName: Scalars['String'];
+  id: Scalars['ID'];
+};
+
+export enum TimelinePostType {
+  Announcement = 'ANNOUNCEMENT',
+  Workout = 'WORKOUT',
+  Workoutplan = 'WORKOUTPLAN'
+}
+
+export type UpdateBodyTrackingEntryInput = {
+  bodyweight?: InputMaybe<Scalars['Float']>;
+  bodyweightUnit?: InputMaybe<BodyweightUnit>;
+  fatPercent?: InputMaybe<Scalars['Float']>;
+  id: Scalars['ID'];
+  note?: InputMaybe<Scalars['String']>;
+  photoUris?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type UpdateClubAnnouncementInput = {
+  audioUri?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  imageUri?: InputMaybe<Scalars['String']>;
+  videoThumbUri?: InputMaybe<Scalars['String']>;
+  videoUri?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateClubInviteTokenInput = {
+  active?: InputMaybe<Scalars['Boolean']>;
+  clubId: Scalars['ID'];
+  id: Scalars['ID'];
+  inviteLimit?: InputMaybe<Scalars['Int']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateClubSummaryInput = {
+  contentAccessScope?: InputMaybe<ContentAccessScope>;
+  coverImageUri?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  introAudioUri?: InputMaybe<Scalars['String']>;
+  introVideoThumbUri?: InputMaybe<Scalars['String']>;
+  introVideoUri?: InputMaybe<Scalars['String']>;
+  location?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateCollectionInput = {
+  description?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateEquipmentInput = {
+  altNames?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  loadAdjustable?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateGymProfileInput = {
+  Equipments?: InputMaybe<Array<ConnectRelationInput>>;
+  description?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  Equipments?: Maybe<Array<Scalars['ID']>>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateJournalGoalInput = {
+  completedDate?: InputMaybe<Scalars['DateTime']>;
+  deadline?: InputMaybe<Scalars['DateTime']>;
+  description?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateJournalMoodInput = {
+  energyScore?: InputMaybe<Scalars['Int']>;
+  id: Scalars['ID'];
+  moodScore?: InputMaybe<Scalars['Int']>;
+  tags?: InputMaybe<Array<Scalars['String']>>;
+  textNote?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateJournalNoteInput = {
+  id: Scalars['ID'];
+  textNote?: InputMaybe<Scalars['String']>;
+  voiceNoteUri?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateLoggedWorkoutInput = {
+  GymProfile?: InputMaybe<ConnectRelationInput>;
+  WorkoutGoals: Array<ConnectRelationInput>;
+  completedOn?: InputMaybe<Scalars['DateTime']>;
   id: Scalars['ID'];
-  completedOn?: Maybe<Scalars['DateTime']>;
-  name?: Maybe<Scalars['String']>;
-  note?: Maybe<Scalars['String']>;
-  imageUri?: Maybe<Scalars['String']>;
-  ScheduledWorkout?: Maybe<Scalars['ID']>;
-  GymProfile?: Maybe<Scalars['ID']>;
-  WorkoutProgramWorkout?: Maybe<Scalars['ID']>;
-  WorkoutProgramEnrolment?: Maybe<Scalars['ID']>;
+  note?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateLoggedWorkoutMoveInput = {
+  Equipment?: InputMaybe<ConnectRelationInput>;
+  Move?: InputMaybe<ConnectRelationInput>;
+  distanceUnit?: InputMaybe<DistanceUnit>;
   id: Scalars['ID'];
-  timeTakenMs?: Maybe<Scalars['Int']>;
-  reps?: Maybe<Scalars['Float']>;
-  distanceUnit?: Maybe<DistanceUnit>;
-  loadAmount?: Maybe<Scalars['Float']>;
-  loadUnit?: Maybe<LoadUnit>;
-  Move?: Maybe<Scalars['ID']>;
-  Equipment?: Maybe<Scalars['ID']>;
+  loadAmount?: InputMaybe<Scalars['Float']>;
+  loadUnit?: InputMaybe<LoadUnit>;
+  repType?: InputMaybe<WorkoutMoveRepType>;
+  reps: Scalars['Float'];
+  timeUnit?: InputMaybe<TimeUnit>;
 };
 
 export type UpdateLoggedWorkoutSectionInput = {
   id: Scalars['ID'];
-  timeTakenMs?: Maybe<Scalars['Int']>;
-  note?: Maybe<Scalars['String']>;
+  repScore?: InputMaybe<Scalars['Int']>;
+  timeTakenSeconds?: InputMaybe<Scalars['Int']>;
 };
 
 export type UpdateLoggedWorkoutSetInput = {
   id: Scalars['ID'];
-  timeTakenMs?: Maybe<Scalars['Int']>;
+  timeTakenSeconds?: InputMaybe<Scalars['Int']>;
 };
 
 export type UpdateMoveInput = {
+  BodyAreaMoveScores?: InputMaybe<Array<BodyAreaMoveScoreInput>>;
+  MoveType?: InputMaybe<ConnectRelationInput>;
+  RequiredEquipments?: InputMaybe<Array<ConnectRelationInput>>;
+  SelectableEquipments?: InputMaybe<Array<ConnectRelationInput>>;
+  demoVideoThumbUri?: InputMaybe<Scalars['String']>;
+  demoVideoUri?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  searchTerms?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  demoVideoUri?: Maybe<Scalars['String']>;
-  demoVideoThumbUri?: Maybe<Scalars['String']>;
-  scope?: Maybe<MoveScope>;
-  MoveType?: Maybe<ConnectRelationInput>;
-  validRepTypes?: Maybe<Array<WorkoutMoveRepType>>;
-  RequiredEquipments?: Maybe<Array<ConnectRelationInput>>;
-  SelectableEquipments?: Maybe<Array<ConnectRelationInput>>;
-  BodyAreaMoveScores?: Maybe<Array<BodyAreaMoveScoreInput>>;
-};
-
-export type UpdateProgressJournalEntryInput = {
-  id: Scalars['ID'];
-  note?: Maybe<Scalars['String']>;
-  voiceNoteUri?: Maybe<Scalars['String']>;
-  bodyweight?: Maybe<Scalars['Float']>;
-  moodScore?: Maybe<Scalars['Float']>;
-  energyScore?: Maybe<Scalars['Float']>;
-  stressScore?: Maybe<Scalars['Float']>;
-  motivationScore?: Maybe<Scalars['Float']>;
-  progressPhotoUris?: Maybe<Array<Scalars['String']>>;
-};
-
-export type UpdateProgressJournalGoalInput = {
-  id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  completedDate?: Maybe<Scalars['DateTime']>;
-  deadline?: Maybe<Scalars['DateTime']>;
-  ProgressJournalGoalTags?: Maybe<Array<Scalars['ID']>>;
-};
-
-export type UpdateProgressJournalGoalTagInput = {
-  id: Scalars['ID'];
-  tag?: Maybe<Scalars['String']>;
-  hexColor?: Maybe<Scalars['String']>;
-};
-
-export type UpdateProgressJournalInput = {
-  id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  scope?: InputMaybe<MoveScope>;
+  searchTerms?: InputMaybe<Scalars['String']>;
+  validRepTypes?: InputMaybe<Array<WorkoutMoveRepType>>;
 };
 
 export type UpdateScheduledWorkoutInput = {
+  GymProfile?: InputMaybe<ConnectRelationInput>;
+  LoggedWorkout?: InputMaybe<ConnectRelationInput>;
   id: Scalars['ID'];
-  scheduledAt?: Maybe<Scalars['DateTime']>;
-  note?: Maybe<Scalars['String']>;
-  Workout?: Maybe<Scalars['ID']>;
-  LoggedWorkout?: Maybe<Scalars['ID']>;
-  GymProfile?: Maybe<Scalars['ID']>;
+  note?: InputMaybe<Scalars['String']>;
+  scheduledAt?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type UpdateSkillInput = {
+  awardingBody?: InputMaybe<Scalars['String']>;
+  certificateRef?: InputMaybe<Scalars['String']>;
+  certification?: InputMaybe<Scalars['String']>;
+  documentUri?: InputMaybe<Scalars['String']>;
+  experience?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateSortPositionInput = {
@@ -1158,116 +1941,146 @@ export type UpdateSortPositionInput = {
   sortPosition: Scalars['Int'];
 };
 
-export type UpdateUserInput = {
-  userProfileScope?: Maybe<UserProfileScope>;
+export type UpdateUserBenchmarkEntryInput = {
+  completedOn?: InputMaybe<Scalars['DateTime']>;
+  id: Scalars['String'];
+  note?: InputMaybe<Scalars['String']>;
+  score?: InputMaybe<Scalars['Float']>;
+  videoThumbUri?: InputMaybe<Scalars['String']>;
+  videoUri?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateUserBenchmarkInput = {
+  benchmarkType: BenchmarkType;
+  description?: InputMaybe<Scalars['String']>;
+  equipmentInfo?: InputMaybe<Scalars['String']>;
+  id: Scalars['String'];
+  loadUnit?: InputMaybe<LoadUnit>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateUserProfileInput = {
+  avatarUri?: InputMaybe<Scalars['String']>;
+  bio?: InputMaybe<Scalars['String']>;
+  birthdate?: InputMaybe<Scalars['DateTime']>;
+  countryCode?: InputMaybe<Scalars['String']>;
+  displayName?: InputMaybe<Scalars['String']>;
+  firstname?: InputMaybe<Scalars['String']>;
+  gender?: InputMaybe<Gender>;
+  hasOnboarded?: InputMaybe<Scalars['Boolean']>;
+  instagramHandle?: InputMaybe<Scalars['String']>;
+  introVideoThumbUri?: InputMaybe<Scalars['String']>;
+  introVideoUri?: InputMaybe<Scalars['String']>;
+  lastname?: InputMaybe<Scalars['String']>;
+  linkedinHandle?: InputMaybe<Scalars['String']>;
+  tagline?: InputMaybe<Scalars['String']>;
+  tiktokHandle?: InputMaybe<Scalars['String']>;
+  townCity?: InputMaybe<Scalars['String']>;
+  userProfileScope?: InputMaybe<UserProfileScope>;
+  youtubeHandle?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateUserProfileResult = {
+  __typename?: 'UpdateUserProfileResult';
   avatarUri?: Maybe<Scalars['String']>;
-  introVideoUri?: Maybe<Scalars['String']>;
-  introVideoThumbUri?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
-  tagline?: Maybe<Scalars['String']>;
   birthdate?: Maybe<Scalars['DateTime']>;
-  city?: Maybe<Scalars['String']>;
   countryCode?: Maybe<Scalars['String']>;
   displayName?: Maybe<Scalars['String']>;
-  instagramUrl?: Maybe<Scalars['String']>;
-  tiktokUrl?: Maybe<Scalars['String']>;
-  youtubeUrl?: Maybe<Scalars['String']>;
-  snapUrl?: Maybe<Scalars['String']>;
-  linkedinUrl?: Maybe<Scalars['String']>;
   firstname?: Maybe<Scalars['String']>;
   gender?: Maybe<Gender>;
   hasOnboarded?: Maybe<Scalars['Boolean']>;
+  id: Scalars['ID'];
+  instagramHandle?: Maybe<Scalars['String']>;
+  introVideoThumbUri?: Maybe<Scalars['String']>;
+  introVideoUri?: Maybe<Scalars['String']>;
   lastname?: Maybe<Scalars['String']>;
+  linkedinHandle?: Maybe<Scalars['String']>;
+  tagline?: Maybe<Scalars['String']>;
+  tiktokHandle?: Maybe<Scalars['String']>;
+  townCity?: Maybe<Scalars['String']>;
+  userProfileScope?: Maybe<UserProfileScope>;
+  youtubeHandle?: Maybe<Scalars['String']>;
 };
 
 export type UpdateWorkoutInput = {
+  WorkoutGoals?: InputMaybe<Array<ConnectRelationInput>>;
+  WorkoutTags?: InputMaybe<Array<ConnectRelationInput>>;
+  contentAccessScope?: InputMaybe<ContentAccessScope>;
+  coverImageUri?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  difficultyLevel?: InputMaybe<DifficultyLevel>;
   id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  introVideoUri?: Maybe<Scalars['String']>;
-  introVideoThumbUri?: Maybe<Scalars['String']>;
-  introAudioUri?: Maybe<Scalars['String']>;
-  coverImageUri?: Maybe<Scalars['String']>;
-  difficultyLevel?: Maybe<DifficultyLevel>;
-  contentAccessScope?: Maybe<ContentAccessScope>;
-  WorkoutGoals?: Maybe<Array<ConnectRelationInput>>;
-  WorkoutTags?: Maybe<Array<ConnectRelationInput>>;
+  introAudioUri?: InputMaybe<Scalars['String']>;
+  introVideoThumbUri?: InputMaybe<Scalars['String']>;
+  introVideoUri?: InputMaybe<Scalars['String']>;
+  lengthMinutes?: InputMaybe<Scalars['Int']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateWorkoutMoveInput = {
+  Equipment?: InputMaybe<ConnectRelationInput>;
+  Move?: InputMaybe<ConnectRelationInput>;
+  distanceUnit?: InputMaybe<DistanceUnit>;
   id: Scalars['ID'];
-  reps?: Maybe<Scalars['Float']>;
-  repType?: Maybe<WorkoutMoveRepType>;
-  distanceUnit?: Maybe<DistanceUnit>;
-  loadAmount?: Maybe<Scalars['Float']>;
-  loadUnit?: Maybe<LoadUnit>;
-  timeUnit?: Maybe<TimeUnit>;
-  Move?: Maybe<ConnectRelationInput>;
-  Equipment?: Maybe<ConnectRelationInput>;
+  loadAmount?: InputMaybe<Scalars['Float']>;
+  loadUnit?: InputMaybe<LoadUnit>;
+  repType?: InputMaybe<WorkoutMoveRepType>;
+  reps?: InputMaybe<Scalars['Float']>;
+  timeUnit?: InputMaybe<TimeUnit>;
 };
 
-export type UpdateWorkoutProgramInput = {
+export type UpdateWorkoutPlanDayInput = {
+  dayNumber?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  coverImageUri?: Maybe<Scalars['String']>;
-  introVideoUri?: Maybe<Scalars['String']>;
-  introVideoThumbUri?: Maybe<Scalars['String']>;
-  introAudioUri?: Maybe<Scalars['String']>;
-  contentAccessScope?: Maybe<ContentAccessScope>;
-  WorkoutGoals?: Maybe<Array<Scalars['ID']>>;
+  note?: InputMaybe<Scalars['String']>;
 };
 
-export type UpdateWorkoutProgramReviewInput = {
+export type UpdateWorkoutPlanDayWorkoutInput = {
+  Workout?: InputMaybe<ConnectRelationInput>;
+  WorkoutPlanDay?: InputMaybe<ConnectRelationInput>;
   id: Scalars['ID'];
-  score?: Maybe<Scalars['Float']>;
-  comment?: Maybe<Scalars['String']>;
+  note?: InputMaybe<Scalars['String']>;
 };
 
-export type UpdateWorkoutProgramWorkoutInput = {
+export type UpdateWorkoutPlanInput = {
+  WorkoutTags?: InputMaybe<Array<ConnectRelationInput>>;
+  contentAccessScope?: InputMaybe<ContentAccessScope>;
+  coverImageUri?: InputMaybe<Scalars['String']>;
+  daysPerWeek?: InputMaybe<Scalars['Int']>;
+  description?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
-  dayNumber: Scalars['Float'];
-  note?: Maybe<Scalars['String']>;
-  Workout: Scalars['ID'];
+  introAudioUri?: InputMaybe<Scalars['String']>;
+  introVideoThumbUri?: InputMaybe<Scalars['String']>;
+  introVideoUri?: InputMaybe<Scalars['String']>;
+  lengthWeeks?: InputMaybe<Scalars['Int']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateWorkoutPlanReviewInput = {
+  comment?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  score?: InputMaybe<Scalars['Float']>;
 };
 
 export type UpdateWorkoutSectionInput = {
+  WorkoutSectionType?: InputMaybe<ConnectRelationInput>;
+  classAudioUri?: InputMaybe<Scalars['String']>;
+  classVideoThumbUri?: InputMaybe<Scalars['String']>;
+  classVideoUri?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  note?: Maybe<Scalars['String']>;
-  rounds?: Maybe<Scalars['Int']>;
-  timecap?: Maybe<Scalars['Int']>;
-  introVideoUri?: Maybe<Scalars['String']>;
-  introVideoThumbUri?: Maybe<Scalars['String']>;
-  introAudioUri?: Maybe<Scalars['String']>;
-  classVideoUri?: Maybe<Scalars['String']>;
-  classVideoThumbUri?: Maybe<Scalars['String']>;
-  classAudioUri?: Maybe<Scalars['String']>;
-  outroVideoUri?: Maybe<Scalars['String']>;
-  outroVideoThumbUri?: Maybe<Scalars['String']>;
-  outroAudioUri?: Maybe<Scalars['String']>;
-  WorkoutSectionType?: Maybe<ConnectRelationInput>;
-};
-
-export type UpdateWorkoutSetGeneratorInput = {
-  id: Scalars['ID'];
-  type?: Maybe<WorkoutSetGeneratorType>;
-  workoutMoveIndex?: Maybe<Scalars['Int']>;
-  target?: Maybe<WorkoutSetGeneratorTarget>;
-  roundFrequency?: Maybe<Scalars['Int']>;
-  adjustAmount?: Maybe<Scalars['Float']>;
+  introAudioUri?: InputMaybe<Scalars['String']>;
+  introVideoThumbUri?: InputMaybe<Scalars['String']>;
+  introVideoUri?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  note?: InputMaybe<Scalars['String']>;
+  rounds?: InputMaybe<Scalars['Int']>;
+  timecap?: InputMaybe<Scalars['Int']>;
 };
 
 export type UpdateWorkoutSetInput = {
+  duration?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
-  rounds?: Maybe<Scalars['Int']>;
-  duration?: Maybe<Scalars['Int']>;
-};
-
-export type UpdateWorkoutSetIntervalBuyInInput = {
-  id: Scalars['ID'];
-  interval?: Maybe<Scalars['Int']>;
-  WorkoutMove?: Maybe<UpdateWorkoutMoveInput>;
 };
 
 export type UpdateWorkoutTagInput = {
@@ -1275,38 +2088,85 @@ export type UpdateWorkoutTagInput = {
   tag: Scalars['String'];
 };
 
-export type User = {
-  __typename?: 'User';
-  id: Scalars['ID'];
-  userProfileScope: UserProfileScope;
+export type UserAvatarData = {
+  __typename?: 'UserAvatarData';
   avatarUri?: Maybe<Scalars['String']>;
-  introVideoUri?: Maybe<Scalars['String']>;
-  introVideoThumbUri?: Maybe<Scalars['String']>;
-  bio?: Maybe<Scalars['String']>;
-  tagline?: Maybe<Scalars['String']>;
-  birthdate?: Maybe<Scalars['DateTime']>;
-  city?: Maybe<Scalars['String']>;
-  countryCode?: Maybe<Scalars['String']>;
   displayName: Scalars['String'];
-  instagramUrl?: Maybe<Scalars['String']>;
-  tiktokUrl?: Maybe<Scalars['String']>;
-  youtubeUrl?: Maybe<Scalars['String']>;
-  snapUrl?: Maybe<Scalars['String']>;
-  linkedinUrl?: Maybe<Scalars['String']>;
-  firstname?: Maybe<Scalars['String']>;
-  lastname?: Maybe<Scalars['String']>;
-  gender?: Maybe<Gender>;
-  hasOnboarded: Scalars['Boolean'];
-  GymProfiles?: Maybe<Array<GymProfile>>;
-  ProgressJournalGoalTags?: Maybe<Array<ProgressJournalGoalTag>>;
+  id: Scalars['ID'];
 };
 
-export type UserPrivateProfile = {
-  __typename?: 'UserPrivateProfile';
-  LoggedWorkouts?: Maybe<Array<LoggedWorkout>>;
-  Workouts?: Maybe<Array<Workout>>;
-  WorkoutPrograms?: Maybe<Array<WorkoutProgram>>;
-  WorkoutProgramEnrolments?: Maybe<Array<WorkoutProgramEnrolment>>;
+export type UserBenchmark = {
+  __typename?: 'UserBenchmark';
+  UserBenchmarkEntries: Array<UserBenchmarkEntry>;
+  benchmarkType: BenchmarkType;
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  equipmentInfo?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  lastEntryAt: Scalars['DateTime'];
+  loadUnit: LoadUnit;
+  name: Scalars['String'];
+};
+
+export type UserBenchmarkEntry = {
+  __typename?: 'UserBenchmarkEntry';
+  completedOn: Scalars['DateTime'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['String'];
+  note?: Maybe<Scalars['String']>;
+  score: Scalars['Float'];
+  videoThumbUri?: Maybe<Scalars['String']>;
+  videoUri?: Maybe<Scalars['String']>;
+};
+
+export type UserBenchmarkSummary = {
+  __typename?: 'UserBenchmarkSummary';
+  benchmarkType: BenchmarkType;
+  equipmentInfo?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  lastEntryAt: Scalars['DateTime'];
+  loadUnit: LoadUnit;
+  name: Scalars['String'];
+};
+
+export type UserBenchmarkWithBestEntry = {
+  __typename?: 'UserBenchmarkWithBestEntry';
+  BestEntry?: Maybe<UserBenchmarkEntry>;
+  UserBenchmarkSummary: UserBenchmarkSummary;
+};
+
+export enum UserClubMemberStatus {
+  Admin = 'ADMIN',
+  Member = 'MEMBER',
+  None = 'NONE',
+  Owner = 'OWNER'
+}
+
+export type UserProfile = {
+  __typename?: 'UserProfile';
+  BenchmarksWithBestEntries: Array<UserBenchmarkWithBestEntry>;
+  Clubs: Array<ClubSummary>;
+  LifetimeLogStatsSummary?: Maybe<LifetimeLogStatsSummary>;
+  Skills: Array<Skill>;
+  avatarUri?: Maybe<Scalars['String']>;
+  bio?: Maybe<Scalars['String']>;
+  birthdate?: Maybe<Scalars['DateTime']>;
+  countryCode?: Maybe<Scalars['String']>;
+  displayName: Scalars['String'];
+  followerCount?: Maybe<Scalars['Int']>;
+  gender?: Maybe<Gender>;
+  id: Scalars['ID'];
+  instagramHandle?: Maybe<Scalars['String']>;
+  introVideoThumbUri?: Maybe<Scalars['String']>;
+  introVideoUri?: Maybe<Scalars['String']>;
+  linkedinHandle?: Maybe<Scalars['String']>;
+  planCount?: Maybe<Scalars['Int']>;
+  tagline?: Maybe<Scalars['String']>;
+  tiktokHandle?: Maybe<Scalars['String']>;
+  townCity?: Maybe<Scalars['String']>;
+  userProfileScope: UserProfileScope;
+  workoutCount?: Maybe<Scalars['Int']>;
+  youtubeHandle?: Maybe<Scalars['String']>;
 };
 
 export enum UserProfileScope {
@@ -1314,456 +2174,362 @@ export enum UserProfileScope {
   Public = 'PUBLIC'
 }
 
-export type UserPublicProfile = {
-  __typename?: 'UserPublicProfile';
-  id: Scalars['ID'];
+export type UserProfileSummary = {
+  __typename?: 'UserProfileSummary';
+  Clubs: Array<ClubSummary>;
   avatarUri?: Maybe<Scalars['String']>;
-  introVideoUri?: Maybe<Scalars['String']>;
-  introVideoThumbUri?: Maybe<Scalars['String']>;
-  bio?: Maybe<Scalars['String']>;
-  tagline?: Maybe<Scalars['String']>;
-  instagramUrl?: Maybe<Scalars['String']>;
-  tiktokUrl?: Maybe<Scalars['String']>;
-  youtubeUrl?: Maybe<Scalars['String']>;
-  snapUrl?: Maybe<Scalars['String']>;
-  linkedinUrl?: Maybe<Scalars['String']>;
   countryCode?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  CustomMoves?: Maybe<Array<Move>>;
-  Workouts?: Maybe<Array<Workout>>;
-  WorkoutPrograms?: Maybe<Array<WorkoutProgram>>;
-};
-
-export type UserSummary = {
-  __typename?: 'UserSummary';
-  id: Scalars['ID'];
   displayName: Scalars['String'];
-  avatarUri?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  planCount: Scalars['Int'];
+  skills: Array<Scalars['String']>;
+  tagline?: Maybe<Scalars['String']>;
+  townCity?: Maybe<Scalars['String']>;
+  userProfileScope: UserProfileScope;
+  workoutCount: Scalars['Int'];
 };
 
 export type Workout = {
   __typename?: 'Workout';
-  id: Scalars['ID'];
-  createdAt?: Maybe<Scalars['DateTime']>;
-  User?: Maybe<UserSummary>;
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  introVideoUri?: Maybe<Scalars['String']>;
-  introVideoThumbUri?: Maybe<Scalars['String']>;
-  introAudioUri?: Maybe<Scalars['String']>;
-  coverImageUri?: Maybe<Scalars['String']>;
-  difficultyLevel: DifficultyLevel;
-  contentAccessScope: ContentAccessScope;
+  User: UserAvatarData;
   WorkoutGoals: Array<WorkoutGoal>;
-  WorkoutTags: Array<WorkoutTag>;
   WorkoutSections: Array<WorkoutSection>;
+  WorkoutTags: Array<WorkoutTag>;
+  archived: Scalars['Boolean'];
+  contentAccessScope: ContentAccessScope;
+  coverImageUri?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  difficultyLevel?: Maybe<DifficultyLevel>;
+  id: Scalars['ID'];
+  introAudioUri?: Maybe<Scalars['String']>;
+  introVideoThumbUri?: Maybe<Scalars['String']>;
+  introVideoUri?: Maybe<Scalars['String']>;
+  lengthMinutes?: Maybe<Scalars['Int']>;
+  name: Scalars['String'];
+};
+
+export type WorkoutFiltersInput = {
+  availableEquipments: Array<Scalars['ID']>;
+  bodyweightOnly?: InputMaybe<Scalars['Boolean']>;
+  difficultyLevel?: InputMaybe<DifficultyLevel>;
+  excludedMoves: Array<Scalars['ID']>;
+  hasClassAudio?: InputMaybe<Scalars['Boolean']>;
+  hasClassVideo?: InputMaybe<Scalars['Boolean']>;
+  maxLength?: InputMaybe<Scalars['Int']>;
+  minLength?: InputMaybe<Scalars['Int']>;
+  requiredMoves: Array<Scalars['ID']>;
+  targetedBodyAreas: Array<Scalars['ID']>;
+  workoutGoals: Array<Scalars['ID']>;
+  workoutSectionTypes: Array<Scalars['ID']>;
 };
 
 export type WorkoutGoal = {
   __typename?: 'WorkoutGoal';
+  description: Scalars['String'];
+  hexColor: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
-  description: Scalars['String'];
 };
 
 export type WorkoutMove = {
   __typename?: 'WorkoutMove';
-  id: Scalars['ID'];
-  sortPosition: Scalars['Int'];
-  reps: Scalars['Float'];
-  repType: WorkoutMoveRepType;
+  Equipment?: Maybe<Equipment>;
+  Move: Move;
   distanceUnit: DistanceUnit;
+  id: Scalars['ID'];
   loadAmount: Scalars['Float'];
   loadUnit: LoadUnit;
+  repType: WorkoutMoveRepType;
+  reps: Scalars['Float'];
+  sortPosition: Scalars['Int'];
   timeUnit: TimeUnit;
-  Move: Move;
-  Equipment?: Maybe<Equipment>;
 };
 
 export enum WorkoutMoveRepType {
-  Reps = 'REPS',
   Calories = 'CALORIES',
   Distance = 'DISTANCE',
+  Reps = 'REPS',
   Time = 'TIME'
 }
 
-export type WorkoutMoveSummary = {
-  __typename?: 'WorkoutMoveSummary';
-  id: Scalars['ID'];
-  Equipment?: Maybe<Equipment>;
-  Move: MoveSummary;
-};
-
-export type WorkoutProgram = {
-  __typename?: 'WorkoutProgram';
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  coverImageUri?: Maybe<Scalars['String']>;
-  introVideoUri?: Maybe<Scalars['String']>;
-  introVideoThumbUri?: Maybe<Scalars['String']>;
-  introAudioUri?: Maybe<Scalars['String']>;
+export type WorkoutPlan = {
+  __typename?: 'WorkoutPlan';
+  User: UserAvatarData;
+  WorkoutPlanDays: Array<WorkoutPlanDay>;
+  WorkoutPlanEnrolments: Array<WorkoutPlanEnrolment>;
+  WorkoutPlanReviews: Array<WorkoutPlanReview>;
+  WorkoutTags: Array<WorkoutTag>;
+  archived: Scalars['Boolean'];
   contentAccessScope: ContentAccessScope;
-  User?: Maybe<User>;
-  Enrolments?: Maybe<Array<WorkoutProgramEnrolment>>;
-  WorkoutGoals: Array<WorkoutGoal>;
-  WorkoutProgramWorkouts: Array<WorkoutProgramWorkout>;
-  WorkoutProgramReviews?: Maybe<Array<WorkoutProgramReview>>;
-};
-
-export type WorkoutProgramEnrolment = {
-  __typename?: 'WorkoutProgramEnrolment';
-  id: Scalars['ID'];
-  startDate: Scalars['DateTime'];
-  User: User;
-  WorkoutProgram: WorkoutProgram;
-  LoggedWorkouts?: Maybe<Array<LoggedWorkout>>;
-};
-
-export type WorkoutProgramReview = {
-  __typename?: 'WorkoutProgramReview';
-  id: Scalars['ID'];
+  coverImageUri?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
-  score: Scalars['Float'];
-  comment?: Maybe<Scalars['String']>;
-  User: User;
+  daysPerWeek: Scalars['Int'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  introAudioUri?: Maybe<Scalars['String']>;
+  introVideoThumbUri?: Maybe<Scalars['String']>;
+  introVideoUri?: Maybe<Scalars['String']>;
+  lengthWeeks: Scalars['Int'];
+  name: Scalars['String'];
 };
 
-export type WorkoutProgramWorkout = {
-  __typename?: 'WorkoutProgramWorkout';
+export type WorkoutPlanDay = {
+  __typename?: 'WorkoutPlanDay';
+  WorkoutPlanDayWorkouts: Array<WorkoutPlanDayWorkout>;
+  dayNumber: Scalars['Int'];
   id: Scalars['ID'];
-  dayNumber: Scalars['Float'];
   note?: Maybe<Scalars['String']>;
+};
+
+export type WorkoutPlanDayWorkout = {
+  __typename?: 'WorkoutPlanDayWorkout';
   Workout: Workout;
+  id: Scalars['ID'];
+  note?: Maybe<Scalars['String']>;
+  sortPosition: Scalars['Int'];
+};
+
+export type WorkoutPlanEnrolment = {
+  __typename?: 'WorkoutPlanEnrolment';
+  CompletedWorkoutPlanDayWorkouts: Array<CompletedWorkoutPlanDayWorkout>;
+  User: UserAvatarData;
+  id: Scalars['ID'];
+  startDate?: Maybe<Scalars['DateTime']>;
+};
+
+export type WorkoutPlanEnrolmentSummary = {
+  __typename?: 'WorkoutPlanEnrolmentSummary';
+  WorkoutPlan: WorkoutPlanSummary;
+  completedWorkoutsCount: Scalars['Int'];
+  id: Scalars['ID'];
+  startDate?: Maybe<Scalars['DateTime']>;
+};
+
+export type WorkoutPlanEnrolmentWithPlan = {
+  __typename?: 'WorkoutPlanEnrolmentWithPlan';
+  WorkoutPlan: WorkoutPlan;
+  WorkoutPlanEnrolment: WorkoutPlanEnrolment;
+};
+
+export type WorkoutPlanFiltersInput = {
+  bodyweightOnly?: InputMaybe<Scalars['Boolean']>;
+  daysPerWeek?: InputMaybe<Scalars['Int']>;
+  difficultyLevel?: InputMaybe<DifficultyLevel>;
+  lengthWeeks?: InputMaybe<Scalars['Int']>;
+  workoutGoals: Array<Scalars['ID']>;
+};
+
+export type WorkoutPlanReview = {
+  __typename?: 'WorkoutPlanReview';
+  User: UserAvatarData;
+  comment?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  score: Scalars['Float'];
+};
+
+export type WorkoutPlanSummary = {
+  __typename?: 'WorkoutPlanSummary';
+  User: UserAvatarData;
+  archived: Scalars['Boolean'];
+  coverImageUri?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  daysPerWeek: Scalars['Int'];
+  description?: Maybe<Scalars['String']>;
+  enrolmentsCount: Scalars['Int'];
+  goals: Array<WorkoutGoal>;
+  id: Scalars['ID'];
+  lengthWeeks: Scalars['Int'];
+  name: Scalars['String'];
+  reviewCount: Scalars['Int'];
+  reviewScore?: Maybe<Scalars['Float']>;
+  tags: Array<Scalars['String']>;
+  workoutsCount: Scalars['Int'];
 };
 
 export type WorkoutSection = {
   __typename?: 'WorkoutSection';
+  WorkoutSectionType: WorkoutSectionType;
+  WorkoutSets: Array<WorkoutSet>;
+  classAudioUri?: Maybe<Scalars['String']>;
+  classVideoThumbUri?: Maybe<Scalars['String']>;
+  classVideoUri?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  introAudioUri?: Maybe<Scalars['String']>;
+  introVideoThumbUri?: Maybe<Scalars['String']>;
+  introVideoUri?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   note?: Maybe<Scalars['String']>;
   rounds: Scalars['Int'];
-  timecap?: Maybe<Scalars['Int']>;
   sortPosition: Scalars['Int'];
-  introVideoUri?: Maybe<Scalars['String']>;
-  introVideoThumbUri?: Maybe<Scalars['String']>;
-  introAudioUri?: Maybe<Scalars['String']>;
-  classVideoUri?: Maybe<Scalars['String']>;
-  classVideoThumbUri?: Maybe<Scalars['String']>;
-  classAudioUri?: Maybe<Scalars['String']>;
-  outroVideoUri?: Maybe<Scalars['String']>;
-  outroVideoThumbUri?: Maybe<Scalars['String']>;
-  outroAudioUri?: Maybe<Scalars['String']>;
-  WorkoutSectionType: WorkoutSectionType;
-  WorkoutSets: Array<WorkoutSet>;
-};
-
-export type WorkoutSectionSummary = {
-  __typename?: 'WorkoutSectionSummary';
-  id: Scalars['ID'];
-  timecap?: Maybe<Scalars['Int']>;
-  WorkoutSectionType: WorkoutSectionType;
-  WorkoutSets: Array<WorkoutSetSummary>;
+  timecap: Scalars['Int'];
 };
 
 export type WorkoutSectionType = {
   __typename?: 'WorkoutSectionType';
+  LoggedWorkoutSections: Array<LoggedWorkoutSection>;
+  WorkoutSections: Array<WorkoutSection>;
+  description: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
   subtitle: Scalars['String'];
-  description: Scalars['String'];
   validRepTypes: Array<WorkoutMoveRepType>;
-  WorkoutSections: Array<WorkoutSection>;
-  LoggedWorkoutSections: Array<LoggedWorkoutSection>;
 };
 
 export type WorkoutSet = {
   __typename?: 'WorkoutSet';
+  WorkoutMoves: Array<WorkoutMove>;
+  duration: Scalars['Int'];
   id: Scalars['ID'];
   sortPosition: Scalars['Int'];
-  rounds: Scalars['Int'];
-  duration?: Maybe<Scalars['Int']>;
-  WorkoutMoves: Array<WorkoutMove>;
-};
-
-export type WorkoutSetGenerator = {
-  __typename?: 'WorkoutSetGenerator';
-  id: Scalars['ID'];
-  type: WorkoutSetGeneratorType;
-  workoutMoveIndex: Scalars['Int'];
-  target: WorkoutSetGeneratorTarget;
-  roundFrequency: Scalars['Int'];
-  adjustAmount: Scalars['Float'];
-  WorkoutSet: WorkoutSet;
 };
 
 export enum WorkoutSetGeneratorTarget {
-  Reps = 'REPS',
-  Load = 'LOAD'
+  Load = 'LOAD',
+  Reps = 'REPS'
 }
 
 export enum WorkoutSetGeneratorType {
-  Ladderup = 'LADDERUP',
   Ladderdown = 'LADDERDOWN',
-  Pyramidup = 'PYRAMIDUP',
-  Pyramiddown = 'PYRAMIDDOWN'
+  Ladderup = 'LADDERUP',
+  Pyramiddown = 'PYRAMIDDOWN',
+  Pyramidup = 'PYRAMIDUP'
 }
-
-export type WorkoutSetIntervalBuyIn = {
-  __typename?: 'WorkoutSetIntervalBuyIn';
-  id: Scalars['ID'];
-  interval: Scalars['Int'];
-  WorkoutMove: WorkoutMove;
-};
-
-export type WorkoutSetSummary = {
-  __typename?: 'WorkoutSetSummary';
-  id: Scalars['ID'];
-  WorkoutMoves: Array<WorkoutMoveSummary>;
-};
 
 export type WorkoutSummary = {
   __typename?: 'WorkoutSummary';
-  id: Scalars['ID'];
-  createdAt?: Maybe<Scalars['DateTime']>;
-  User?: Maybe<UserSummary>;
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  introVideoUri?: Maybe<Scalars['String']>;
-  introVideoThumbUri?: Maybe<Scalars['String']>;
-  introAudioUri?: Maybe<Scalars['String']>;
+  User: UserAvatarData;
+  archived: Scalars['Boolean'];
   coverImageUri?: Maybe<Scalars['String']>;
-  difficultyLevel: DifficultyLevel;
-  contentAccessScope: ContentAccessScope;
-  WorkoutGoals: Array<WorkoutGoal>;
-  WorkoutTags: Array<WorkoutTag>;
-  WorkoutSections: Array<WorkoutSectionSummary>;
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  difficultyLevel?: Maybe<DifficultyLevel>;
+  equipments: Array<Scalars['String']>;
+  hasClassAudio: Scalars['Boolean'];
+  hasClassVideo: Scalars['Boolean'];
+  id: Scalars['ID'];
+  lengthMinutes?: Maybe<Scalars['Int']>;
+  loggedSessionsCount: Scalars['Int'];
+  name: Scalars['String'];
+  tags: Array<Scalars['String']>;
 };
 
 export type WorkoutTag = {
   __typename?: 'WorkoutTag';
   id: Scalars['ID'];
-  User: User;
   tag: Scalars['String'];
 };
 
-export type EquipmentFieldsFragment = (
-  { __typename?: 'Equipment' }
-  & Pick<Equipment, 'id' | 'name' | 'altNames' | 'loadAdjustable'>
-);
+export type EquipmentFragment = { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean };
 
-export type BodyAreaFieldsFragment = (
-  { __typename?: 'BodyArea' }
-  & Pick<BodyArea, 'id' | 'name' | 'altNames' | 'frontBack' | 'upperLower'>
-);
+export type BodyAreaFragment = { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower };
 
-export type MoveTypeFieldsFragment = (
-  { __typename?: 'MoveType' }
-  & Pick<MoveType, 'id' | 'name' | 'description' | 'imageUri'>
-);
+export type ClubSummaryFragment = { __typename: 'ClubSummary', id: string, createdAt: any, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, location?: string | null | undefined, memberCount: number, workoutCount: number, planCount: number };
+
+export type MoveTypeFragment = { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined };
+
+export type WorkoutSummaryFragment = { __typename: 'WorkoutSummary', id: string, createdAt: any, archived: boolean, name: string, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, description?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, loggedSessionsCount: number, hasClassVideo: boolean, hasClassAudio: boolean, equipments: Array<string>, tags: Array<string>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } };
+
+export type WorkoutPlanSummaryFragment = { __typename: 'WorkoutPlanSummary', id: string, createdAt: any, archived: boolean, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, workoutsCount: number, enrolmentsCount: number, tags: Array<string>, reviewScore?: number | null | undefined, reviewCount: number, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, goals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }> };
+
+export type WorkoutGoalFragment = { __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string };
+
+export type UserAvatarDataFragment = { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string };
 
 export type BodyAreasQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type BodyAreasQuery = (
-  { __typename?: 'Query' }
-  & { bodyAreas: Array<(
-    { __typename?: 'BodyArea' }
-    & BodyAreaFieldsFragment
-  )> }
-);
+export type BodyAreasQuery = { __typename?: 'Query', bodyAreas: Array<{ __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower }> };
 
 export type CreateEquipmentMutationVariables = Exact<{
   data: CreateEquipmentInput;
 }>;
 
 
-export type CreateEquipmentMutation = (
-  { __typename?: 'Mutation' }
-  & { createEquipment?: Maybe<(
-    { __typename?: 'Equipment' }
-    & EquipmentFieldsFragment
-  )> }
-);
+export type CreateEquipmentMutation = { __typename?: 'Mutation', createEquipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined };
 
 export type EquipmentsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type EquipmentsQuery = (
-  { __typename?: 'Query' }
-  & { equipments: Array<(
-    { __typename?: 'Equipment' }
-    & EquipmentFieldsFragment
-  )> }
-);
+export type EquipmentsQuery = { __typename?: 'Query', equipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> };
 
 export type UpdateEquipmentMutationVariables = Exact<{
   data: UpdateEquipmentInput;
 }>;
 
 
-export type UpdateEquipmentMutation = (
-  { __typename?: 'Mutation' }
-  & { updateEquipment?: Maybe<(
-    { __typename?: 'Equipment' }
-    & EquipmentFieldsFragment
-  )> }
-);
+export type UpdateEquipmentMutation = { __typename?: 'Mutation', updateEquipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined };
 
 export type CreateMoveMutationVariables = Exact<{
   data: CreateMoveInput;
 }>;
 
 
-export type CreateMoveMutation = (
-  { __typename?: 'Mutation' }
-  & { createMove: (
-    { __typename?: 'Move' }
-    & Pick<Move, 'id' | 'name' | 'description' | 'searchTerms' | 'validRepTypes' | 'demoVideoUri'>
-    & { MoveType: (
-      { __typename?: 'MoveType' }
-      & MoveTypeFieldsFragment
-    ), RequiredEquipments: Array<(
-      { __typename?: 'Equipment' }
-      & EquipmentFieldsFragment
-    )>, SelectableEquipments: Array<(
-      { __typename?: 'Equipment' }
-      & EquipmentFieldsFragment
-    )>, BodyAreaMoveScores: Array<(
-      { __typename?: 'BodyAreaMoveScore' }
-      & Pick<BodyAreaMoveScore, 'score'>
-      & { BodyArea: (
-        { __typename?: 'BodyArea' }
-        & BodyAreaFieldsFragment
-      ) }
-    )> }
-  ) }
-);
+export type CreateMoveMutation = { __typename?: 'Mutation', createMove: { __typename?: 'Move', id: string, name: string, description?: string | null | undefined, searchTerms?: string | null | undefined, validRepTypes: Array<WorkoutMoveRepType>, demoVideoUri?: string | null | undefined, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }> } };
 
 export type StandardMovesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type StandardMovesQuery = (
-  { __typename?: 'Query' }
-  & { standardMoves: Array<(
-    { __typename?: 'Move' }
-    & Pick<Move, 'id' | 'name' | 'description' | 'searchTerms' | 'validRepTypes' | 'demoVideoUri'>
-    & { MoveType: (
-      { __typename?: 'MoveType' }
-      & MoveTypeFieldsFragment
-    ), RequiredEquipments: Array<(
-      { __typename?: 'Equipment' }
-      & EquipmentFieldsFragment
-    )>, SelectableEquipments: Array<(
-      { __typename?: 'Equipment' }
-      & EquipmentFieldsFragment
-    )>, BodyAreaMoveScores: Array<(
-      { __typename?: 'BodyAreaMoveScore' }
-      & Pick<BodyAreaMoveScore, 'score'>
-      & { BodyArea: (
-        { __typename?: 'BodyArea' }
-        & BodyAreaFieldsFragment
-      ) }
-    )> }
-  )> }
-);
+export type StandardMovesQuery = { __typename?: 'Query', standardMoves: Array<{ __typename?: 'Move', id: string, name: string, description?: string | null | undefined, searchTerms?: string | null | undefined, validRepTypes: Array<WorkoutMoveRepType>, demoVideoUri?: string | null | undefined, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }> }> };
 
 export type UpdateMoveMutationVariables = Exact<{
   data: UpdateMoveInput;
 }>;
 
 
-export type UpdateMoveMutation = (
-  { __typename?: 'Mutation' }
-  & { updateMove: (
-    { __typename?: 'Move' }
-    & Pick<Move, 'id' | 'name' | 'description' | 'searchTerms' | 'validRepTypes' | 'demoVideoUri'>
-    & { MoveType: (
-      { __typename?: 'MoveType' }
-      & MoveTypeFieldsFragment
-    ), RequiredEquipments: Array<(
-      { __typename?: 'Equipment' }
-      & EquipmentFieldsFragment
-    )>, SelectableEquipments: Array<(
-      { __typename?: 'Equipment' }
-      & EquipmentFieldsFragment
-    )>, BodyAreaMoveScores: Array<(
-      { __typename?: 'BodyAreaMoveScore' }
-      & Pick<BodyAreaMoveScore, 'score'>
-      & { BodyArea: (
-        { __typename?: 'BodyArea' }
-        & BodyAreaFieldsFragment
-      ) }
-    )> }
-  ) }
-);
+export type UpdateMoveMutation = { __typename?: 'Mutation', updateMove: { __typename?: 'Move', id: string, name: string, description?: string | null | undefined, searchTerms?: string | null | undefined, validRepTypes: Array<WorkoutMoveRepType>, demoVideoUri?: string | null | undefined, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }> } };
 
 export type MoveTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MoveTypesQuery = (
-  { __typename?: 'Query' }
-  & { moveTypes: Array<(
-    { __typename?: 'MoveType' }
-    & Pick<MoveType, 'id' | 'name' | 'description' | 'imageUri'>
-  )> }
-);
+export type MoveTypesQuery = { __typename?: 'Query', moveTypes: Array<{ __typename?: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }> };
 
 export type WorkoutGoalsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type WorkoutGoalsQuery = (
-  { __typename?: 'Query' }
-  & { workoutGoals: Array<(
-    { __typename?: 'WorkoutGoal' }
-    & Pick<WorkoutGoal, 'id' | 'name' | 'description'>
-  )> }
-);
+export type WorkoutGoalsQuery = { __typename?: 'Query', workoutGoals: Array<{ __typename?: 'WorkoutGoal', id: string, name: string, description: string }> };
 
 export type WorkoutSectionTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type WorkoutSectionTypesQuery = (
-  { __typename?: 'Query' }
-  & { workoutSectionTypes: Array<(
-    { __typename?: 'WorkoutSectionType' }
-    & Pick<WorkoutSectionType, 'id' | 'name' | 'subtitle' | 'description' | 'validRepTypes'>
-  )> }
-);
+export type WorkoutSectionTypesQuery = { __typename?: 'Query', workoutSectionTypes: Array<{ __typename?: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }> };
 
-export type OfficialWorkoutProgramsQueryVariables = Exact<{ [key: string]: never; }>;
+export type PublicClubsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OfficialWorkoutProgramsQuery = (
-  { __typename?: 'Query' }
-  & { officialWorkoutPrograms: Array<(
-    { __typename?: 'WorkoutProgram' }
-    & Pick<WorkoutProgram, 'id' | 'createdAt' | 'name' | 'description' | 'coverImageUri' | 'introVideoUri' | 'introVideoThumbUri' | 'introAudioUri' | 'contentAccessScope'>
-  )> }
-);
+export type PublicClubsQuery = { __typename?: 'Query', publicClubs: Array<{ __typename: 'ClubSummary', id: string, createdAt: any, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, location?: string | null | undefined, memberCount: number, workoutCount: number, planCount: number, Owner: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, Admins: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }> }> };
 
-export type OfficialWorkoutsQueryVariables = Exact<{ [key: string]: never; }>;
+export type PublicWorkoutPlansQueryVariables = Exact<{
+  cursor?: InputMaybe<Scalars['ID']>;
+  filters?: InputMaybe<WorkoutPlanFiltersInput>;
+  take?: InputMaybe<Scalars['Int']>;
+}>;
 
 
-export type OfficialWorkoutsQuery = (
-  { __typename?: 'Query' }
-  & { officialWorkouts: Array<(
-    { __typename?: 'WorkoutSummary' }
-    & Pick<WorkoutSummary, 'id' | 'createdAt' | 'name' | 'description' | 'introVideoUri' | 'introVideoThumbUri' | 'introAudioUri' | 'coverImageUri' | 'contentAccessScope' | 'difficultyLevel'>
-  )> }
-);
+export type PublicWorkoutPlansQuery = { __typename?: 'Query', publicWorkoutPlans: Array<{ __typename: 'WorkoutPlanSummary', id: string, createdAt: any, archived: boolean, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, workoutsCount: number, enrolmentsCount: number, tags: Array<string>, reviewScore?: number | null | undefined, reviewCount: number, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, goals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }> }> };
 
-export const EquipmentFieldsFragmentDoc = gql`
-    fragment EquipmentFields on Equipment {
+export type PublicWorkoutsQueryVariables = Exact<{
+  cursor?: InputMaybe<Scalars['ID']>;
+  filters?: InputMaybe<WorkoutFiltersInput>;
+  take?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type PublicWorkoutsQuery = { __typename?: 'Query', publicWorkouts: Array<{ __typename: 'WorkoutSummary', id: string, createdAt: any, archived: boolean, name: string, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, description?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, loggedSessionsCount: number, hasClassVideo: boolean, hasClassAudio: boolean, equipments: Array<string>, tags: Array<string>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> };
+
+export const EquipmentFragmentDoc = gql`
+    fragment Equipment on Equipment {
+  __typename
   id
   name
   altNames
   loadAdjustable
 }
     `;
-export const BodyAreaFieldsFragmentDoc = gql`
-    fragment BodyAreaFields on BodyArea {
+export const BodyAreaFragmentDoc = gql`
+    fragment BodyArea on BodyArea {
+  __typename
   id
   name
   altNames
@@ -1771,21 +2537,103 @@ export const BodyAreaFieldsFragmentDoc = gql`
   upperLower
 }
     `;
-export const MoveTypeFieldsFragmentDoc = gql`
-    fragment MoveTypeFields on MoveType {
+export const ClubSummaryFragmentDoc = gql`
+    fragment ClubSummary on ClubSummary {
+  __typename
+  id
+  createdAt
+  name
+  description
+  coverImageUri
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+  contentAccessScope
+  location
+  memberCount
+  workoutCount
+  planCount
+}
+    `;
+export const MoveTypeFragmentDoc = gql`
+    fragment MoveType on MoveType {
+  __typename
   id
   name
   description
   imageUri
 }
     `;
+export const UserAvatarDataFragmentDoc = gql`
+    fragment UserAvatarData on UserAvatarData {
+  __typename
+  id
+  avatarUri
+  displayName
+}
+    `;
+export const WorkoutSummaryFragmentDoc = gql`
+    fragment WorkoutSummary on WorkoutSummary {
+  __typename
+  id
+  createdAt
+  archived
+  name
+  User {
+    ...UserAvatarData
+  }
+  lengthMinutes
+  coverImageUri
+  description
+  difficultyLevel
+  loggedSessionsCount
+  hasClassVideo
+  hasClassAudio
+  equipments
+  tags
+}
+    ${UserAvatarDataFragmentDoc}`;
+export const WorkoutGoalFragmentDoc = gql`
+    fragment WorkoutGoal on WorkoutGoal {
+  __typename
+  id
+  name
+  description
+  hexColor
+}
+    `;
+export const WorkoutPlanSummaryFragmentDoc = gql`
+    fragment WorkoutPlanSummary on WorkoutPlanSummary {
+  __typename
+  id
+  createdAt
+  archived
+  name
+  description
+  coverImageUri
+  lengthWeeks
+  daysPerWeek
+  workoutsCount
+  User {
+    ...UserAvatarData
+  }
+  enrolmentsCount
+  goals {
+    ...WorkoutGoal
+  }
+  tags
+  reviewScore
+  reviewCount
+}
+    ${UserAvatarDataFragmentDoc}
+${WorkoutGoalFragmentDoc}`;
 export const BodyAreasDocument = gql`
     query bodyAreas {
   bodyAreas {
-    ...BodyAreaFields
+    ...BodyArea
   }
 }
-    ${BodyAreaFieldsFragmentDoc}`;
+    ${BodyAreaFragmentDoc}`;
 
 /**
  * __useBodyAreasQuery__
@@ -1816,10 +2664,10 @@ export type BodyAreasQueryResult = Apollo.QueryResult<BodyAreasQuery, BodyAreasQ
 export const CreateEquipmentDocument = gql`
     mutation createEquipment($data: CreateEquipmentInput!) {
   createEquipment(data: $data) {
-    ...EquipmentFields
+    ...Equipment
   }
 }
-    ${EquipmentFieldsFragmentDoc}`;
+    ${EquipmentFragmentDoc}`;
 export type CreateEquipmentMutationFn = Apollo.MutationFunction<CreateEquipmentMutation, CreateEquipmentMutationVariables>;
 
 /**
@@ -1849,10 +2697,10 @@ export type CreateEquipmentMutationOptions = Apollo.BaseMutationOptions<CreateEq
 export const EquipmentsDocument = gql`
     query equipments {
   equipments {
-    ...EquipmentFields
+    ...Equipment
   }
 }
-    ${EquipmentFieldsFragmentDoc}`;
+    ${EquipmentFragmentDoc}`;
 
 /**
  * __useEquipmentsQuery__
@@ -1883,10 +2731,10 @@ export type EquipmentsQueryResult = Apollo.QueryResult<EquipmentsQuery, Equipmen
 export const UpdateEquipmentDocument = gql`
     mutation updateEquipment($data: UpdateEquipmentInput!) {
   updateEquipment(data: $data) {
-    ...EquipmentFields
+    ...Equipment
   }
 }
-    ${EquipmentFieldsFragmentDoc}`;
+    ${EquipmentFragmentDoc}`;
 export type UpdateEquipmentMutationFn = Apollo.MutationFunction<UpdateEquipmentMutation, UpdateEquipmentMutationVariables>;
 
 /**
@@ -1921,27 +2769,27 @@ export const CreateMoveDocument = gql`
     description
     searchTerms
     MoveType {
-      ...MoveTypeFields
+      ...MoveType
     }
     validRepTypes
     demoVideoUri
     RequiredEquipments {
-      ...EquipmentFields
+      ...Equipment
     }
     SelectableEquipments {
-      ...EquipmentFields
+      ...Equipment
     }
     BodyAreaMoveScores {
       BodyArea {
-        ...BodyAreaFields
+        ...BodyArea
       }
       score
     }
   }
 }
-    ${MoveTypeFieldsFragmentDoc}
-${EquipmentFieldsFragmentDoc}
-${BodyAreaFieldsFragmentDoc}`;
+    ${MoveTypeFragmentDoc}
+${EquipmentFragmentDoc}
+${BodyAreaFragmentDoc}`;
 export type CreateMoveMutationFn = Apollo.MutationFunction<CreateMoveMutation, CreateMoveMutationVariables>;
 
 /**
@@ -1976,27 +2824,27 @@ export const StandardMovesDocument = gql`
     description
     searchTerms
     MoveType {
-      ...MoveTypeFields
+      ...MoveType
     }
     validRepTypes
     demoVideoUri
     RequiredEquipments {
-      ...EquipmentFields
+      ...Equipment
     }
     SelectableEquipments {
-      ...EquipmentFields
+      ...Equipment
     }
     BodyAreaMoveScores {
       BodyArea {
-        ...BodyAreaFields
+        ...BodyArea
       }
       score
     }
   }
 }
-    ${MoveTypeFieldsFragmentDoc}
-${EquipmentFieldsFragmentDoc}
-${BodyAreaFieldsFragmentDoc}`;
+    ${MoveTypeFragmentDoc}
+${EquipmentFragmentDoc}
+${BodyAreaFragmentDoc}`;
 
 /**
  * __useStandardMovesQuery__
@@ -2032,27 +2880,27 @@ export const UpdateMoveDocument = gql`
     description
     searchTerms
     MoveType {
-      ...MoveTypeFields
+      ...MoveType
     }
     validRepTypes
     demoVideoUri
     RequiredEquipments {
-      ...EquipmentFields
+      ...Equipment
     }
     SelectableEquipments {
-      ...EquipmentFields
+      ...Equipment
     }
     BodyAreaMoveScores {
       BodyArea {
-        ...BodyAreaFields
+        ...BodyArea
       }
       score
     }
   }
 }
-    ${MoveTypeFieldsFragmentDoc}
-${EquipmentFieldsFragmentDoc}
-${BodyAreaFieldsFragmentDoc}`;
+    ${MoveTypeFragmentDoc}
+${EquipmentFragmentDoc}
+${BodyAreaFragmentDoc}`;
 export type UpdateMoveMutationFn = Apollo.MutationFunction<UpdateMoveMutation, UpdateMoveMutationVariables>;
 
 /**
@@ -2190,88 +3038,118 @@ export function useWorkoutSectionTypesLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type WorkoutSectionTypesQueryHookResult = ReturnType<typeof useWorkoutSectionTypesQuery>;
 export type WorkoutSectionTypesLazyQueryHookResult = ReturnType<typeof useWorkoutSectionTypesLazyQuery>;
 export type WorkoutSectionTypesQueryResult = Apollo.QueryResult<WorkoutSectionTypesQuery, WorkoutSectionTypesQueryVariables>;
-export const OfficialWorkoutProgramsDocument = gql`
-    query officialWorkoutPrograms {
-  officialWorkoutPrograms {
-    id
-    createdAt
-    name
-    description
-    coverImageUri
-    introVideoUri
-    introVideoThumbUri
-    introAudioUri
-    contentAccessScope
+export const PublicClubsDocument = gql`
+    query publicClubs {
+  publicClubs {
+    ...ClubSummary
+    Owner {
+      ...UserAvatarData
+    }
+    Admins {
+      ...UserAvatarData
+    }
   }
 }
-    `;
+    ${ClubSummaryFragmentDoc}
+${UserAvatarDataFragmentDoc}`;
 
 /**
- * __useOfficialWorkoutProgramsQuery__
+ * __usePublicClubsQuery__
  *
- * To run a query within a React component, call `useOfficialWorkoutProgramsQuery` and pass it any options that fit your needs.
- * When your component renders, `useOfficialWorkoutProgramsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `usePublicClubsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePublicClubsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useOfficialWorkoutProgramsQuery({
+ * const { data, loading, error } = usePublicClubsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useOfficialWorkoutProgramsQuery(baseOptions?: Apollo.QueryHookOptions<OfficialWorkoutProgramsQuery, OfficialWorkoutProgramsQueryVariables>) {
+export function usePublicClubsQuery(baseOptions?: Apollo.QueryHookOptions<PublicClubsQuery, PublicClubsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<OfficialWorkoutProgramsQuery, OfficialWorkoutProgramsQueryVariables>(OfficialWorkoutProgramsDocument, options);
+        return Apollo.useQuery<PublicClubsQuery, PublicClubsQueryVariables>(PublicClubsDocument, options);
       }
-export function useOfficialWorkoutProgramsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OfficialWorkoutProgramsQuery, OfficialWorkoutProgramsQueryVariables>) {
+export function usePublicClubsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PublicClubsQuery, PublicClubsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<OfficialWorkoutProgramsQuery, OfficialWorkoutProgramsQueryVariables>(OfficialWorkoutProgramsDocument, options);
+          return Apollo.useLazyQuery<PublicClubsQuery, PublicClubsQueryVariables>(PublicClubsDocument, options);
         }
-export type OfficialWorkoutProgramsQueryHookResult = ReturnType<typeof useOfficialWorkoutProgramsQuery>;
-export type OfficialWorkoutProgramsLazyQueryHookResult = ReturnType<typeof useOfficialWorkoutProgramsLazyQuery>;
-export type OfficialWorkoutProgramsQueryResult = Apollo.QueryResult<OfficialWorkoutProgramsQuery, OfficialWorkoutProgramsQueryVariables>;
-export const OfficialWorkoutsDocument = gql`
-    query officialWorkouts {
-  officialWorkouts {
-    id
-    createdAt
-    name
-    description
-    introVideoUri
-    introVideoThumbUri
-    introAudioUri
-    coverImageUri
-    contentAccessScope
-    difficultyLevel
+export type PublicClubsQueryHookResult = ReturnType<typeof usePublicClubsQuery>;
+export type PublicClubsLazyQueryHookResult = ReturnType<typeof usePublicClubsLazyQuery>;
+export type PublicClubsQueryResult = Apollo.QueryResult<PublicClubsQuery, PublicClubsQueryVariables>;
+export const PublicWorkoutPlansDocument = gql`
+    query publicWorkoutPlans($cursor: ID, $filters: WorkoutPlanFiltersInput, $take: Int) {
+  publicWorkoutPlans(cursor: $cursor, filters: $filters, take: $take) {
+    ...WorkoutPlanSummary
   }
 }
-    `;
+    ${WorkoutPlanSummaryFragmentDoc}`;
 
 /**
- * __useOfficialWorkoutsQuery__
+ * __usePublicWorkoutPlansQuery__
  *
- * To run a query within a React component, call `useOfficialWorkoutsQuery` and pass it any options that fit your needs.
- * When your component renders, `useOfficialWorkoutsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `usePublicWorkoutPlansQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePublicWorkoutPlansQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useOfficialWorkoutsQuery({
+ * const { data, loading, error } = usePublicWorkoutPlansQuery({
  *   variables: {
+ *      cursor: // value for 'cursor'
+ *      filters: // value for 'filters'
+ *      take: // value for 'take'
  *   },
  * });
  */
-export function useOfficialWorkoutsQuery(baseOptions?: Apollo.QueryHookOptions<OfficialWorkoutsQuery, OfficialWorkoutsQueryVariables>) {
+export function usePublicWorkoutPlansQuery(baseOptions?: Apollo.QueryHookOptions<PublicWorkoutPlansQuery, PublicWorkoutPlansQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<OfficialWorkoutsQuery, OfficialWorkoutsQueryVariables>(OfficialWorkoutsDocument, options);
+        return Apollo.useQuery<PublicWorkoutPlansQuery, PublicWorkoutPlansQueryVariables>(PublicWorkoutPlansDocument, options);
       }
-export function useOfficialWorkoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OfficialWorkoutsQuery, OfficialWorkoutsQueryVariables>) {
+export function usePublicWorkoutPlansLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PublicWorkoutPlansQuery, PublicWorkoutPlansQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<OfficialWorkoutsQuery, OfficialWorkoutsQueryVariables>(OfficialWorkoutsDocument, options);
+          return Apollo.useLazyQuery<PublicWorkoutPlansQuery, PublicWorkoutPlansQueryVariables>(PublicWorkoutPlansDocument, options);
         }
-export type OfficialWorkoutsQueryHookResult = ReturnType<typeof useOfficialWorkoutsQuery>;
-export type OfficialWorkoutsLazyQueryHookResult = ReturnType<typeof useOfficialWorkoutsLazyQuery>;
-export type OfficialWorkoutsQueryResult = Apollo.QueryResult<OfficialWorkoutsQuery, OfficialWorkoutsQueryVariables>;
+export type PublicWorkoutPlansQueryHookResult = ReturnType<typeof usePublicWorkoutPlansQuery>;
+export type PublicWorkoutPlansLazyQueryHookResult = ReturnType<typeof usePublicWorkoutPlansLazyQuery>;
+export type PublicWorkoutPlansQueryResult = Apollo.QueryResult<PublicWorkoutPlansQuery, PublicWorkoutPlansQueryVariables>;
+export const PublicWorkoutsDocument = gql`
+    query publicWorkouts($cursor: ID, $filters: WorkoutFiltersInput, $take: Int) {
+  publicWorkouts(cursor: $cursor, filters: $filters, take: $take) {
+    ...WorkoutSummary
+  }
+}
+    ${WorkoutSummaryFragmentDoc}`;
+
+/**
+ * __usePublicWorkoutsQuery__
+ *
+ * To run a query within a React component, call `usePublicWorkoutsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePublicWorkoutsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePublicWorkoutsQuery({
+ *   variables: {
+ *      cursor: // value for 'cursor'
+ *      filters: // value for 'filters'
+ *      take: // value for 'take'
+ *   },
+ * });
+ */
+export function usePublicWorkoutsQuery(baseOptions?: Apollo.QueryHookOptions<PublicWorkoutsQuery, PublicWorkoutsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PublicWorkoutsQuery, PublicWorkoutsQueryVariables>(PublicWorkoutsDocument, options);
+      }
+export function usePublicWorkoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PublicWorkoutsQuery, PublicWorkoutsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PublicWorkoutsQuery, PublicWorkoutsQueryVariables>(PublicWorkoutsDocument, options);
+        }
+export type PublicWorkoutsQueryHookResult = ReturnType<typeof usePublicWorkoutsQuery>;
+export type PublicWorkoutsLazyQueryHookResult = ReturnType<typeof usePublicWorkoutsLazyQuery>;
+export type PublicWorkoutsQueryResult = Apollo.QueryResult<PublicWorkoutsQuery, PublicWorkoutsQueryVariables>;

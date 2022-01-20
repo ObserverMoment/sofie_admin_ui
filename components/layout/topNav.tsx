@@ -6,7 +6,7 @@ import { MainText } from '../styled-components/styled'
 
 //// Routing Data ////
 const coreDataBasePath = '/core-data'
-const coreContentBasePath = '/core-content'
+const publicContentBasePath = '/public-content'
 const subRoutes = {
   'core-data': [
     { text: 'Overview', link: coreDataBasePath },
@@ -17,12 +17,11 @@ const subRoutes = {
     { text: 'Workout Types', link: `${coreDataBasePath}/workout-types` },
     { text: 'Workout Goals', link: `${coreDataBasePath}/workout-goals` },
   ],
-  'core-content': [
-    { text: 'Overview', link: coreContentBasePath },
-    { text: 'Workouts', link: `${coreContentBasePath}/workouts` },
-    { text: 'Plans', link: `${coreContentBasePath}/plans` },
-    { text: 'Events', link: `${coreContentBasePath}/events` },
-    { text: 'Clubs', link: `${coreContentBasePath}/clubs` },
+  'public-content': [
+    { text: 'Overview', link: publicContentBasePath },
+    { text: 'Workouts', link: `${publicContentBasePath}/workouts` },
+    { text: 'Plans', link: `${publicContentBasePath}/plans` },
+    { text: 'Clubs', link: `${publicContentBasePath}/clubs` },
   ],
   users: null,
 }
@@ -32,6 +31,8 @@ const TopNavContainer = styled.nav`
   display: flex;
   flex-direction: row;
   padding: 10px;
+  background: #e4e4e4;
+  border-radius: 2px;
 `
 interface NavItemProps {
   isActive: boolean
@@ -53,7 +54,7 @@ const TopNavItem = styled.a<NavItemProps>`
       ? props.theme.colors.primaryLight
       : props.theme.colors.primaryDark};
   text-decoration: none;
-  border-radius: 112px;
+  border-radius: 4px;
 `
 
 export const TopNav = () => {

@@ -9,8 +9,9 @@ import {
   Title,
 } from '../../components/styled-components/styled'
 import {
-  useOfficialWorkoutProgramsQuery,
-  WorkoutProgram,
+  usePublicWorkoutPlansQuery,
+  WorkoutPlan,
+  WorkoutPlanSummary,
 } from '../../graphql/generated_types'
 
 export default function WorkoutPlans() {
@@ -19,18 +20,13 @@ export default function WorkoutPlans() {
     title: 'Workout Plan',
   })
 
-  const { loading, error, data } = useOfficialWorkoutProgramsQuery()
+  const { loading, error, data } = usePublicWorkoutPlansQuery()
 
   const [activeWorkoutPlanData, setActiveWorkoutPlanData] = useState(null)
 
-  function handleCardClick(data: WorkoutProgram) {
+  function handleCardClick(data: WorkoutPlanSummary) {
     setActiveWorkoutPlanData(data)
     setModalState({ isOpen: true, title: 'Workout Plan' })
-  }
-
-  function handleAddNewClick() {
-    setActiveWorkoutPlanData(null)
-    setModalState({ isOpen: true, title: 'Create Workout Plan' })
   }
 
   if (error) {
@@ -42,10 +38,9 @@ export default function WorkoutPlans() {
   } else {
     return (
       <FlexBox direction="row" justify="center" wrap="wrap">
-        <Title colorType="grey">Official Plans</Title>
-        {data.officialWorkoutPrograms.map((wp: WorkoutProgram) => (
-          <WorkoutProgramSummaryCard
-            workoutProgram={wp}
+        {data.publicWorkoutPlans.map((wp: WorkoutPlanSummary) => (
+          <WorkoutPlanSummaryCard
+            workoutPlan={wp}
             handleCardClick={handleCardClick}
           />
         ))}
@@ -54,29 +49,29 @@ export default function WorkoutPlans() {
   }
 }
 
-interface WorkoutProgramSummaryCardProps {
-  workoutProgram: WorkoutProgram
-  handleCardClick: (workoutProgram: WorkoutProgram) => void
+interface WorkoutPlanSummaryCardProps {
+  workoutPlan: WorkoutPlanSummary
+  handleCardClick: (workoutPlan: WorkoutPlanSummary) => void
 }
 
-export const WorkoutProgramSummaryCard = ({
-  workoutProgram,
+export const WorkoutPlanSummaryCard = ({
+  workoutPlan,
   handleCardClick,
-}: WorkoutProgramSummaryCardProps) => (
+}: WorkoutPlanSummaryCardProps) => (
   <SummaryCard
     maxWidth="300px"
     margin="10px"
-    onClick={() => handleCardClick(workoutProgram)}
+    onClick={() => handleCardClick(workoutPlan)}
   >
     <FlexBox>
-      <Title>{workoutProgram.name}</Title>
-      <MainText>{workoutProgram.description}</MainText>
-      {workoutProgram.coverImageUri && (
+      <Title>{workoutPlan.name}</Title>
+      <MainText>{workoutPlan.description}</MainText>
+      {workoutPlan.coverImageUri && (
         <FlexBox align="center">
           <img
             style={{ borderRadius: '20px' }}
             height="100px"
-            src={`https://ucarecdn.com/${workoutProgram.coverImageUri}/`}
+            src={`https://ucarecdn.com/${workoutPlan.coverImageUri}/`}
           />
         </FlexBox>
       )}

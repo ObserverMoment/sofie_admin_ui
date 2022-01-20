@@ -6,6 +6,7 @@ import { LoadingSpinner } from '../../components/loadingIndicators'
 import { showToast } from '../../components/notifications'
 import {
   FlexBox,
+  Padding,
   theme,
   Title,
 } from '../../components/styled-components/styled'
@@ -69,9 +70,12 @@ export default function Moves() {
   } else {
     return (
       <FlexBox>
-        <FlexBox direction="row" justify="center">
-          <CreateButton onClick={handleAddNewClick} />
-        </FlexBox>
+        <Padding>
+          <FlexBox direction="row" justify="center">
+            <CreateButton onClick={handleAddNewClick} />
+          </FlexBox>
+        </Padding>
+
         <InteractiveTable
           handleRowClick={(data) => handleRowClick(data)}
           columnMapping={[

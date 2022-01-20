@@ -7,7 +7,6 @@ import { FlexBox, Spacer } from './styled-components/styled'
 const StyledTable = styled.table`
   border-radius: 6px;
   background-color: ${(props) => props.theme.colors.primaryLight};
-
   font-size: 14px;
 `
 
@@ -45,13 +44,8 @@ const InteractiveTable = ({
   const columns = useMemo(() => columnMapping, [])
   const tableData = useMemo(() => data, [data])
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({ columns, data: tableData, autoResetSortBy: false }, useSortBy)
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({ columns, data: tableData, autoResetSortBy: false }, useSortBy)
 
   return (
     <StyledTable {...getTableProps()}>

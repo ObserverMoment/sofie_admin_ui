@@ -1,11 +1,13 @@
-fragment EquipmentFields on Equipment {
+fragment Equipment on Equipment {
+  __typename
   id
   name
   altNames
   loadAdjustable
 }
 
-fragment BodyAreaFields on BodyArea {
+fragment BodyArea on BodyArea {
+  __typename
   id
   name
   altNames
@@ -13,9 +15,85 @@ fragment BodyAreaFields on BodyArea {
   upperLower
 }
 
-fragment MoveTypeFields on MoveType {
+fragment ClubSummary on ClubSummary {
+  __typename
+  id
+  createdAt
+  name
+  description
+  coverImageUri
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+  contentAccessScope
+  location
+  memberCount
+  workoutCount
+  planCount
+}
+
+fragment MoveType on MoveType {
+  __typename
   id
   name
   description
   imageUri
+}
+
+fragment WorkoutSummary on WorkoutSummary {
+  __typename
+  id
+  createdAt
+  archived
+  name
+  User {
+    ...UserAvatarData
+  }
+  lengthMinutes
+  coverImageUri
+  description
+  difficultyLevel
+  loggedSessionsCount
+  hasClassVideo
+  hasClassAudio
+  equipments
+  tags
+}
+
+fragment WorkoutPlanSummary on WorkoutPlanSummary {
+  __typename
+  id
+  createdAt
+  archived
+  name
+  description
+  coverImageUri
+  lengthWeeks
+  daysPerWeek
+  workoutsCount
+  User {
+    ...UserAvatarData
+  }
+  enrolmentsCount
+  goals {
+    ...WorkoutGoal
+  }
+  tags
+  reviewScore
+  reviewCount
+}
+
+fragment WorkoutGoal on WorkoutGoal {
+  __typename
+  id
+  name
+  description
+  hexColor
+}
+
+fragment UserAvatarData on UserAvatarData {
+  __typename
+  id
+  avatarUri
+  displayName
 }

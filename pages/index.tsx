@@ -6,7 +6,6 @@ export default function Home() {
     <Padding padding="50px">
       <FlexBox align="center">
         <Title colorType="grey">Dashboard</Title>
-        <Title colorType="grey">Analytics Summary</Title>
       </FlexBox>
     </Padding>
   )
