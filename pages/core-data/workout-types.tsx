@@ -2,10 +2,10 @@ import React from 'react'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingSpinner } from '../../components/loadingIndicators'
-import { useWorkoutSectionTypesQuery } from '../../graphql/generated_types'
+import { useCoreDataQuery } from '../../graphql/generated_types'
 
 export default function WorkoutTypes() {
-  const { loading, error, data } = useWorkoutSectionTypesQuery()
+  const { loading, error, data } = useCoreDataQuery()
 
   if (error) {
     return <ErrorMessage message={error.message} />
@@ -43,7 +43,7 @@ export default function WorkoutTypes() {
             disableSortBy: true,
           },
         ]}
-        data={data.workoutSectionTypes}
+        data={data.coreData.workoutSectionTypes}
       />
     )
   }

@@ -2,10 +2,10 @@ import React from 'react'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingSpinner } from '../../components/loadingIndicators'
-import { useBodyAreasQuery } from '../../graphql/generated_types'
+import { useCoreDataQuery } from '../../graphql/generated_types'
 
 export default function BodyAreas() {
-  const { loading, error, data } = useBodyAreasQuery()
+  const { loading, error, data } = useCoreDataQuery()
 
   if (error) {
     return <ErrorMessage message={error.message} />
@@ -36,7 +36,7 @@ export default function BodyAreas() {
             disableSortBy: true,
           },
         ]}
-        data={data.bodyAreas}
+        data={data.coreData.bodyAreas}
       />
     )
   }

@@ -16,7 +16,7 @@ import {
   BodyAreaMoveScore,
   Equipment,
   Move,
-  useStandardMovesQuery,
+  useCoreDataQuery,
 } from '../../graphql/generated_types'
 
 const ScoreTotal = styled.div`
@@ -35,7 +35,7 @@ export default function Moves() {
     title: '',
   })
 
-  const { loading, error, data } = useStandardMovesQuery()
+  const { loading, error, data } = useCoreDataQuery()
 
   const [activeMoveData, setActiveMoveData] = useState(null)
 
@@ -147,7 +147,7 @@ export default function Moves() {
               disableSortBy: true,
             },
           ]}
-          data={data.standardMoves}
+          data={data.coreData.standardMoves}
         />
         <Modal
           isOpen={isOpen}

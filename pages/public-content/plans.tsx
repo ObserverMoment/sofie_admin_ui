@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 import { LoadingSpinner } from '../../components/loadingIndicators'
 import { showToast } from '../../components/notifications'
@@ -9,9 +8,10 @@ import {
   Title,
 } from '../../components/styled-components/styled'
 import {
-  usePublicWorkoutPlansQuery,
+  PublicContentValidationStatus,
+  useAdminPublicWorkoutPlansQuery,
   WorkoutPlan,
-  WorkoutPlanSummary,
+  WorkoutPlanWithMetaDataAdmin,
 } from '../../graphql/generated_types'
 
 export default function WorkoutPlans() {
@@ -20,11 +20,15 @@ export default function WorkoutPlans() {
     title: 'Workout Plan',
   })
 
-  const { loading, error, data } = usePublicWorkoutPlansQuery()
+  const { loading, error, data } = useAdminPublicWorkoutPlansQuery({
+    variables: {
+      status: PublicContentValidationStatus.Pending,
+    },
+  })
 
   const [activeWorkoutPlanData, setActiveWorkoutPlanData] = useState(null)
 
-  function handleCardClick(data: WorkoutPlanSummary) {
+  function handleCardClick(data: WorkoutPlanWithMetaDataAdmin) {
     setActiveWorkoutPlanData(data)
     setModalState({ isOpen: true, title: 'Workout Plan' })
   }
@@ -38,9 +42,9 @@ export default function WorkoutPlans() {
   } else {
     return (
       <FlexBox direction="row" justify="center" wrap="wrap">
-        {data.publicWorkoutPlans.map((wp: WorkoutPlanSummary) => (
+        {data.adminPublicWorkoutPlans.map((wp) => (
           <WorkoutPlanSummaryCard
-            workoutPlan={wp}
+            workoutPlan={wp as WorkoutPlanWithMetaDataAdmin}
             handleCardClick={handleCardClick}
           />
         ))}
@@ -50,8 +54,8 @@ export default function WorkoutPlans() {
 }
 
 interface WorkoutPlanSummaryCardProps {
-  workoutPlan: WorkoutPlanSummary
-  handleCardClick: (workoutPlan: WorkoutPlanSummary) => void
+  workoutPlan: WorkoutPlanWithMetaDataAdmin
+  handleCardClick: (workoutPlan: WorkoutPlanWithMetaDataAdmin) => void
 }
 
 export const WorkoutPlanSummaryCard = ({

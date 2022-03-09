@@ -15,21 +15,16 @@ fragment BodyArea on BodyArea {
   upperLower
 }
 
-fragment ClubSummary on ClubSummary {
+fragment Move on Move {
   __typename
   id
-  createdAt
   name
+  searchTerms
   description
-  coverImageUri
-  introVideoUri
-  introVideoThumbUri
-  introAudioUri
-  contentAccessScope
-  location
-  memberCount
-  workoutCount
-  planCount
+  demoVideoUri
+  demoVideoThumbUri
+  scope
+  validRepTypes
 }
 
 fragment MoveType on MoveType {
@@ -40,55 +35,13 @@ fragment MoveType on MoveType {
   imageUri
 }
 
-fragment WorkoutSummary on WorkoutSummary {
+fragment ProgressWidget on ProgressWidget {
   __typename
   id
   createdAt
-  archived
   name
-  User {
-    ...UserAvatarData
-  }
-  lengthMinutes
-  coverImageUri
+  subtitle
   description
-  difficultyLevel
-  loggedSessionsCount
-  hasClassVideo
-  hasClassAudio
-  equipments
-  tags
-}
-
-fragment WorkoutPlanSummary on WorkoutPlanSummary {
-  __typename
-  id
-  createdAt
-  archived
-  name
-  description
-  coverImageUri
-  lengthWeeks
-  daysPerWeek
-  workoutsCount
-  User {
-    ...UserAvatarData
-  }
-  enrolmentsCount
-  goals {
-    ...WorkoutGoal
-  }
-  tags
-  reviewScore
-  reviewCount
-}
-
-fragment WorkoutGoal on WorkoutGoal {
-  __typename
-  id
-  name
-  description
-  hexColor
 }
 
 fragment UserAvatarData on UserAvatarData {

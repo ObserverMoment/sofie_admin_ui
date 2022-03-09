@@ -7,7 +7,12 @@ import {
   MainText,
   Title,
 } from '../../components/styled-components/styled'
-import { usePublicClubsQuery, ClubSummary } from '../../graphql/generated_types'
+import {
+  useAdminPublicClubsQuery,
+  PublicContentValidationStatus,
+  Club,
+  ClubWithMetaDataAdmin,
+} from '../../graphql/generated_types'
 
 export default function Clubs() {
   const [{ isOpen, title }, setModalState] = useState({
@@ -15,11 +20,15 @@ export default function Clubs() {
     title: 'Club',
   })
 
-  const { loading, error, data } = usePublicClubsQuery()
+  const { loading, error, data } = useAdminPublicClubsQuery({
+    variables: {
+      status: PublicContentValidationStatus.Pending,
+    },
+  })
 
   const [activeClubData, setActiveClubData] = useState(null)
 
-  function handleCardClick(data: ClubSummary) {
+  function handleCardClick(data: ClubWithMetaDataAdmin) {
     setActiveClubData(data)
     setModalState({ isOpen: true, title: 'Club' })
   }
@@ -33,8 +42,11 @@ export default function Clubs() {
   } else {
     return (
       <FlexBox direction="row" justify="center" wrap="wrap">
-        {data.publicClubs.map((c: ClubSummary) => (
-          <ClubSummaryCard clubSummary={c} handleCardClick={handleCardClick} />
+        {data.adminPublicClubs.map((c) => (
+          <ClubSummaryCard
+            club={c as ClubWithMetaDataAdmin}
+            handleCardClick={handleCardClick}
+          />
         ))}
       </FlexBox>
     )
@@ -42,28 +54,28 @@ export default function Clubs() {
 }
 
 interface ClubSummaryCardProps {
-  clubSummary: ClubSummary
-  handleCardClick: (workoutSummary: ClubSummary) => void
+  club: ClubWithMetaDataAdmin
+  handleCardClick: (club: ClubWithMetaDataAdmin) => void
 }
 
 export const ClubSummaryCard = ({
-  clubSummary,
+  club,
   handleCardClick,
 }: ClubSummaryCardProps) => (
   <SummaryCard
     maxWidth="300px"
     margin="10px"
-    onClick={() => handleCardClick(clubSummary)}
+    onClick={() => handleCardClick(club)}
   >
     <FlexBox>
-      <Title>{clubSummary.name}</Title>
-      <MainText>{clubSummary.description}</MainText>
-      {clubSummary.coverImageUri && (
+      <Title>{club.id}</Title>
+      <MainText>{club.description}</MainText>
+      {club.coverImageUri && (
         <FlexBox align="center">
           <img
             style={{ borderRadius: '20px' }}
             height="100px"
-            src={`https://ucarecdn.com/${clubSummary.coverImageUri}/`}
+            src={`https://ucarecdn.com/${club.coverImageUri}/`}
           />
         </FlexBox>
       )}

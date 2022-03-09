@@ -10,7 +10,7 @@ import Modal from '../../components/layout/modal'
 import CreateEditEquipment from '../../components/contentCRUD/createEditEquipment'
 import { showToast } from '../../components/notifications'
 import { CreateButton } from '../../components/styled-components/buttons'
-import { Equipment, useEquipmentsQuery } from '../../graphql/generated_types'
+import { Equipment, useCoreDataQuery } from '../../graphql/generated_types'
 
 export default function EquipmentData() {
   const [{ isOpen, title }, setModalState] = useState({
@@ -18,7 +18,7 @@ export default function EquipmentData() {
     title: 'Equipment',
   })
 
-  const { loading, error, data } = useEquipmentsQuery()
+  const { loading, error, data } = useCoreDataQuery()
 
   const [activeEquipmentData, setActiveEquipmentData] = useState(null)
 
@@ -66,7 +66,7 @@ export default function EquipmentData() {
                 loadAdjustable ? 'TRUE' : 'FALSE',
             },
           ]}
-          data={[...data.equipments]}
+          data={[...data.coreData.equipment]}
         />
         <Modal
           isOpen={isOpen}

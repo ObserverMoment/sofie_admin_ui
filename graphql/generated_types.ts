@@ -42,14 +42,28 @@ export type AddWorkoutToCollectionInput = {
   collectionId: Scalars['ID'];
 };
 
-/** Enums */
-export enum BenchmarkType {
-  Amrap = 'AMRAP',
-  Fastesttime = 'FASTESTTIME',
-  Maxload = 'MAXLOAD',
-  Unbrokenreps = 'UNBROKENREPS',
-  Unbrokentime = 'UNBROKENTIME'
-}
+export type AnnouncementUpdate = {
+  __typename?: 'AnnouncementUpdate';
+  actions: Array<AnnouncementUpdateAction>;
+  articleUrl?: Maybe<Scalars['String']>;
+  audioUri?: Maybe<Scalars['String']>;
+  bodyOne?: Maybe<Scalars['String']>;
+  bodyTwo?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  imageUri?: Maybe<Scalars['String']>;
+  subtitle?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
+  videoUri?: Maybe<Scalars['String']>;
+};
+
+export type AnnouncementUpdateAction = {
+  __typename?: 'AnnouncementUpdateAction';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  routeTo: Scalars['String'];
+  text: Scalars['String'];
+};
 
 export type BodyArea = {
   __typename?: 'BodyArea';
@@ -60,6 +74,7 @@ export type BodyArea = {
   upperLower: BodyAreaUpperLower;
 };
 
+/** Enums */
 export enum BodyAreaFrontBack {
   Back = 'BACK',
   Both = 'BOTH',
@@ -69,7 +84,6 @@ export enum BodyAreaFrontBack {
 export type BodyAreaMoveScore = {
   __typename?: 'BodyAreaMoveScore';
   BodyArea: BodyArea;
-  Move: Move;
   score: Scalars['Int'];
 };
 
@@ -122,18 +136,6 @@ export type Club = {
   name: Scalars['String'];
 };
 
-export type ClubAnnouncement = {
-  __typename?: 'ClubAnnouncement';
-  User: UserAvatarData;
-  audioUri?: Maybe<Scalars['String']>;
-  createdAt: Scalars['DateTime'];
-  description: Scalars['String'];
-  id: Scalars['ID'];
-  imageUri?: Maybe<Scalars['String']>;
-  videoThumbUri?: Maybe<Scalars['String']>;
-  videoUri?: Maybe<Scalars['String']>;
-};
-
 export type ClubChatSummary = {
   __typename?: 'ClubChatSummary';
   Admins: Array<UserAvatarData>;
@@ -167,6 +169,16 @@ export type ClubInviteTokens = {
   __typename?: 'ClubInviteTokens';
   id: Scalars['ID'];
   tokens: Array<ClubInviteToken>;
+};
+
+export type ClubMemberNote = {
+  __typename?: 'ClubMemberNote';
+  User?: Maybe<UserAvatarData>;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  note: Scalars['String'];
+  tags: Array<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
 };
 
 export type ClubMemberSummary = {
@@ -205,6 +217,29 @@ export type ClubSummary = {
   name: Scalars['String'];
   planCount: Scalars['Int'];
   workoutCount: Scalars['Int'];
+};
+
+export type ClubWithMetaDataAdmin = {
+  __typename?: 'ClubWithMetaDataAdmin';
+  Admins: Array<UserAvatarData>;
+  ClubInviteTokens?: Maybe<Array<ClubInviteToken>>;
+  Members: Array<UserAvatarData>;
+  Owner: UserAvatarData;
+  WorkoutPlans?: Maybe<Array<WorkoutPlanSummary>>;
+  Workouts?: Maybe<Array<WorkoutSummary>>;
+  contentAccessScope: ContentAccessScope;
+  coverImageUri?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  introAudioUri?: Maybe<Scalars['String']>;
+  introVideoThumbUri?: Maybe<Scalars['String']>;
+  introVideoUri?: Maybe<Scalars['String']>;
+  location?: Maybe<Scalars['String']>;
+  metaTags: Array<Scalars['String']>;
+  name: Scalars['String'];
+  reasonNotValidated?: Maybe<Scalars['String']>;
+  validated: PublicContentValidationStatus;
 };
 
 export type ClubWorkoutPlans = {
@@ -250,21 +285,23 @@ export type CopyWorkoutPlanDayToAnotherDayInput = {
   id: Scalars['ID'];
 };
 
+export type CoreData = {
+  __typename?: 'CoreData';
+  bodyAreas: Array<BodyArea>;
+  equipment: Array<Equipment>;
+  moveTypes: Array<MoveType>;
+  progressWidgets: Array<ProgressWidget>;
+  standardMoves: Array<Move>;
+  workoutGoals: Array<WorkoutGoal>;
+  workoutSectionTypes: Array<WorkoutSectionType>;
+};
+
 export type CreateBodyTrackingEntryInput = {
   bodyweight?: InputMaybe<Scalars['Float']>;
   bodyweightUnit?: InputMaybe<BodyweightUnit>;
   fatPercent?: InputMaybe<Scalars['Float']>;
   note?: InputMaybe<Scalars['String']>;
   photoUris?: InputMaybe<Array<Scalars['String']>>;
-};
-
-export type CreateClubAnnouncementInput = {
-  Club: ConnectRelationInput;
-  audioUri?: InputMaybe<Scalars['String']>;
-  description: Scalars['String'];
-  imageUri?: InputMaybe<Scalars['String']>;
-  videoThumbUri?: InputMaybe<Scalars['String']>;
-  videoUri?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateClubInput = {
@@ -279,11 +316,11 @@ export type CreateClubInviteTokenInput = {
   name: Scalars['String'];
 };
 
-export type CreateClubTimelinePostInput = {
-  caption?: InputMaybe<Scalars['String']>;
-  clubId: Scalars['String'];
-  object: Scalars['String'];
-  tags?: InputMaybe<Array<Scalars['String']>>;
+export type CreateClubMemberNoteInput = {
+  clubId: Scalars['ID'];
+  memberId: Scalars['ID'];
+  note: Scalars['String'];
+  tags: Array<Scalars['String']>;
 };
 
 export type CreateCollectionInput = {
@@ -307,24 +344,6 @@ export type CreateGymProfileInput = {
   Equipments?: InputMaybe<Array<ConnectRelationInput>>;
   description?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
-};
-
-export type CreateJournalGoalInput = {
-  deadline?: InputMaybe<Scalars['DateTime']>;
-  description?: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
-};
-
-export type CreateJournalMoodInput = {
-  energyScore: Scalars['Int'];
-  moodScore: Scalars['Int'];
-  tags?: InputMaybe<Array<Scalars['String']>>;
-  textNote?: InputMaybe<Scalars['String']>;
-};
-
-export type CreateJournalNoteInput = {
-  textNote?: InputMaybe<Scalars['String']>;
-  voiceNoteUri?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateLoggedWorkoutInput = {
@@ -401,26 +420,69 @@ export type CreateSkillInput = {
   name: Scalars['String'];
 };
 
-export type CreateUserBenchmarkEntryInput = {
-  UserBenchmark: ConnectRelationInput;
-  completedOn: Scalars['DateTime'];
-  note?: InputMaybe<Scalars['String']>;
-  score: Scalars['Float'];
-  videoThumbUri?: InputMaybe<Scalars['String']>;
-  videoUri?: InputMaybe<Scalars['String']>;
+export type CreateStreamFeedActivityExtraDataInput = {
+  articleUrl?: InputMaybe<Scalars['String']>;
+  audioUrl?: InputMaybe<Scalars['String']>;
+  caption?: InputMaybe<Scalars['String']>;
+  creator?: InputMaybe<Scalars['String']>;
+  imageUrl?: InputMaybe<Scalars['String']>;
+  originalPostId?: InputMaybe<Scalars['String']>;
+  tags: Array<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  videoUrl?: InputMaybe<Scalars['String']>;
 };
 
-export type CreateUserBenchmarkInput = {
-  benchmarkType: BenchmarkType;
+export type CreateStreamFeedActivityInput = {
+  actor: Scalars['String'];
+  extraData: CreateStreamFeedActivityExtraDataInput;
+  object: Scalars['String'];
+  verb: Scalars['String'];
+};
+
+export type CreateUserDayLogMoodInput = {
+  energyScore: Scalars['Int'];
+  moodScore: Scalars['Int'];
+  note?: InputMaybe<Scalars['String']>;
+  tags?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type CreateUserEatWellLogInput = {
+  dayNumber: Scalars['Int'];
+  note?: InputMaybe<Scalars['String']>;
+  rating: UserDayLogRating;
+  year: Scalars['Int'];
+};
+
+export type CreateUserExerciseLoadTrackerInput = {
+  Equipment?: InputMaybe<ConnectRelationInput>;
+  Move: ConnectRelationInput;
+  loadUnit: LoadUnit;
+  reps: Scalars['Int'];
+};
+
+export type CreateUserGoalInput = {
+  deadline?: InputMaybe<Scalars['DateTime']>;
   description?: InputMaybe<Scalars['String']>;
-  equipmentInfo?: InputMaybe<Scalars['String']>;
-  loadUnit?: InputMaybe<LoadUnit>;
   name: Scalars['String'];
+};
+
+export type CreateUserMeditationLogInput = {
+  dayNumber: Scalars['Int'];
+  minutesLogged: Scalars['Int'];
+  note?: InputMaybe<Scalars['String']>;
+  year: Scalars['Int'];
+};
+
+export type CreateUserSleepWellLogInput = {
+  dayNumber: Scalars['Int'];
+  minutesSlept?: InputMaybe<Scalars['Int']>;
+  note?: InputMaybe<Scalars['String']>;
+  rating: UserDayLogRating;
+  year: Scalars['Int'];
 };
 
 export type CreateWorkoutInput = {
   contentAccessScope: ContentAccessScope;
-  difficultyLevel?: InputMaybe<DifficultyLevel>;
   name: Scalars['String'];
 };
 
@@ -537,6 +599,77 @@ export type Equipment = {
   name: Scalars['String'];
 };
 
+export type FitnessBenchmark = {
+  __typename?: 'FitnessBenchmark';
+  FitnessBenchmarkScores: Array<FitnessBenchmarkScore>;
+  createdA: Scalars['DateTime'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  instructionalVideoThumbUri?: Maybe<Scalars['String']>;
+  instructionalVideoUri?: Maybe<Scalars['String']>;
+  instructions?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  scope: FitnessBenchmarkScope;
+  type: FitnessBenchmarkScoreType;
+};
+
+export enum FitnessBenchmarkScope {
+  Custom = 'CUSTOM',
+  Standard = 'STANDARD'
+}
+
+export type FitnessBenchmarkScore = {
+  __typename?: 'FitnessBenchmarkScore';
+  completedOn: Scalars['DateTime'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  note?: Maybe<Scalars['String']>;
+  score: Scalars['Float'];
+  videoThumbUri?: Maybe<Scalars['String']>;
+  videoUri?: Maybe<Scalars['String']>;
+};
+
+export enum FitnessBenchmarkScoreType {
+  Fastesttimedistance = 'FASTESTTIMEDISTANCE',
+  Fastesttimereps = 'FASTESTTIMEREPS',
+  Longestdistance = 'LONGESTDISTANCE',
+  Maxload = 'MAXLOAD',
+  Timedmaxreps = 'TIMEDMAXREPS',
+  Unbrokenmaxreps = 'UNBROKENMAXREPS',
+  Unbrokenmaxtime = 'UNBROKENMAXTIME'
+}
+
+export type FitnessBenchmarkWorkout = {
+  __typename?: 'FitnessBenchmarkWorkout';
+  FitnessBenchmarkWorkoutScores: Array<FitnessBenchmarkWorkoutScore>;
+  createdAt: Scalars['DateTime'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  instructionalVideoThumbUri?: Maybe<Scalars['String']>;
+  instructionalVideoUri?: Maybe<Scalars['String']>;
+  instructions?: Maybe<Scalars['String']>;
+  moveDescriptions: Array<Scalars['String']>;
+  name: Scalars['String'];
+  pointsForMoveCompleted: Array<Scalars['Int']>;
+  rounds: Scalars['Int'];
+  scope: FitnessBenchmarkScope;
+  type: FitnessBenchmarkWorkoutScoreType;
+};
+
+export type FitnessBenchmarkWorkoutScore = {
+  __typename?: 'FitnessBenchmarkWorkoutScore';
+  completedOn: Scalars['DateTime'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  note?: Maybe<Scalars['String']>;
+  score: Scalars['Int'];
+};
+
+export enum FitnessBenchmarkWorkoutScoreType {
+  Amrap = 'AMRAP',
+  Fortime = 'FORTIME'
+}
+
 export enum Gender {
   Female = 'FEMALE',
   Male = 'MALE',
@@ -562,34 +695,6 @@ export enum JoinClubRequestStatus {
   Pending = 'PENDING',
   Rejected = 'REJECTED'
 }
-
-export type JournalGoal = {
-  __typename?: 'JournalGoal';
-  completedDate?: Maybe<Scalars['DateTime']>;
-  createdAt: Scalars['DateTime'];
-  deadline?: Maybe<Scalars['DateTime']>;
-  description?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  name: Scalars['String'];
-};
-
-export type JournalMood = {
-  __typename?: 'JournalMood';
-  createdAt: Scalars['DateTime'];
-  energyScore: Scalars['Int'];
-  id: Scalars['ID'];
-  moodScore: Scalars['Int'];
-  tags: Array<Scalars['String']>;
-  textNote?: Maybe<Scalars['String']>;
-};
-
-export type JournalNote = {
-  __typename?: 'JournalNote';
-  createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
-  textNote?: Maybe<Scalars['String']>;
-  voiceNoteUri?: Maybe<Scalars['String']>;
-};
 
 export type LifetimeLogStatsSummary = {
   __typename?: 'LifetimeLogStatsSummary';
@@ -651,6 +756,16 @@ export type LoggedWorkoutSet = {
   timeTakenSeconds?: Maybe<Scalars['Int']>;
 };
 
+export type MarkAnnouncementUpdateAsSeenInput = {
+  announcementUpdateId: Scalars['ID'];
+  userId: Scalars['ID'];
+};
+
+export type MarkWelcomeTodoItemAsSeenInput = {
+  userId: Scalars['ID'];
+  welcomeTodoItemId: Scalars['ID'];
+};
+
 export type Move = {
   __typename?: 'Move';
   BodyAreaMoveScores: Array<BodyAreaMoveScore>;
@@ -706,23 +821,24 @@ export type Mutation = {
   copyWorkoutPlanDayToAnotherDay: WorkoutPlanDay;
   createBodyTrackingEntry: BodyTrackingEntry;
   createClub: ClubSummary;
-  createClubAnnouncement: ClubAnnouncement;
   createClubInviteToken: ClubInviteTokens;
-  createClubTimelinePost: TimelinePostFullData;
+  createClubMemberNote: ClubMemberNote;
+  createClubMembersFeedPost: StreamEnrichedActivity;
   createCollection: Collection;
   createCompletedWorkoutPlanDayWorkout: WorkoutPlanEnrolment;
   createEquipment?: Maybe<Equipment>;
   createGymProfile: GymProfile;
-  createJournalGoal: JournalGoal;
-  createJournalMood: JournalMood;
-  createJournalNote: JournalNote;
   createLoggedWorkout: LoggedWorkout;
   createMove: Move;
   createScheduleForPlanEnrolment: WorkoutPlanEnrolment;
   createScheduledWorkout: ScheduledWorkout;
   createSkill: Skill;
-  createUserBenchmark: UserBenchmark;
-  createUserBenchmarkEntry: UserBenchmarkEntry;
+  createUserDayLogMood: UserDayLogMood;
+  createUserEatWellLog: UserEatWellLog;
+  createUserExerciseLoadTracker: UserExerciseLoadTracker;
+  createUserGoal: UserGoal;
+  createUserMeditationLog: UserMeditationLog;
+  createUserSleepWellLog: UserSleepWellLog;
   createWorkout: Workout;
   createWorkoutMove: WorkoutMove;
   createWorkoutPlan: WorkoutPlan;
@@ -736,21 +852,18 @@ export type Mutation = {
   createWorkoutTag: WorkoutTag;
   deleteBodyTrackingEntryById: Scalars['ID'];
   deleteClub: Scalars['ID'];
-  deleteClubAnnouncement: Scalars['ID'];
   deleteClubInviteToken: ClubInviteTokens;
-  deleteClubTimelinePost: Scalars['ID'];
+  deleteClubMembersFeedPost: Scalars['ID'];
   deleteCollectionById: Scalars['ID'];
   deleteCompletedWorkoutPlanDayWorkout: WorkoutPlanEnrolment;
   deleteGymProfileById?: Maybe<Scalars['ID']>;
-  deleteJournalGoalById: Scalars['ID'];
-  deleteJournalMoodById: Scalars['ID'];
-  deleteJournalNoteById: Scalars['ID'];
   deleteLoggedWorkoutById: Scalars['ID'];
   deleteLoggedWorkoutMove: Scalars['ID'];
   deleteScheduledWorkoutById: Scalars['ID'];
   deleteSkillById: Scalars['ID'];
-  deleteUserBenchmark: Scalars['ID'];
-  deleteUserBenchmarkEntry: Scalars['ID'];
+  deleteUserDayLogMood: Scalars['ID'];
+  deleteUserExerciseLoadTracker: Scalars['ID'];
+  deleteUserGoal: Scalars['ID'];
   deleteWorkoutMoveById: Scalars['ID'];
   deleteWorkoutPlanDayWorkoutById: Scalars['ID'];
   deleteWorkoutPlanDaysById: Array<Scalars['ID']>;
@@ -764,6 +877,8 @@ export type Mutation = {
   duplicateWorkoutSetById: WorkoutSet;
   giveMemberAdminStatus: ClubMembers;
   makeCopyWorkoutById: Workout;
+  markAnnouncementUpdateAsSeen: Scalars['ID'];
+  markWelcomeTodoItemAsSeen: Scalars['ID'];
   moveWorkoutPlanDayToAnotherDay: WorkoutPlanDay;
   removeDocumentFromSkill: Skill;
   removeMemberAdminStatus: ClubMembers;
@@ -782,15 +897,13 @@ export type Mutation = {
   unarchiveWorkoutById: Workout;
   unarchiveWorkoutPlanById: WorkoutPlan;
   updateBodyTrackingEntry: BodyTrackingEntry;
-  updateClubAnnouncement: ClubAnnouncement;
   updateClubInviteToken: ClubInviteTokens;
+  updateClubMemberNote: ClubMemberNote;
+  updateClubMetaDataAdmin: ClubWithMetaDataAdmin;
   updateClubSummary: ClubSummary;
   updateCollection: Collection;
   updateEquipment?: Maybe<Equipment>;
   updateGymProfile: GymProfile;
-  updateJournalGoal: JournalGoal;
-  updateJournalMood: JournalMood;
-  updateJournalNote: JournalNote;
   updateLoggedWorkout: LoggedWorkout;
   updateLoggedWorkoutMove: LoggedWorkoutMove;
   updateLoggedWorkoutSection: LoggedWorkoutSection;
@@ -798,15 +911,19 @@ export type Mutation = {
   updateMove: Move;
   updateScheduledWorkout: ScheduledWorkout;
   updateSkill: Skill;
-  updateUserBenchmark: UserBenchmark;
-  updateUserBenchmarkEntry: UserBenchmarkEntry;
+  updateUserEatWellLog: UserEatWellLog;
+  updateUserGoal: UserGoal;
+  updateUserMeditationLog: UserMeditationLog;
   updateUserProfile: UpdateUserProfileResult;
+  updateUserSleepWellLog: UserSleepWellLog;
   updateWorkout: Workout;
+  updateWorkoutMetaDataAdmin: WorkoutWithMetaDataAdmin;
   updateWorkoutMove: WorkoutMove;
   updateWorkoutMoves: Array<WorkoutMove>;
   updateWorkoutPlan: WorkoutPlan;
   updateWorkoutPlanDay: WorkoutPlanDay;
   updateWorkoutPlanDayWorkout: WorkoutPlanDayWorkout;
+  updateWorkoutPlanMetaDataAdmin?: Maybe<WorkoutPlanWithMetaDataAdmin>;
   updateWorkoutPlanReview: WorkoutPlanReview;
   updateWorkoutSection: WorkoutSection;
   updateWorkoutSet: WorkoutSet;
@@ -888,18 +1005,19 @@ export type MutationCreateClubArgs = {
 };
 
 
-export type MutationCreateClubAnnouncementArgs = {
-  data: CreateClubAnnouncementInput;
-};
-
-
 export type MutationCreateClubInviteTokenArgs = {
   data: CreateClubInviteTokenInput;
 };
 
 
-export type MutationCreateClubTimelinePostArgs = {
-  data: CreateClubTimelinePostInput;
+export type MutationCreateClubMemberNoteArgs = {
+  data: CreateClubMemberNoteInput;
+};
+
+
+export type MutationCreateClubMembersFeedPostArgs = {
+  clubId: Scalars['ID'];
+  data: CreateStreamFeedActivityInput;
 };
 
 
@@ -920,21 +1038,6 @@ export type MutationCreateEquipmentArgs = {
 
 export type MutationCreateGymProfileArgs = {
   data: CreateGymProfileInput;
-};
-
-
-export type MutationCreateJournalGoalArgs = {
-  data: CreateJournalGoalInput;
-};
-
-
-export type MutationCreateJournalMoodArgs = {
-  data: CreateJournalMoodInput;
-};
-
-
-export type MutationCreateJournalNoteArgs = {
-  data: CreateJournalNoteInput;
 };
 
 
@@ -963,13 +1066,33 @@ export type MutationCreateSkillArgs = {
 };
 
 
-export type MutationCreateUserBenchmarkArgs = {
-  data: CreateUserBenchmarkInput;
+export type MutationCreateUserDayLogMoodArgs = {
+  data: CreateUserDayLogMoodInput;
 };
 
 
-export type MutationCreateUserBenchmarkEntryArgs = {
-  data: CreateUserBenchmarkEntryInput;
+export type MutationCreateUserEatWellLogArgs = {
+  data: CreateUserEatWellLogInput;
+};
+
+
+export type MutationCreateUserExerciseLoadTrackerArgs = {
+  data: CreateUserExerciseLoadTrackerInput;
+};
+
+
+export type MutationCreateUserGoalArgs = {
+  data: CreateUserGoalInput;
+};
+
+
+export type MutationCreateUserMeditationLogArgs = {
+  data: CreateUserMeditationLogInput;
+};
+
+
+export type MutationCreateUserSleepWellLogArgs = {
+  data: CreateUserSleepWellLogInput;
 };
 
 
@@ -1038,17 +1161,12 @@ export type MutationDeleteClubArgs = {
 };
 
 
-export type MutationDeleteClubAnnouncementArgs = {
-  id: Scalars['ID'];
-};
-
-
 export type MutationDeleteClubInviteTokenArgs = {
   data: DeleteClubInviteTokenInput;
 };
 
 
-export type MutationDeleteClubTimelinePostArgs = {
+export type MutationDeleteClubMembersFeedPostArgs = {
   activityId: Scalars['ID'];
 };
 
@@ -1064,21 +1182,6 @@ export type MutationDeleteCompletedWorkoutPlanDayWorkoutArgs = {
 
 
 export type MutationDeleteGymProfileByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationDeleteJournalGoalByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationDeleteJournalMoodByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationDeleteJournalNoteByIdArgs = {
   id: Scalars['ID'];
 };
 
@@ -1103,12 +1206,17 @@ export type MutationDeleteSkillByIdArgs = {
 };
 
 
-export type MutationDeleteUserBenchmarkArgs = {
+export type MutationDeleteUserDayLogMoodArgs = {
   id: Scalars['ID'];
 };
 
 
-export type MutationDeleteUserBenchmarkEntryArgs = {
+export type MutationDeleteUserExerciseLoadTrackerArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteUserGoalArgs = {
   id: Scalars['ID'];
 };
 
@@ -1176,6 +1284,16 @@ export type MutationGiveMemberAdminStatusArgs = {
 
 export type MutationMakeCopyWorkoutByIdArgs = {
   id: Scalars['ID'];
+};
+
+
+export type MutationMarkAnnouncementUpdateAsSeenArgs = {
+  data: MarkAnnouncementUpdateAsSeenInput;
+};
+
+
+export type MutationMarkWelcomeTodoItemAsSeenArgs = {
+  data: MarkWelcomeTodoItemAsSeenInput;
 };
 
 
@@ -1273,13 +1391,18 @@ export type MutationUpdateBodyTrackingEntryArgs = {
 };
 
 
-export type MutationUpdateClubAnnouncementArgs = {
-  data: UpdateClubAnnouncementInput;
+export type MutationUpdateClubInviteTokenArgs = {
+  data: UpdateClubInviteTokenInput;
 };
 
 
-export type MutationUpdateClubInviteTokenArgs = {
-  data: UpdateClubInviteTokenInput;
+export type MutationUpdateClubMemberNoteArgs = {
+  data: UpdateClubMemberNoteInput;
+};
+
+
+export type MutationUpdateClubMetaDataAdminArgs = {
+  data: UpdateClubMetaDataAdminInput;
 };
 
 
@@ -1300,21 +1423,6 @@ export type MutationUpdateEquipmentArgs = {
 
 export type MutationUpdateGymProfileArgs = {
   data: UpdateGymProfileInput;
-};
-
-
-export type MutationUpdateJournalGoalArgs = {
-  data: UpdateJournalGoalInput;
-};
-
-
-export type MutationUpdateJournalMoodArgs = {
-  data: UpdateJournalMoodInput;
-};
-
-
-export type MutationUpdateJournalNoteArgs = {
-  data: UpdateJournalNoteInput;
 };
 
 
@@ -1353,13 +1461,18 @@ export type MutationUpdateSkillArgs = {
 };
 
 
-export type MutationUpdateUserBenchmarkArgs = {
-  data: UpdateUserBenchmarkInput;
+export type MutationUpdateUserEatWellLogArgs = {
+  data: UpdateUserEatWellLogInput;
 };
 
 
-export type MutationUpdateUserBenchmarkEntryArgs = {
-  data: UpdateUserBenchmarkEntryInput;
+export type MutationUpdateUserGoalArgs = {
+  data: UpdateUserGoalInput;
+};
+
+
+export type MutationUpdateUserMeditationLogArgs = {
+  data: UpdateUserMeditationLogInput;
 };
 
 
@@ -1368,8 +1481,18 @@ export type MutationUpdateUserProfileArgs = {
 };
 
 
+export type MutationUpdateUserSleepWellLogArgs = {
+  data: UpdateUserSleepWellLogInput;
+};
+
+
 export type MutationUpdateWorkoutArgs = {
   data: UpdateWorkoutInput;
+};
+
+
+export type MutationUpdateWorkoutMetaDataAdminArgs = {
+  data: UpdateWorkoutMetaDataAdminInput;
 };
 
 
@@ -1398,6 +1521,11 @@ export type MutationUpdateWorkoutPlanDayWorkoutArgs = {
 };
 
 
+export type MutationUpdateWorkoutPlanMetaDataAdminArgs = {
+  data: UpdateWorkoutPlanMetaDataAdminInput;
+};
+
+
 export type MutationUpdateWorkoutPlanReviewArgs = {
   data: UpdateWorkoutPlanReviewInput;
 };
@@ -1422,69 +1550,102 @@ export type MutationUserJoinPublicClubArgs = {
   clubId: Scalars['ID'];
 };
 
+export type ProgressWidget = {
+  __typename?: 'ProgressWidget';
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  subtitle?: Maybe<Scalars['String']>;
+};
+
+export enum PublicContentValidationStatus {
+  Invalid = 'INVALID',
+  Pending = 'PENDING',
+  Pendingupdated = 'PENDINGUPDATED',
+  Valid = 'VALID'
+}
+
 export type Query = {
   __typename?: 'Query';
-  bodyAreas: Array<BodyArea>;
+  adminPublicClubs: Array<ClubWithMetaDataAdmin>;
+  adminPublicWorkoutPlans: Array<WorkoutPlanWithMetaDataAdmin>;
+  adminPublicWorkouts: Array<WorkoutWithMetaDataAdmin>;
+  announcementUpdates: Array<AnnouncementUpdate>;
   bodyTrackingEntries: Array<BodyTrackingEntry>;
   checkClubInviteToken: CheckClubInviteTokenResult;
   checkUniqueClubName: Scalars['Boolean'];
   checkUniqueDisplayName: Scalars['Boolean'];
   checkUserClubMemberStatus: UserClubMemberStatus;
-  clubChatSummary: ClubChatSummary;
+  clubChatSummary?: Maybe<ClubChatSummary>;
   clubInviteTokens: ClubInviteTokens;
+  clubMemberNotes: Array<ClubMemberNote>;
   clubMembers: ClubMembers;
-  clubMembersFeedPosts: Array<TimelinePostFullData>;
+  clubMembersFeedPosts: Array<StreamEnrichedActivity>;
   clubSummaries: Array<ClubSummary>;
-  clubSummary: ClubSummary;
+  clubSummary?: Maybe<ClubSummary>;
   clubWorkoutPlans: ClubWorkoutPlans;
   clubWorkouts: ClubWorkouts;
-  equipments: Array<Equipment>;
+  coreData: CoreData;
+  customMoves: Array<Move>;
   gymProfiles: Array<GymProfile>;
-  journalGoals: Array<JournalGoal>;
-  journalMoods: Array<JournalMood>;
-  journalNotes: Array<JournalNote>;
   lifetimeLogStatsSummary: LifetimeLogStatsSummary;
   logCountByWorkout: Scalars['Int'];
-  loggedWorkoutById: LoggedWorkout;
-  moveTypes: Array<MoveType>;
+  loggedWorkoutById?: Maybe<LoggedWorkout>;
   publicClubs: Array<ClubSummary>;
   publicWorkoutPlans: Array<WorkoutPlanSummary>;
   publicWorkouts: Array<WorkoutSummary>;
-  standardMoves: Array<Move>;
   textSearchUserNames?: Maybe<Array<TextSearchResult>>;
   textSearchUserProfiles?: Maybe<Array<UserProfileSummary>>;
   textSearchWorkoutNames?: Maybe<Array<TextSearchResult>>;
   textSearchWorkoutPlanNames?: Maybe<Array<TextSearchResult>>;
   textSearchWorkoutPlans?: Maybe<Array<WorkoutPlanSummary>>;
   textSearchWorkouts?: Maybe<Array<WorkoutSummary>>;
-  timelinePostsData: Array<TimelinePostObjectData>;
   userArchivedCustomMoves: Array<Move>;
   userArchivedWorkoutPlans: Array<WorkoutPlan>;
   userArchivedWorkouts: Array<Workout>;
-  userAvatarById: UserAvatarData;
+  userAvatarById?: Maybe<UserAvatarData>;
   userAvatars: Array<UserAvatarData>;
-  userBenchmark: UserBenchmark;
-  userBenchmarks: Array<UserBenchmark>;
   userClubs: Array<ClubSummary>;
   userCollectionById: Collection;
   userCollections: Array<Collection>;
-  userCustomMoves: Array<Move>;
+  userDayLogMoods: Array<UserDayLogMood>;
+  userEatWellLogs: Array<UserEatWellLog>;
+  userExerciseLoadTrackers: Array<UserExerciseLoadTracker>;
+  userGoals: Array<UserGoal>;
   userLoggedWorkouts: Array<LoggedWorkout>;
-  userProfile: UserProfile;
+  userMeditationLogs: Array<UserMeditationLog>;
+  userProfile?: Maybe<UserProfile>;
   userProfiles: Array<UserProfileSummary>;
   userPublicWorkoutPlans: Array<WorkoutPlanSummary>;
   userPublicWorkouts: Array<WorkoutSummary>;
+  userRecentlyViewedObjects: Array<UserRecentlyViewedObject>;
   userScheduledWorkouts: Array<ScheduledWorkout>;
+  userSleepWellLogs: Array<UserSleepWellLog>;
   userWorkoutPlans: Array<WorkoutPlanSummary>;
   userWorkoutTags: Array<WorkoutTag>;
   userWorkouts: Array<WorkoutSummary>;
   validateToken: Scalars['Boolean'];
-  workoutById: Workout;
-  workoutGoals: Array<WorkoutGoal>;
-  workoutPlanById: WorkoutPlan;
-  workoutPlanEnrolmentById: WorkoutPlanEnrolmentWithPlan;
+  welcomeTodoItems: Array<WelcomeTodoItem>;
+  workoutById?: Maybe<Workout>;
+  workoutPlanById?: Maybe<WorkoutPlan>;
+  workoutPlanEnrolmentById?: Maybe<WorkoutPlanEnrolmentWithPlan>;
   workoutPlanEnrolments: Array<WorkoutPlanEnrolmentSummary>;
-  workoutSectionTypes: Array<WorkoutSectionType>;
+};
+
+
+export type QueryAdminPublicClubsArgs = {
+  status: PublicContentValidationStatus;
+};
+
+
+export type QueryAdminPublicWorkoutPlansArgs = {
+  status: PublicContentValidationStatus;
+};
+
+
+export type QueryAdminPublicWorkoutsArgs = {
+  status: PublicContentValidationStatus;
 };
 
 
@@ -1515,6 +1676,14 @@ export type QueryClubChatSummaryArgs = {
 
 export type QueryClubInviteTokensArgs = {
   clubId: Scalars['ID'];
+};
+
+
+export type QueryClubMemberNotesArgs = {
+  clubId: Scalars['ID'];
+  cursor?: InputMaybe<Scalars['ID']>;
+  memberId: Scalars['ID'];
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -1609,11 +1778,6 @@ export type QueryTextSearchWorkoutsArgs = {
 };
 
 
-export type QueryTimelinePostsDataArgs = {
-  postDataRequests: Array<TimelinePostDataRequestInput>;
-};
-
-
 export type QueryUserAvatarByIdArgs = {
   id: Scalars['ID'];
 };
@@ -1624,18 +1788,8 @@ export type QueryUserAvatarsArgs = {
 };
 
 
-export type QueryUserBenchmarkArgs = {
-  id: Scalars['ID'];
-};
-
-
 export type QueryUserCollectionByIdArgs = {
   id: Scalars['ID'];
-};
-
-
-export type QueryUserLoggedWorkoutsArgs = {
-  take?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -1722,12 +1876,69 @@ export type Skill = {
   experience?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type SortPositionUpdated = {
   __typename?: 'SortPositionUpdated';
   id: Scalars['ID'];
   sortPosition: Scalars['Int'];
+};
+
+export type StreamActivityExtraData = {
+  __typename?: 'StreamActivityExtraData';
+  articleUrl?: Maybe<Scalars['String']>;
+  audioUrl?: Maybe<Scalars['String']>;
+  caption?: Maybe<Scalars['String']>;
+  club?: Maybe<StreamFeedClub>;
+  creator?: Maybe<StreamFeedUser>;
+  imageUrl?: Maybe<Scalars['String']>;
+  originalPostId?: Maybe<Scalars['String']>;
+  tags: Array<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  videoUrl?: Maybe<Scalars['String']>;
+};
+
+export type StreamActivityReactionCounts = {
+  __typename?: 'StreamActivityReactionCounts';
+  comments?: Maybe<Scalars['Int']>;
+  likes?: Maybe<Scalars['Int']>;
+};
+
+export type StreamEnrichedActivity = {
+  __typename?: 'StreamEnrichedActivity';
+  actor: StreamFeedUser;
+  extraData: StreamActivityExtraData;
+  id: Scalars['String'];
+  object: Scalars['String'];
+  reactionCounts?: Maybe<StreamActivityReactionCounts>;
+  time: Scalars['DateTime'];
+  userLikeReactionId?: Maybe<Scalars['String']>;
+  verb: Scalars['String'];
+};
+
+export type StreamFeedClub = {
+  __typename?: 'StreamFeedClub';
+  data: StreamFeedClubData;
+  id: Scalars['String'];
+};
+
+export type StreamFeedClubData = {
+  __typename?: 'StreamFeedClubData';
+  image?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export type StreamFeedUser = {
+  __typename?: 'StreamFeedUser';
+  data: StreamFeedUserData;
+  id: Scalars['String'];
+};
+
+export type StreamFeedUserData = {
+  __typename?: 'StreamFeedUserData';
+  image?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 export type TextSearchResult = {
@@ -1742,56 +1953,6 @@ export enum TimeUnit {
   Seconds = 'SECONDS'
 }
 
-export type TimelinePostDataRequestInput = {
-  activityId: Scalars['String'];
-  objectId: Scalars['ID'];
-  objectType: TimelinePostType;
-  posterId: Scalars['ID'];
-};
-
-export type TimelinePostFullData = {
-  __typename?: 'TimelinePostFullData';
-  activityId: Scalars['String'];
-  caption?: Maybe<Scalars['String']>;
-  creator: TimelinePostObjectDataUser;
-  object: TimelinePostObjectDataObject;
-  postedAt: Scalars['DateTime'];
-  poster: TimelinePostObjectDataUser;
-  tags: Array<Scalars['String']>;
-};
-
-export type TimelinePostObjectData = {
-  __typename?: 'TimelinePostObjectData';
-  activityId: Scalars['String'];
-  creator: TimelinePostObjectDataUser;
-  object: TimelinePostObjectDataObject;
-  poster: TimelinePostObjectDataUser;
-};
-
-export type TimelinePostObjectDataObject = {
-  __typename?: 'TimelinePostObjectDataObject';
-  audioUri?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  imageUri?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  type: TimelinePostType;
-  videoThumbUri?: Maybe<Scalars['String']>;
-  videoUri?: Maybe<Scalars['String']>;
-};
-
-export type TimelinePostObjectDataUser = {
-  __typename?: 'TimelinePostObjectDataUser';
-  avatarUri?: Maybe<Scalars['String']>;
-  displayName: Scalars['String'];
-  id: Scalars['ID'];
-};
-
-export enum TimelinePostType {
-  Announcement = 'ANNOUNCEMENT',
-  Workout = 'WORKOUT',
-  Workoutplan = 'WORKOUTPLAN'
-}
-
 export type UpdateBodyTrackingEntryInput = {
   bodyweight?: InputMaybe<Scalars['Float']>;
   bodyweightUnit?: InputMaybe<BodyweightUnit>;
@@ -1801,21 +1962,25 @@ export type UpdateBodyTrackingEntryInput = {
   photoUris?: InputMaybe<Array<Scalars['String']>>;
 };
 
-export type UpdateClubAnnouncementInput = {
-  audioUri?: InputMaybe<Scalars['String']>;
-  description?: InputMaybe<Scalars['String']>;
-  id: Scalars['ID'];
-  imageUri?: InputMaybe<Scalars['String']>;
-  videoThumbUri?: InputMaybe<Scalars['String']>;
-  videoUri?: InputMaybe<Scalars['String']>;
-};
-
 export type UpdateClubInviteTokenInput = {
   active?: InputMaybe<Scalars['Boolean']>;
   clubId: Scalars['ID'];
   id: Scalars['ID'];
   inviteLimit?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateClubMemberNoteInput = {
+  id: Scalars['ID'];
+  note?: InputMaybe<Scalars['String']>;
+  tags?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type UpdateClubMetaDataAdminInput = {
+  id: Scalars['ID'];
+  metaTags?: InputMaybe<Array<Scalars['String']>>;
+  reasonNotValidated?: InputMaybe<Scalars['String']>;
+  validated?: InputMaybe<PublicContentValidationStatus>;
 };
 
 export type UpdateClubSummaryInput = {
@@ -1848,28 +2013,6 @@ export type UpdateGymProfileInput = {
   description?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   name?: InputMaybe<Scalars['String']>;
-};
-
-export type UpdateJournalGoalInput = {
-  completedDate?: InputMaybe<Scalars['DateTime']>;
-  deadline?: InputMaybe<Scalars['DateTime']>;
-  description?: InputMaybe<Scalars['String']>;
-  id: Scalars['ID'];
-  name?: InputMaybe<Scalars['String']>;
-};
-
-export type UpdateJournalMoodInput = {
-  energyScore?: InputMaybe<Scalars['Int']>;
-  id: Scalars['ID'];
-  moodScore?: InputMaybe<Scalars['Int']>;
-  tags?: InputMaybe<Array<Scalars['String']>>;
-  textNote?: InputMaybe<Scalars['String']>;
-};
-
-export type UpdateJournalNoteInput = {
-  id: Scalars['ID'];
-  textNote?: InputMaybe<Scalars['String']>;
-  voiceNoteUri?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateLoggedWorkoutInput = {
@@ -1941,25 +2084,29 @@ export type UpdateSortPositionInput = {
   sortPosition: Scalars['Int'];
 };
 
-export type UpdateUserBenchmarkEntryInput = {
-  completedOn?: InputMaybe<Scalars['DateTime']>;
-  id: Scalars['String'];
+export type UpdateUserEatWellLogInput = {
+  id: Scalars['ID'];
   note?: InputMaybe<Scalars['String']>;
-  score?: InputMaybe<Scalars['Float']>;
-  videoThumbUri?: InputMaybe<Scalars['String']>;
-  videoUri?: InputMaybe<Scalars['String']>;
+  rating?: InputMaybe<UserDayLogRating>;
 };
 
-export type UpdateUserBenchmarkInput = {
-  benchmarkType: BenchmarkType;
+export type UpdateUserGoalInput = {
+  completedDate?: InputMaybe<Scalars['DateTime']>;
+  deadline?: InputMaybe<Scalars['DateTime']>;
   description?: InputMaybe<Scalars['String']>;
-  equipmentInfo?: InputMaybe<Scalars['String']>;
-  id: Scalars['String'];
-  loadUnit?: InputMaybe<LoadUnit>;
+  id: Scalars['ID'];
   name?: InputMaybe<Scalars['String']>;
 };
 
+export type UpdateUserMeditationLogInput = {
+  id: Scalars['ID'];
+  minutesLogged?: InputMaybe<Scalars['Int']>;
+  note?: InputMaybe<Scalars['String']>;
+};
+
 export type UpdateUserProfileInput = {
+  activeLogDataWidgets?: InputMaybe<Array<Scalars['String']>>;
+  activeProgressWidgets?: InputMaybe<Array<Scalars['String']>>;
   avatarUri?: InputMaybe<Scalars['String']>;
   bio?: InputMaybe<Scalars['String']>;
   birthdate?: InputMaybe<Scalars['DateTime']>;
@@ -1977,11 +2124,14 @@ export type UpdateUserProfileInput = {
   tiktokHandle?: InputMaybe<Scalars['String']>;
   townCity?: InputMaybe<Scalars['String']>;
   userProfileScope?: InputMaybe<UserProfileScope>;
+  workoutsPerWeekTarget?: InputMaybe<Scalars['Int']>;
   youtubeHandle?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateUserProfileResult = {
   __typename?: 'UpdateUserProfileResult';
+  activeLogDataWidgets?: Maybe<Array<Scalars['String']>>;
+  activeProgressWidgets?: Maybe<Array<Scalars['String']>>;
   avatarUri?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   birthdate?: Maybe<Scalars['DateTime']>;
@@ -2000,7 +2150,15 @@ export type UpdateUserProfileResult = {
   tiktokHandle?: Maybe<Scalars['String']>;
   townCity?: Maybe<Scalars['String']>;
   userProfileScope?: Maybe<UserProfileScope>;
+  workoutsPerWeekTarget?: Maybe<Scalars['Int']>;
   youtubeHandle?: Maybe<Scalars['String']>;
+};
+
+export type UpdateUserSleepWellLogInput = {
+  id: Scalars['ID'];
+  minutesSlept?: InputMaybe<Scalars['Int']>;
+  note?: InputMaybe<Scalars['String']>;
+  rating?: InputMaybe<UserDayLogRating>;
 };
 
 export type UpdateWorkoutInput = {
@@ -2009,13 +2167,20 @@ export type UpdateWorkoutInput = {
   contentAccessScope?: InputMaybe<ContentAccessScope>;
   coverImageUri?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
-  difficultyLevel?: InputMaybe<DifficultyLevel>;
   id: Scalars['ID'];
   introAudioUri?: InputMaybe<Scalars['String']>;
   introVideoThumbUri?: InputMaybe<Scalars['String']>;
   introVideoUri?: InputMaybe<Scalars['String']>;
   lengthMinutes?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateWorkoutMetaDataAdminInput = {
+  difficultyLevel?: InputMaybe<DifficultyLevel>;
+  id: Scalars['ID'];
+  metaTags?: InputMaybe<Array<Scalars['String']>>;
+  reasonNotValidated?: InputMaybe<Scalars['String']>;
+  validated?: InputMaybe<PublicContentValidationStatus>;
 };
 
 export type UpdateWorkoutMoveInput = {
@@ -2057,6 +2222,14 @@ export type UpdateWorkoutPlanInput = {
   name?: InputMaybe<Scalars['String']>;
 };
 
+export type UpdateWorkoutPlanMetaDataAdminInput = {
+  difficultyLevel?: InputMaybe<DifficultyLevel>;
+  id: Scalars['ID'];
+  metaTags?: InputMaybe<Array<Scalars['String']>>;
+  reasonNotValidated?: InputMaybe<Scalars['String']>;
+  validated?: InputMaybe<PublicContentValidationStatus>;
+};
+
 export type UpdateWorkoutPlanReviewInput = {
   comment?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
@@ -2095,46 +2268,6 @@ export type UserAvatarData = {
   id: Scalars['ID'];
 };
 
-export type UserBenchmark = {
-  __typename?: 'UserBenchmark';
-  UserBenchmarkEntries: Array<UserBenchmarkEntry>;
-  benchmarkType: BenchmarkType;
-  createdAt: Scalars['DateTime'];
-  description?: Maybe<Scalars['String']>;
-  equipmentInfo?: Maybe<Scalars['String']>;
-  id: Scalars['String'];
-  lastEntryAt: Scalars['DateTime'];
-  loadUnit: LoadUnit;
-  name: Scalars['String'];
-};
-
-export type UserBenchmarkEntry = {
-  __typename?: 'UserBenchmarkEntry';
-  completedOn: Scalars['DateTime'];
-  createdAt: Scalars['DateTime'];
-  id: Scalars['String'];
-  note?: Maybe<Scalars['String']>;
-  score: Scalars['Float'];
-  videoThumbUri?: Maybe<Scalars['String']>;
-  videoUri?: Maybe<Scalars['String']>;
-};
-
-export type UserBenchmarkSummary = {
-  __typename?: 'UserBenchmarkSummary';
-  benchmarkType: BenchmarkType;
-  equipmentInfo?: Maybe<Scalars['String']>;
-  id: Scalars['String'];
-  lastEntryAt: Scalars['DateTime'];
-  loadUnit: LoadUnit;
-  name: Scalars['String'];
-};
-
-export type UserBenchmarkWithBestEntry = {
-  __typename?: 'UserBenchmarkWithBestEntry';
-  BestEntry?: Maybe<UserBenchmarkEntry>;
-  UserBenchmarkSummary: UserBenchmarkSummary;
-};
-
 export enum UserClubMemberStatus {
   Admin = 'ADMIN',
   Member = 'MEMBER',
@@ -2142,12 +2275,70 @@ export enum UserClubMemberStatus {
   Owner = 'OWNER'
 }
 
+export type UserDayLogMood = {
+  __typename?: 'UserDayLogMood';
+  createdAt: Scalars['DateTime'];
+  energyScore: Scalars['Int'];
+  id: Scalars['ID'];
+  moodScore: Scalars['Int'];
+  note?: Maybe<Scalars['String']>;
+  tags: Array<Scalars['String']>;
+};
+
+export enum UserDayLogRating {
+  Average = 'AVERAGE',
+  Bad = 'BAD',
+  Good = 'GOOD'
+}
+
+export type UserEatWellLog = {
+  __typename?: 'UserEatWellLog';
+  createdAt: Scalars['DateTime'];
+  dayNumber: Scalars['Int'];
+  id: Scalars['ID'];
+  note?: Maybe<Scalars['String']>;
+  rating: UserDayLogRating;
+  year: Scalars['Int'];
+};
+
+export type UserExerciseLoadTracker = {
+  __typename?: 'UserExerciseLoadTracker';
+  Equipment?: Maybe<Equipment>;
+  Move: Move;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  loadUnit: LoadUnit;
+  reps: Scalars['Int'];
+};
+
+export type UserGoal = {
+  __typename?: 'UserGoal';
+  completedDate?: Maybe<Scalars['DateTime']>;
+  createdAt: Scalars['DateTime'];
+  deadline?: Maybe<Scalars['DateTime']>;
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type UserMeditationLog = {
+  __typename?: 'UserMeditationLog';
+  createdAt: Scalars['DateTime'];
+  dayNumber: Scalars['Int'];
+  id: Scalars['ID'];
+  minutesLogged: Scalars['Int'];
+  note?: Maybe<Scalars['String']>;
+  year: Scalars['Int'];
+};
+
 export type UserProfile = {
   __typename?: 'UserProfile';
-  BenchmarksWithBestEntries: Array<UserBenchmarkWithBestEntry>;
   Clubs: Array<ClubSummary>;
   LifetimeLogStatsSummary?: Maybe<LifetimeLogStatsSummary>;
   Skills: Array<Skill>;
+  activeLogDataWidgets?: Maybe<Array<Scalars['String']>>;
+  activeProgressWidgets?: Maybe<Array<Scalars['String']>>;
   avatarUri?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   birthdate?: Maybe<Scalars['DateTime']>;
@@ -2166,6 +2357,7 @@ export type UserProfile = {
   townCity?: Maybe<Scalars['String']>;
   userProfileScope: UserProfileScope;
   workoutCount?: Maybe<Scalars['Int']>;
+  workoutsPerWeekTarget?: Maybe<Scalars['Int']>;
   youtubeHandle?: Maybe<Scalars['String']>;
 };
 
@@ -2189,6 +2381,33 @@ export type UserProfileSummary = {
   workoutCount: Scalars['Int'];
 };
 
+export type UserRecentlyViewedObject = {
+  __typename?: 'UserRecentlyViewedObject';
+  Club?: Maybe<ClubSummary>;
+  Workout?: Maybe<WorkoutSummary>;
+  WorkoutPlan?: Maybe<WorkoutPlanSummary>;
+};
+
+export type UserSleepWellLog = {
+  __typename?: 'UserSleepWellLog';
+  createdAt: Scalars['DateTime'];
+  dayNumber: Scalars['Int'];
+  id: Scalars['ID'];
+  minutesSlept?: Maybe<Scalars['Int']>;
+  note?: Maybe<Scalars['String']>;
+  rating: UserDayLogRating;
+  year: Scalars['Int'];
+};
+
+export type WelcomeTodoItem = {
+  __typename?: 'WelcomeTodoItem';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  routeTo?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
+  videoUri?: Maybe<Scalars['String']>;
+};
+
 export type Workout = {
   __typename?: 'Workout';
   User: UserAvatarData;
@@ -2207,6 +2426,7 @@ export type Workout = {
   introVideoUri?: Maybe<Scalars['String']>;
   lengthMinutes?: Maybe<Scalars['Int']>;
   name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type WorkoutFiltersInput = {
@@ -2272,6 +2492,7 @@ export type WorkoutPlan = {
   introVideoUri?: Maybe<Scalars['String']>;
   lengthWeeks: Scalars['Int'];
   name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type WorkoutPlanDay = {
@@ -2345,7 +2566,34 @@ export type WorkoutPlanSummary = {
   reviewCount: Scalars['Int'];
   reviewScore?: Maybe<Scalars['Float']>;
   tags: Array<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
   workoutsCount: Scalars['Int'];
+};
+
+export type WorkoutPlanWithMetaDataAdmin = {
+  __typename?: 'WorkoutPlanWithMetaDataAdmin';
+  User: UserAvatarData;
+  WorkoutPlanDays: Array<WorkoutPlanDay>;
+  WorkoutPlanEnrolments: Array<WorkoutPlanEnrolment>;
+  WorkoutPlanReviews: Array<WorkoutPlanReview>;
+  WorkoutTags: Array<WorkoutTag>;
+  archived: Scalars['Boolean'];
+  contentAccessScope: ContentAccessScope;
+  coverImageUri?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  daysPerWeek: Scalars['Int'];
+  description?: Maybe<Scalars['String']>;
+  difficultyLevel?: Maybe<DifficultyLevel>;
+  id: Scalars['ID'];
+  introAudioUri?: Maybe<Scalars['String']>;
+  introVideoThumbUri?: Maybe<Scalars['String']>;
+  introVideoUri?: Maybe<Scalars['String']>;
+  lengthWeeks: Scalars['Int'];
+  metaTags: Array<Scalars['String']>;
+  name: Scalars['String'];
+  reasonNotValidated?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  validated: PublicContentValidationStatus;
 };
 
 export type WorkoutSection = {
@@ -2368,8 +2616,6 @@ export type WorkoutSection = {
 
 export type WorkoutSectionType = {
   __typename?: 'WorkoutSectionType';
-  LoggedWorkoutSections: Array<LoggedWorkoutSection>;
-  WorkoutSections: Array<WorkoutSection>;
   description: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
@@ -2401,18 +2647,22 @@ export type WorkoutSummary = {
   __typename?: 'WorkoutSummary';
   User: UserAvatarData;
   archived: Scalars['Boolean'];
+  bodyAreas: Array<Scalars['ID']>;
   coverImageUri?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
   difficultyLevel?: Maybe<DifficultyLevel>;
   equipments: Array<Scalars['String']>;
+  goals: Array<Scalars['String']>;
   hasClassAudio: Scalars['Boolean'];
   hasClassVideo: Scalars['Boolean'];
   id: Scalars['ID'];
   lengthMinutes?: Maybe<Scalars['Int']>;
   loggedSessionsCount: Scalars['Int'];
   name: Scalars['String'];
+  sectionTypes: Array<Scalars['String']>;
   tags: Array<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
 };
 
 export type WorkoutTag = {
@@ -2421,26 +2671,104 @@ export type WorkoutTag = {
   tag: Scalars['String'];
 };
 
+export type WorkoutWithMetaDataAdmin = {
+  __typename?: 'WorkoutWithMetaDataAdmin';
+  User: UserAvatarData;
+  WorkoutGoals: Array<WorkoutGoal>;
+  WorkoutSections: Array<WorkoutSection>;
+  WorkoutTags: Array<WorkoutTag>;
+  archived: Scalars['Boolean'];
+  contentAccessScope: ContentAccessScope;
+  coverImageUri?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  difficultyLevel?: Maybe<DifficultyLevel>;
+  id: Scalars['ID'];
+  introAudioUri?: Maybe<Scalars['String']>;
+  introVideoThumbUri?: Maybe<Scalars['String']>;
+  introVideoUri?: Maybe<Scalars['String']>;
+  lengthMinutes?: Maybe<Scalars['Int']>;
+  metaTags: Array<Scalars['String']>;
+  name: Scalars['String'];
+  reasonNotValidated?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  validated: PublicContentValidationStatus;
+};
+
+export type ClubWithMetaDataAdminFragment = { __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string> };
+
+export type ClubSummaryFragment = { __typename: 'ClubSummary', id: string, createdAt: any, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, location?: string | null | undefined, memberCount: number, workoutCount: number, planCount: number };
+
+export type ClubMemberNoteFragment = { __typename: 'ClubMemberNote', id: string, createdAt: any, updatedAt: any, note: string, tags: Array<string> };
+
+export type ClubChatSummaryFragment = { __typename?: 'ClubChatSummary', id: string, name: string, coverImageUri?: string | null | undefined, Owner: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, Admins: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }>, Members: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }> };
+
+export type ClubMemberSummaryFragment = { __typename: 'ClubMemberSummary', id: string, displayName: string, avatarUri?: string | null | undefined, townCity?: string | null | undefined, countryCode?: string | null | undefined, tagline?: string | null | undefined, skills: Array<string> };
+
+export type ClubInviteTokenFragment = { __typename: 'ClubInviteToken', id: string, createdAt: any, name: string, active: boolean, inviteLimit: number, joinedUserIds: Array<string> };
+
+export type ClubWorkoutsFragment = { __typename: 'ClubWorkouts', id: string, workouts: Array<{ __typename: 'WorkoutSummary', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, description?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, loggedSessionsCount: number, hasClassVideo: boolean, hasClassAudio: boolean, equipments: Array<string>, sectionTypes: Array<string>, goals: Array<string>, tags: Array<string>, bodyAreas: Array<string>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> };
+
+export type ClubWorkoutPlansFragment = { __typename: 'ClubWorkoutPlans', id: string, workoutPlans: Array<{ __typename: 'WorkoutPlanSummary', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, workoutsCount: number, enrolmentsCount: number, tags: Array<string>, reviewScore?: number | null | undefined, reviewCount: number, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, goals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }> }> };
+
 export type EquipmentFragment = { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean };
 
 export type BodyAreaFragment = { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower };
 
-export type ClubSummaryFragment = { __typename: 'ClubSummary', id: string, createdAt: any, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, location?: string | null | undefined, memberCount: number, workoutCount: number, planCount: number };
+export type MoveFragment = { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType> };
 
 export type MoveTypeFragment = { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined };
 
-export type WorkoutSummaryFragment = { __typename: 'WorkoutSummary', id: string, createdAt: any, archived: boolean, name: string, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, description?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, loggedSessionsCount: number, hasClassVideo: boolean, hasClassAudio: boolean, equipments: Array<string>, tags: Array<string>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } };
-
-export type WorkoutPlanSummaryFragment = { __typename: 'WorkoutPlanSummary', id: string, createdAt: any, archived: boolean, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, workoutsCount: number, enrolmentsCount: number, tags: Array<string>, reviewScore?: number | null | undefined, reviewCount: number, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, goals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }> };
-
-export type WorkoutGoalFragment = { __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string };
+export type ProgressWidgetFragment = { __typename: 'ProgressWidget', id: string, createdAt: any, name: string, subtitle?: string | null | undefined, description?: string | null | undefined };
 
 export type UserAvatarDataFragment = { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string };
 
-export type BodyAreasQueryVariables = Exact<{ [key: string]: never; }>;
+export type WorkoutWithMetaDataAdminDataFragment = { __typename: 'WorkoutWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, description: string }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> };
+
+export type WorkoutDataFragment = { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, description: string }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> };
+
+export type WorkoutFragment = { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined };
+
+export type WorkoutSummaryFragment = { __typename: 'WorkoutSummary', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, description?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, loggedSessionsCount: number, hasClassVideo: boolean, hasClassAudio: boolean, equipments: Array<string>, sectionTypes: Array<string>, goals: Array<string>, tags: Array<string>, bodyAreas: Array<string>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } };
+
+export type ArchivedWorkoutFragment = { __typename: 'Workout', id: string, name: string, archived: boolean };
+
+export type WorkoutGoalFragment = { __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string };
+
+export type WorkoutSectionFragment = { __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined };
+
+export type WorkoutSectionTypeFragment = { __typename: 'WorkoutSectionType', id: string, name: string, description: string };
+
+export type WorkoutSetFragment = { __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number };
+
+export type WorkoutMoveFragment = { __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit };
+
+export type WorkoutTagFragment = { __typename: 'WorkoutTag', id: string, tag: string };
+
+export type WorkoutPlanEnrolmentSummaryFragment = { __typename: 'WorkoutPlanEnrolmentSummary', id: string, startDate?: any | null | undefined, completedWorkoutsCount: number, WorkoutPlan: { __typename: 'WorkoutPlanSummary', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, workoutsCount: number, enrolmentsCount: number, tags: Array<string>, reviewScore?: number | null | undefined, reviewCount: number, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, goals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }> } };
+
+export type WorkoutPlanEnrolmentFragment = { __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined };
+
+export type CompletedWorkoutPlanDayWorkoutFragment = { __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string };
+
+export type WorkoutPlanDataFragment = { __typename: 'WorkoutPlanWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutPlanDays: Array<{ __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number, WorkoutPlanDayWorkouts: Array<{ __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number, Workout: { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, description: string }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } }> }>, WorkoutPlanReviews: Array<{ __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutPlanEnrolments: Array<{ __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined, CompletedWorkoutPlanDayWorkouts: Array<{ __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string }>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> };
+
+export type WorkoutPlanFragment = { __typename: 'WorkoutPlan', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope };
+
+export type WorkoutPlanSummaryFragment = { __typename: 'WorkoutPlanSummary', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, workoutsCount: number, enrolmentsCount: number, tags: Array<string>, reviewScore?: number | null | undefined, reviewCount: number, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, goals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }> };
+
+export type ArchivedWorkoutPlanFragment = { __typename: 'WorkoutPlan', id: string, name: string, archived: boolean };
+
+export type WorkoutPlanDayFragment = { __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number };
+
+export type WorkoutPlanDayWorkoutFragment = { __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number };
+
+export type WorkoutPlanReviewFragment = { __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined };
+
+export type CoreDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type BodyAreasQuery = { __typename?: 'Query', bodyAreas: Array<{ __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower }> };
+export type CoreDataQuery = { __typename?: 'Query', coreData: { __typename: 'CoreData', bodyAreas: Array<{ __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower }>, equipment: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, moveTypes: Array<{ __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }>, workoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, workoutSectionTypes: Array<{ __typename: 'WorkoutSectionType', id: string, name: string, description: string }>, standardMoves: Array<{ __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> }>, progressWidgets: Array<{ __typename: 'ProgressWidget', id: string, createdAt: any, name: string, subtitle?: string | null | undefined, description?: string | null | undefined }> } };
 
 export type CreateEquipmentMutationVariables = Exact<{
   data: CreateEquipmentInput;
@@ -2448,11 +2776,6 @@ export type CreateEquipmentMutationVariables = Exact<{
 
 
 export type CreateEquipmentMutation = { __typename?: 'Mutation', createEquipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined };
-
-export type EquipmentsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type EquipmentsQuery = { __typename?: 'Query', equipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> };
 
 export type UpdateEquipmentMutationVariables = Exact<{
   data: UpdateEquipmentInput;
@@ -2468,11 +2791,6 @@ export type CreateMoveMutationVariables = Exact<{
 
 export type CreateMoveMutation = { __typename?: 'Mutation', createMove: { __typename?: 'Move', id: string, name: string, description?: string | null | undefined, searchTerms?: string | null | undefined, validRepTypes: Array<WorkoutMoveRepType>, demoVideoUri?: string | null | undefined, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }> } };
 
-export type StandardMovesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type StandardMovesQuery = { __typename?: 'Query', standardMoves: Array<{ __typename?: 'Move', id: string, name: string, description?: string | null | undefined, searchTerms?: string | null | undefined, validRepTypes: Array<WorkoutMoveRepType>, demoVideoUri?: string | null | undefined, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }> }> };
-
 export type UpdateMoveMutationVariables = Exact<{
   data: UpdateMoveInput;
 }>;
@@ -2480,61 +2798,64 @@ export type UpdateMoveMutationVariables = Exact<{
 
 export type UpdateMoveMutation = { __typename?: 'Mutation', updateMove: { __typename?: 'Move', id: string, name: string, description?: string | null | undefined, searchTerms?: string | null | undefined, validRepTypes: Array<WorkoutMoveRepType>, demoVideoUri?: string | null | undefined, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }> } };
 
-export type MoveTypesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MoveTypesQuery = { __typename?: 'Query', moveTypes: Array<{ __typename?: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }> };
-
-export type WorkoutGoalsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type WorkoutGoalsQuery = { __typename?: 'Query', workoutGoals: Array<{ __typename?: 'WorkoutGoal', id: string, name: string, description: string }> };
-
-export type WorkoutSectionTypesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type WorkoutSectionTypesQuery = { __typename?: 'Query', workoutSectionTypes: Array<{ __typename?: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }> };
-
-export type PublicClubsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PublicClubsQuery = { __typename?: 'Query', publicClubs: Array<{ __typename: 'ClubSummary', id: string, createdAt: any, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, location?: string | null | undefined, memberCount: number, workoutCount: number, planCount: number, Owner: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, Admins: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }> }> };
-
-export type PublicWorkoutPlansQueryVariables = Exact<{
-  cursor?: InputMaybe<Scalars['ID']>;
-  filters?: InputMaybe<WorkoutPlanFiltersInput>;
-  take?: InputMaybe<Scalars['Int']>;
+export type AdminPublicClubsQueryVariables = Exact<{
+  status: PublicContentValidationStatus;
 }>;
 
 
-export type PublicWorkoutPlansQuery = { __typename?: 'Query', publicWorkoutPlans: Array<{ __typename: 'WorkoutPlanSummary', id: string, createdAt: any, archived: boolean, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, workoutsCount: number, enrolmentsCount: number, tags: Array<string>, reviewScore?: number | null | undefined, reviewCount: number, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, goals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }> }> };
+export type AdminPublicClubsQuery = { __typename?: 'Query', adminPublicClubs: Array<{ __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string> }> };
 
-export type PublicWorkoutsQueryVariables = Exact<{
-  cursor?: InputMaybe<Scalars['ID']>;
-  filters?: InputMaybe<WorkoutFiltersInput>;
-  take?: InputMaybe<Scalars['Int']>;
+export type AdminPublicWorkoutPlansQueryVariables = Exact<{
+  status: PublicContentValidationStatus;
 }>;
 
 
-export type PublicWorkoutsQuery = { __typename?: 'Query', publicWorkouts: Array<{ __typename: 'WorkoutSummary', id: string, createdAt: any, archived: boolean, name: string, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, description?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, loggedSessionsCount: number, hasClassVideo: boolean, hasClassAudio: boolean, equipments: Array<string>, tags: Array<string>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> };
+export type AdminPublicWorkoutPlansQuery = { __typename?: 'Query', adminPublicWorkoutPlans: Array<{ __typename: 'WorkoutPlanWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutPlanDays: Array<{ __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number, WorkoutPlanDayWorkouts: Array<{ __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number, Workout: { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, description: string }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } }> }>, WorkoutPlanReviews: Array<{ __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutPlanEnrolments: Array<{ __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined, CompletedWorkoutPlanDayWorkouts: Array<{ __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string }>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> }> };
 
-export const EquipmentFragmentDoc = gql`
-    fragment Equipment on Equipment {
+export type AdminPublicWorkoutsQueryVariables = Exact<{
+  status: PublicContentValidationStatus;
+}>;
+
+
+export type AdminPublicWorkoutsQuery = { __typename?: 'Query', adminPublicWorkouts: Array<{ __typename: 'WorkoutWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, description: string }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> }> };
+
+export type UpdateClubMetaDataAdminMutationVariables = Exact<{
+  data: UpdateClubMetaDataAdminInput;
+}>;
+
+
+export type UpdateClubMetaDataAdminMutation = { __typename?: 'Mutation', updateClubMetaDataAdmin: { __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string> } };
+
+export type UpdateWorkoutMetaDataAdminMutationVariables = Exact<{
+  data: UpdateWorkoutMetaDataAdminInput;
+}>;
+
+
+export type UpdateWorkoutMetaDataAdminMutation = { __typename?: 'Mutation', updateWorkoutMetaDataAdmin: { __typename: 'WorkoutWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, description: string }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } };
+
+export type UpdateWorkoutPlanMetaDataAdminMutationVariables = Exact<{
+  data: UpdateWorkoutPlanMetaDataAdminInput;
+}>;
+
+
+export type UpdateWorkoutPlanMetaDataAdminMutation = { __typename?: 'Mutation', updateWorkoutPlanMetaDataAdmin?: { __typename: 'WorkoutPlanWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutPlanDays: Array<{ __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number, WorkoutPlanDayWorkouts: Array<{ __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number, Workout: { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, description: string }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } }> }>, WorkoutPlanReviews: Array<{ __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutPlanEnrolments: Array<{ __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined, CompletedWorkoutPlanDayWorkouts: Array<{ __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string }>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> } | null | undefined };
+
+export const ClubWithMetaDataAdminFragmentDoc = gql`
+    fragment ClubWithMetaDataAdmin on ClubWithMetaDataAdmin {
   __typename
   id
+  createdAt
   name
-  altNames
-  loadAdjustable
-}
-    `;
-export const BodyAreaFragmentDoc = gql`
-    fragment BodyArea on BodyArea {
-  __typename
-  id
-  name
-  altNames
-  frontBack
-  upperLower
+  description
+  location
+  coverImageUri
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+  contentAccessScope
+  validated
+  reasonNotValidated
+  metaTags
 }
     `;
 export const ClubSummaryFragmentDoc = gql`
@@ -2555,13 +2876,14 @@ export const ClubSummaryFragmentDoc = gql`
   planCount
 }
     `;
-export const MoveTypeFragmentDoc = gql`
-    fragment MoveType on MoveType {
+export const ClubMemberNoteFragmentDoc = gql`
+    fragment ClubMemberNote on ClubMemberNote {
   __typename
   id
-  name
-  description
-  imageUri
+  createdAt
+  updatedAt
+  note
+  tags
 }
     `;
 export const UserAvatarDataFragmentDoc = gql`
@@ -2572,11 +2894,51 @@ export const UserAvatarDataFragmentDoc = gql`
   displayName
 }
     `;
+export const ClubChatSummaryFragmentDoc = gql`
+    fragment ClubChatSummary on ClubChatSummary {
+  id
+  name
+  coverImageUri
+  Owner {
+    ...UserAvatarData
+  }
+  Admins {
+    ...UserAvatarData
+  }
+  Members {
+    ...UserAvatarData
+  }
+}
+    ${UserAvatarDataFragmentDoc}`;
+export const ClubMemberSummaryFragmentDoc = gql`
+    fragment ClubMemberSummary on ClubMemberSummary {
+  __typename
+  id
+  displayName
+  avatarUri
+  townCity
+  countryCode
+  tagline
+  skills
+}
+    `;
+export const ClubInviteTokenFragmentDoc = gql`
+    fragment ClubInviteToken on ClubInviteToken {
+  __typename
+  id
+  createdAt
+  name
+  active
+  inviteLimit
+  joinedUserIds
+}
+    `;
 export const WorkoutSummaryFragmentDoc = gql`
     fragment WorkoutSummary on WorkoutSummary {
   __typename
   id
   createdAt
+  updatedAt
   archived
   name
   User {
@@ -2590,9 +2952,21 @@ export const WorkoutSummaryFragmentDoc = gql`
   hasClassVideo
   hasClassAudio
   equipments
+  sectionTypes
+  goals
   tags
+  bodyAreas
 }
     ${UserAvatarDataFragmentDoc}`;
+export const ClubWorkoutsFragmentDoc = gql`
+    fragment ClubWorkouts on ClubWorkouts {
+  __typename
+  id
+  workouts {
+    ...WorkoutSummary
+  }
+}
+    ${WorkoutSummaryFragmentDoc}`;
 export const WorkoutGoalFragmentDoc = gql`
     fragment WorkoutGoal on WorkoutGoal {
   __typename
@@ -2607,6 +2981,7 @@ export const WorkoutPlanSummaryFragmentDoc = gql`
   __typename
   id
   createdAt
+  updatedAt
   archived
   name
   description
@@ -2627,40 +3002,495 @@ export const WorkoutPlanSummaryFragmentDoc = gql`
 }
     ${UserAvatarDataFragmentDoc}
 ${WorkoutGoalFragmentDoc}`;
-export const BodyAreasDocument = gql`
-    query bodyAreas {
-  bodyAreas {
-    ...BodyArea
+export const ClubWorkoutPlansFragmentDoc = gql`
+    fragment ClubWorkoutPlans on ClubWorkoutPlans {
+  __typename
+  id
+  workoutPlans {
+    ...WorkoutPlanSummary
   }
 }
-    ${BodyAreaFragmentDoc}`;
+    ${WorkoutPlanSummaryFragmentDoc}`;
+export const ProgressWidgetFragmentDoc = gql`
+    fragment ProgressWidget on ProgressWidget {
+  __typename
+  id
+  createdAt
+  name
+  subtitle
+  description
+}
+    `;
+export const WorkoutTagFragmentDoc = gql`
+    fragment WorkoutTag on WorkoutTag {
+  __typename
+  id
+  tag
+}
+    `;
+export const WorkoutSectionFragmentDoc = gql`
+    fragment WorkoutSection on WorkoutSection {
+  __typename
+  id
+  name
+  note
+  rounds
+  timecap
+  sortPosition
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+  classVideoUri
+  classVideoThumbUri
+  classAudioUri
+}
+    `;
+export const WorkoutSectionTypeFragmentDoc = gql`
+    fragment WorkoutSectionType on WorkoutSectionType {
+  __typename
+  id
+  name
+  description
+}
+    `;
+export const WorkoutSetFragmentDoc = gql`
+    fragment WorkoutSet on WorkoutSet {
+  __typename
+  id
+  sortPosition
+  duration
+}
+    `;
+export const WorkoutMoveFragmentDoc = gql`
+    fragment WorkoutMove on WorkoutMove {
+  __typename
+  id
+  sortPosition
+  reps
+  repType
+  distanceUnit
+  loadAmount
+  loadUnit
+  timeUnit
+}
+    `;
+export const EquipmentFragmentDoc = gql`
+    fragment Equipment on Equipment {
+  __typename
+  id
+  name
+  altNames
+  loadAdjustable
+}
+    `;
+export const MoveFragmentDoc = gql`
+    fragment Move on Move {
+  __typename
+  id
+  name
+  searchTerms
+  description
+  demoVideoUri
+  demoVideoThumbUri
+  scope
+  validRepTypes
+}
+    `;
+export const MoveTypeFragmentDoc = gql`
+    fragment MoveType on MoveType {
+  __typename
+  id
+  name
+  description
+  imageUri
+}
+    `;
+export const BodyAreaFragmentDoc = gql`
+    fragment BodyArea on BodyArea {
+  __typename
+  id
+  name
+  altNames
+  frontBack
+  upperLower
+}
+    `;
+export const WorkoutWithMetaDataAdminDataFragmentDoc = gql`
+    fragment WorkoutWithMetaDataAdminData on WorkoutWithMetaDataAdmin {
+  __typename
+  id
+  createdAt
+  updatedAt
+  archived
+  name
+  description
+  lengthMinutes
+  coverImageUri
+  contentAccessScope
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+  User {
+    ...UserAvatarData
+  }
+  WorkoutGoals {
+    ...WorkoutGoal
+  }
+  WorkoutTags {
+    ...WorkoutTag
+  }
+  WorkoutSections {
+    ...WorkoutSection
+    WorkoutSectionType {
+      ...WorkoutSectionType
+    }
+    WorkoutSets {
+      ...WorkoutSet
+      WorkoutMoves {
+        ...WorkoutMove
+        Equipment {
+          ...Equipment
+        }
+        Move {
+          ...Move
+          MoveType {
+            ...MoveType
+          }
+          BodyAreaMoveScores {
+            score
+            BodyArea {
+              ...BodyArea
+            }
+          }
+          RequiredEquipments {
+            ...Equipment
+          }
+          SelectableEquipments {
+            ...Equipment
+          }
+        }
+      }
+    }
+  }
+  difficultyLevel
+  metaTags
+  validated
+  reasonNotValidated
+}
+    ${UserAvatarDataFragmentDoc}
+${WorkoutGoalFragmentDoc}
+${WorkoutTagFragmentDoc}
+${WorkoutSectionFragmentDoc}
+${WorkoutSectionTypeFragmentDoc}
+${WorkoutSetFragmentDoc}
+${WorkoutMoveFragmentDoc}
+${EquipmentFragmentDoc}
+${MoveFragmentDoc}
+${MoveTypeFragmentDoc}
+${BodyAreaFragmentDoc}`;
+export const WorkoutFragmentDoc = gql`
+    fragment Workout on Workout {
+  __typename
+  id
+  createdAt
+  updatedAt
+  archived
+  name
+  description
+  lengthMinutes
+  difficultyLevel
+  coverImageUri
+  contentAccessScope
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+}
+    `;
+export const ArchivedWorkoutFragmentDoc = gql`
+    fragment ArchivedWorkout on Workout {
+  __typename
+  id
+  name
+  archived
+}
+    `;
+export const WorkoutPlanEnrolmentSummaryFragmentDoc = gql`
+    fragment WorkoutPlanEnrolmentSummary on WorkoutPlanEnrolmentSummary {
+  __typename
+  id
+  startDate
+  completedWorkoutsCount
+  WorkoutPlan {
+    ...WorkoutPlanSummary
+  }
+}
+    ${WorkoutPlanSummaryFragmentDoc}`;
+export const WorkoutPlanDayFragmentDoc = gql`
+    fragment WorkoutPlanDay on WorkoutPlanDay {
+  id
+  __typename
+  note
+  dayNumber
+}
+    `;
+export const WorkoutPlanDayWorkoutFragmentDoc = gql`
+    fragment WorkoutPlanDayWorkout on WorkoutPlanDayWorkout {
+  id
+  __typename
+  note
+  sortPosition
+}
+    `;
+export const WorkoutDataFragmentDoc = gql`
+    fragment WorkoutData on Workout {
+  __typename
+  id
+  createdAt
+  updatedAt
+  archived
+  name
+  description
+  lengthMinutes
+  coverImageUri
+  contentAccessScope
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+  User {
+    ...UserAvatarData
+  }
+  WorkoutGoals {
+    ...WorkoutGoal
+  }
+  WorkoutTags {
+    ...WorkoutTag
+  }
+  WorkoutSections {
+    ...WorkoutSection
+    WorkoutSectionType {
+      ...WorkoutSectionType
+    }
+    WorkoutSets {
+      ...WorkoutSet
+      WorkoutMoves {
+        ...WorkoutMove
+        Equipment {
+          ...Equipment
+        }
+        Move {
+          ...Move
+          MoveType {
+            ...MoveType
+          }
+          BodyAreaMoveScores {
+            score
+            BodyArea {
+              ...BodyArea
+            }
+          }
+          RequiredEquipments {
+            ...Equipment
+          }
+          SelectableEquipments {
+            ...Equipment
+          }
+        }
+      }
+    }
+  }
+}
+    ${UserAvatarDataFragmentDoc}
+${WorkoutGoalFragmentDoc}
+${WorkoutTagFragmentDoc}
+${WorkoutSectionFragmentDoc}
+${WorkoutSectionTypeFragmentDoc}
+${WorkoutSetFragmentDoc}
+${WorkoutMoveFragmentDoc}
+${EquipmentFragmentDoc}
+${MoveFragmentDoc}
+${MoveTypeFragmentDoc}
+${BodyAreaFragmentDoc}`;
+export const WorkoutPlanReviewFragmentDoc = gql`
+    fragment WorkoutPlanReview on WorkoutPlanReview {
+  id
+  __typename
+  createdAt
+  score
+  comment
+}
+    `;
+export const WorkoutPlanEnrolmentFragmentDoc = gql`
+    fragment WorkoutPlanEnrolment on WorkoutPlanEnrolment {
+  __typename
+  id
+  startDate
+}
+    `;
+export const CompletedWorkoutPlanDayWorkoutFragmentDoc = gql`
+    fragment CompletedWorkoutPlanDayWorkout on CompletedWorkoutPlanDayWorkout {
+  __typename
+  id
+  loggedWorkoutId
+  workoutPlanDayWorkoutId
+}
+    `;
+export const WorkoutPlanDataFragmentDoc = gql`
+    fragment WorkoutPlanData on WorkoutPlanWithMetaDataAdmin {
+  __typename
+  id
+  createdAt
+  updatedAt
+  archived
+  name
+  description
+  lengthWeeks
+  daysPerWeek
+  coverImageUri
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+  contentAccessScope
+  User {
+    ...UserAvatarData
+  }
+  WorkoutPlanDays {
+    ...WorkoutPlanDay
+    WorkoutPlanDayWorkouts {
+      ...WorkoutPlanDayWorkout
+      Workout {
+        ...WorkoutData
+      }
+    }
+  }
+  WorkoutPlanReviews {
+    ...WorkoutPlanReview
+    User {
+      ...UserAvatarData
+    }
+  }
+  WorkoutTags {
+    ...WorkoutTag
+  }
+  WorkoutPlanEnrolments {
+    ...WorkoutPlanEnrolment
+    CompletedWorkoutPlanDayWorkouts {
+      ...CompletedWorkoutPlanDayWorkout
+    }
+    User {
+      ...UserAvatarData
+    }
+  }
+}
+    ${UserAvatarDataFragmentDoc}
+${WorkoutPlanDayFragmentDoc}
+${WorkoutPlanDayWorkoutFragmentDoc}
+${WorkoutDataFragmentDoc}
+${WorkoutPlanReviewFragmentDoc}
+${WorkoutTagFragmentDoc}
+${WorkoutPlanEnrolmentFragmentDoc}
+${CompletedWorkoutPlanDayWorkoutFragmentDoc}`;
+export const WorkoutPlanFragmentDoc = gql`
+    fragment WorkoutPlan on WorkoutPlan {
+  __typename
+  id
+  createdAt
+  updatedAt
+  archived
+  name
+  description
+  lengthWeeks
+  daysPerWeek
+  coverImageUri
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+  contentAccessScope
+}
+    `;
+export const ArchivedWorkoutPlanFragmentDoc = gql`
+    fragment ArchivedWorkoutPlan on WorkoutPlan {
+  __typename
+  id
+  name
+  archived
+}
+    `;
+export const CoreDataDocument = gql`
+    query coreData {
+  coreData {
+    __typename
+    bodyAreas {
+      ...BodyArea
+    }
+    equipment {
+      ...Equipment
+    }
+    moveTypes {
+      ...MoveType
+    }
+    workoutGoals {
+      ...WorkoutGoal
+    }
+    workoutSectionTypes {
+      ...WorkoutSectionType
+    }
+    standardMoves {
+      ...Move
+      MoveType {
+        ...MoveType
+      }
+      BodyAreaMoveScores {
+        score
+        BodyArea {
+          ...BodyArea
+        }
+      }
+      RequiredEquipments {
+        ...Equipment
+      }
+      SelectableEquipments {
+        ...Equipment
+      }
+    }
+    progressWidgets {
+      ...ProgressWidget
+    }
+  }
+}
+    ${BodyAreaFragmentDoc}
+${EquipmentFragmentDoc}
+${MoveTypeFragmentDoc}
+${WorkoutGoalFragmentDoc}
+${WorkoutSectionTypeFragmentDoc}
+${MoveFragmentDoc}
+${ProgressWidgetFragmentDoc}`;
 
 /**
- * __useBodyAreasQuery__
+ * __useCoreDataQuery__
  *
- * To run a query within a React component, call `useBodyAreasQuery` and pass it any options that fit your needs.
- * When your component renders, `useBodyAreasQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useCoreDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCoreDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useBodyAreasQuery({
+ * const { data, loading, error } = useCoreDataQuery({
  *   variables: {
  *   },
  * });
  */
-export function useBodyAreasQuery(baseOptions?: Apollo.QueryHookOptions<BodyAreasQuery, BodyAreasQueryVariables>) {
+export function useCoreDataQuery(baseOptions?: Apollo.QueryHookOptions<CoreDataQuery, CoreDataQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<BodyAreasQuery, BodyAreasQueryVariables>(BodyAreasDocument, options);
+        return Apollo.useQuery<CoreDataQuery, CoreDataQueryVariables>(CoreDataDocument, options);
       }
-export function useBodyAreasLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BodyAreasQuery, BodyAreasQueryVariables>) {
+export function useCoreDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CoreDataQuery, CoreDataQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<BodyAreasQuery, BodyAreasQueryVariables>(BodyAreasDocument, options);
+          return Apollo.useLazyQuery<CoreDataQuery, CoreDataQueryVariables>(CoreDataDocument, options);
         }
-export type BodyAreasQueryHookResult = ReturnType<typeof useBodyAreasQuery>;
-export type BodyAreasLazyQueryHookResult = ReturnType<typeof useBodyAreasLazyQuery>;
-export type BodyAreasQueryResult = Apollo.QueryResult<BodyAreasQuery, BodyAreasQueryVariables>;
+export type CoreDataQueryHookResult = ReturnType<typeof useCoreDataQuery>;
+export type CoreDataLazyQueryHookResult = ReturnType<typeof useCoreDataLazyQuery>;
+export type CoreDataQueryResult = Apollo.QueryResult<CoreDataQuery, CoreDataQueryVariables>;
 export const CreateEquipmentDocument = gql`
     mutation createEquipment($data: CreateEquipmentInput!) {
   createEquipment(data: $data) {
@@ -2694,40 +3524,6 @@ export function useCreateEquipmentMutation(baseOptions?: Apollo.MutationHookOpti
 export type CreateEquipmentMutationHookResult = ReturnType<typeof useCreateEquipmentMutation>;
 export type CreateEquipmentMutationResult = Apollo.MutationResult<CreateEquipmentMutation>;
 export type CreateEquipmentMutationOptions = Apollo.BaseMutationOptions<CreateEquipmentMutation, CreateEquipmentMutationVariables>;
-export const EquipmentsDocument = gql`
-    query equipments {
-  equipments {
-    ...Equipment
-  }
-}
-    ${EquipmentFragmentDoc}`;
-
-/**
- * __useEquipmentsQuery__
- *
- * To run a query within a React component, call `useEquipmentsQuery` and pass it any options that fit your needs.
- * When your component renders, `useEquipmentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useEquipmentsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useEquipmentsQuery(baseOptions?: Apollo.QueryHookOptions<EquipmentsQuery, EquipmentsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<EquipmentsQuery, EquipmentsQueryVariables>(EquipmentsDocument, options);
-      }
-export function useEquipmentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EquipmentsQuery, EquipmentsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<EquipmentsQuery, EquipmentsQueryVariables>(EquipmentsDocument, options);
-        }
-export type EquipmentsQueryHookResult = ReturnType<typeof useEquipmentsQuery>;
-export type EquipmentsLazyQueryHookResult = ReturnType<typeof useEquipmentsLazyQuery>;
-export type EquipmentsQueryResult = Apollo.QueryResult<EquipmentsQuery, EquipmentsQueryVariables>;
 export const UpdateEquipmentDocument = gql`
     mutation updateEquipment($data: UpdateEquipmentInput!) {
   updateEquipment(data: $data) {
@@ -2816,62 +3612,6 @@ export function useCreateMoveMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateMoveMutationHookResult = ReturnType<typeof useCreateMoveMutation>;
 export type CreateMoveMutationResult = Apollo.MutationResult<CreateMoveMutation>;
 export type CreateMoveMutationOptions = Apollo.BaseMutationOptions<CreateMoveMutation, CreateMoveMutationVariables>;
-export const StandardMovesDocument = gql`
-    query standardMoves {
-  standardMoves {
-    id
-    name
-    description
-    searchTerms
-    MoveType {
-      ...MoveType
-    }
-    validRepTypes
-    demoVideoUri
-    RequiredEquipments {
-      ...Equipment
-    }
-    SelectableEquipments {
-      ...Equipment
-    }
-    BodyAreaMoveScores {
-      BodyArea {
-        ...BodyArea
-      }
-      score
-    }
-  }
-}
-    ${MoveTypeFragmentDoc}
-${EquipmentFragmentDoc}
-${BodyAreaFragmentDoc}`;
-
-/**
- * __useStandardMovesQuery__
- *
- * To run a query within a React component, call `useStandardMovesQuery` and pass it any options that fit your needs.
- * When your component renders, `useStandardMovesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useStandardMovesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useStandardMovesQuery(baseOptions?: Apollo.QueryHookOptions<StandardMovesQuery, StandardMovesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<StandardMovesQuery, StandardMovesQueryVariables>(StandardMovesDocument, options);
-      }
-export function useStandardMovesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<StandardMovesQuery, StandardMovesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<StandardMovesQuery, StandardMovesQueryVariables>(StandardMovesDocument, options);
-        }
-export type StandardMovesQueryHookResult = ReturnType<typeof useStandardMovesQuery>;
-export type StandardMovesLazyQueryHookResult = ReturnType<typeof useStandardMovesLazyQuery>;
-export type StandardMovesQueryResult = Apollo.QueryResult<StandardMovesQuery, StandardMovesQueryVariables>;
 export const UpdateMoveDocument = gql`
     mutation updateMove($data: UpdateMoveInput!) {
   updateMove(data: $data) {
@@ -2927,229 +3667,207 @@ export function useUpdateMoveMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateMoveMutationHookResult = ReturnType<typeof useUpdateMoveMutation>;
 export type UpdateMoveMutationResult = Apollo.MutationResult<UpdateMoveMutation>;
 export type UpdateMoveMutationOptions = Apollo.BaseMutationOptions<UpdateMoveMutation, UpdateMoveMutationVariables>;
-export const MoveTypesDocument = gql`
-    query moveTypes {
-  moveTypes {
-    id
-    name
-    description
-    imageUri
+export const AdminPublicClubsDocument = gql`
+    query adminPublicClubs($status: PublicContentValidationStatus!) {
+  adminPublicClubs(status: $status) {
+    ...ClubWithMetaDataAdmin
   }
 }
-    `;
+    ${ClubWithMetaDataAdminFragmentDoc}`;
 
 /**
- * __useMoveTypesQuery__
+ * __useAdminPublicClubsQuery__
  *
- * To run a query within a React component, call `useMoveTypesQuery` and pass it any options that fit your needs.
- * When your component renders, `useMoveTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAdminPublicClubsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicClubsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMoveTypesQuery({
+ * const { data, loading, error } = useAdminPublicClubsQuery({
  *   variables: {
+ *      status: // value for 'status'
  *   },
  * });
  */
-export function useMoveTypesQuery(baseOptions?: Apollo.QueryHookOptions<MoveTypesQuery, MoveTypesQueryVariables>) {
+export function useAdminPublicClubsQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicClubsQuery, AdminPublicClubsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MoveTypesQuery, MoveTypesQueryVariables>(MoveTypesDocument, options);
+        return Apollo.useQuery<AdminPublicClubsQuery, AdminPublicClubsQueryVariables>(AdminPublicClubsDocument, options);
       }
-export function useMoveTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MoveTypesQuery, MoveTypesQueryVariables>) {
+export function useAdminPublicClubsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicClubsQuery, AdminPublicClubsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MoveTypesQuery, MoveTypesQueryVariables>(MoveTypesDocument, options);
+          return Apollo.useLazyQuery<AdminPublicClubsQuery, AdminPublicClubsQueryVariables>(AdminPublicClubsDocument, options);
         }
-export type MoveTypesQueryHookResult = ReturnType<typeof useMoveTypesQuery>;
-export type MoveTypesLazyQueryHookResult = ReturnType<typeof useMoveTypesLazyQuery>;
-export type MoveTypesQueryResult = Apollo.QueryResult<MoveTypesQuery, MoveTypesQueryVariables>;
-export const WorkoutGoalsDocument = gql`
-    query workoutGoals {
-  workoutGoals {
-    id
-    name
-    description
+export type AdminPublicClubsQueryHookResult = ReturnType<typeof useAdminPublicClubsQuery>;
+export type AdminPublicClubsLazyQueryHookResult = ReturnType<typeof useAdminPublicClubsLazyQuery>;
+export type AdminPublicClubsQueryResult = Apollo.QueryResult<AdminPublicClubsQuery, AdminPublicClubsQueryVariables>;
+export const AdminPublicWorkoutPlansDocument = gql`
+    query adminPublicWorkoutPlans($status: PublicContentValidationStatus!) {
+  adminPublicWorkoutPlans(status: $status) {
+    ...WorkoutPlanData
   }
 }
-    `;
+    ${WorkoutPlanDataFragmentDoc}`;
 
 /**
- * __useWorkoutGoalsQuery__
+ * __useAdminPublicWorkoutPlansQuery__
  *
- * To run a query within a React component, call `useWorkoutGoalsQuery` and pass it any options that fit your needs.
- * When your component renders, `useWorkoutGoalsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAdminPublicWorkoutPlansQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutPlansQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useWorkoutGoalsQuery({
+ * const { data, loading, error } = useAdminPublicWorkoutPlansQuery({
  *   variables: {
+ *      status: // value for 'status'
  *   },
  * });
  */
-export function useWorkoutGoalsQuery(baseOptions?: Apollo.QueryHookOptions<WorkoutGoalsQuery, WorkoutGoalsQueryVariables>) {
+export function useAdminPublicWorkoutPlansQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutPlansQuery, AdminPublicWorkoutPlansQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<WorkoutGoalsQuery, WorkoutGoalsQueryVariables>(WorkoutGoalsDocument, options);
+        return Apollo.useQuery<AdminPublicWorkoutPlansQuery, AdminPublicWorkoutPlansQueryVariables>(AdminPublicWorkoutPlansDocument, options);
       }
-export function useWorkoutGoalsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<WorkoutGoalsQuery, WorkoutGoalsQueryVariables>) {
+export function useAdminPublicWorkoutPlansLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutPlansQuery, AdminPublicWorkoutPlansQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<WorkoutGoalsQuery, WorkoutGoalsQueryVariables>(WorkoutGoalsDocument, options);
+          return Apollo.useLazyQuery<AdminPublicWorkoutPlansQuery, AdminPublicWorkoutPlansQueryVariables>(AdminPublicWorkoutPlansDocument, options);
         }
-export type WorkoutGoalsQueryHookResult = ReturnType<typeof useWorkoutGoalsQuery>;
-export type WorkoutGoalsLazyQueryHookResult = ReturnType<typeof useWorkoutGoalsLazyQuery>;
-export type WorkoutGoalsQueryResult = Apollo.QueryResult<WorkoutGoalsQuery, WorkoutGoalsQueryVariables>;
-export const WorkoutSectionTypesDocument = gql`
-    query workoutSectionTypes {
-  workoutSectionTypes {
-    id
-    name
-    subtitle
-    description
-    validRepTypes
+export type AdminPublicWorkoutPlansQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlansQuery>;
+export type AdminPublicWorkoutPlansLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlansLazyQuery>;
+export type AdminPublicWorkoutPlansQueryResult = Apollo.QueryResult<AdminPublicWorkoutPlansQuery, AdminPublicWorkoutPlansQueryVariables>;
+export const AdminPublicWorkoutsDocument = gql`
+    query adminPublicWorkouts($status: PublicContentValidationStatus!) {
+  adminPublicWorkouts(status: $status) {
+    ...WorkoutWithMetaDataAdminData
   }
 }
-    `;
+    ${WorkoutWithMetaDataAdminDataFragmentDoc}`;
 
 /**
- * __useWorkoutSectionTypesQuery__
+ * __useAdminPublicWorkoutsQuery__
  *
- * To run a query within a React component, call `useWorkoutSectionTypesQuery` and pass it any options that fit your needs.
- * When your component renders, `useWorkoutSectionTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAdminPublicWorkoutsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useWorkoutSectionTypesQuery({
+ * const { data, loading, error } = useAdminPublicWorkoutsQuery({
  *   variables: {
+ *      status: // value for 'status'
  *   },
  * });
  */
-export function useWorkoutSectionTypesQuery(baseOptions?: Apollo.QueryHookOptions<WorkoutSectionTypesQuery, WorkoutSectionTypesQueryVariables>) {
+export function useAdminPublicWorkoutsQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutsQuery, AdminPublicWorkoutsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<WorkoutSectionTypesQuery, WorkoutSectionTypesQueryVariables>(WorkoutSectionTypesDocument, options);
+        return Apollo.useQuery<AdminPublicWorkoutsQuery, AdminPublicWorkoutsQueryVariables>(AdminPublicWorkoutsDocument, options);
       }
-export function useWorkoutSectionTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<WorkoutSectionTypesQuery, WorkoutSectionTypesQueryVariables>) {
+export function useAdminPublicWorkoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutsQuery, AdminPublicWorkoutsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<WorkoutSectionTypesQuery, WorkoutSectionTypesQueryVariables>(WorkoutSectionTypesDocument, options);
+          return Apollo.useLazyQuery<AdminPublicWorkoutsQuery, AdminPublicWorkoutsQueryVariables>(AdminPublicWorkoutsDocument, options);
         }
-export type WorkoutSectionTypesQueryHookResult = ReturnType<typeof useWorkoutSectionTypesQuery>;
-export type WorkoutSectionTypesLazyQueryHookResult = ReturnType<typeof useWorkoutSectionTypesLazyQuery>;
-export type WorkoutSectionTypesQueryResult = Apollo.QueryResult<WorkoutSectionTypesQuery, WorkoutSectionTypesQueryVariables>;
-export const PublicClubsDocument = gql`
-    query publicClubs {
-  publicClubs {
-    ...ClubSummary
-    Owner {
-      ...UserAvatarData
-    }
-    Admins {
-      ...UserAvatarData
-    }
+export type AdminPublicWorkoutsQueryHookResult = ReturnType<typeof useAdminPublicWorkoutsQuery>;
+export type AdminPublicWorkoutsLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutsLazyQuery>;
+export type AdminPublicWorkoutsQueryResult = Apollo.QueryResult<AdminPublicWorkoutsQuery, AdminPublicWorkoutsQueryVariables>;
+export const UpdateClubMetaDataAdminDocument = gql`
+    mutation updateClubMetaDataAdmin($data: UpdateClubMetaDataAdminInput!) {
+  updateClubMetaDataAdmin(data: $data) {
+    ...ClubWithMetaDataAdmin
   }
 }
-    ${ClubSummaryFragmentDoc}
-${UserAvatarDataFragmentDoc}`;
+    ${ClubWithMetaDataAdminFragmentDoc}`;
+export type UpdateClubMetaDataAdminMutationFn = Apollo.MutationFunction<UpdateClubMetaDataAdminMutation, UpdateClubMetaDataAdminMutationVariables>;
 
 /**
- * __usePublicClubsQuery__
+ * __useUpdateClubMetaDataAdminMutation__
  *
- * To run a query within a React component, call `usePublicClubsQuery` and pass it any options that fit your needs.
- * When your component renders, `usePublicClubsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useUpdateClubMetaDataAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateClubMetaDataAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = usePublicClubsQuery({
+ * const [updateClubMetaDataAdminMutation, { data, loading, error }] = useUpdateClubMetaDataAdminMutation({
  *   variables: {
+ *      data: // value for 'data'
  *   },
  * });
  */
-export function usePublicClubsQuery(baseOptions?: Apollo.QueryHookOptions<PublicClubsQuery, PublicClubsQueryVariables>) {
+export function useUpdateClubMetaDataAdminMutation(baseOptions?: Apollo.MutationHookOptions<UpdateClubMetaDataAdminMutation, UpdateClubMetaDataAdminMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PublicClubsQuery, PublicClubsQueryVariables>(PublicClubsDocument, options);
+        return Apollo.useMutation<UpdateClubMetaDataAdminMutation, UpdateClubMetaDataAdminMutationVariables>(UpdateClubMetaDataAdminDocument, options);
       }
-export function usePublicClubsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PublicClubsQuery, PublicClubsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PublicClubsQuery, PublicClubsQueryVariables>(PublicClubsDocument, options);
-        }
-export type PublicClubsQueryHookResult = ReturnType<typeof usePublicClubsQuery>;
-export type PublicClubsLazyQueryHookResult = ReturnType<typeof usePublicClubsLazyQuery>;
-export type PublicClubsQueryResult = Apollo.QueryResult<PublicClubsQuery, PublicClubsQueryVariables>;
-export const PublicWorkoutPlansDocument = gql`
-    query publicWorkoutPlans($cursor: ID, $filters: WorkoutPlanFiltersInput, $take: Int) {
-  publicWorkoutPlans(cursor: $cursor, filters: $filters, take: $take) {
-    ...WorkoutPlanSummary
+export type UpdateClubMetaDataAdminMutationHookResult = ReturnType<typeof useUpdateClubMetaDataAdminMutation>;
+export type UpdateClubMetaDataAdminMutationResult = Apollo.MutationResult<UpdateClubMetaDataAdminMutation>;
+export type UpdateClubMetaDataAdminMutationOptions = Apollo.BaseMutationOptions<UpdateClubMetaDataAdminMutation, UpdateClubMetaDataAdminMutationVariables>;
+export const UpdateWorkoutMetaDataAdminDocument = gql`
+    mutation updateWorkoutMetaDataAdmin($data: UpdateWorkoutMetaDataAdminInput!) {
+  updateWorkoutMetaDataAdmin(data: $data) {
+    ...WorkoutWithMetaDataAdminData
   }
 }
-    ${WorkoutPlanSummaryFragmentDoc}`;
+    ${WorkoutWithMetaDataAdminDataFragmentDoc}`;
+export type UpdateWorkoutMetaDataAdminMutationFn = Apollo.MutationFunction<UpdateWorkoutMetaDataAdminMutation, UpdateWorkoutMetaDataAdminMutationVariables>;
 
 /**
- * __usePublicWorkoutPlansQuery__
+ * __useUpdateWorkoutMetaDataAdminMutation__
  *
- * To run a query within a React component, call `usePublicWorkoutPlansQuery` and pass it any options that fit your needs.
- * When your component renders, `usePublicWorkoutPlansQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useUpdateWorkoutMetaDataAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateWorkoutMetaDataAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = usePublicWorkoutPlansQuery({
+ * const [updateWorkoutMetaDataAdminMutation, { data, loading, error }] = useUpdateWorkoutMetaDataAdminMutation({
  *   variables: {
- *      cursor: // value for 'cursor'
- *      filters: // value for 'filters'
- *      take: // value for 'take'
+ *      data: // value for 'data'
  *   },
  * });
  */
-export function usePublicWorkoutPlansQuery(baseOptions?: Apollo.QueryHookOptions<PublicWorkoutPlansQuery, PublicWorkoutPlansQueryVariables>) {
+export function useUpdateWorkoutMetaDataAdminMutation(baseOptions?: Apollo.MutationHookOptions<UpdateWorkoutMetaDataAdminMutation, UpdateWorkoutMetaDataAdminMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PublicWorkoutPlansQuery, PublicWorkoutPlansQueryVariables>(PublicWorkoutPlansDocument, options);
+        return Apollo.useMutation<UpdateWorkoutMetaDataAdminMutation, UpdateWorkoutMetaDataAdminMutationVariables>(UpdateWorkoutMetaDataAdminDocument, options);
       }
-export function usePublicWorkoutPlansLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PublicWorkoutPlansQuery, PublicWorkoutPlansQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PublicWorkoutPlansQuery, PublicWorkoutPlansQueryVariables>(PublicWorkoutPlansDocument, options);
-        }
-export type PublicWorkoutPlansQueryHookResult = ReturnType<typeof usePublicWorkoutPlansQuery>;
-export type PublicWorkoutPlansLazyQueryHookResult = ReturnType<typeof usePublicWorkoutPlansLazyQuery>;
-export type PublicWorkoutPlansQueryResult = Apollo.QueryResult<PublicWorkoutPlansQuery, PublicWorkoutPlansQueryVariables>;
-export const PublicWorkoutsDocument = gql`
-    query publicWorkouts($cursor: ID, $filters: WorkoutFiltersInput, $take: Int) {
-  publicWorkouts(cursor: $cursor, filters: $filters, take: $take) {
-    ...WorkoutSummary
+export type UpdateWorkoutMetaDataAdminMutationHookResult = ReturnType<typeof useUpdateWorkoutMetaDataAdminMutation>;
+export type UpdateWorkoutMetaDataAdminMutationResult = Apollo.MutationResult<UpdateWorkoutMetaDataAdminMutation>;
+export type UpdateWorkoutMetaDataAdminMutationOptions = Apollo.BaseMutationOptions<UpdateWorkoutMetaDataAdminMutation, UpdateWorkoutMetaDataAdminMutationVariables>;
+export const UpdateWorkoutPlanMetaDataAdminDocument = gql`
+    mutation updateWorkoutPlanMetaDataAdmin($data: UpdateWorkoutPlanMetaDataAdminInput!) {
+  updateWorkoutPlanMetaDataAdmin(data: $data) {
+    ...WorkoutPlanData
   }
 }
-    ${WorkoutSummaryFragmentDoc}`;
+    ${WorkoutPlanDataFragmentDoc}`;
+export type UpdateWorkoutPlanMetaDataAdminMutationFn = Apollo.MutationFunction<UpdateWorkoutPlanMetaDataAdminMutation, UpdateWorkoutPlanMetaDataAdminMutationVariables>;
 
 /**
- * __usePublicWorkoutsQuery__
+ * __useUpdateWorkoutPlanMetaDataAdminMutation__
  *
- * To run a query within a React component, call `usePublicWorkoutsQuery` and pass it any options that fit your needs.
- * When your component renders, `usePublicWorkoutsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useUpdateWorkoutPlanMetaDataAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateWorkoutPlanMetaDataAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = usePublicWorkoutsQuery({
+ * const [updateWorkoutPlanMetaDataAdminMutation, { data, loading, error }] = useUpdateWorkoutPlanMetaDataAdminMutation({
  *   variables: {
- *      cursor: // value for 'cursor'
- *      filters: // value for 'filters'
- *      take: // value for 'take'
+ *      data: // value for 'data'
  *   },
  * });
  */
-export function usePublicWorkoutsQuery(baseOptions?: Apollo.QueryHookOptions<PublicWorkoutsQuery, PublicWorkoutsQueryVariables>) {
+export function useUpdateWorkoutPlanMetaDataAdminMutation(baseOptions?: Apollo.MutationHookOptions<UpdateWorkoutPlanMetaDataAdminMutation, UpdateWorkoutPlanMetaDataAdminMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PublicWorkoutsQuery, PublicWorkoutsQueryVariables>(PublicWorkoutsDocument, options);
+        return Apollo.useMutation<UpdateWorkoutPlanMetaDataAdminMutation, UpdateWorkoutPlanMetaDataAdminMutationVariables>(UpdateWorkoutPlanMetaDataAdminDocument, options);
       }
-export function usePublicWorkoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PublicWorkoutsQuery, PublicWorkoutsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PublicWorkoutsQuery, PublicWorkoutsQueryVariables>(PublicWorkoutsDocument, options);
-        }
-export type PublicWorkoutsQueryHookResult = ReturnType<typeof usePublicWorkoutsQuery>;
-export type PublicWorkoutsLazyQueryHookResult = ReturnType<typeof usePublicWorkoutsLazyQuery>;
-export type PublicWorkoutsQueryResult = Apollo.QueryResult<PublicWorkoutsQuery, PublicWorkoutsQueryVariables>;
+export type UpdateWorkoutPlanMetaDataAdminMutationHookResult = ReturnType<typeof useUpdateWorkoutPlanMetaDataAdminMutation>;
+export type UpdateWorkoutPlanMetaDataAdminMutationResult = Apollo.MutationResult<UpdateWorkoutPlanMetaDataAdminMutation>;
+export type UpdateWorkoutPlanMetaDataAdminMutationOptions = Apollo.BaseMutationOptions<UpdateWorkoutPlanMetaDataAdminMutation, UpdateWorkoutPlanMetaDataAdminMutationVariables>;

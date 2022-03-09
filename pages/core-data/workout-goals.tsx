@@ -2,10 +2,10 @@ import React from 'react'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingSpinner } from '../../components/loadingIndicators'
-import { useWorkoutGoalsQuery } from '../../graphql/generated_types'
+import { useCoreDataQuery } from '../../graphql/generated_types'
 
 export default function WorkoutGoals() {
-  const { loading, error, data } = useWorkoutGoalsQuery()
+  const { loading, error, data } = useCoreDataQuery()
 
   if (error) {
     return <ErrorMessage message={error.message} />
@@ -26,7 +26,7 @@ export default function WorkoutGoals() {
             disableSortBy: true,
           },
         ]}
-        data={data.workoutGoals}
+        data={data.coreData.workoutGoals}
       />
     )
   }

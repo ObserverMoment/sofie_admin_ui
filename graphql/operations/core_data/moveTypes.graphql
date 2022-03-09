@@ -1,8 +1,0 @@
-query moveTypes {
-  moveTypes {
-    id
-    name
-    description
-    imageUri
-  }
-}

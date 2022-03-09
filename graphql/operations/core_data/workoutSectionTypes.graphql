@@ -1,9 +1,0 @@
-query workoutSectionTypes {
-  workoutSectionTypes {
-    id
-    name
-    subtitle
-    description
-    validRepTypes
-  }
-}

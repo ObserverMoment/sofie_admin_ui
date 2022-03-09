@@ -8,8 +8,10 @@ import {
   Title,
 } from '../../components/styled-components/styled'
 import {
-  usePublicWorkoutsQuery,
-  WorkoutSummary,
+  PublicContentValidationStatus,
+  useAdminPublicWorkoutsQuery,
+  Workout,
+  WorkoutWithMetaDataAdmin,
 } from '../../graphql/generated_types'
 
 export default function Workouts() {
@@ -18,11 +20,15 @@ export default function Workouts() {
     title: 'Workout',
   })
 
-  const { loading, error, data } = usePublicWorkoutsQuery()
+  const { loading, error, data } = useAdminPublicWorkoutsQuery({
+    variables: {
+      status: PublicContentValidationStatus.Pending,
+    },
+  })
 
   const [activeWorkoutData, setActiveWorkoutData] = useState(null)
 
-  function handleCardClick(data: WorkoutSummary) {
+  function handleCardClick(data: WorkoutWithMetaDataAdmin) {
     setActiveWorkoutData(data)
     setModalState({ isOpen: true, title: 'Workout' })
   }
@@ -36,9 +42,9 @@ export default function Workouts() {
   } else {
     return (
       <FlexBox direction="row" justify="center" wrap="wrap">
-        {data.publicWorkouts.map((w: WorkoutSummary) => (
+        {data.adminPublicWorkouts.map((w) => (
           <WorkoutSummaryCard
-            workoutSummary={w}
+            workout={w as WorkoutWithMetaDataAdmin}
             handleCardClick={handleCardClick}
           />
         ))}
@@ -48,28 +54,28 @@ export default function Workouts() {
 }
 
 interface WorkoutSummaryCardProps {
-  workoutSummary: WorkoutSummary
-  handleCardClick: (workoutSummary: WorkoutSummary) => void
+  workout: WorkoutWithMetaDataAdmin
+  handleCardClick: (workout: WorkoutWithMetaDataAdmin) => void
 }
 
 export const WorkoutSummaryCard = ({
-  workoutSummary,
+  workout,
   handleCardClick,
 }: WorkoutSummaryCardProps) => (
   <SummaryCard
     maxWidth="300px"
     margin="10px"
-    onClick={() => handleCardClick(workoutSummary)}
+    onClick={() => handleCardClick(workout)}
   >
     <FlexBox>
-      <Title>{workoutSummary.name}</Title>
-      <MainText>{workoutSummary.description}</MainText>
-      {workoutSummary.coverImageUri && (
+      <Title>{workout.name}</Title>
+      <MainText>{workout.description}</MainText>
+      {workout.coverImageUri && (
         <FlexBox align="center">
           <img
             style={{ borderRadius: '20px' }}
             height="100px"
-            src={`https://ucarecdn.com/${workoutSummary.coverImageUri}/`}
+            src={`https://ucarecdn.com/${workout.coverImageUri}/`}
           />
         </FlexBox>
       )}

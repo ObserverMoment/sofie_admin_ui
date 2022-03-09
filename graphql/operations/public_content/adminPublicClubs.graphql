@@ -1,10 +1,5 @@
 query adminPublicClubs($status: PublicContentValidationStatus!) {
   adminPublicClubs(status: $status) {
-    Club {
-      id
-    }
-    metaData {
-      ...ClubMetaData
-    }
+    ...ClubWithMetaDataAdmin
   }
 }
