@@ -2,6 +2,11 @@ import React from 'react'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingSpinner } from '../../components/loadingIndicators'
+import {
+  FlexBox,
+  Padding,
+  Title,
+} from '../../components/styled-components/styled'
 import { useCoreDataQuery } from '../../graphql/generated_types'
 
 export default function WorkoutTypes() {
@@ -13,38 +18,41 @@ export default function WorkoutTypes() {
     return <LoadingSpinner />
   } else {
     return (
-      <InteractiveTable
-        columnMapping={[
-          {
-            Header: 'Name',
-            accessor: 'name',
-            disableSortBy: true,
-          },
-          {
-            Header: 'Short Description',
-            accessor: 'subtitle',
-            disableSortBy: true,
-          },
-          {
-            Header: 'Long Description',
-            accessor: 'description',
-            disableSortBy: true,
-          },
-          {
-            id: 'validRepTypes', // accessor is the "key" in the data
-            Header: 'Rep Types',
-            accessor: ({ validRepTypes }) => validRepTypes.join(', '),
-            disableSortBy: true,
-          },
-          {
-            id: 'imageUri',
-            Header: 'Has Image?',
-            accessor: ({ imageUri }) => (imageUri ? 'YES' : 'NO'),
-            disableSortBy: true,
-          },
-        ]}
-        data={data.coreData.workoutSectionTypes}
-      />
+      <FlexBox>
+        <Padding>
+          <FlexBox direction="row" justify="center">
+            <Title>Workout Types</Title>
+          </FlexBox>
+        </Padding>
+
+        <InteractiveTable
+          columnMapping={[
+            {
+              Header: 'Name',
+              accessor: 'name',
+              disableSortBy: true,
+            },
+            {
+              Header: 'Description',
+              accessor: 'description',
+              disableSortBy: true,
+            },
+            {
+              id: 'validRepTypes', // accessor is the "key" in the data
+              Header: 'Rep Types',
+              accessor: ({ validRepTypes }) => validRepTypes.join(', '),
+              disableSortBy: true,
+            },
+            {
+              id: 'imageUri',
+              Header: 'Has Image?',
+              accessor: ({ imageUri }) => (imageUri ? 'YES' : 'NO'),
+              disableSortBy: true,
+            },
+          ]}
+          data={data.coreData.workoutSectionTypes}
+        />
+      </FlexBox>
     )
   }
 }

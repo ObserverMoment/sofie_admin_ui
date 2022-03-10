@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faUserCircle,
+  faBullseye,
   faDatabase,
   faClipboardList,
   faUsers,
@@ -18,91 +19,121 @@ import {
   faEdit,
 } from '@fortawesome/free-solid-svg-icons'
 import { ColorTypes, theme } from './styled-components/styled'
+import { SizeProp } from '@fortawesome/fontawesome-svg-core'
 
-export const Logo = ({ width = 40, height = 40, invert = false }) => (
+export const Logo = ({ size = 40, invert = false }) => (
   <img
     src="/logo.svg"
     alt="logo"
-    width={width}
-    height={height}
+    width={size}
+    height={size}
     style={invert ? { filter: 'invert(100%)' } : null}
   />
 )
+/// Icons
+interface IconProps {
+  size?: SizeProp
+  colorType?: ColorTypes
+}
 
-export const UserAvatar = ({ width = 30 }) => (
+export const UserAvatar = ({ size = 'lg' }: IconProps) => (
   <FontAwesomeIcon
     icon={faUserCircle}
-    width={width}
+    size={size}
     display="block"
     color="white"
   />
 )
 
-/// Icons
-
-interface IconProps {
-  width?: number
-  colorType?: ColorTypes
-}
-
 export const HomeIcon = ({
-  width = 30,
+  size = 'lg',
   colorType = 'primaryDark',
 }: IconProps) => (
   <FontAwesomeIcon
     icon={faChartBar}
-    width={width + 8}
+    size={size}
     color={theme.colors[colorType]}
   />
 )
-export const DataIcon = ({ width = 30, colorType = 'primaryDark' }) => (
+
+export const DataIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
   <FontAwesomeIcon
     icon={faDatabase}
-    width={width}
+    size={size}
     color={theme.colors[colorType]}
   />
 )
-export const ContentIcon = ({ width = 30, colorType = 'primaryDark' }) => (
+
+export const ContentIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
   <FontAwesomeIcon
     icon={faClipboardList}
-    width={width}
+    size={size}
     color={theme.colors[colorType]}
   />
 )
-export const UsersIcon = ({ width = 30, colorType = 'primaryDark' }) => (
+
+export const UsersIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
+  <FontAwesomeIcon icon={faUsers} size={size} color={theme.colors[colorType]} />
+)
+
+export const TargetIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
   <FontAwesomeIcon
-    icon={faUsers}
-    width={width + 12}
+    icon={faBullseye}
+    size={size}
     color={theme.colors[colorType]}
   />
 )
-export const SignOutIcon = ({ width = 30, colorType = 'primaryDark' }) => (
+
+export const SignOutIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
   <FontAwesomeIcon
     icon={faSignOutAlt}
-    width={width}
+    size={size}
     color={theme.colors[colorType]}
   />
 )
-export const CloseWindowIcon = ({ width = 30, colorType = 'primaryDark' }) => (
+
+export const CloseWindowIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
   <FontAwesomeIcon
     icon={faWindowClose}
-    width={width}
+    size={size}
     color={theme.colors[colorType]}
   />
 )
-export const CloseCircleIcon = ({ width = 30, colorType = 'primaryDark' }) => (
+
+export const CloseCircleIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
   <FontAwesomeIcon
     icon={faTimesCircle}
-    width={width}
+    size={size}
     color={theme.colors[colorType]}
   />
 )
-export const EditIcon = ({ width = 30, colorType = 'primarkDark' }) => (
-  <FontAwesomeIcon
-    icon={faEdit}
-    width={width}
-    color={theme.colors[colorType]}
-  />
+
+export const EditIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
+  <FontAwesomeIcon icon={faEdit} size={size} color={theme.colors[colorType]} />
 )
 
 type SortType = 'Sort' | 'Up' | 'Down'
@@ -113,37 +144,33 @@ const sortIcons = {
 }
 
 export const SortIcon = ({
-  width = 30,
+  size = 'lg',
   type = 'Sort',
 }: {
-  width?: number
+  size?: SizeProp
   type?: SortType
-}) => <FontAwesomeIcon icon={sortIcons[type]} width={width} />
+}) => <FontAwesomeIcon icon={sortIcons[type]} size={size} />
 
-export const PlusIcon = ({ width = 30 }) => (
-  <FontAwesomeIcon icon={faPlus} width={width} />
+export const PlusIcon = ({ size = 'lg' }: IconProps) => (
+  <FontAwesomeIcon icon={faPlus} size={size} />
 )
 
-export const SuccessIcon = ({ width = 30 }) => (
+export const SuccessIcon = ({ size = 'lg' }: IconProps) => (
   <FontAwesomeIcon
     icon={faCheckCircle}
-    width={width}
+    size={size}
     color={theme.colors.success}
   />
 )
 
-export const InfoIcon = ({ width = 30 }) => (
-  <FontAwesomeIcon
-    icon={faInfoCircle}
-    width={width}
-    color={theme.colors.info}
-  />
+export const InfoIcon = ({ size = 'lg' }: IconProps) => (
+  <FontAwesomeIcon icon={faInfoCircle} size={size} color={theme.colors.info} />
 )
 
-export const ErrorIcon = ({ width = 30 }) => (
+export const ErrorIcon = ({ size = 'lg' }: IconProps) => (
   <FontAwesomeIcon
     icon={faExclamationCircle}
-    width={width}
+    size={size}
     color={theme.colors.destructive}
   />
 )

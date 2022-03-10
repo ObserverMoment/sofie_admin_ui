@@ -62,6 +62,7 @@ fragment WorkoutWithMetaDataAdminData on WorkoutWithMetaDataAdmin {
   validated
   reasonNotValidated
 }
+
 fragment WorkoutData on Workout {
   __typename
   id
@@ -197,6 +198,7 @@ fragment WorkoutSectionType on WorkoutSectionType {
   id
   name
   description
+  validRepTypes
 }
 
 fragment WorkoutSet on WorkoutSet {

@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import Link from 'next/link'
 import React from 'react'
 import { FlexBox } from '../styled-components/styled'
 import { LoadingDots } from '../loadingIndicators'

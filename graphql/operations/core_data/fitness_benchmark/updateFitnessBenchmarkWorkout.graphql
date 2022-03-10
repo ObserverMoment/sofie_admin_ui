@@ -1,0 +1,7 @@
+mutation updateFitnessBenchmarkWorkout(
+  $data: UpdateFitnessBenchmarkWorkoutInput!
+) {
+  updateFitnessBenchmarkWorkout(data: $data) {
+    ...FitnessBenchmarkWorkout
+  }
+}

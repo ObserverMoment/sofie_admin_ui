@@ -6,17 +6,18 @@ import {
   PageContainer,
   theme,
 } from '../components/styled-components/styled'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Head from 'next/head'
 import { LogoMenuAndSideNav } from '../components/layout/sideNav'
 import { TopNav } from '../components/layout/topNav'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { createApolloClient } from '../lib/apolloClient'
-import { auth } from '../lib/firebaseClient'
+import { auth, signOut } from '../lib/firebaseClient'
 import LoginModal from '../components/layout/loginModal'
 import { ConfirmationDialogProvider } from '../lib/dialogHookProvider'
-import { LoadingDots } from '../components/loadingIndicators'
+import { LoadingDots, LoadingSpinner } from '../components/loadingIndicators'
+import { useAuthState } from 'react-firebase-hooks/auth'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -50,36 +51,15 @@ type AuthState = 'loading' | 'authed' | 'unauthed'
 type CacheState = 'shouldClear' | 'authed' | 'unauthed'
 
 export default function App({ Component, pageProps }) {
-  const [authedState, setAuthedState] = useState<AuthState>('loading')
+  const [user, loading, error] = useAuthState(auth)
 
-  useEffect(() => {
-    const unsubscribe = auth.onIdTokenChanged(async (user) => {
-      console.log('Listener: onIdTokenChanged')
-      if (!user) {
-        console.log('Not authed')
-        setAuthedState('unauthed')
-        console.log('Clearing local data')
-        apolloClient.clearStore()
-      } else {
-        console.log('Authed')
-        setAuthedState('authed')
-      }
-    })
+  if (loading) {
+    return <LoadingSpinner />
+  }
 
-    return () => unsubscribe()
-  }, [])
-
-  // Force refresh the token every 15 minutes while mounted
-  // https://github.com/colinhacks/next-firebase-ssr/blob/master/auth.tsx
-  useEffect(() => {
-    const handle = setInterval(async () => {
-      console.log('Refreshing token...')
-      const user = auth.currentUser
-      if (user) await user.getIdToken(true)
-    }, 15 * 60 * 1000)
-
-    return () => clearInterval(handle)
-  }, [])
+  if (error) {
+    signOut()
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -116,9 +96,8 @@ export default function App({ Component, pageProps }) {
         <ConfirmationDialogProvider>
           <PageContainer>
             <LogoMenuAndSideNav />
-            {authedState === 'authed' ? (
+            {user ? (
               <FlexBox align="center">
-                <TopNav />
                 <MainContent>
                   <Component {...pageProps} />
                 </MainContent>
@@ -128,7 +107,7 @@ export default function App({ Component, pageProps }) {
               <LoadingDots width={40} />
             )}
 
-            <LoginModal isOpen={authedState === 'unauthed'} />
+            <LoginModal isOpen={!user} />
           </PageContainer>
         </ConfirmationDialogProvider>
       </ApolloProvider>

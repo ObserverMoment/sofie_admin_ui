@@ -127,7 +127,7 @@ export const CreateButton = ({ flexDirection = 'row', onClick }) => (
     onClick={onClick}
     padding="10px 18px"
   >
-    <PlusIcon width={12} />
+    <PlusIcon size="xs" />
     <Spacer right="8px" />
     <MainText colorType="primaryLight">Add New</MainText>
   </StyledButton>

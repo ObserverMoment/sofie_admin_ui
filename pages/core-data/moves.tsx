@@ -71,7 +71,8 @@ export default function Moves() {
     return (
       <FlexBox>
         <Padding>
-          <FlexBox direction="row" justify="center">
+          <FlexBox direction="row" justify="space-between">
+            <Title>Moves</Title>
             <CreateButton onClick={handleAddNewClick} />
           </FlexBox>
         </Padding>

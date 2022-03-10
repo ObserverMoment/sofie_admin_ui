@@ -23,17 +23,17 @@ import { defaultVideoEncoding } from '../../lib/uploadcare'
 import { useConfirmationDialog } from '../../lib/dialogHookProvider'
 import {
   BodyAreaMoveScore,
+  CoreDataDocument,
   CreateMoveInput,
   Equipment,
   Move,
   MoveScope,
   MoveType,
+  useCoreDataQuery,
   useCreateMoveMutation,
-  useMoveTypesQuery,
   useUpdateMoveMutation,
   WorkoutMoveRepType,
 } from '../../graphql/generated_types'
-import { newObjectRefFragment } from '../../lib/apolloClient'
 
 interface CreateEditMoveProps {
   readonly move?: Move
@@ -47,19 +47,21 @@ const CreateEditMove = ({
   handleClose,
 }: CreateEditMoveProps) => {
   const getConfirmation = useConfirmationDialog()
-  const { loading, error, data } = useMoveTypesQuery()
+  const { loading, error, data } = useCoreDataQuery()
 
   const [createMove, { loading: createMoveInProgress }] = useCreateMoveMutation(
     {
       update(cache, { data: { createMove } }) {
-        cache.modify({
-          fields: {
-            standardMoves(prevMoves = []) {
-              const newMoveRef = cache.writeFragment({
-                data: createMove,
-                fragment: newObjectRefFragment,
-              })
-              return [newMoveRef, ...prevMoves]
+        const { coreData } = cache.readQuery({
+          query: CoreDataDocument,
+        })
+
+        cache.writeQuery({
+          query: CoreDataDocument,
+          data: {
+            coreData: {
+              ...coreData,
+              standardMoves: [createMove, ...coreData.standardMoves],
             },
           },
         })
@@ -153,6 +155,8 @@ const CreateEditMove = ({
   } else if (loading) {
     return <LoadingSpinner />
   } else {
+    const formIsValidToSubmit = formState.name.value && formState.MoveType.value
+
     return (
       <StyledForm onSubmit={onSubmit}>
         <FlexBox direction="row">
@@ -160,7 +164,7 @@ const CreateEditMove = ({
             <StyledInputGroup>
               <StyledLabel htmlFor="MoveType">Type</StyledLabel>
               <RadioButtons<MoveType>
-                options={data.moveTypes.map((mt: MoveType) => ({
+                options={data.coreData.moveTypes.map((mt: MoveType) => ({
                   value: mt,
                   label: mt.name,
                 }))}
@@ -296,7 +300,10 @@ const CreateEditMove = ({
 
         <SubmitButton
           disabled={
-            !formDirty() || createMoveInProgress || updateMoveInProgress
+            !formIsValidToSubmit ||
+            !formDirty() ||
+            createMoveInProgress ||
+            updateMoveInProgress
           }
           loading={createMoveInProgress || updateMoveInProgress}
           text={move ? 'Save Updates' : 'Create New Move'}

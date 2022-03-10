@@ -42,7 +42,8 @@ export default function EquipmentData() {
     return (
       <FlexBox>
         <Padding>
-          <FlexBox direction="row" justify="center">
+          <FlexBox direction="row" justify="space-between">
+            <Title>Equipment</Title>
             <CreateButton onClick={handleAddNewClick} />
           </FlexBox>
         </Padding>

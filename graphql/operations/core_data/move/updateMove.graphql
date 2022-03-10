@@ -1,14 +1,10 @@
 mutation updateMove($data: UpdateMoveInput!) {
   updateMove(data: $data) {
-    id
-    name
-    description
-    searchTerms
+    __typename
+    ...Move
     MoveType {
       ...MoveType
     }
-    validRepTypes
-    demoVideoUri
     RequiredEquipments {
       ...Equipment
     }

@@ -37,5 +37,17 @@ query coreData {
     progressWidgets {
       ...ProgressWidget
     }
+    fitnessBenchmarkCategories {
+      ...FitnessBenchmarkCategory
+    }
+    fitnessBenchmarks {
+      ...FitnessBenchmark
+      FitnessBenchmarkCategory {
+        ...FitnessBenchmarkCategory
+      }
+    }
+    fitnessBenchmarkWorkouts {
+      ...FitnessBenchmarkWorkout
+    }
   }
 }

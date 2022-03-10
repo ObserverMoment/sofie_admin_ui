@@ -1,0 +1,38 @@
+import React from 'react'
+import ErrorMessage from '../../components/errorMessage'
+import InteractiveTable from '../../components/interactiveTable'
+import { LoadingSpinner } from '../../components/loadingIndicators'
+import { useCoreDataQuery } from '../../graphql/generated_types'
+
+export default function BenchmarkWorkouts() {
+  const { loading, error, data } = useCoreDataQuery()
+
+  if (error) {
+    return <ErrorMessage message={error.message} />
+  } else if (loading) {
+    return <LoadingSpinner />
+  } else {
+    return (
+      <InteractiveTable
+        columnMapping={[
+          {
+            Header: 'Name',
+            accessor: 'name',
+            disableSortBy: true,
+          },
+          {
+            Header: 'Description',
+            accessor: 'description',
+            disableSortBy: true,
+          },
+          {
+            Header: 'Instructions',
+            accessor: 'instructions',
+            disableSortBy: true,
+          },
+        ]}
+        data={data.coreData.fitnessBenchmarkWorkouts}
+      />
+    )
+  }
+}

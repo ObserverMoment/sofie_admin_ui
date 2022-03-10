@@ -62,7 +62,7 @@ function RadioButtons<T>({
   setValue,
 }: RadioButtonsProps<T>) {
   return (
-    <FlexBox direction={direction} justify="start" align="center">
+    <FlexBox direction={direction} justify="start" align="center" wrap="wrap">
       {options.map((o) => (
         <RadioButton
           key={o.label}

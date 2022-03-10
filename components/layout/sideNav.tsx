@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
-import { useApollo } from '../../lib/apolloClient'
 import { signOut } from '../../lib/firebaseClient'
 import { ContentIcon, DataIcon, HomeIcon, SignOutIcon, Logo } from '../images'
 import { MyButton, MyLink } from '../styled-components/buttons'
@@ -99,7 +98,7 @@ export const LogoMenuAndSideNav = () => (
       href="/"
       content={
         <FlexBox justify="center" align="center">
-          <Logo width={30} height={30} invert={true} />
+          <Logo size={30} invert={true} />
         </FlexBox>
       }
     />
@@ -118,7 +117,6 @@ export const PrimaryNav = () => {
           <Link key={text} href={link} passHref>
             <PrimaryNavItem isActive={`/${baseRoute}` === link}>
               <Icon
-                width={16}
                 colorType={
                   `/${baseRoute}` === link ? 'primaryDark' : 'primaryLight'
                 }
@@ -135,7 +133,7 @@ export const PrimaryNav = () => {
           onClick={signOut}
           colorType="primaryDark"
         >
-          <SignOutIcon />
+          <SignOutIcon size="2x" />
           <Spacer bottom="3px" />
           <TinyText>Sign Out</TinyText>
         </MyButton>
