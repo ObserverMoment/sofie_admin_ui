@@ -15,21 +15,12 @@ fragment ClubWithMetaDataAdmin on ClubWithMetaDataAdmin {
   metaTags
 }
 
-fragment ClubSummary on ClubSummary {
+fragment PublicClubSummaryAdmin on PublicClubSummaryAdmin {
   __typename
   id
   createdAt
+  updatedAt
   name
-  description
-  coverImageUri
-  introVideoUri
-  introVideoThumbUri
-  introAudioUri
-  contentAccessScope
-  location
-  memberCount
-  workoutCount
-  planCount
 }
 
 fragment ClubMemberNote on ClubMemberNote {
@@ -79,20 +70,4 @@ fragment ClubInviteToken on ClubInviteToken {
   inviteLimit
   # Only updated by the sever when user joins via this token.
   joinedUserIds
-}
-
-fragment ClubWorkouts on ClubWorkouts {
-  __typename
-  id
-  workouts {
-    ...WorkoutSummary
-  }
-}
-
-fragment ClubWorkoutPlans on ClubWorkoutPlans {
-  __typename
-  id
-  workoutPlans {
-    ...WorkoutPlanSummary
-  }
 }

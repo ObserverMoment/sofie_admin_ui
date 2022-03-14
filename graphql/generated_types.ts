@@ -1642,6 +1642,14 @@ export type ProgressWidget = {
   subtitle?: Maybe<Scalars['String']>;
 };
 
+export type PublicClubSummaryAdmin = {
+  __typename?: 'PublicClubSummaryAdmin';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
 export enum PublicContentValidationStatus {
   Invalid = 'INVALID',
   Pending = 'PENDING',
@@ -1649,11 +1657,33 @@ export enum PublicContentValidationStatus {
   Valid = 'VALID'
 }
 
+export type PublicWorkoutPlanSummaryAdmin = {
+  __typename?: 'PublicWorkoutPlanSummaryAdmin';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type PublicWorkoutSummaryAdmin = {
+  __typename?: 'PublicWorkoutSummaryAdmin';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
 export type Query = {
   __typename?: 'Query';
-  adminPublicClubs: Array<ClubWithMetaDataAdmin>;
-  adminPublicWorkoutPlans: Array<WorkoutPlanWithMetaDataAdmin>;
-  adminPublicWorkouts: Array<WorkoutWithMetaDataAdmin>;
+  adminPublicClubById: ClubWithMetaDataAdmin;
+  adminPublicClubSummaries: Array<PublicClubSummaryAdmin>;
+  adminPublicClubsCount: Scalars['Int'];
+  adminPublicWorkoutById: WorkoutWithMetaDataAdmin;
+  adminPublicWorkoutPlanById: WorkoutPlanWithMetaDataAdmin;
+  adminPublicWorkoutPlanSummaries: Array<PublicWorkoutPlanSummaryAdmin>;
+  adminPublicWorkoutPlansCount: Scalars['Int'];
+  adminPublicWorkoutSummaries: Array<PublicWorkoutSummaryAdmin>;
+  adminPublicWorkoutsCount: Scalars['Int'];
   announcementUpdates: Array<AnnouncementUpdate>;
   bodyTrackingEntries: Array<BodyTrackingEntry>;
   checkClubInviteToken: CheckClubInviteTokenResult;
@@ -1717,17 +1747,47 @@ export type Query = {
 };
 
 
-export type QueryAdminPublicClubsArgs = {
+export type QueryAdminPublicClubByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryAdminPublicClubSummariesArgs = {
   status: PublicContentValidationStatus;
 };
 
 
-export type QueryAdminPublicWorkoutPlansArgs = {
+export type QueryAdminPublicClubsCountArgs = {
   status: PublicContentValidationStatus;
 };
 
 
-export type QueryAdminPublicWorkoutsArgs = {
+export type QueryAdminPublicWorkoutByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryAdminPublicWorkoutPlanByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryAdminPublicWorkoutPlanSummariesArgs = {
+  status: PublicContentValidationStatus;
+};
+
+
+export type QueryAdminPublicWorkoutPlansCountArgs = {
+  status: PublicContentValidationStatus;
+};
+
+
+export type QueryAdminPublicWorkoutSummariesArgs = {
+  status: PublicContentValidationStatus;
+};
+
+
+export type QueryAdminPublicWorkoutsCountArgs = {
   status: PublicContentValidationStatus;
 };
 
@@ -2806,7 +2866,7 @@ export type WorkoutWithMetaDataAdmin = {
 
 export type ClubWithMetaDataAdminFragment = { __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string> };
 
-export type ClubSummaryFragment = { __typename: 'ClubSummary', id: string, createdAt: any, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, location?: string | null | undefined, memberCount: number, workoutCount: number, planCount: number };
+export type PublicClubSummaryAdminFragment = { __typename: 'PublicClubSummaryAdmin', id: string, createdAt: any, updatedAt: any, name: string };
 
 export type ClubMemberNoteFragment = { __typename: 'ClubMemberNote', id: string, createdAt: any, updatedAt: any, note: string, tags: Array<string> };
 
@@ -2815,10 +2875,6 @@ export type ClubChatSummaryFragment = { __typename?: 'ClubChatSummary', id: stri
 export type ClubMemberSummaryFragment = { __typename: 'ClubMemberSummary', id: string, displayName: string, avatarUri?: string | null | undefined, townCity?: string | null | undefined, countryCode?: string | null | undefined, tagline?: string | null | undefined, skills: Array<string> };
 
 export type ClubInviteTokenFragment = { __typename: 'ClubInviteToken', id: string, createdAt: any, name: string, active: boolean, inviteLimit: number, joinedUserIds: Array<string> };
-
-export type ClubWorkoutsFragment = { __typename: 'ClubWorkouts', id: string, workouts: Array<{ __typename: 'WorkoutSummary', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, description?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, loggedSessionsCount: number, hasClassVideo: boolean, hasClassAudio: boolean, equipments: Array<string>, sectionTypes: Array<string>, goals: Array<string>, tags: Array<string>, bodyAreas: Array<string>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> };
-
-export type ClubWorkoutPlansFragment = { __typename: 'ClubWorkoutPlans', id: string, workoutPlans: Array<{ __typename: 'WorkoutPlanSummary', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, workoutsCount: number, enrolmentsCount: number, tags: Array<string>, reviewScore?: number | null | undefined, reviewCount: number, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, goals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }> }> };
 
 export type FitnessBenchmarkCategoryFragment = { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string };
 
@@ -2834,7 +2890,7 @@ export type EquipmentFragment = { __typename: 'Equipment', id: string, name: str
 
 export type BodyAreaFragment = { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower };
 
-export type MoveFragment = { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType> };
+export type MoveFragment = { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType> };
 
 export type MoveTypeFragment = { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined };
 
@@ -2842,13 +2898,11 @@ export type ProgressWidgetFragment = { __typename: 'ProgressWidget', id: string,
 
 export type UserAvatarDataFragment = { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string };
 
-export type WorkoutWithMetaDataAdminDataFragment = { __typename: 'WorkoutWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> };
+export type WorkoutWithMetaDataAdminDataFragment = { __typename: 'WorkoutWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> };
 
-export type WorkoutDataFragment = { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> };
+export type WorkoutDataFragment = { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> };
 
-export type WorkoutFragment = { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined };
-
-export type WorkoutSummaryFragment = { __typename: 'WorkoutSummary', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, description?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, loggedSessionsCount: number, hasClassVideo: boolean, hasClassAudio: boolean, equipments: Array<string>, sectionTypes: Array<string>, goals: Array<string>, tags: Array<string>, bodyAreas: Array<string>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } };
+export type PublicWorkoutSummaryAdminFragment = { __typename: 'PublicWorkoutSummaryAdmin', id: string, createdAt: any, updatedAt: any, name: string };
 
 export type ArchivedWorkoutFragment = { __typename: 'Workout', id: string, name: string, archived: boolean };
 
@@ -2856,7 +2910,7 @@ export type WorkoutGoalFragment = { __typename: 'WorkoutGoal', id: string, name:
 
 export type WorkoutSectionFragment = { __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined };
 
-export type WorkoutSectionTypeFragment = { __typename: 'WorkoutSectionType', id: string, name: string, description: string, validRepTypes: Array<WorkoutMoveRepType> };
+export type WorkoutSectionTypeFragment = { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> };
 
 export type WorkoutSetFragment = { __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number };
 
@@ -2864,19 +2918,13 @@ export type WorkoutMoveFragment = { __typename: 'WorkoutMove', id: string, sortP
 
 export type WorkoutTagFragment = { __typename: 'WorkoutTag', id: string, tag: string };
 
-export type WorkoutPlanEnrolmentSummaryFragment = { __typename: 'WorkoutPlanEnrolmentSummary', id: string, startDate?: any | null | undefined, completedWorkoutsCount: number, WorkoutPlan: { __typename: 'WorkoutPlanSummary', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, workoutsCount: number, enrolmentsCount: number, tags: Array<string>, reviewScore?: number | null | undefined, reviewCount: number, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, goals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }> } };
-
 export type WorkoutPlanEnrolmentFragment = { __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined };
 
 export type CompletedWorkoutPlanDayWorkoutFragment = { __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string };
 
-export type WorkoutPlanDataFragment = { __typename: 'WorkoutPlanWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutPlanDays: Array<{ __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number, WorkoutPlanDayWorkouts: Array<{ __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number, Workout: { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } }> }>, WorkoutPlanReviews: Array<{ __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutPlanEnrolments: Array<{ __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined, CompletedWorkoutPlanDayWorkouts: Array<{ __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string }>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> };
+export type WorkoutPlanWithMetaDataAdminDataFragment = { __typename: 'WorkoutPlanWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutPlanDays: Array<{ __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number, WorkoutPlanDayWorkouts: Array<{ __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number, Workout: { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } }> }>, WorkoutPlanReviews: Array<{ __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutPlanEnrolments: Array<{ __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined, CompletedWorkoutPlanDayWorkouts: Array<{ __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string }>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> };
 
-export type WorkoutPlanFragment = { __typename: 'WorkoutPlan', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope };
-
-export type WorkoutPlanSummaryFragment = { __typename: 'WorkoutPlanSummary', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, workoutsCount: number, enrolmentsCount: number, tags: Array<string>, reviewScore?: number | null | undefined, reviewCount: number, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, goals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }> };
-
-export type ArchivedWorkoutPlanFragment = { __typename: 'WorkoutPlan', id: string, name: string, archived: boolean };
+export type PublicWorkoutPlanSummaryAdminFragment = { __typename: 'PublicWorkoutPlanSummaryAdmin', id: string, createdAt: any, updatedAt: any, name: string };
 
 export type WorkoutPlanDayFragment = { __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number };
 
@@ -2887,7 +2935,7 @@ export type WorkoutPlanReviewFragment = { __typename: 'WorkoutPlanReview', id: s
 export type CoreDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CoreDataQuery = { __typename?: 'Query', coreData: { __typename: 'CoreData', bodyAreas: Array<{ __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower }>, equipment: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, moveTypes: Array<{ __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }>, workoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, workoutSectionTypes: Array<{ __typename: 'WorkoutSectionType', id: string, name: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }>, standardMoves: Array<{ __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> }>, progressWidgets: Array<{ __typename: 'ProgressWidget', id: string, createdAt: any, name: string, subtitle?: string | null | undefined, description?: string | null | undefined }>, fitnessBenchmarkCategories: Array<{ __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string }>, fitnessBenchmarks: Array<{ __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, FitnessBenchmarkCategory: { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string } }>, fitnessBenchmarkWorkouts: Array<{ __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number> }> } };
+export type CoreDataQuery = { __typename?: 'Query', coreData: { __typename: 'CoreData', bodyAreas: Array<{ __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower }>, equipment: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, moveTypes: Array<{ __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }>, workoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, workoutSectionTypes: Array<{ __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }>, standardMoves: Array<{ __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> }>, progressWidgets: Array<{ __typename: 'ProgressWidget', id: string, createdAt: any, name: string, subtitle?: string | null | undefined, description?: string | null | undefined }>, fitnessBenchmarkCategories: Array<{ __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string }>, fitnessBenchmarks: Array<{ __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, FitnessBenchmarkCategory: { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string } }>, fitnessBenchmarkWorkouts: Array<{ __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number> }> } };
 
 export type CreateEquipmentMutationVariables = Exact<{
   data: CreateEquipmentInput;
@@ -2950,35 +2998,56 @@ export type CreateMoveMutationVariables = Exact<{
 }>;
 
 
-export type CreateMoveMutation = { __typename?: 'Mutation', createMove: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }> } };
+export type CreateMoveMutation = { __typename?: 'Mutation', createMove: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }> } };
 
 export type UpdateMoveMutationVariables = Exact<{
   data: UpdateMoveInput;
 }>;
 
 
-export type UpdateMoveMutation = { __typename?: 'Mutation', updateMove: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }> } };
+export type UpdateMoveMutation = { __typename?: 'Mutation', updateMove: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }> } };
 
-export type AdminPublicClubsQueryVariables = Exact<{
+export type AdminPublicClubByIdQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AdminPublicClubByIdQuery = { __typename?: 'Query', adminPublicClubById: { __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string> } };
+
+export type AdminPublicWorkoutByIdQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AdminPublicWorkoutByIdQuery = { __typename?: 'Query', adminPublicWorkoutById: { __typename: 'WorkoutWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } };
+
+export type AdminPublicWorkoutPlanByIdQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AdminPublicWorkoutPlanByIdQuery = { __typename?: 'Query', adminPublicWorkoutPlanById: { __typename: 'WorkoutPlanWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutPlanDays: Array<{ __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number, WorkoutPlanDayWorkouts: Array<{ __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number, Workout: { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } }> }>, WorkoutPlanReviews: Array<{ __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutPlanEnrolments: Array<{ __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined, CompletedWorkoutPlanDayWorkouts: Array<{ __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string }>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> } };
+
+export type AdminPublicClubsCountQueryVariables = Exact<{
   status: PublicContentValidationStatus;
 }>;
 
 
-export type AdminPublicClubsQuery = { __typename?: 'Query', adminPublicClubs: Array<{ __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string> }> };
+export type AdminPublicClubsCountQuery = { __typename?: 'Query', adminPublicClubsCount: number };
 
-export type AdminPublicWorkoutPlansQueryVariables = Exact<{
+export type AdminPublicWorkoutPlansCountQueryVariables = Exact<{
   status: PublicContentValidationStatus;
 }>;
 
 
-export type AdminPublicWorkoutPlansQuery = { __typename?: 'Query', adminPublicWorkoutPlans: Array<{ __typename: 'WorkoutPlanWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutPlanDays: Array<{ __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number, WorkoutPlanDayWorkouts: Array<{ __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number, Workout: { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } }> }>, WorkoutPlanReviews: Array<{ __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutPlanEnrolments: Array<{ __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined, CompletedWorkoutPlanDayWorkouts: Array<{ __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string }>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> }> };
+export type AdminPublicWorkoutPlansCountQuery = { __typename?: 'Query', adminPublicWorkoutPlansCount: number };
 
-export type AdminPublicWorkoutsQueryVariables = Exact<{
+export type AdminPublicWorkoutsCountQueryVariables = Exact<{
   status: PublicContentValidationStatus;
 }>;
 
 
-export type AdminPublicWorkoutsQuery = { __typename?: 'Query', adminPublicWorkouts: Array<{ __typename: 'WorkoutWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> }> };
+export type AdminPublicWorkoutsCountQuery = { __typename?: 'Query', adminPublicWorkoutsCount: number };
 
 export type UpdateClubMetaDataAdminMutationVariables = Exact<{
   data: UpdateClubMetaDataAdminInput;
@@ -2992,14 +3061,35 @@ export type UpdateWorkoutMetaDataAdminMutationVariables = Exact<{
 }>;
 
 
-export type UpdateWorkoutMetaDataAdminMutation = { __typename?: 'Mutation', updateWorkoutMetaDataAdmin: { __typename: 'WorkoutWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } };
+export type UpdateWorkoutMetaDataAdminMutation = { __typename?: 'Mutation', updateWorkoutMetaDataAdmin: { __typename: 'WorkoutWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } };
 
 export type UpdateWorkoutPlanMetaDataAdminMutationVariables = Exact<{
   data: UpdateWorkoutPlanMetaDataAdminInput;
 }>;
 
 
-export type UpdateWorkoutPlanMetaDataAdminMutation = { __typename?: 'Mutation', updateWorkoutPlanMetaDataAdmin?: { __typename: 'WorkoutPlanWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutPlanDays: Array<{ __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number, WorkoutPlanDayWorkouts: Array<{ __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number, Workout: { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } }> }>, WorkoutPlanReviews: Array<{ __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutPlanEnrolments: Array<{ __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined, CompletedWorkoutPlanDayWorkouts: Array<{ __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string }>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> } | null | undefined };
+export type UpdateWorkoutPlanMetaDataAdminMutation = { __typename?: 'Mutation', updateWorkoutPlanMetaDataAdmin?: { __typename: 'WorkoutPlanWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutPlanDays: Array<{ __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number, WorkoutPlanDayWorkouts: Array<{ __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number, Workout: { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } }> }>, WorkoutPlanReviews: Array<{ __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutPlanEnrolments: Array<{ __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined, CompletedWorkoutPlanDayWorkouts: Array<{ __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string }>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> } | null | undefined };
+
+export type AdminPublicClubSummariesQueryVariables = Exact<{
+  status: PublicContentValidationStatus;
+}>;
+
+
+export type AdminPublicClubSummariesQuery = { __typename?: 'Query', adminPublicClubSummaries: Array<{ __typename: 'PublicClubSummaryAdmin', id: string, createdAt: any, updatedAt: any, name: string }> };
+
+export type AdminPublicWorkoutPlanSummariesQueryVariables = Exact<{
+  status: PublicContentValidationStatus;
+}>;
+
+
+export type AdminPublicWorkoutPlanSummariesQuery = { __typename?: 'Query', adminPublicWorkoutPlanSummaries: Array<{ __typename: 'PublicWorkoutPlanSummaryAdmin', id: string, createdAt: any, updatedAt: any, name: string }> };
+
+export type AdminPublicWorkoutSummariesQueryVariables = Exact<{
+  status: PublicContentValidationStatus;
+}>;
+
+
+export type AdminPublicWorkoutSummariesQuery = { __typename?: 'Query', adminPublicWorkoutSummaries: Array<{ __typename: 'PublicWorkoutSummaryAdmin', id: string, createdAt: any, updatedAt: any, name: string }> };
 
 export const ClubWithMetaDataAdminFragmentDoc = gql`
     fragment ClubWithMetaDataAdmin on ClubWithMetaDataAdmin {
@@ -3019,22 +3109,13 @@ export const ClubWithMetaDataAdminFragmentDoc = gql`
   metaTags
 }
     `;
-export const ClubSummaryFragmentDoc = gql`
-    fragment ClubSummary on ClubSummary {
+export const PublicClubSummaryAdminFragmentDoc = gql`
+    fragment PublicClubSummaryAdmin on PublicClubSummaryAdmin {
   __typename
   id
   createdAt
+  updatedAt
   name
-  description
-  coverImageUri
-  introVideoUri
-  introVideoThumbUri
-  introAudioUri
-  contentAccessScope
-  location
-  memberCount
-  workoutCount
-  planCount
 }
     `;
 export const ClubMemberNoteFragmentDoc = gql`
@@ -3094,84 +3175,6 @@ export const ClubInviteTokenFragmentDoc = gql`
   joinedUserIds
 }
     `;
-export const WorkoutSummaryFragmentDoc = gql`
-    fragment WorkoutSummary on WorkoutSummary {
-  __typename
-  id
-  createdAt
-  updatedAt
-  archived
-  name
-  User {
-    ...UserAvatarData
-  }
-  lengthMinutes
-  coverImageUri
-  description
-  difficultyLevel
-  loggedSessionsCount
-  hasClassVideo
-  hasClassAudio
-  equipments
-  sectionTypes
-  goals
-  tags
-  bodyAreas
-}
-    ${UserAvatarDataFragmentDoc}`;
-export const ClubWorkoutsFragmentDoc = gql`
-    fragment ClubWorkouts on ClubWorkouts {
-  __typename
-  id
-  workouts {
-    ...WorkoutSummary
-  }
-}
-    ${WorkoutSummaryFragmentDoc}`;
-export const WorkoutGoalFragmentDoc = gql`
-    fragment WorkoutGoal on WorkoutGoal {
-  __typename
-  id
-  name
-  description
-  hexColor
-}
-    `;
-export const WorkoutPlanSummaryFragmentDoc = gql`
-    fragment WorkoutPlanSummary on WorkoutPlanSummary {
-  __typename
-  id
-  createdAt
-  updatedAt
-  archived
-  name
-  description
-  coverImageUri
-  lengthWeeks
-  daysPerWeek
-  workoutsCount
-  User {
-    ...UserAvatarData
-  }
-  enrolmentsCount
-  goals {
-    ...WorkoutGoal
-  }
-  tags
-  reviewScore
-  reviewCount
-}
-    ${UserAvatarDataFragmentDoc}
-${WorkoutGoalFragmentDoc}`;
-export const ClubWorkoutPlansFragmentDoc = gql`
-    fragment ClubWorkoutPlans on ClubWorkoutPlans {
-  __typename
-  id
-  workoutPlans {
-    ...WorkoutPlanSummary
-  }
-}
-    ${WorkoutPlanSummaryFragmentDoc}`;
 export const FitnessBenchmarkCategoryFragmentDoc = gql`
     fragment FitnessBenchmarkCategory on FitnessBenchmarkCategory {
   __typename
@@ -3244,6 +3247,15 @@ export const ProgressWidgetFragmentDoc = gql`
   description
 }
     `;
+export const WorkoutGoalFragmentDoc = gql`
+    fragment WorkoutGoal on WorkoutGoal {
+  __typename
+  id
+  name
+  description
+  hexColor
+}
+    `;
 export const WorkoutTagFragmentDoc = gql`
     fragment WorkoutTag on WorkoutTag {
   __typename
@@ -3273,6 +3285,7 @@ export const WorkoutSectionTypeFragmentDoc = gql`
   __typename
   id
   name
+  subtitle
   description
   validRepTypes
 }
@@ -3311,6 +3324,7 @@ export const MoveFragmentDoc = gql`
     fragment Move on Move {
   __typename
   id
+  archived
   name
   searchTerms
   description
@@ -3412,22 +3426,13 @@ ${EquipmentFragmentDoc}
 ${MoveFragmentDoc}
 ${MoveTypeFragmentDoc}
 ${BodyAreaFragmentDoc}`;
-export const WorkoutFragmentDoc = gql`
-    fragment Workout on Workout {
+export const PublicWorkoutSummaryAdminFragmentDoc = gql`
+    fragment PublicWorkoutSummaryAdmin on PublicWorkoutSummaryAdmin {
   __typename
   id
   createdAt
   updatedAt
-  archived
   name
-  description
-  lengthMinutes
-  difficultyLevel
-  coverImageUri
-  contentAccessScope
-  introVideoUri
-  introVideoThumbUri
-  introAudioUri
 }
     `;
 export const ArchivedWorkoutFragmentDoc = gql`
@@ -3438,17 +3443,6 @@ export const ArchivedWorkoutFragmentDoc = gql`
   archived
 }
     `;
-export const WorkoutPlanEnrolmentSummaryFragmentDoc = gql`
-    fragment WorkoutPlanEnrolmentSummary on WorkoutPlanEnrolmentSummary {
-  __typename
-  id
-  startDate
-  completedWorkoutsCount
-  WorkoutPlan {
-    ...WorkoutPlanSummary
-  }
-}
-    ${WorkoutPlanSummaryFragmentDoc}`;
 export const WorkoutPlanDayFragmentDoc = gql`
     fragment WorkoutPlanDay on WorkoutPlanDay {
   id
@@ -3558,8 +3552,8 @@ export const CompletedWorkoutPlanDayWorkoutFragmentDoc = gql`
   workoutPlanDayWorkoutId
 }
     `;
-export const WorkoutPlanDataFragmentDoc = gql`
-    fragment WorkoutPlanData on WorkoutPlanWithMetaDataAdmin {
+export const WorkoutPlanWithMetaDataAdminDataFragmentDoc = gql`
+    fragment WorkoutPlanWithMetaDataAdminData on WorkoutPlanWithMetaDataAdmin {
   __typename
   id
   createdAt
@@ -3604,6 +3598,10 @@ export const WorkoutPlanDataFragmentDoc = gql`
       ...UserAvatarData
     }
   }
+  difficultyLevel
+  metaTags
+  validated
+  reasonNotValidated
 }
     ${UserAvatarDataFragmentDoc}
 ${WorkoutPlanDayFragmentDoc}
@@ -3613,30 +3611,13 @@ ${WorkoutPlanReviewFragmentDoc}
 ${WorkoutTagFragmentDoc}
 ${WorkoutPlanEnrolmentFragmentDoc}
 ${CompletedWorkoutPlanDayWorkoutFragmentDoc}`;
-export const WorkoutPlanFragmentDoc = gql`
-    fragment WorkoutPlan on WorkoutPlan {
+export const PublicWorkoutPlanSummaryAdminFragmentDoc = gql`
+    fragment PublicWorkoutPlanSummaryAdmin on PublicWorkoutPlanSummaryAdmin {
   __typename
   id
   createdAt
   updatedAt
-  archived
   name
-  description
-  lengthWeeks
-  daysPerWeek
-  coverImageUri
-  introVideoUri
-  introVideoThumbUri
-  introAudioUri
-  contentAccessScope
-}
-    `;
-export const ArchivedWorkoutPlanFragmentDoc = gql`
-    fragment ArchivedWorkoutPlan on WorkoutPlan {
-  __typename
-  id
-  name
-  archived
 }
     `;
 export const CoreDataDocument = gql`
@@ -4094,111 +4075,210 @@ export function useUpdateMoveMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateMoveMutationHookResult = ReturnType<typeof useUpdateMoveMutation>;
 export type UpdateMoveMutationResult = Apollo.MutationResult<UpdateMoveMutation>;
 export type UpdateMoveMutationOptions = Apollo.BaseMutationOptions<UpdateMoveMutation, UpdateMoveMutationVariables>;
-export const AdminPublicClubsDocument = gql`
-    query adminPublicClubs($status: PublicContentValidationStatus!) {
-  adminPublicClubs(status: $status) {
+export const AdminPublicClubByIdDocument = gql`
+    query adminPublicClubById($id: ID!) {
+  adminPublicClubById(id: $id) {
     ...ClubWithMetaDataAdmin
   }
 }
     ${ClubWithMetaDataAdminFragmentDoc}`;
 
 /**
- * __useAdminPublicClubsQuery__
+ * __useAdminPublicClubByIdQuery__
  *
- * To run a query within a React component, call `useAdminPublicClubsQuery` and pass it any options that fit your needs.
- * When your component renders, `useAdminPublicClubsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAdminPublicClubByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicClubByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useAdminPublicClubsQuery({
+ * const { data, loading, error } = useAdminPublicClubByIdQuery({
  *   variables: {
- *      status: // value for 'status'
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useAdminPublicClubsQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicClubsQuery, AdminPublicClubsQueryVariables>) {
+export function useAdminPublicClubByIdQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicClubByIdQuery, AdminPublicClubByIdQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AdminPublicClubsQuery, AdminPublicClubsQueryVariables>(AdminPublicClubsDocument, options);
+        return Apollo.useQuery<AdminPublicClubByIdQuery, AdminPublicClubByIdQueryVariables>(AdminPublicClubByIdDocument, options);
       }
-export function useAdminPublicClubsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicClubsQuery, AdminPublicClubsQueryVariables>) {
+export function useAdminPublicClubByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicClubByIdQuery, AdminPublicClubByIdQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AdminPublicClubsQuery, AdminPublicClubsQueryVariables>(AdminPublicClubsDocument, options);
+          return Apollo.useLazyQuery<AdminPublicClubByIdQuery, AdminPublicClubByIdQueryVariables>(AdminPublicClubByIdDocument, options);
         }
-export type AdminPublicClubsQueryHookResult = ReturnType<typeof useAdminPublicClubsQuery>;
-export type AdminPublicClubsLazyQueryHookResult = ReturnType<typeof useAdminPublicClubsLazyQuery>;
-export type AdminPublicClubsQueryResult = Apollo.QueryResult<AdminPublicClubsQuery, AdminPublicClubsQueryVariables>;
-export const AdminPublicWorkoutPlansDocument = gql`
-    query adminPublicWorkoutPlans($status: PublicContentValidationStatus!) {
-  adminPublicWorkoutPlans(status: $status) {
-    ...WorkoutPlanData
-  }
-}
-    ${WorkoutPlanDataFragmentDoc}`;
-
-/**
- * __useAdminPublicWorkoutPlansQuery__
- *
- * To run a query within a React component, call `useAdminPublicWorkoutPlansQuery` and pass it any options that fit your needs.
- * When your component renders, `useAdminPublicWorkoutPlansQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAdminPublicWorkoutPlansQuery({
- *   variables: {
- *      status: // value for 'status'
- *   },
- * });
- */
-export function useAdminPublicWorkoutPlansQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutPlansQuery, AdminPublicWorkoutPlansQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AdminPublicWorkoutPlansQuery, AdminPublicWorkoutPlansQueryVariables>(AdminPublicWorkoutPlansDocument, options);
-      }
-export function useAdminPublicWorkoutPlansLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutPlansQuery, AdminPublicWorkoutPlansQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AdminPublicWorkoutPlansQuery, AdminPublicWorkoutPlansQueryVariables>(AdminPublicWorkoutPlansDocument, options);
-        }
-export type AdminPublicWorkoutPlansQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlansQuery>;
-export type AdminPublicWorkoutPlansLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlansLazyQuery>;
-export type AdminPublicWorkoutPlansQueryResult = Apollo.QueryResult<AdminPublicWorkoutPlansQuery, AdminPublicWorkoutPlansQueryVariables>;
-export const AdminPublicWorkoutsDocument = gql`
-    query adminPublicWorkouts($status: PublicContentValidationStatus!) {
-  adminPublicWorkouts(status: $status) {
+export type AdminPublicClubByIdQueryHookResult = ReturnType<typeof useAdminPublicClubByIdQuery>;
+export type AdminPublicClubByIdLazyQueryHookResult = ReturnType<typeof useAdminPublicClubByIdLazyQuery>;
+export type AdminPublicClubByIdQueryResult = Apollo.QueryResult<AdminPublicClubByIdQuery, AdminPublicClubByIdQueryVariables>;
+export const AdminPublicWorkoutByIdDocument = gql`
+    query adminPublicWorkoutById($id: ID!) {
+  adminPublicWorkoutById(id: $id) {
     ...WorkoutWithMetaDataAdminData
   }
 }
     ${WorkoutWithMetaDataAdminDataFragmentDoc}`;
 
 /**
- * __useAdminPublicWorkoutsQuery__
+ * __useAdminPublicWorkoutByIdQuery__
  *
- * To run a query within a React component, call `useAdminPublicWorkoutsQuery` and pass it any options that fit your needs.
- * When your component renders, `useAdminPublicWorkoutsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAdminPublicWorkoutByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useAdminPublicWorkoutsQuery({
+ * const { data, loading, error } = useAdminPublicWorkoutByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminPublicWorkoutByIdQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutByIdQuery, AdminPublicWorkoutByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminPublicWorkoutByIdQuery, AdminPublicWorkoutByIdQueryVariables>(AdminPublicWorkoutByIdDocument, options);
+      }
+export function useAdminPublicWorkoutByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutByIdQuery, AdminPublicWorkoutByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminPublicWorkoutByIdQuery, AdminPublicWorkoutByIdQueryVariables>(AdminPublicWorkoutByIdDocument, options);
+        }
+export type AdminPublicWorkoutByIdQueryHookResult = ReturnType<typeof useAdminPublicWorkoutByIdQuery>;
+export type AdminPublicWorkoutByIdLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutByIdLazyQuery>;
+export type AdminPublicWorkoutByIdQueryResult = Apollo.QueryResult<AdminPublicWorkoutByIdQuery, AdminPublicWorkoutByIdQueryVariables>;
+export const AdminPublicWorkoutPlanByIdDocument = gql`
+    query adminPublicWorkoutPlanById($id: ID!) {
+  adminPublicWorkoutPlanById(id: $id) {
+    ...WorkoutPlanWithMetaDataAdminData
+  }
+}
+    ${WorkoutPlanWithMetaDataAdminDataFragmentDoc}`;
+
+/**
+ * __useAdminPublicWorkoutPlanByIdQuery__
+ *
+ * To run a query within a React component, call `useAdminPublicWorkoutPlanByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutPlanByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminPublicWorkoutPlanByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminPublicWorkoutPlanByIdQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutPlanByIdQuery, AdminPublicWorkoutPlanByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminPublicWorkoutPlanByIdQuery, AdminPublicWorkoutPlanByIdQueryVariables>(AdminPublicWorkoutPlanByIdDocument, options);
+      }
+export function useAdminPublicWorkoutPlanByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutPlanByIdQuery, AdminPublicWorkoutPlanByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminPublicWorkoutPlanByIdQuery, AdminPublicWorkoutPlanByIdQueryVariables>(AdminPublicWorkoutPlanByIdDocument, options);
+        }
+export type AdminPublicWorkoutPlanByIdQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlanByIdQuery>;
+export type AdminPublicWorkoutPlanByIdLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlanByIdLazyQuery>;
+export type AdminPublicWorkoutPlanByIdQueryResult = Apollo.QueryResult<AdminPublicWorkoutPlanByIdQuery, AdminPublicWorkoutPlanByIdQueryVariables>;
+export const AdminPublicClubsCountDocument = gql`
+    query adminPublicClubsCount($status: PublicContentValidationStatus!) {
+  adminPublicClubsCount(status: $status)
+}
+    `;
+
+/**
+ * __useAdminPublicClubsCountQuery__
+ *
+ * To run a query within a React component, call `useAdminPublicClubsCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicClubsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminPublicClubsCountQuery({
  *   variables: {
  *      status: // value for 'status'
  *   },
  * });
  */
-export function useAdminPublicWorkoutsQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutsQuery, AdminPublicWorkoutsQueryVariables>) {
+export function useAdminPublicClubsCountQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicClubsCountQuery, AdminPublicClubsCountQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AdminPublicWorkoutsQuery, AdminPublicWorkoutsQueryVariables>(AdminPublicWorkoutsDocument, options);
+        return Apollo.useQuery<AdminPublicClubsCountQuery, AdminPublicClubsCountQueryVariables>(AdminPublicClubsCountDocument, options);
       }
-export function useAdminPublicWorkoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutsQuery, AdminPublicWorkoutsQueryVariables>) {
+export function useAdminPublicClubsCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicClubsCountQuery, AdminPublicClubsCountQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AdminPublicWorkoutsQuery, AdminPublicWorkoutsQueryVariables>(AdminPublicWorkoutsDocument, options);
+          return Apollo.useLazyQuery<AdminPublicClubsCountQuery, AdminPublicClubsCountQueryVariables>(AdminPublicClubsCountDocument, options);
         }
-export type AdminPublicWorkoutsQueryHookResult = ReturnType<typeof useAdminPublicWorkoutsQuery>;
-export type AdminPublicWorkoutsLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutsLazyQuery>;
-export type AdminPublicWorkoutsQueryResult = Apollo.QueryResult<AdminPublicWorkoutsQuery, AdminPublicWorkoutsQueryVariables>;
+export type AdminPublicClubsCountQueryHookResult = ReturnType<typeof useAdminPublicClubsCountQuery>;
+export type AdminPublicClubsCountLazyQueryHookResult = ReturnType<typeof useAdminPublicClubsCountLazyQuery>;
+export type AdminPublicClubsCountQueryResult = Apollo.QueryResult<AdminPublicClubsCountQuery, AdminPublicClubsCountQueryVariables>;
+export const AdminPublicWorkoutPlansCountDocument = gql`
+    query adminPublicWorkoutPlansCount($status: PublicContentValidationStatus!) {
+  adminPublicWorkoutPlansCount(status: $status)
+}
+    `;
+
+/**
+ * __useAdminPublicWorkoutPlansCountQuery__
+ *
+ * To run a query within a React component, call `useAdminPublicWorkoutPlansCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutPlansCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminPublicWorkoutPlansCountQuery({
+ *   variables: {
+ *      status: // value for 'status'
+ *   },
+ * });
+ */
+export function useAdminPublicWorkoutPlansCountQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutPlansCountQuery, AdminPublicWorkoutPlansCountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminPublicWorkoutPlansCountQuery, AdminPublicWorkoutPlansCountQueryVariables>(AdminPublicWorkoutPlansCountDocument, options);
+      }
+export function useAdminPublicWorkoutPlansCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutPlansCountQuery, AdminPublicWorkoutPlansCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminPublicWorkoutPlansCountQuery, AdminPublicWorkoutPlansCountQueryVariables>(AdminPublicWorkoutPlansCountDocument, options);
+        }
+export type AdminPublicWorkoutPlansCountQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlansCountQuery>;
+export type AdminPublicWorkoutPlansCountLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlansCountLazyQuery>;
+export type AdminPublicWorkoutPlansCountQueryResult = Apollo.QueryResult<AdminPublicWorkoutPlansCountQuery, AdminPublicWorkoutPlansCountQueryVariables>;
+export const AdminPublicWorkoutsCountDocument = gql`
+    query adminPublicWorkoutsCount($status: PublicContentValidationStatus!) {
+  adminPublicWorkoutsCount(status: $status)
+}
+    `;
+
+/**
+ * __useAdminPublicWorkoutsCountQuery__
+ *
+ * To run a query within a React component, call `useAdminPublicWorkoutsCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminPublicWorkoutsCountQuery({
+ *   variables: {
+ *      status: // value for 'status'
+ *   },
+ * });
+ */
+export function useAdminPublicWorkoutsCountQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutsCountQuery, AdminPublicWorkoutsCountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminPublicWorkoutsCountQuery, AdminPublicWorkoutsCountQueryVariables>(AdminPublicWorkoutsCountDocument, options);
+      }
+export function useAdminPublicWorkoutsCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutsCountQuery, AdminPublicWorkoutsCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminPublicWorkoutsCountQuery, AdminPublicWorkoutsCountQueryVariables>(AdminPublicWorkoutsCountDocument, options);
+        }
+export type AdminPublicWorkoutsCountQueryHookResult = ReturnType<typeof useAdminPublicWorkoutsCountQuery>;
+export type AdminPublicWorkoutsCountLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutsCountLazyQuery>;
+export type AdminPublicWorkoutsCountQueryResult = Apollo.QueryResult<AdminPublicWorkoutsCountQuery, AdminPublicWorkoutsCountQueryVariables>;
 export const UpdateClubMetaDataAdminDocument = gql`
     mutation updateClubMetaDataAdmin($data: UpdateClubMetaDataAdminInput!) {
   updateClubMetaDataAdmin(data: $data) {
@@ -4268,10 +4348,10 @@ export type UpdateWorkoutMetaDataAdminMutationOptions = Apollo.BaseMutationOptio
 export const UpdateWorkoutPlanMetaDataAdminDocument = gql`
     mutation updateWorkoutPlanMetaDataAdmin($data: UpdateWorkoutPlanMetaDataAdminInput!) {
   updateWorkoutPlanMetaDataAdmin(data: $data) {
-    ...WorkoutPlanData
+    ...WorkoutPlanWithMetaDataAdminData
   }
 }
-    ${WorkoutPlanDataFragmentDoc}`;
+    ${WorkoutPlanWithMetaDataAdminDataFragmentDoc}`;
 export type UpdateWorkoutPlanMetaDataAdminMutationFn = Apollo.MutationFunction<UpdateWorkoutPlanMetaDataAdminMutation, UpdateWorkoutPlanMetaDataAdminMutationVariables>;
 
 /**
@@ -4298,3 +4378,108 @@ export function useUpdateWorkoutPlanMetaDataAdminMutation(baseOptions?: Apollo.M
 export type UpdateWorkoutPlanMetaDataAdminMutationHookResult = ReturnType<typeof useUpdateWorkoutPlanMetaDataAdminMutation>;
 export type UpdateWorkoutPlanMetaDataAdminMutationResult = Apollo.MutationResult<UpdateWorkoutPlanMetaDataAdminMutation>;
 export type UpdateWorkoutPlanMetaDataAdminMutationOptions = Apollo.BaseMutationOptions<UpdateWorkoutPlanMetaDataAdminMutation, UpdateWorkoutPlanMetaDataAdminMutationVariables>;
+export const AdminPublicClubSummariesDocument = gql`
+    query adminPublicClubSummaries($status: PublicContentValidationStatus!) {
+  adminPublicClubSummaries(status: $status) {
+    ...PublicClubSummaryAdmin
+  }
+}
+    ${PublicClubSummaryAdminFragmentDoc}`;
+
+/**
+ * __useAdminPublicClubSummariesQuery__
+ *
+ * To run a query within a React component, call `useAdminPublicClubSummariesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicClubSummariesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminPublicClubSummariesQuery({
+ *   variables: {
+ *      status: // value for 'status'
+ *   },
+ * });
+ */
+export function useAdminPublicClubSummariesQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicClubSummariesQuery, AdminPublicClubSummariesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminPublicClubSummariesQuery, AdminPublicClubSummariesQueryVariables>(AdminPublicClubSummariesDocument, options);
+      }
+export function useAdminPublicClubSummariesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicClubSummariesQuery, AdminPublicClubSummariesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminPublicClubSummariesQuery, AdminPublicClubSummariesQueryVariables>(AdminPublicClubSummariesDocument, options);
+        }
+export type AdminPublicClubSummariesQueryHookResult = ReturnType<typeof useAdminPublicClubSummariesQuery>;
+export type AdminPublicClubSummariesLazyQueryHookResult = ReturnType<typeof useAdminPublicClubSummariesLazyQuery>;
+export type AdminPublicClubSummariesQueryResult = Apollo.QueryResult<AdminPublicClubSummariesQuery, AdminPublicClubSummariesQueryVariables>;
+export const AdminPublicWorkoutPlanSummariesDocument = gql`
+    query adminPublicWorkoutPlanSummaries($status: PublicContentValidationStatus!) {
+  adminPublicWorkoutPlanSummaries(status: $status) {
+    ...PublicWorkoutPlanSummaryAdmin
+  }
+}
+    ${PublicWorkoutPlanSummaryAdminFragmentDoc}`;
+
+/**
+ * __useAdminPublicWorkoutPlanSummariesQuery__
+ *
+ * To run a query within a React component, call `useAdminPublicWorkoutPlanSummariesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutPlanSummariesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminPublicWorkoutPlanSummariesQuery({
+ *   variables: {
+ *      status: // value for 'status'
+ *   },
+ * });
+ */
+export function useAdminPublicWorkoutPlanSummariesQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutPlanSummariesQuery, AdminPublicWorkoutPlanSummariesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminPublicWorkoutPlanSummariesQuery, AdminPublicWorkoutPlanSummariesQueryVariables>(AdminPublicWorkoutPlanSummariesDocument, options);
+      }
+export function useAdminPublicWorkoutPlanSummariesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutPlanSummariesQuery, AdminPublicWorkoutPlanSummariesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminPublicWorkoutPlanSummariesQuery, AdminPublicWorkoutPlanSummariesQueryVariables>(AdminPublicWorkoutPlanSummariesDocument, options);
+        }
+export type AdminPublicWorkoutPlanSummariesQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlanSummariesQuery>;
+export type AdminPublicWorkoutPlanSummariesLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlanSummariesLazyQuery>;
+export type AdminPublicWorkoutPlanSummariesQueryResult = Apollo.QueryResult<AdminPublicWorkoutPlanSummariesQuery, AdminPublicWorkoutPlanSummariesQueryVariables>;
+export const AdminPublicWorkoutSummariesDocument = gql`
+    query adminPublicWorkoutSummaries($status: PublicContentValidationStatus!) {
+  adminPublicWorkoutSummaries(status: $status) {
+    ...PublicWorkoutSummaryAdmin
+  }
+}
+    ${PublicWorkoutSummaryAdminFragmentDoc}`;
+
+/**
+ * __useAdminPublicWorkoutSummariesQuery__
+ *
+ * To run a query within a React component, call `useAdminPublicWorkoutSummariesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutSummariesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminPublicWorkoutSummariesQuery({
+ *   variables: {
+ *      status: // value for 'status'
+ *   },
+ * });
+ */
+export function useAdminPublicWorkoutSummariesQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutSummariesQuery, AdminPublicWorkoutSummariesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminPublicWorkoutSummariesQuery, AdminPublicWorkoutSummariesQueryVariables>(AdminPublicWorkoutSummariesDocument, options);
+      }
+export function useAdminPublicWorkoutSummariesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutSummariesQuery, AdminPublicWorkoutSummariesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminPublicWorkoutSummariesQuery, AdminPublicWorkoutSummariesQueryVariables>(AdminPublicWorkoutSummariesDocument, options);
+        }
+export type AdminPublicWorkoutSummariesQueryHookResult = ReturnType<typeof useAdminPublicWorkoutSummariesQuery>;
+export type AdminPublicWorkoutSummariesLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutSummariesLazyQuery>;
+export type AdminPublicWorkoutSummariesQueryResult = Apollo.QueryResult<AdminPublicWorkoutSummariesQuery, AdminPublicWorkoutSummariesQueryVariables>;

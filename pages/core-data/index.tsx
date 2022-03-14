@@ -4,12 +4,11 @@ import styled from 'styled-components'
 import ErrorMessage from '../../components/errorMessage'
 import { LoadingSpinner } from '../../components/loadingIndicators'
 import { FlexBox, Title } from '../../components/styled-components/styled'
+import { CORE_DATA_BASE_URL } from '../../constants'
 import { useCoreDataQuery } from '../../graphql/generated_types'
 
 export default function Overview() {
   const { loading, error, data } = useCoreDataQuery()
-
-  const coreDataBasePath = '/core-data'
 
   if (error) {
     return <ErrorMessage message={error.message} />
@@ -19,7 +18,11 @@ export default function Overview() {
     return (
       <FlexBox align="center">
         <DashboardGrid>
-          <Link key="Equipment" href={`${coreDataBasePath}/equipment`} passHref>
+          <Link
+            key="Equipment"
+            href={`${CORE_DATA_BASE_URL}/equipment`}
+            passHref
+          >
             <GridItem>
               <ObjectCountText>
                 {data.coreData.equipment.length.toString()}
@@ -28,7 +31,7 @@ export default function Overview() {
             </GridItem>
           </Link>
 
-          <Link key="Moves" href={`${coreDataBasePath}/moves`} passHref>
+          <Link key="Moves" href={`${CORE_DATA_BASE_URL}/moves`} passHref>
             <GridItem>
               <ObjectCountText>
                 {data.coreData.standardMoves.length.toString()}
@@ -39,7 +42,7 @@ export default function Overview() {
 
           <Link
             key="Move Types"
-            href={`${coreDataBasePath}/move-types`}
+            href={`${CORE_DATA_BASE_URL}/move-types`}
             passHref
           >
             <GridItem>
@@ -52,7 +55,7 @@ export default function Overview() {
 
           <Link
             key="Body Areas"
-            href={`${coreDataBasePath}/body-areas`}
+            href={`${CORE_DATA_BASE_URL}/body-areas`}
             passHref
           >
             <GridItem>
@@ -65,7 +68,7 @@ export default function Overview() {
 
           <Link
             key="Workout Types"
-            href={`${coreDataBasePath}/workout-types`}
+            href={`${CORE_DATA_BASE_URL}/workout-types`}
             passHref
           >
             <GridItem>
@@ -78,7 +81,7 @@ export default function Overview() {
 
           <Link
             key="Workout Goals"
-            href={`${coreDataBasePath}/workout-goals`}
+            href={`${CORE_DATA_BASE_URL}/workout-goals`}
             passHref
           >
             <GridItem>
@@ -91,7 +94,7 @@ export default function Overview() {
 
           <Link
             key="Fitness Benchmarks"
-            href={`${coreDataBasePath}/fitness-benchmarks`}
+            href={`${CORE_DATA_BASE_URL}/fitness-benchmarks`}
             passHref
           >
             <GridItem>
@@ -104,7 +107,7 @@ export default function Overview() {
 
           <Link
             key="Benchmark Workouts"
-            href={`${coreDataBasePath}/benchmark-workouts`}
+            href={`${CORE_DATA_BASE_URL}/benchmark-workouts`}
             passHref
           >
             <GridItem>
@@ -136,7 +139,7 @@ const GridItem = styled.a`
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   text-decoration: none;
   border-radius: 12px;
-  height: 280px;
+  height: 200px;
   width: 280px;
   display: flex;
   justify-content: center;
@@ -146,7 +149,7 @@ const GridItem = styled.a`
 `
 
 const ObjectCountText = styled.span`
-  font-size: 50px;
+  font-size: 40px;
   color: ${(props) => props.theme.colors.highlight};
-  font-weight: 'bold'};
+  font-weight: 'bold';
 `

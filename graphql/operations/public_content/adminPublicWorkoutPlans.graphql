@@ -1,5 +1,0 @@
-query adminPublicWorkoutPlans($status: PublicContentValidationStatus!) {
-  adminPublicWorkoutPlans(status: $status) {
-    ...WorkoutPlanData
-  }
-}

@@ -1,5 +1,0 @@
-query adminPublicClubs($status: PublicContentValidationStatus!) {
-  adminPublicClubs(status: $status) {
-    ...ClubWithMetaDataAdmin
-  }
-}

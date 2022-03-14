@@ -121,45 +121,12 @@ fragment WorkoutData on Workout {
   }
 }
 
-fragment Workout on Workout {
+fragment PublicWorkoutSummaryAdmin on PublicWorkoutSummaryAdmin {
   __typename
   id
   createdAt
   updatedAt
-  archived
   name
-  description
-  lengthMinutes
-  difficultyLevel
-  coverImageUri
-  contentAccessScope
-  introVideoUri
-  introVideoThumbUri
-  introAudioUri
-}
-
-fragment WorkoutSummary on WorkoutSummary {
-  __typename
-  id
-  createdAt
-  updatedAt
-  archived
-  name
-  User {
-    ...UserAvatarData
-  }
-  lengthMinutes
-  coverImageUri
-  description
-  difficultyLevel
-  loggedSessionsCount
-  hasClassVideo
-  hasClassAudio
-  equipments
-  sectionTypes
-  goals
-  tags
-  bodyAreas
 }
 
 fragment ArchivedWorkout on Workout {
@@ -197,6 +164,7 @@ fragment WorkoutSectionType on WorkoutSectionType {
   __typename
   id
   name
+  subtitle
   description
   validRepTypes
 }

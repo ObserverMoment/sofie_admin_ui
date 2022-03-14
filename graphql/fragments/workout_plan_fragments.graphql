@@ -1,5 +1,5 @@
 # Full data tree including all descendents
-fragment WorkoutPlanData on WorkoutPlanWithMetaDataAdmin {
+fragment WorkoutPlanWithMetaDataAdminData on WorkoutPlanWithMetaDataAdmin {
   __typename
   id
   createdAt
@@ -44,54 +44,18 @@ fragment WorkoutPlanData on WorkoutPlanWithMetaDataAdmin {
       ...UserAvatarData
     }
   }
+  difficultyLevel
+  metaTags
+  validated
+  reasonNotValidated
 }
 
-fragment WorkoutPlan on WorkoutPlan {
+fragment PublicWorkoutPlanSummaryAdmin on PublicWorkoutPlanSummaryAdmin {
   __typename
   id
   createdAt
   updatedAt
-  archived
   name
-  description
-  lengthWeeks
-  daysPerWeek
-  coverImageUri
-  introVideoUri
-  introVideoThumbUri
-  introAudioUri
-  contentAccessScope
-}
-
-fragment WorkoutPlanSummary on WorkoutPlanSummary {
-  __typename
-  id
-  createdAt
-  updatedAt
-  archived
-  name
-  description
-  coverImageUri
-  lengthWeeks
-  daysPerWeek
-  workoutsCount
-  User {
-    ...UserAvatarData
-  }
-  enrolmentsCount
-  goals {
-    ...WorkoutGoal
-  }
-  tags
-  reviewScore
-  reviewCount
-}
-
-fragment ArchivedWorkoutPlan on WorkoutPlan {
-  __typename
-  id
-  name
-  archived
 }
 
 fragment WorkoutPlanDay on WorkoutPlanDay {

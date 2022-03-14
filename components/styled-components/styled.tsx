@@ -21,10 +21,13 @@ export const theme = {
 //// Text ////
 export type ColorTypes =
   | 'primaryDark'
+  | 'pureBlack'
   | 'primaryLight'
+  | 'pureWhite'
+  | 'grey'
   | 'highlight'
   | 'destructive'
-  | 'grey'
+  | 'info'
   | 'success'
 
 interface TextProps {
@@ -128,7 +131,7 @@ export const FlexBox = styled.div<FlexProps>`
   width: ${(props) => props.width || 'auto'};
   height: ${(props) => props.height || 'auto'};
   flex-grow: ${(props) => props.flexGrow || 1};
-  background-color: ${(props) => props.backgroundColor || 'none'};
+  background-color: ${(props) => props.backgroundColor || 'inherit'};
   border-radius: ${(props) => props.borderRadius || '0px'};
   :hover {
     cursor: ${(props) => (props.cursorHover ? 'pointer' : 'default')};
@@ -163,12 +166,22 @@ interface SizedBoxProps {
 }
 
 export const SizedBox = styled.div<SizedBoxProps>`
-  width: ${(props) => `${props.width}px` || '100%'};
-  height: ${(props) => `${props.height}px` || '100%'};
+  width: ${(props) => (props.width ? `${props.width}px` : 'inherit')};
+  height: ${(props) => (props.height ? `${props.height}px` : 'auto')};
+`
+
+interface MaxSizedBoxProps {
+  readonly maxWidth?: number
+  readonly maxHeight?: number
+}
+
+export const MaxSizedBox = styled.div<MaxSizedBoxProps>`
+  max-width: ${(props) => (props.maxWidth ? `${props.maxWidth}px` : 'none')};
+  max-height: ${(props) => (props.maxHeight ? `${props.maxHeight}px` : 'none')};
 `
 
 export const ElevatedBox = styled.div<FlexProps>`
-  box-shadow: 0px 8px 20px rgb(0 0 0 / 9%);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: 6px;
   padding: 16px;
   margin: 6px;
@@ -177,5 +190,6 @@ export const ElevatedBox = styled.div<FlexProps>`
   justify-content: ${(props) => props.justify || 'flex-start'};
   align-items: ${(props) => props.align || 'stretch'};
   flex-wrap: ${(props) => props.wrap || 'wrap'};
-  background-color: ${(props) => props.backgroundColor || 'none'};
+  background-color: ${(props) =>
+    props.backgroundColor || props.theme.colors.pureWhite};
 `

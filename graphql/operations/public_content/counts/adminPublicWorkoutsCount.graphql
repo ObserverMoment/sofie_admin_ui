@@ -1,0 +1,3 @@
+query adminPublicWorkoutsCount($status: PublicContentValidationStatus!) {
+  adminPublicWorkoutsCount(status: $status)
+}

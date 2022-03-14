@@ -18,6 +18,7 @@ fragment BodyArea on BodyArea {
 fragment Move on Move {
   __typename
   id
+  archived
   name
   searchTerms
   description

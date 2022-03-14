@@ -1,0 +1,3 @@
+query adminPublicClubsCount($status: PublicContentValidationStatus!) {
+  adminPublicClubsCount(status: $status)
+}

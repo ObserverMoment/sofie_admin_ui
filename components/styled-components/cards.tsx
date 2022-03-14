@@ -3,6 +3,7 @@ import styled from 'styled-components'
 interface SummaryCardProps {
   margin?: string
   maxWidth?: string
+  hoverCursor?: boolean
 }
 
 export const SummaryCard = styled.div<SummaryCardProps>`
@@ -11,6 +12,10 @@ export const SummaryCard = styled.div<SummaryCardProps>`
   border-radius: 4px;
   margin: ${(p) => p.margin || '2px'};
   max-width: ${(p) => p.maxWidth || 'auto'};
+  :hover,
+  *:hover {
+    cursor: ${(p) => (p.hoverCursor ? 'pointer' : 'default')};
+  }
 `
 
 export const HighlightedBox = styled.div`

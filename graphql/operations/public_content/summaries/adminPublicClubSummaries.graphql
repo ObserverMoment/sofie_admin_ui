@@ -1,0 +1,5 @@
+query adminPublicClubSummaries($status: PublicContentValidationStatus!) {
+  adminPublicClubSummaries(status: $status) {
+    ...PublicClubSummaryAdmin
+  }
+}

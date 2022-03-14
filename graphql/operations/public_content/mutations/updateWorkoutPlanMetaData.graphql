@@ -2,6 +2,6 @@ mutation updateWorkoutPlanMetaDataAdmin(
   $data: UpdateWorkoutPlanMetaDataAdminInput!
 ) {
   updateWorkoutPlanMetaDataAdmin(data: $data) {
-    ...WorkoutPlanData
+    ...WorkoutPlanWithMetaDataAdminData
   }
 }

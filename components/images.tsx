@@ -17,6 +17,7 @@ import {
   faChartBar,
   faTimesCircle,
   faEdit,
+  faTag,
 } from '@fortawesome/free-solid-svg-icons'
 import { ColorTypes, theme } from './styled-components/styled'
 import { SizeProp } from '@fortawesome/fontawesome-svg-core'
@@ -173,4 +174,11 @@ export const ErrorIcon = ({ size = 'lg' }: IconProps) => (
     size={size}
     color={theme.colors.destructive}
   />
+)
+
+export const TagIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
+  <FontAwesomeIcon icon={faTag} size={size} color={theme.colors[colorType]} />
 )
