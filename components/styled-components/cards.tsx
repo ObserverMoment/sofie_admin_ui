@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { theme } from './styled'
 
 interface SummaryCardProps {
   margin?: string
@@ -12,6 +13,7 @@ export const SummaryCard = styled.div<SummaryCardProps>`
   border-radius: 4px;
   margin: ${(p) => p.margin || '2px'};
   max-width: ${(p) => p.maxWidth || 'auto'};
+  background-color: ${theme.colors.pureWhite};
   :hover,
   *:hover {
     cursor: ${(p) => (p.hoverCursor ? 'pointer' : 'default')};

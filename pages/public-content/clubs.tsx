@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { LoadingSpinner } from '../../components/loadingIndicators'
+import { LoadingDots } from '../../components/loadingIndicators'
 import { showToast } from '../../components/notifications'
 import { SummaryCard } from '../../components/styled-components/cards'
 import {
@@ -38,7 +38,7 @@ export default function Clubs() {
     console.error(error)
     return null
   } else if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   } else {
     return (
       <FlexBox direction="row" justify="center" wrap="wrap">

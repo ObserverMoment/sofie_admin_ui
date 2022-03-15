@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import CreateEditMove from '../../components/contentCRUD/createEditMove'
 import InteractiveTable from '../../components/interactiveTable'
-import { LoadingSpinner } from '../../components/loadingIndicators'
+import { LoadingDots } from '../../components/loadingIndicators'
 import { showToast } from '../../components/notifications'
 import {
   FlexBox,
@@ -66,7 +66,7 @@ export default function Moves() {
     console.error(error)
     return null
   } else if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   } else {
     return (
       <FlexBox>

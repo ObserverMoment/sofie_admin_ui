@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { CloseCircleIcon, PlusIcon } from '../images'
-import { LoadingSpinner } from '../loadingIndicators'
+import { CloseCircleIcon, PlusIcon } from '../icons'
+import { LoadingDots } from '../loadingIndicators'
 import { showToast } from '../notifications'
 import { FlexBox, MainText, Padding, Spacer } from '../styled-components/styled'
 import equal from 'deep-equal'
@@ -48,7 +48,7 @@ export const SelectedEquipmentDisplay = ({
     console.error(error)
     return null
   } else if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   } else {
     return (
       <div>

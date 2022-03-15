@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 import styled from 'styled-components'
-import { PlusIcon } from '../images'
+import { PlusIcon } from '../icons'
 import { ColorTypes, MainText, Spacer } from './styled'
 
 //// Buttons ////
@@ -38,7 +38,8 @@ export const StyledButton = styled.button<StyledButtonProps>`
   justify-content: center;
   align-items: center;
   outline: none;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
   background-color: ${(props) => props.theme.colors[props.colorType]};
   color: ${(props) =>
     props.colorType === 'primaryLight'

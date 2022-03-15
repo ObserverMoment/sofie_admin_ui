@@ -11,7 +11,7 @@ import {
   ObjectCountText,
 } from '../../../pages/public-content'
 import ErrorMessage from '../../errorMessage'
-import { LoadingSpinner } from '../../loadingIndicators'
+import { LoadingDots } from '../../loadingIndicators'
 import { SubTitle } from '../../styled-components/styled'
 
 export default function PublicWorkoutsDashboard() {
@@ -52,7 +52,7 @@ export default function PublicWorkoutsDashboard() {
           {validCountError ? (
             <ErrorMessage message={validCountError.message} />
           ) : validCountLoading ? (
-            <LoadingSpinner />
+            <LoadingDots />
           ) : (
             <Fragment>
               <ObjectCountText>
@@ -69,7 +69,7 @@ export default function PublicWorkoutsDashboard() {
           {pendingCountError ? (
             <ErrorMessage message={pendingCountError.message} />
           ) : pendingCountLoading ? (
-            <LoadingSpinner />
+            <LoadingDots />
           ) : (
             <Fragment>
               <ObjectCountText>
@@ -86,7 +86,7 @@ export default function PublicWorkoutsDashboard() {
           {invalidCountError ? (
             <ErrorMessage message={invalidCountError.message} />
           ) : invalidCountLoading ? (
-            <LoadingSpinner />
+            <LoadingDots />
           ) : (
             <Fragment>
               <ObjectCountText>

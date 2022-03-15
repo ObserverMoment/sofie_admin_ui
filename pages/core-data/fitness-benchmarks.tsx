@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import CreateEditFitnessBenchmark from '../../components/contentCRUD/createEditFitnessBenchmark'
 import ErrorMessage from '../../components/errorMessage'
 import Modal from '../../components/layout/modal'
-import { LoadingSpinner } from '../../components/loadingIndicators'
+import { LoadingDots } from '../../components/loadingIndicators'
 import { CreateButton } from '../../components/styled-components/buttons'
 import {
   FlexBox,
@@ -42,7 +42,7 @@ export default function FitnessBenchmarks() {
   if (error) {
     return <ErrorMessage message={error.message} />
   } else if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   } else {
     return (
       <div>

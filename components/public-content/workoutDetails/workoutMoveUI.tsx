@@ -22,7 +22,7 @@ const WorkoutMoveUI: React.FC<WorkoutMoveUIProps> = ({ workoutMove }) => (
         <MainText>{workoutMove.Move.name}</MainText>
         <Spacer right="6px" />
         {workoutMove.Move.BodyAreaMoveScores.map((bams) => (
-          <BodyAreaTag>
+          <BodyAreaTag key={bams.BodyArea.id}>
             <TinyText>{bams.BodyArea.name}</TinyText>
           </BodyAreaTag>
         ))}

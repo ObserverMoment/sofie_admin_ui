@@ -19,40 +19,38 @@ interface StyledCheckboxProps {
   isSelected: boolean
 }
 
-const StyledCheckboxContainer = styled.div`
+const StyledCheckboxButton = styled.button<StyledCheckboxProps>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   margin: 6px;
   align-items: center;
-`
-
-const StyledCheckboxButton = styled.button<StyledCheckboxProps>`
-  background-color: ${(p) => (p.isSelected ? 'red' : 'blue')};
   padding: 12px;
   outline: none;
-  border-radius: 2px;
+  border-radius: 8px;
   opacity: ${(p) => (p.isSelected ? 1 : 0.4)};
   border: 1px solid ${(p) => p.theme.colors.primaryDark};
   background-color: ${(p) =>
     p.isSelected ? p.theme.colors.primaryDark : p.theme.colors.primaryLight};
-  transition: all ease 0.2s;
+  transition: all ease 0.3s;
   :hover {
     cursor: pointer;
+  }
+  * {
+    color: ${(p) =>
+      p.isSelected ? p.theme.colors.pureWhite : p.theme.colors.primaryDark};
   }
 `
 
 const CheckBox = ({ isSelected, label, onClick }) => (
-  <StyledCheckboxContainer>
-    <StyledCheckboxButton
-      type="button"
-      onClick={onClick}
-      isSelected={isSelected}
-      aria-label={label}
-    />
-    <Spacer right="4px" />
-    <MainText>{label}</MainText>
-  </StyledCheckboxContainer>
+  <StyledCheckboxButton
+    type="button"
+    onClick={onClick}
+    isSelected={isSelected}
+    aria-label={label}
+  >
+    <MainText fontSize="12px">{label}</MainText>
+  </StyledCheckboxButton>
 )
 
 function CheckBoxes<T>({

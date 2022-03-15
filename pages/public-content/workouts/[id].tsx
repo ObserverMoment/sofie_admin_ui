@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router'
+import styled from 'styled-components'
 import { WorkoutTag } from '../../../components/cardsAndTags/workoutTag'
-import { TagIcon, TargetIcon } from '../../../components/images'
-import { LoadingSpinner } from '../../../components/loadingIndicators'
+import { TagIcon, TargetIcon } from '../../../components/icons'
+import { LoadingDots } from '../../../components/loadingIndicators'
 import { showToast } from '../../../components/notifications'
 import AdminActionsUI from '../../../components/public-content/workoutDetails/adminActionsUI'
-import WorkoutSectionUI from '../../../components/public-content/workoutDetails/workoutSection'
+import WorkoutSectionUI from '../../../components/public-content/workoutDetails/workoutSectionUI'
 import {
   ElevatedBox,
   FlexBox,
@@ -13,7 +14,15 @@ import {
   Padding,
   Title,
 } from '../../../components/styled-components/styled'
-import { useAdminPublicWorkoutByIdQuery } from '../../../graphql/generated_types'
+import {
+  useAdminPublicWorkoutByIdQuery,
+  useUpdateWorkoutMetaDataAdminMutation,
+} from '../../../graphql/generated_types'
+import {
+  UploadcareAudioPlayerWrapper,
+  UploadcareImageWrapper,
+  UploadcareVideoPlayerWrapper,
+} from '../../../lib/uploadcareComponents'
 
 export default function WorkoutDetails() {
   const router = useRouter()
@@ -25,12 +34,24 @@ export default function WorkoutDetails() {
     },
   })
 
+  const [update, { loading: updateInProgress, reset }] =
+    useUpdateWorkoutMetaDataAdminMutation({
+      onCompleted() {
+        showToast('Workout Meta Data Updated', 'Success')
+        reset()
+      },
+      onError() {
+        showToast('API error updating workout!', 'Error')
+        reset()
+      },
+    })
+
   if (error) {
     showToast(`Error retrieving data`, 'Error', 5000)
     console.error(error)
     return null
   } else if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   } else {
     const workout = data.adminPublicWorkoutById
 
@@ -50,7 +71,11 @@ export default function WorkoutDetails() {
               <Padding padding="0 0 4px 0">
                 <FlexBox wrap="wrap" direction="row">
                   {workout.WorkoutTags.map((tag) => (
-                    <WorkoutTag tag={tag.tag} icon={<TagIcon size="xs" />} />
+                    <WorkoutTag
+                      key={tag.id}
+                      tag={tag.tag}
+                      icon={<TagIcon size="xs" />}
+                    />
                   ))}
                 </FlexBox>
               </Padding>
@@ -59,7 +84,7 @@ export default function WorkoutDetails() {
               <Padding padding="0 0 4px 0">
                 <FlexBox wrap="wrap" direction="row">
                   {workout.WorkoutGoals.map((goal) => (
-                    <Padding padding="0 8px 0 0">
+                    <Padding key={goal.id} padding="0 8px 0 0">
                       <WorkoutTag
                         tag={goal.name}
                         icon={<TargetIcon size="xs" />}
@@ -70,19 +95,30 @@ export default function WorkoutDetails() {
               </Padding>
             )}
           </div>
-          <FlexBox direction="row" justify="flex-end">
-            <ElevatedBox>
-              <MainText>TODO: Intro Video</MainText>
-            </ElevatedBox>
-            <ElevatedBox>
-              <MainText>TODO: Intro Audio</MainText>
-            </ElevatedBox>
-            {workout.coverImageUri ? (
-              <img
-                style={{ borderRadius: '20px' }}
-                height="400px"
-                src={`https://ucarecdn.com/${workout.coverImageUri}/`}
+          <FlexBox direction="row" justify="flex-end" wrap="wrap">
+            {workout.introAudioUri ? (
+              <UploadcareAudioPlayerWrapper uuid={workout.introAudioUri} />
+            ) : (
+              <ElevatedBox>
+                <MainText>No intro audio</MainText>
+              </ElevatedBox>
+            )}
+
+            {workout.introVideoUri ? (
+              <UploadcareVideoPlayerWrapper
+                uuid={workout.introVideoUri}
+                width="240px"
               />
+            ) : (
+              <ElevatedBox>
+                <MainText>No intro video</MainText>{' '}
+              </ElevatedBox>
+            )}
+
+            {workout.coverImageUri ? (
+              <MediaUIContainer>
+                <UploadcareImageWrapper uuid={workout.coverImageUri} />
+              </MediaUIContainer>
             ) : (
               <ElevatedBox>
                 <MainText>No cover image</MainText>
@@ -92,13 +128,46 @@ export default function WorkoutDetails() {
         </FlexBox>
 
         <ElevatedBox>
-          <AdminActionsUI />
+          <AdminActionsUI
+            workout={workout}
+            updateInProgress={updateInProgress}
+            updateTags={(tags) => {
+              update({
+                variables: {
+                  data: {
+                    id: workout.id,
+                    metaTags: tags,
+                  },
+                },
+              })
+            }}
+            updateStatus={(status) =>
+              update({
+                variables: {
+                  data: {
+                    id: workout.id,
+                    validated: status,
+                  },
+                },
+              })
+            }
+            updateDifficultyLevel={(level) =>
+              update({
+                variables: {
+                  data: {
+                    id: workout.id,
+                    difficultyLevel: level,
+                  },
+                },
+              })
+            }
+          />
         </ElevatedBox>
 
         {workout.WorkoutSections.length > 0 ? (
           <Padding padding="0 0 12px 0">
             {workout.WorkoutSections.map((wSection) => (
-              <Padding padding="0 0 8px 0">
+              <Padding key={wSection.id} padding="0 0 8px 0">
                 <WorkoutSectionUI workoutSection={wSection} />
               </Padding>
             ))}
@@ -112,3 +181,16 @@ export default function WorkoutDetails() {
     )
   }
 }
+
+///// Styled Components /////
+export const MediaUIContainer = styled.div`
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 6px;
+  margin: 6px;
+  max-width: 220px;
+  max-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+`

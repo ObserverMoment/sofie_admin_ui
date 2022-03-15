@@ -16,6 +16,14 @@ interface VideoProcessingRequestResponse {
   result: VideoProcessingResult[]
 }
 
+function buildUploadcareHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    Accept: 'application/vnd.uploadcare-v0.6+json',
+    Authorization: `Uploadcare.Simple ${process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY}:${process.env.NEXT_PUBLIC_UPLOADCARE_PRIVATE_KEY}`,
+  }
+}
+
 // Currently only for processing one file at a time
 // and to return a single processed id.
 export async function defaultVideoEncoding(
@@ -23,15 +31,13 @@ export async function defaultVideoEncoding(
 ): Promise<string> {
   const requestOptions = {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/vnd.uploadcare-v0.6+json',
-      Authorization: `Uploadcare.Simple ${process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY}:${process.env.NEXT_PUBLIC_UPLOADCARE_PRIVATE_KEY}`,
-    },
+    headers: buildUploadcareHeaders(),
     body: JSON.stringify({ paths: [`${originalFileId}/video/`] }),
   }
   const response = await fetch(UPLOADCARE_PROCESSING_ENDPOINT, requestOptions)
+
   const data: VideoProcessingRequestResponse = await response.json()
+
   if (Object.keys(data.problems).length > 0) {
     console.log('The file was not processed correctly:')
     console.log(JSON.stringify(data.problems))
@@ -39,4 +45,20 @@ export async function defaultVideoEncoding(
   } else {
     return data.result[0].uuid
   }
+}
+
+export async function getFileUrlFromUuid(uuid: string): Promise<string> {
+  const requestOptions = {
+    method: 'GET',
+    headers: buildUploadcareHeaders(),
+  }
+
+  const response = await fetch(
+    `${UPLOADCARE_BASE_ENDPOINT}/files/${uuid}/`,
+    requestOptions,
+  )
+
+  const info = await response.json()
+
+  return info.original_file_url
 }

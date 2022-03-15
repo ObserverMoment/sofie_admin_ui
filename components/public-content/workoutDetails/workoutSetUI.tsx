@@ -1,6 +1,11 @@
 import styled from 'styled-components'
 import { WorkoutSet } from '../../../graphql/generated_types'
-import { MainText, Padding } from '../../styled-components/styled'
+import {
+  FlexBox,
+  MainText,
+  Padding,
+  TinyText,
+} from '../../styled-components/styled'
 import WorkoutMoveUI from './workoutMoveUI'
 
 interface WorkoutSetUIProps {
@@ -9,10 +14,13 @@ interface WorkoutSetUIProps {
 
 const WorkoutSetUI: React.FC<WorkoutSetUIProps> = ({ workoutSet }) => (
   <WorkoutSetContainer>
-    <WorkoutSetHeader workoutSet={workoutSet} />
+    <FlexBox direction="row" justify="center">
+      <WorkoutSetHeader workoutSet={workoutSet} />
+    </FlexBox>
+
     {workoutSet.WorkoutMoves.length > 0 ? (
       workoutSet.WorkoutMoves.map((workoutMove) => (
-        <WorkoutMoveUI workoutMove={workoutMove} />
+        <WorkoutMoveUI key={workoutMove.id} workoutMove={workoutMove} />
       ))
     ) : (
       <MainText>No moves defined</MainText>
@@ -39,7 +47,7 @@ const WorkoutSetHeader: React.FC<WorkoutSetHeaderProps> = ({ workoutSet }) => {
   return (
     <Padding padding="4px 0">
       <SetDefinitionTypeTag>
-        <MainText>{header}</MainText>
+        <TinyText>{header}</TinyText>
       </SetDefinitionTypeTag>
     </Padding>
   )
@@ -50,10 +58,10 @@ export default WorkoutSetUI
 ///// Styled Components ///////
 const WorkoutSetContainer = styled.div`
   border-radius: 8px;
-  border: 1px solid #d6d6d6;
   padding: 8px;
   margin-top: 4px;
   margin-bottom: 4px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
 `
 
 ///// Styled Components //////

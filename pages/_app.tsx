@@ -9,14 +9,13 @@ import {
 import React from 'react'
 import Head from 'next/head'
 import { LogoMenuAndSideNav } from '../components/layout/sideNav'
-import { TopNav } from '../components/layout/topNav'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { createApolloClient } from '../lib/apolloClient'
 import { auth, signOut } from '../lib/firebaseClient'
 import LoginModal from '../components/layout/loginModal'
 import { ConfirmationDialogProvider } from '../lib/dialogHookProvider'
-import { LoadingDots, LoadingSpinner } from '../components/loadingIndicators'
+import { LoadingDots } from '../components/loadingIndicators'
 import { useAuthState } from 'react-firebase-hooks/auth'
 
 const GlobalStyle = createGlobalStyle`
@@ -54,7 +53,7 @@ export default function App({ Component, pageProps }) {
   const [user, loading, error] = useAuthState(auth)
 
   if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   }
 
   if (error) {
@@ -104,7 +103,7 @@ export default function App({ Component, pageProps }) {
                 <ToastContainer style={{ width: '360px' }} />
               </FlexBox>
             ) : (
-              <LoadingDots width={40} />
+              <LoadingDots size={40} />
             )}
 
             <LoginModal isOpen={!user} />

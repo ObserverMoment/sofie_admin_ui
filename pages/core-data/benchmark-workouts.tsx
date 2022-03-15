@@ -1,7 +1,7 @@
 import React from 'react'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
-import { LoadingSpinner } from '../../components/loadingIndicators'
+import { LoadingDots } from '../../components/loadingIndicators'
 import { useCoreDataQuery } from '../../graphql/generated_types'
 
 export default function BenchmarkWorkouts() {
@@ -10,7 +10,7 @@ export default function BenchmarkWorkouts() {
   if (error) {
     return <ErrorMessage message={error.message} />
   } else if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   } else {
     return (
       <InteractiveTable

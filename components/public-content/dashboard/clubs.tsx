@@ -11,7 +11,7 @@ import {
   ObjectCountText,
 } from '../../../pages/public-content'
 import ErrorMessage from '../../errorMessage'
-import { LoadingSpinner } from '../../loadingIndicators'
+import { LoadingDots } from '../../loadingIndicators'
 import { SubTitle } from '../../styled-components/styled'
 
 export default function PublicClubsDashboard() {
@@ -52,7 +52,7 @@ export default function PublicClubsDashboard() {
           {validCountError ? (
             <ErrorMessage message={validCountError.message} />
           ) : validCountLoading ? (
-            <LoadingSpinner />
+            <LoadingDots />
           ) : (
             <Fragment>
               <ObjectCountText>
@@ -69,7 +69,7 @@ export default function PublicClubsDashboard() {
           {pendingCountError ? (
             <ErrorMessage message={pendingCountError.message} />
           ) : pendingCountLoading ? (
-            <LoadingSpinner />
+            <LoadingDots />
           ) : (
             <Fragment>
               <ObjectCountText>
@@ -86,7 +86,7 @@ export default function PublicClubsDashboard() {
           {invalidCountError ? (
             <ErrorMessage message={invalidCountError.message} />
           ) : invalidCountLoading ? (
-            <LoadingSpinner />
+            <LoadingDots />
           ) : (
             <Fragment>
               <ObjectCountText>

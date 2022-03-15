@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 import styled from 'styled-components'
 import ErrorMessage from '../../components/errorMessage'
-import { LoadingSpinner } from '../../components/loadingIndicators'
+import { LoadingDots } from '../../components/loadingIndicators'
 import { FlexBox, Title } from '../../components/styled-components/styled'
 import { CORE_DATA_BASE_URL } from '../../constants'
 import { useCoreDataQuery } from '../../graphql/generated_types'
@@ -13,7 +13,7 @@ export default function Overview() {
   if (error) {
     return <ErrorMessage message={error.message} />
   } else if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   } else {
     return (
       <FlexBox align="center">

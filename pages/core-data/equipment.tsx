@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { LoadingSpinner } from '../../components/loadingIndicators'
+import { LoadingDots } from '../../components/loadingIndicators'
 import InteractiveTable from '../../components/interactiveTable'
 import {
   FlexBox,
@@ -37,7 +37,7 @@ export default function EquipmentData() {
     console.error(error)
     return null
   } else if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   } else {
     return (
       <FlexBox>

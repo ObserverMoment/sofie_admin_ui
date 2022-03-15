@@ -1,7 +1,7 @@
 import React, { useRef, PropsWithChildren } from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
-import { CloseWindowIcon } from '../images'
+import { CloseWindowIcon } from '../icons'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useOnClickOutside } from '../../lib/utils'
 import { LightButton } from '../styled-components/buttons'

@@ -7,14 +7,15 @@ export const theme = {
     pureBlack: '#000000',
     primaryLight: '#f3f3f3',
     pureWhite: '#ffffff',
-    grey: '#868686',
+    headingGrey: '#3b3b3b',
+    grey: '#575757',
     highlight: '#069b8e',
     destructive: '#bb2020',
     info: '#054894',
     success: '#167974',
   },
   spacing: {
-    sideNavWidth: '80px',
+    sideNavWidth: '140px',
   },
 }
 
@@ -44,23 +45,23 @@ interface TextProps {
 }
 
 export const Title = styled.h1<TextProps>`
-  font-size: 26px;
-  font-weight: normal;
+  font-size: ${(props) => props.fontSize || '22px'};
+  font-weight: bold;
   margin: 0px;
   color: ${(props) =>
     props.colorType
       ? props.theme.colors[props.colorType]
-      : props.theme.colors.primaryDark};
+      : props.theme.colors.headingGrey};
 `
 
 export const SubTitle = styled.h2<TextProps>`
-  font-size: 20px;
+  font-size: ${(props) => props.fontSize || '20px'};
   font-weight: normal;
   margin: 0px;
   color: ${(props) =>
     props.colorType
       ? props.theme.colors[props.colorType]
-      : props.theme.colors.primaryDark};
+      : props.theme.colors.headingGrey};
 `
 
 export const MainText = styled.span<TextProps>`
@@ -182,8 +183,8 @@ export const MaxSizedBox = styled.div<MaxSizedBoxProps>`
 
 export const ElevatedBox = styled.div<FlexProps>`
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border-radius: 6px;
-  padding: 16px;
+  border-radius: 8px;
+  padding: ${(props) => (props.padding ? `${props.padding}px` : '16px')};
   margin: 6px;
   display: flex;
   flex-direction: ${(props) => props.direction || 'column'};

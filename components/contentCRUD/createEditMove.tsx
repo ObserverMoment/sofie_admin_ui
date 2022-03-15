@@ -1,6 +1,6 @@
 import React from 'react'
-import { SuccessIcon } from '../images'
-import { LoadingSpinner } from '../loadingIndicators'
+import { SuccessIcon } from '../icons'
+import { LoadingDots } from '../loadingIndicators'
 import { showToast } from '../notifications'
 import { SelectedBodyAreaMoveScores } from '../selectors/bodyAreaMoveScores'
 import { SelectedEquipmentDisplay } from '../selectors/equipmentMultiSelect'
@@ -153,7 +153,7 @@ const CreateEditMove = ({
     console.error(error)
     return null
   } else if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   } else {
     const formIsValidToSubmit = formState.name.value && formState.MoveType.value
 

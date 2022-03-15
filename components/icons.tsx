@@ -18,6 +18,7 @@ import {
   faTimesCircle,
   faEdit,
   faTag,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons'
 import { ColorTypes, theme } from './styled-components/styled'
 import { SizeProp } from '@fortawesome/fontawesome-svg-core'
@@ -31,42 +32,11 @@ export const Logo = ({ size = 40, invert = false }) => (
     style={invert ? { filter: 'invert(100%)' } : null}
   />
 )
-/// Icons
+//// Icons ////
 interface IconProps {
   size?: SizeProp
   colorType?: ColorTypes
 }
-
-export const UserAvatar = ({ size = 'lg' }: IconProps) => (
-  <FontAwesomeIcon
-    icon={faUserCircle}
-    size={size}
-    display="block"
-    color="white"
-  />
-)
-
-export const HomeIcon = ({
-  size = 'lg',
-  colorType = 'primaryDark',
-}: IconProps) => (
-  <FontAwesomeIcon
-    icon={faChartBar}
-    size={size}
-    color={theme.colors[colorType]}
-  />
-)
-
-export const DataIcon = ({
-  size = 'lg',
-  colorType = 'primaryDark',
-}: IconProps) => (
-  <FontAwesomeIcon
-    icon={faDatabase}
-    size={size}
-    color={theme.colors[colorType]}
-  />
-)
 
 export const ContentIcon = ({
   size = 'lg',
@@ -74,35 +44,6 @@ export const ContentIcon = ({
 }: IconProps) => (
   <FontAwesomeIcon
     icon={faClipboardList}
-    size={size}
-    color={theme.colors[colorType]}
-  />
-)
-
-export const UsersIcon = ({
-  size = 'lg',
-  colorType = 'primaryDark',
-}: IconProps) => (
-  <FontAwesomeIcon icon={faUsers} size={size} color={theme.colors[colorType]} />
-)
-
-export const TargetIcon = ({
-  size = 'lg',
-  colorType = 'primaryDark',
-}: IconProps) => (
-  <FontAwesomeIcon
-    icon={faBullseye}
-    size={size}
-    color={theme.colors[colorType]}
-  />
-)
-
-export const SignOutIcon = ({
-  size = 'lg',
-  colorType = 'primaryDark',
-}: IconProps) => (
-  <FontAwesomeIcon
-    icon={faSignOutAlt}
     size={size}
     color={theme.colors[colorType]}
   />
@@ -130,11 +71,67 @@ export const CloseCircleIcon = ({
   />
 )
 
+export const DataIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
+  <FontAwesomeIcon
+    icon={faDatabase}
+    size={size}
+    color={theme.colors[colorType]}
+  />
+)
+
+export const DeleteIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
+  <FontAwesomeIcon icon={faTimes} size={size} color={theme.colors[colorType]} />
+)
+
 export const EditIcon = ({
   size = 'lg',
   colorType = 'primaryDark',
 }: IconProps) => (
   <FontAwesomeIcon icon={faEdit} size={size} color={theme.colors[colorType]} />
+)
+
+export const ErrorIcon = ({ size = 'lg' }: IconProps) => (
+  <FontAwesomeIcon
+    icon={faExclamationCircle}
+    size={size}
+    color={theme.colors.destructive}
+  />
+)
+
+export const HomeIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
+  <FontAwesomeIcon
+    icon={faChartBar}
+    size={size}
+    color={theme.colors[colorType]}
+  />
+)
+
+export const InfoIcon = ({ size = 'lg' }: IconProps) => (
+  <FontAwesomeIcon icon={faInfoCircle} size={size} color={theme.colors.info} />
+)
+
+export const PlusIcon = ({ size = 'lg' }: IconProps) => (
+  <FontAwesomeIcon icon={faPlus} size={size} />
+)
+
+export const SignOutIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
+  <FontAwesomeIcon
+    icon={faSignOutAlt}
+    size={size}
+    color={theme.colors[colorType]}
+  />
 )
 
 type SortType = 'Sort' | 'Up' | 'Down'
@@ -152,10 +149,6 @@ export const SortIcon = ({
   type?: SortType
 }) => <FontAwesomeIcon icon={sortIcons[type]} size={size} />
 
-export const PlusIcon = ({ size = 'lg' }: IconProps) => (
-  <FontAwesomeIcon icon={faPlus} size={size} />
-)
-
 export const SuccessIcon = ({ size = 'lg' }: IconProps) => (
   <FontAwesomeIcon
     icon={faCheckCircle}
@@ -164,21 +157,36 @@ export const SuccessIcon = ({ size = 'lg' }: IconProps) => (
   />
 )
 
-export const InfoIcon = ({ size = 'lg' }: IconProps) => (
-  <FontAwesomeIcon icon={faInfoCircle} size={size} color={theme.colors.info} />
-)
-
-export const ErrorIcon = ({ size = 'lg' }: IconProps) => (
-  <FontAwesomeIcon
-    icon={faExclamationCircle}
-    size={size}
-    color={theme.colors.destructive}
-  />
-)
-
 export const TagIcon = ({
   size = 'lg',
   colorType = 'primaryDark',
 }: IconProps) => (
   <FontAwesomeIcon icon={faTag} size={size} color={theme.colors[colorType]} />
+)
+
+export const TargetIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
+  <FontAwesomeIcon
+    icon={faBullseye}
+    size={size}
+    color={theme.colors[colorType]}
+  />
+)
+
+export const UserAvatar = ({ size = 'lg' }: IconProps) => (
+  <FontAwesomeIcon
+    icon={faUserCircle}
+    size={size}
+    display="block"
+    color="white"
+  />
+)
+
+export const UsersIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
+  <FontAwesomeIcon icon={faUsers} size={size} color={theme.colors[colorType]} />
 )

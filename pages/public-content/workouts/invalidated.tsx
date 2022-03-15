@@ -1,6 +1,6 @@
 import router from 'next/router'
 import { WorkoutSummaryCard } from '../../../components/cardsAndTags/workoutCard'
-import { LoadingSpinner } from '../../../components/loadingIndicators'
+import { LoadingDots } from '../../../components/loadingIndicators'
 import { showToast } from '../../../components/notifications'
 import {
   FlexBox,
@@ -27,15 +27,16 @@ export default function PublicWorkoutsInvalidated() {
     console.error(error)
     return null
   } else if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   } else {
     return (
-      <FlexBox>
+      <FlexBox padding="6px 0">
         <Title>Invalidated Workouts</Title>
-        <FlexBox direction="row" wrap="wrap">
+        <FlexBox direction="row" wrap="wrap" padding="12px 0">
           {data.adminPublicWorkoutSummaries.length ? (
             data.adminPublicWorkoutSummaries.map((w) => (
               <WorkoutSummaryCard
+                key={w.id}
                 workout={w as PublicWorkoutSummaryAdmin}
                 handleCardClick={() =>
                   router.push(`${PUBLIC_CONTENT_BASE_URL}/workouts/${w.id}`)
