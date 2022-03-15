@@ -8,7 +8,7 @@ export const theme = {
     primaryLight: '#f3f3f3',
     pureWhite: '#ffffff',
     headingGrey: '#3b3b3b',
-    grey: '#575757',
+    grey: '#3b3b3b',
     highlight: '#069b8e',
     destructive: '#bb2020',
     info: '#054894',
@@ -119,6 +119,7 @@ interface FlexProps {
   readonly cursorHover?: boolean
   readonly borderRadius?: string
   readonly flexGrow?: number
+  readonly boxShadow?: string
 }
 
 export const FlexBox = styled.div<FlexProps>`
@@ -134,6 +135,7 @@ export const FlexBox = styled.div<FlexProps>`
   flex-grow: ${(props) => props.flexGrow || 1};
   background-color: ${(props) => props.backgroundColor || 'inherit'};
   border-radius: ${(props) => props.borderRadius || '0px'};
+  box-shadow: ${(props) => props.boxShadow || 'none'};
   :hover {
     cursor: ${(props) => (props.cursorHover ? 'pointer' : 'default')};
   }

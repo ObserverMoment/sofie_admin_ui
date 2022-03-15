@@ -19,6 +19,7 @@ import {
   faEdit,
   faTag,
   faTimes,
+  faNewspaper,
 } from '@fortawesome/free-solid-svg-icons'
 import { ColorTypes, theme } from './styled-components/styled'
 import { SizeProp } from '@fortawesome/fontawesome-svg-core'
@@ -117,6 +118,17 @@ export const HomeIcon = ({
 
 export const InfoIcon = ({ size = 'lg' }: IconProps) => (
   <FontAwesomeIcon icon={faInfoCircle} size={size} color={theme.colors.info} />
+)
+
+export const NewsFeedIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+}: IconProps) => (
+  <FontAwesomeIcon
+    icon={faNewspaper}
+    size={size}
+    color={theme.colors[colorType]}
+  />
 )
 
 export const PlusIcon = ({ size = 'lg' }: IconProps) => (

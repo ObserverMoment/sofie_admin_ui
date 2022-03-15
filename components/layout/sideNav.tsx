@@ -3,7 +3,14 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
 import { signOut } from '../../lib/firebaseClient'
-import { ContentIcon, DataIcon, HomeIcon, SignOutIcon, Logo } from '../icons'
+import {
+  ContentIcon,
+  DataIcon,
+  HomeIcon,
+  SignOutIcon,
+  Logo,
+  NewsFeedIcon,
+} from '../icons'
 import { MyLink } from '../styled-components/buttons'
 import { FlexBox, Spacer, TinyText, Title } from '../styled-components/styled'
 
@@ -11,7 +18,8 @@ import { FlexBox, Spacer, TinyText, Title } from '../styled-components/styled'
 const primaryRoutes = [
   { text: 'Dashboard', link: '/', icon: HomeIcon },
   { text: 'Core Data', link: '/core-data', icon: DataIcon },
-  { text: 'Public Content', link: '/public-content', icon: ContentIcon },
+  { text: 'Public Data', link: '/public-data', icon: ContentIcon },
+  { text: 'News Content', link: '/news-content', icon: NewsFeedIcon },
 ]
 
 //// Styled Components ////
@@ -26,7 +34,8 @@ const SideNavContainer = styled.div`
   flex-direction: column;
   height: 100vh;
   width: ${(props) => props.theme.spacing.sideNavWidth};
-  background-color: ${(props) => props.theme.colors.pureWhite};
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  /* background-color: ${(props) => props.theme.colors.pureWhite}; */
 `
 
 const PrimaryNavContainer = styled.nav`
@@ -54,9 +63,7 @@ interface NavItemProps {
 
 const PrimaryNavItem = styled.a<NavItemProps>`
   background-color: ${(props) =>
-    props.isActive
-      ? props.theme.colors.primaryLight
-      : props.theme.colors.pureWhite};
+    props.isActive ? props.theme.colors.grey : props.theme.colors.pureWhite};
   text-decoration: none;
   display: flex;
   flex-direction: row;
@@ -71,10 +78,7 @@ const PrimaryNavItem = styled.a<NavItemProps>`
   i {
     font-weight: bold;
     color: ${(props) =>
-      props.isActive
-        ? props.theme.colors.primaryDark
-        : props.theme.colors.grey};
-
+      props.isActive ? props.theme.colors.pureWhite : props.theme.colors.grey};
     text-decoration: none;
   }
 
@@ -113,7 +117,9 @@ export const PrimaryNav = () => {
             <PrimaryNavItem isActive={`/${baseRoute}` === link}>
               <Icon
                 size="sm"
-                colorType={`/${baseRoute}` === link ? 'primaryDark' : 'grey'}
+                colorType={
+                  `/${baseRoute}` === link ? 'pureWhite' : 'primaryDark'
+                }
               />
               <Spacer right="8px" />
               <TinyText>{text}</TinyText>

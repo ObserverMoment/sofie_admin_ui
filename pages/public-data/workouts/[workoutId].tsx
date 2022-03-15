@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
+import Breadcrumbs from '../../../components/breadcrumbs'
 import { WorkoutTag } from '../../../components/cardsAndTags/workoutTag'
 import { TagIcon, TargetIcon } from '../../../components/icons'
 import { LoadingDots } from '../../../components/loadingIndicators'
@@ -26,11 +27,11 @@ import {
 
 export default function WorkoutDetails() {
   const router = useRouter()
-  const { id } = router.query
+  const { workoutId } = router.query
 
   const { loading, error, data } = useAdminPublicWorkoutByIdQuery({
     variables: {
-      id: id as string,
+      id: workoutId as string,
     },
   })
 
@@ -59,7 +60,7 @@ export default function WorkoutDetails() {
       <div>
         <FlexBox direction="row">
           <div>
-            <Title>{workout.name}</Title>
+            <Breadcrumbs pageTitle={workout.name} />
             {workout.description && (
               <Padding padding="0 0 8px 0">
                 <MaxSizedBox maxWidth={800}>
@@ -71,11 +72,9 @@ export default function WorkoutDetails() {
               <Padding padding="0 0 4px 0">
                 <FlexBox wrap="wrap" direction="row">
                   {workout.WorkoutTags.map((tag) => (
-                    <WorkoutTag
-                      key={tag.id}
-                      tag={tag.tag}
-                      icon={<TagIcon size="xs" />}
-                    />
+                    <Padding key={tag.id} padding="0 8px 0 0">
+                      <WorkoutTag tag={tag.tag} icon={<TagIcon size="xs" />} />
+                    </Padding>
                   ))}
                 </FlexBox>
               </Padding>

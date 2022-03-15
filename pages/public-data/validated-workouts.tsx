@@ -1,24 +1,25 @@
 import router from 'next/router'
-import { WorkoutSummaryCard } from '../../../components/cardsAndTags/workoutCard'
-import { LoadingDots } from '../../../components/loadingIndicators'
-import { showToast } from '../../../components/notifications'
+import Breadcrumbs from '../../components/breadcrumbs'
+import { WorkoutSummaryCard } from '../../components/cardsAndTags/workoutCard'
+import { LoadingDots } from '../../components/loadingIndicators'
+import { showToast } from '../../components/notifications'
 import {
   FlexBox,
   MainText,
   Padding,
   Title,
-} from '../../../components/styled-components/styled'
-import { PUBLIC_CONTENT_BASE_URL } from '../../../constants'
+} from '../../components/styled-components/styled'
+import { PUBLIC_CONTENT_BASE_URL } from '../../constants'
 import {
   PublicContentValidationStatus,
   PublicWorkoutSummaryAdmin,
   useAdminPublicWorkoutSummariesQuery,
-} from '../../../graphql/generated_types'
+} from '../../graphql/generated_types'
 
-export default function PublicWorkoutsInvalidated() {
+export default function PublicWorkoutsValidated() {
   const { loading, error, data } = useAdminPublicWorkoutSummariesQuery({
     variables: {
-      status: PublicContentValidationStatus.Invalid,
+      status: PublicContentValidationStatus.Valid,
     },
   })
 
@@ -31,7 +32,9 @@ export default function PublicWorkoutsInvalidated() {
   } else {
     return (
       <FlexBox padding="6px 0">
-        <Title>Invalidated Workouts</Title>
+        <Breadcrumbs
+          pageTitle={`Validated Workouts (${data.adminPublicWorkoutSummaries.length})`}
+        />
         <FlexBox direction="row" wrap="wrap" padding="12px 0">
           {data.adminPublicWorkoutSummaries.length ? (
             data.adminPublicWorkoutSummaries.map((w) => (
@@ -45,7 +48,7 @@ export default function PublicWorkoutsInvalidated() {
             ))
           ) : (
             <Padding>
-              <MainText>No invalid Workouts to display</MainText>
+              <MainText>None to display</MainText>
             </Padding>
           )}
         </FlexBox>

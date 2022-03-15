@@ -1,12 +1,10 @@
 import React from 'react'
+import Breadcrumbs from '../../components/breadcrumbs'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingDots } from '../../components/loadingIndicators'
-import {
-  FlexBox,
-  Padding,
-  Title,
-} from '../../components/styled-components/styled'
+import { FlexBox, Padding } from '../../components/styled-components/styled'
+import { CORE_DATA_BASE_URL } from '../../constants'
 import { useCoreDataQuery } from '../../graphql/generated_types'
 
 export default function BodyAreas() {
@@ -20,8 +18,11 @@ export default function BodyAreas() {
     return (
       <FlexBox>
         <Padding>
-          <FlexBox direction="row" justify="center">
-            <Title>Body Areas</Title>
+          <FlexBox direction="row">
+            <Breadcrumbs
+              pageTitle="Body Areas"
+              crumbs={[{ text: 'Core Data', routeTo: CORE_DATA_BASE_URL }]}
+            />
           </FlexBox>
         </Padding>
         <InteractiveTable

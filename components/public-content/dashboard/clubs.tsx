@@ -9,7 +9,7 @@ import {
   DashboardSectionNav,
   DashboardSectionNavItem,
   ObjectCountText,
-} from '../../../pages/public-content'
+} from '../../../pages/public-data'
 import ErrorMessage from '../../errorMessage'
 import { LoadingDots } from '../../loadingIndicators'
 import { SubTitle } from '../../styled-components/styled'
@@ -47,7 +47,7 @@ export default function PublicClubsDashboard() {
 
   return (
     <DashboardSectionNav>
-      <Link href={`${PUBLIC_CONTENT_BASE_URL}/clubs-validated`} passHref>
+      <Link href={`${PUBLIC_CONTENT_BASE_URL}/validated-clubs`} passHref>
         <DashboardSectionNavItem>
           {validCountError ? (
             <ErrorMessage message={validCountError.message} />
@@ -64,7 +64,7 @@ export default function PublicClubsDashboard() {
         </DashboardSectionNavItem>
       </Link>
 
-      <Link href={`${PUBLIC_CONTENT_BASE_URL}/clubs-pending`} passHref>
+      <Link href={`${PUBLIC_CONTENT_BASE_URL}/pending-clubs`} passHref>
         <DashboardSectionNavItem>
           {pendingCountError ? (
             <ErrorMessage message={pendingCountError.message} />
@@ -81,7 +81,7 @@ export default function PublicClubsDashboard() {
         </DashboardSectionNavItem>
       </Link>
 
-      <Link href={`${PUBLIC_CONTENT_BASE_URL}/clubs-invalidated`} passHref>
+      <Link href={`${PUBLIC_CONTENT_BASE_URL}/invalidated-clubs`} passHref>
         <DashboardSectionNavItem>
           {invalidCountError ? (
             <ErrorMessage message={invalidCountError.message} />

@@ -11,6 +11,8 @@ import CreateEditEquipment from '../../components/contentCRUD/createEditEquipmen
 import { showToast } from '../../components/notifications'
 import { CreateButton } from '../../components/styled-components/buttons'
 import { Equipment, useCoreDataQuery } from '../../graphql/generated_types'
+import { CORE_DATA_BASE_URL } from '../../constants'
+import Breadcrumbs from '../../components/breadcrumbs'
 
 export default function EquipmentData() {
   const [{ isOpen, title }, setModalState] = useState({
@@ -43,7 +45,11 @@ export default function EquipmentData() {
       <FlexBox>
         <Padding>
           <FlexBox direction="row" justify="space-between">
-            <Title>Equipment</Title>
+            <Breadcrumbs
+              pageTitle="Equipment"
+              crumbs={[{ text: 'Core Data', routeTo: CORE_DATA_BASE_URL }]}
+            />
+
             <CreateButton onClick={handleAddNewClick} />
           </FlexBox>
         </Padding>

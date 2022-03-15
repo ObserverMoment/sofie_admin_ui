@@ -9,7 +9,7 @@ import {
   DashboardSectionNav,
   DashboardSectionNavItem,
   ObjectCountText,
-} from '../../../pages/public-content'
+} from '../../../pages/public-data'
 import ErrorMessage from '../../errorMessage'
 import { LoadingDots } from '../../loadingIndicators'
 import { SubTitle } from '../../styled-components/styled'
@@ -47,7 +47,7 @@ export default function PublicWorkoutsDashboard() {
 
   return (
     <DashboardSectionNav>
-      <Link href={`${PUBLIC_CONTENT_BASE_URL}/workouts/validated`} passHref>
+      <Link href={`${PUBLIC_CONTENT_BASE_URL}/validated-workouts`} passHref>
         <DashboardSectionNavItem>
           {validCountError ? (
             <ErrorMessage message={validCountError.message} />
@@ -64,7 +64,7 @@ export default function PublicWorkoutsDashboard() {
         </DashboardSectionNavItem>
       </Link>
 
-      <Link href={`${PUBLIC_CONTENT_BASE_URL}/workouts/pending`} passHref>
+      <Link href={`${PUBLIC_CONTENT_BASE_URL}/pending-workouts`} passHref>
         <DashboardSectionNavItem>
           {pendingCountError ? (
             <ErrorMessage message={pendingCountError.message} />
@@ -81,7 +81,7 @@ export default function PublicWorkoutsDashboard() {
         </DashboardSectionNavItem>
       </Link>
 
-      <Link href={`${PUBLIC_CONTENT_BASE_URL}/workouts/invalidated`} passHref>
+      <Link href={`${PUBLIC_CONTENT_BASE_URL}/invalidated-workouts`} passHref>
         <DashboardSectionNavItem>
           {invalidCountError ? (
             <ErrorMessage message={invalidCountError.message} />

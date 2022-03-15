@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Breadcrumbs from '../../components/breadcrumbs'
 import CreateEditFitnessBenchmark from '../../components/contentCRUD/createEditFitnessBenchmark'
 import ErrorMessage from '../../components/errorMessage'
 import Modal from '../../components/layout/modal'
@@ -13,6 +14,7 @@ import {
   TinyText,
   Title,
 } from '../../components/styled-components/styled'
+import { CORE_DATA_BASE_URL } from '../../constants'
 import {
   FitnessBenchmark,
   FitnessBenchmarkCategory,
@@ -48,7 +50,12 @@ export default function FitnessBenchmarks() {
       <div>
         <Padding>
           <FlexBox direction="row" justify="space-between">
-            <Title>Fitness Benchmarks</Title>
+            <FlexBox direction="row">
+              <Breadcrumbs
+                pageTitle="Fitness Benchmarks"
+                crumbs={[{ text: 'Core Data', routeTo: CORE_DATA_BASE_URL }]}
+              />
+            </FlexBox>
             <CreateButton onClick={handleAddNewClick} />
           </FlexBox>
         </Padding>
@@ -97,8 +104,8 @@ const FitnessBenchmarkCategoryDisplay = ({
   handleBenchmarkClick,
 }: FitnessBenchmarkCategoryDisplayProps) => (
   <FlexBox align="start" margin="16px">
-    <SubTitle>{category.name}</SubTitle>
-    <FlexBox direction="row">
+    <Title>{category.name}</Title>
+    <FlexBox direction="row" wrap="wrap">
       {benchmarks.map((b) => (
         <Padding>
           <FitnessBenchmarkDisplay
@@ -122,6 +129,7 @@ const FitnessBenchmarkDisplay = ({
 }: FitnessBenchmarkDisplayProps) => (
   <FlexBox
     backgroundColor={theme.colors.pureWhite}
+    boxShadow="0 3px 16px 0px rgb(0 0 0 / 2%), 0 5px 8px -4px rgb(0 0 0 / 10%)"
     padding="8px 16px"
     cursorHover={true}
     align="start"

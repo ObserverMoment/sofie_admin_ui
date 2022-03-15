@@ -159,6 +159,19 @@ const CreateEditFitnessBenchmark = ({
 
     return (
       <StyledForm onSubmit={onSubmit}>
+        <StyledInputGroup>
+          <StyledLabel htmlFor="FitnessBenchmarkType">Score Type</StyledLabel>
+          <RadioButtons<FitnessBenchmarkScoreType>
+            options={Object.values(FitnessBenchmarkScoreType).map(
+              (type: FitnessBenchmarkScoreType) => ({
+                value: type,
+                label: type.toString(),
+              }),
+            )}
+            value={formState.type.value}
+            setValue={formState.type.setValue}
+          />
+        </StyledInputGroup>
         <FlexBox direction="row">
           <FlexBox direction="column" width="50%">
             <StyledInputGroup>
@@ -173,28 +186,6 @@ const CreateEditFitnessBenchmark = ({
             </StyledInputGroup>
 
             <StyledInputGroup>
-              <StyledLabel htmlFor="description">Description</StyledLabel>
-              <TextAreaInput
-                placeholder="Description"
-                name="description"
-                value={formState.description.value}
-                setValue={formState.description.setValue}
-              />
-            </StyledInputGroup>
-
-            <StyledInputGroup>
-              <StyledLabel htmlFor="instructions">Instructions</StyledLabel>
-              <TextAreaInput
-                placeholder="Instructions"
-                name="instructions"
-                value={formState.instructions.value}
-                setValue={formState.instructions.setValue}
-              />
-            </StyledInputGroup>
-          </FlexBox>
-
-          <FlexBox direction="column" width="50%">
-            <StyledInputGroup>
               <StyledLabel htmlFor="FitnessBenchmarkCategory">
                 Category
               </StyledLabel>
@@ -207,22 +198,6 @@ const CreateEditFitnessBenchmark = ({
                 )}
                 value={formState.FitnessBenchmarkCategory.value}
                 setValue={formState.FitnessBenchmarkCategory.setValue}
-              />
-            </StyledInputGroup>
-
-            <StyledInputGroup>
-              <StyledLabel htmlFor="FitnessBenchmarkType">
-                Score Type
-              </StyledLabel>
-              <RadioButtons<FitnessBenchmarkScoreType>
-                options={Object.values(FitnessBenchmarkScoreType).map(
-                  (type: FitnessBenchmarkScoreType) => ({
-                    value: type,
-                    label: type.toString(),
-                  }),
-                )}
-                value={formState.type.value}
-                setValue={formState.type.setValue}
               />
             </StyledInputGroup>
 
@@ -270,6 +245,28 @@ const CreateEditFitnessBenchmark = ({
                   onError={(message) => showToast(message, 'Error', 5000)}
                 />
               )}
+            </StyledInputGroup>
+          </FlexBox>
+
+          <FlexBox direction="column" width="50%">
+            <StyledInputGroup>
+              <StyledLabel htmlFor="description">Description</StyledLabel>
+              <TextAreaInput
+                placeholder="Description"
+                name="description"
+                value={formState.description.value}
+                setValue={formState.description.setValue}
+              />
+            </StyledInputGroup>
+
+            <StyledInputGroup>
+              <StyledLabel htmlFor="instructions">Instructions</StyledLabel>
+              <TextAreaInput
+                placeholder="Instructions"
+                name="instructions"
+                value={formState.instructions.value}
+                setValue={formState.instructions.setValue}
+              />
             </StyledInputGroup>
           </FlexBox>
         </FlexBox>

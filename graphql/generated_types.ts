@@ -2956,7 +2956,7 @@ export type CreateFitnessBenchmarkMutationVariables = Exact<{
 }>;
 
 
-export type CreateFitnessBenchmarkMutation = { __typename?: 'Mutation', createFitnessBenchmark: { __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined } };
+export type CreateFitnessBenchmarkMutation = { __typename?: 'Mutation', createFitnessBenchmark: { __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, FitnessBenchmarkCategory: { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string } } };
 
 export type CreateFitnessBenchmarkWorkoutMutationVariables = Exact<{
   data: CreateFitnessBenchmarkWorkoutInput;
@@ -2991,7 +2991,7 @@ export type UpdateFitnessBenchmarkMutationVariables = Exact<{
 }>;
 
 
-export type UpdateFitnessBenchmarkMutation = { __typename?: 'Mutation', updateFitnessBenchmark: { __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined } };
+export type UpdateFitnessBenchmarkMutation = { __typename?: 'Mutation', updateFitnessBenchmark: { __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, FitnessBenchmarkCategory: { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string } } };
 
 export type CreateMoveMutationVariables = Exact<{
   data: CreateMoveInput;
@@ -3781,9 +3781,13 @@ export const CreateFitnessBenchmarkDocument = gql`
     mutation createFitnessBenchmark($data: CreateFitnessBenchmarkInput!) {
   createFitnessBenchmark(data: $data) {
     ...FitnessBenchmark
+    FitnessBenchmarkCategory {
+      ...FitnessBenchmarkCategory
+    }
   }
 }
-    ${FitnessBenchmarkFragmentDoc}`;
+    ${FitnessBenchmarkFragmentDoc}
+${FitnessBenchmarkCategoryFragmentDoc}`;
 export type CreateFitnessBenchmarkMutationFn = Apollo.MutationFunction<CreateFitnessBenchmarkMutation, CreateFitnessBenchmarkMutationVariables>;
 
 /**
@@ -3942,9 +3946,13 @@ export const UpdateFitnessBenchmarkDocument = gql`
     mutation updateFitnessBenchmark($data: UpdateFitnessBenchmarkInput!) {
   updateFitnessBenchmark(data: $data) {
     ...FitnessBenchmark
+    FitnessBenchmarkCategory {
+      ...FitnessBenchmarkCategory
+    }
   }
 }
-    ${FitnessBenchmarkFragmentDoc}`;
+    ${FitnessBenchmarkFragmentDoc}
+${FitnessBenchmarkCategoryFragmentDoc}`;
 export type UpdateFitnessBenchmarkMutationFn = Apollo.MutationFunction<UpdateFitnessBenchmarkMutation, UpdateFitnessBenchmarkMutationVariables>;
 
 /**

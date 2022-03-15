@@ -18,6 +18,8 @@ import {
   Move,
   useCoreDataQuery,
 } from '../../graphql/generated_types'
+import { CORE_DATA_BASE_URL } from '../../constants'
+import Breadcrumbs from '../../components/breadcrumbs'
 
 const ScoreTotal = styled.div`
   padding: 3px;
@@ -72,7 +74,11 @@ export default function Moves() {
       <FlexBox>
         <Padding>
           <FlexBox direction="row" justify="space-between">
-            <Title>Moves</Title>
+            <Breadcrumbs
+              pageTitle="Moves"
+              crumbs={[{ text: 'Core Data', routeTo: CORE_DATA_BASE_URL }]}
+            />
+
             <CreateButton onClick={handleAddNewClick} />
           </FlexBox>
         </Padding>

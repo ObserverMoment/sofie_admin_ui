@@ -1,4 +1,5 @@
 import React from 'react'
+import Breadcrumbs from '../../components/breadcrumbs'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingDots } from '../../components/loadingIndicators'
@@ -7,6 +8,7 @@ import {
   Padding,
   Title,
 } from '../../components/styled-components/styled'
+import { CORE_DATA_BASE_URL } from '../../constants'
 import { useCoreDataQuery } from '../../graphql/generated_types'
 
 export default function MoveTypes() {
@@ -20,8 +22,11 @@ export default function MoveTypes() {
     return (
       <FlexBox>
         <Padding>
-          <FlexBox direction="row" justify="center">
-            <Title>Move Types</Title>
+          <FlexBox direction="row">
+            <Breadcrumbs
+              pageTitle="Move Types"
+              crumbs={[{ text: 'Core Data', routeTo: CORE_DATA_BASE_URL }]}
+            />
           </FlexBox>
         </Padding>
 
