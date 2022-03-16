@@ -29,9 +29,11 @@ const WorkoutSetUI: React.FC<WorkoutSetUIProps> = ({
     </FlexBox>
 
     {workoutSet.WorkoutMoves.length > 0 ? (
-      workoutSet.WorkoutMoves.map((workoutMove) => (
-        <WorkoutMoveUI key={workoutMove.id} workoutMove={workoutMove} />
-      ))
+      [...workoutSet.WorkoutMoves]
+        .sort((a, b) => a.sortPosition - b.sortPosition)
+        .map((workoutMove) => (
+          <WorkoutMoveUI key={workoutMove.id} workoutMove={workoutMove} />
+        ))
     ) : (
       <MainText>No moves defined</MainText>
     )}

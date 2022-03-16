@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
+import { UserAvatarContainer } from '../../../components/cardsAndTags/userAvatar'
 import { LoadingDots } from '../../../components/loadingIndicators'
 import { showToast } from '../../../components/notifications'
 import AdminActionsUI from '../../../components/public-content/clubDetails.tsx/adminActionsUI'

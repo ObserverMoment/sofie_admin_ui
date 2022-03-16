@@ -9,15 +9,16 @@ import { ColorTypes, FlexBox, MainText, Spacer, SubTitle } from './styled'
 const StyledAnchor = styled.a`
   padding: 0;
   margin: 0;
-  opacity: 1;
-  :hover {
+  text-decoration: none;
+  :hover,
+  *:hover {
     cursor: pointer;
-    opacity: 0.8;
+    opacity: 0.9;
   }
 `
 
 export const MyLink = ({ href, content }) => (
-  <Link href={href}>
+  <Link key={href} href={href} passHref>
     <StyledAnchor>{content}</StyledAnchor>
   </Link>
 )

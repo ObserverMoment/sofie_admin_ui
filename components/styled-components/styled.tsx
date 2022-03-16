@@ -122,6 +122,7 @@ interface FlexProps {
   readonly borderRadius?: string
   readonly flexGrow?: number
   readonly boxShadow?: string
+  readonly gap?: string
 }
 
 export const FlexBox = styled.div<FlexProps>`
@@ -129,7 +130,7 @@ export const FlexBox = styled.div<FlexProps>`
   margin: ${(props) => props.margin || 0};
   display: flex;
   flex-direction: ${(props) => props.direction || 'column'};
-  justify-content: ${(props) => props.justify || 'flex-start'};
+  justify-content: ${(props) => props.justify || 'start'};
   align-items: ${(props) => props.align || 'stretch'};
   flex-wrap: ${(props) => props.wrap || 'nowrap'};
   width: ${(props) => props.width || 'auto'};
@@ -139,6 +140,7 @@ export const FlexBox = styled.div<FlexProps>`
   background-color: ${(props) => props.backgroundColor || 'inherit'};
   border-radius: ${(props) => props.borderRadius || '0px'};
   box-shadow: ${(props) => props.boxShadow || 'none'};
+  gap: ${(props) => props.gap || 0};
   :hover {
     cursor: ${(props) => (props.cursorHover ? 'pointer' : 'default')};
   }

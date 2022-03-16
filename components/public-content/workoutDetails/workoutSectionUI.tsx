@@ -8,7 +8,6 @@ import {
   FlexBox,
   MainText,
   Spacer,
-  SubTitle,
   Title,
 } from '../../styled-components/styled'
 import WorkoutSetUI from './workoutSetUI'
@@ -40,13 +39,15 @@ const WorkoutSectionUI: React.FC<WorkoutSectionUIProps> = ({
     <Spacer bottom="10px"></Spacer>
 
     {workoutSection.WorkoutSets.length > 0 ? (
-      workoutSection.WorkoutSets.map((wSet) => (
-        <WorkoutSetUI
-          key={wSet.id}
-          workoutSet={wSet}
-          workoutSectionType={workoutSection.WorkoutSectionType}
-        />
-      ))
+      [...workoutSection.WorkoutSets]
+        .sort((a, b) => a.sortPosition - b.sortPosition)
+        .map((wSet) => (
+          <WorkoutSetUI
+            key={wSet.id}
+            workoutSet={wSet}
+            workoutSectionType={workoutSection.WorkoutSectionType}
+          />
+        ))
     ) : (
       <MainText>No sets defined</MainText>
     )}
