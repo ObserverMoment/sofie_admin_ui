@@ -1,10 +1,7 @@
 import Link from 'next/link'
 import React, { Fragment } from 'react'
 import { PUBLIC_CONTENT_BASE_URL } from '../../../constants'
-import {
-  PublicContentValidationStatus,
-  useAdminPublicClubsCountQuery,
-} from '../../../graphql/generated_types'
+import { useAdminPublicClubCountsQuery } from '../../../graphql/generated_types'
 import {
   DashboardSectionNav,
   DashboardSectionNavItem,
@@ -15,48 +12,20 @@ import { LoadingDots } from '../../loadingIndicators'
 import { SubTitle } from '../../styled-components/styled'
 
 export default function PublicClubsDashboard() {
-  const {
-    loading: pendingCountLoading,
-    error: pendingCountError,
-    data: pendingCount,
-  } = useAdminPublicClubsCountQuery({
-    variables: {
-      status: PublicContentValidationStatus.Pending,
-    },
-  })
-
-  const {
-    loading: validCountLoading,
-    error: validCountError,
-    data: validCount,
-  } = useAdminPublicClubsCountQuery({
-    variables: {
-      status: PublicContentValidationStatus.Valid,
-    },
-  })
-
-  const {
-    loading: invalidCountLoading,
-    error: invalidCountError,
-    data: invalidCount,
-  } = useAdminPublicClubsCountQuery({
-    variables: {
-      status: PublicContentValidationStatus.Invalid,
-    },
-  })
+  const { loading, error, data } = useAdminPublicClubCountsQuery()
 
   return (
     <DashboardSectionNav>
       <Link href={`${PUBLIC_CONTENT_BASE_URL}/validated-clubs`} passHref>
         <DashboardSectionNavItem>
-          {validCountError ? (
-            <ErrorMessage message={validCountError.message} />
-          ) : validCountLoading ? (
+          {error ? (
+            <ErrorMessage message={error.message} />
+          ) : loading ? (
             <LoadingDots />
           ) : (
             <Fragment>
               <ObjectCountText>
-                {validCount.adminPublicClubsCount}
+                {data.adminPublicClubCounts.valid}
               </ObjectCountText>
               <SubTitle>Validated</SubTitle>
             </Fragment>
@@ -66,14 +35,14 @@ export default function PublicClubsDashboard() {
 
       <Link href={`${PUBLIC_CONTENT_BASE_URL}/pending-clubs`} passHref>
         <DashboardSectionNavItem>
-          {pendingCountError ? (
-            <ErrorMessage message={pendingCountError.message} />
-          ) : pendingCountLoading ? (
+          {error ? (
+            <ErrorMessage message={error.message} />
+          ) : loading ? (
             <LoadingDots />
           ) : (
             <Fragment>
               <ObjectCountText>
-                {pendingCount.adminPublicClubsCount}
+                {data.adminPublicClubCounts.pending}
               </ObjectCountText>
               <SubTitle>Pending</SubTitle>
             </Fragment>
@@ -83,14 +52,14 @@ export default function PublicClubsDashboard() {
 
       <Link href={`${PUBLIC_CONTENT_BASE_URL}/invalidated-clubs`} passHref>
         <DashboardSectionNavItem>
-          {invalidCountError ? (
-            <ErrorMessage message={invalidCountError.message} />
-          ) : invalidCountLoading ? (
+          {error ? (
+            <ErrorMessage message={error.message} />
+          ) : loading ? (
             <LoadingDots />
           ) : (
             <Fragment>
               <ObjectCountText>
-                {invalidCount.adminPublicClubsCount}
+                {data.adminPublicClubCounts.invalid}
               </ObjectCountText>
               <SubTitle>Invalidated</SubTitle>
             </Fragment>

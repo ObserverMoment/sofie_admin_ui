@@ -1,3 +1,8 @@
-query adminPublicWorkoutPlansCount($status: PublicContentValidationStatus!) {
-  adminPublicWorkoutPlansCount(status: $status)
+query adminPublicWorkoutPlanCounts {
+  adminPublicWorkoutPlanCounts {
+    __typename
+    pending
+    valid
+    invalid
+  }
 }

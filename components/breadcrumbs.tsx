@@ -4,13 +4,13 @@ import React from 'react'
 import styled from 'styled-components'
 import { FlexBox, Spacer, SubTitle, Title } from './styled-components/styled'
 
-interface BreadCrumbData {
+export interface BreadCrumbData {
   title: string
   href: string
   isLast: boolean // Render is bold + no link.
 }
 
-const BreadCrumb: React.FC<BreadCrumbData> = ({ title, href, isLast }) =>
+export const BreadCrumb: React.FC<BreadCrumbData> = ({ title, href, isLast }) =>
   isLast ? (
     <Title>{title}</Title>
   ) : (

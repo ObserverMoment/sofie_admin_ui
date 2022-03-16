@@ -1,8 +1,9 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
-import { PlusIcon } from '../icons'
-import { ColorTypes, MainText, Spacer } from './styled'
+import { ChevronIcon, PlusIcon } from '../icons'
+import { ColorTypes, FlexBox, MainText, Spacer, SubTitle } from './styled'
 
 //// Buttons ////
 const StyledAnchor = styled.a`
@@ -133,3 +134,22 @@ export const CreateButton = ({ flexDirection = 'row', onClick }) => (
     <MainText colorType="primaryLight">Add New</MainText>
   </StyledButton>
 )
+
+export const BackButton = () => {
+  const router = useRouter()
+
+  return (
+    <FlexBox
+      direction="row"
+      onClick={router.back}
+      align="center"
+      justify="center"
+      flexGrow={0}
+      cursorHover
+    >
+      <ChevronIcon size="1x" direction="left" />
+      <Spacer right="4px" />
+      <SubTitle>Back</SubTitle>
+    </FlexBox>
+  )
+}

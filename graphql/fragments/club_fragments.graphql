@@ -19,7 +19,6 @@ fragment PublicClubSummaryAdmin on PublicClubSummaryAdmin {
   __typename
   id
   createdAt
-  updatedAt
   name
 }
 
@@ -27,7 +26,6 @@ fragment ClubMemberNote on ClubMemberNote {
   __typename
   id
   createdAt
-  updatedAt
   note
   tags
 }

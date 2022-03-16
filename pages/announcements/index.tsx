@@ -8,7 +8,7 @@ export default function Overview() {
   return (
     <Padding padding="50px">
       <FlexBox align="center">
-        <Title colorType="grey">News Content</Title>
+        <Title colorType="grey">Announcements and Articles</Title>
       </FlexBox>
     </Padding>
   )

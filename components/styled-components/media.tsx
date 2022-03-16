@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { theme } from './styled'
 
 export const ElevatedRoundedImage = styled.img`
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -23,4 +24,5 @@ export const ElevatedRoundedAudio = styled.audio`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: ${theme.colors.primaryLight};
 `

@@ -132,7 +132,8 @@ export const FlexBox = styled.div<FlexProps>`
   flex-wrap: ${(props) => props.wrap || 'nowrap'};
   width: ${(props) => props.width || 'auto'};
   height: ${(props) => props.height || 'auto'};
-  flex-grow: ${(props) => props.flexGrow || 1};
+  flex-grow: ${(props) =>
+    typeof props.flexGrow === 'number' ? props.flexGrow : 1};
   background-color: ${(props) => props.backgroundColor || 'inherit'};
   border-radius: ${(props) => props.borderRadius || '0px'};
   box-shadow: ${(props) => props.boxShadow || 'none'};

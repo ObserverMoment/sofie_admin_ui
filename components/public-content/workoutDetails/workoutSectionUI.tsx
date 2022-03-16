@@ -41,7 +41,11 @@ const WorkoutSectionUI: React.FC<WorkoutSectionUIProps> = ({
 
     {workoutSection.WorkoutSets.length > 0 ? (
       workoutSection.WorkoutSets.map((wSet) => (
-        <WorkoutSetUI key={wSet.id} workoutSet={wSet} />
+        <WorkoutSetUI
+          key={wSet.id}
+          workoutSet={wSet}
+          workoutSectionType={workoutSection.WorkoutSectionType}
+        />
       ))
     ) : (
       <MainText>No sets defined</MainText>

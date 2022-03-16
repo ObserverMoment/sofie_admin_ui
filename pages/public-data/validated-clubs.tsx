@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import Breadcrumbs from '../../components/breadcrumbs'
-import { WorkoutSummaryCard } from '../../components/cardsAndTags/workoutCard'
+import { ClubSummaryCard } from '../../components/cardsAndTags/clubSummaryCard'
 import { LoadingDots } from '../../components/loadingIndicators'
 import { showToast } from '../../components/notifications'
 import {
@@ -10,17 +10,17 @@ import {
 } from '../../components/styled-components/styled'
 import { PUBLIC_CONTENT_BASE_URL } from '../../constants'
 import {
+  PublicClubSummaryAdmin,
   PublicContentValidationStatus,
-  PublicWorkoutSummaryAdmin,
-  useAdminPublicWorkoutSummariesQuery,
+  useAdminPublicClubSummariesQuery,
 } from '../../graphql/generated_types'
 
-export default function PublicWorkoutsPending() {
+export default function PublicClubsValidated() {
   const router = useRouter()
 
-  const { loading, error, data } = useAdminPublicWorkoutSummariesQuery({
+  const { loading, error, data } = useAdminPublicClubSummariesQuery({
     variables: {
-      status: PublicContentValidationStatus.Pending,
+      status: PublicContentValidationStatus.Valid,
     },
   })
 
@@ -34,16 +34,16 @@ export default function PublicWorkoutsPending() {
     return (
       <FlexBox padding="6px 0">
         <Breadcrumbs
-          pageTitle={`Pending Workouts (${data.adminPublicWorkoutSummaries.length})`}
+          pageTitle={`Validated Clubs (${data.adminPublicClubSummaries.length})`}
         />
         <FlexBox direction="row" wrap="wrap" padding="12px 0">
-          {data.adminPublicWorkoutSummaries.length ? (
-            data.adminPublicWorkoutSummaries.map((w) => (
-              <WorkoutSummaryCard
+          {data.adminPublicClubSummaries.length ? (
+            data.adminPublicClubSummaries.map((w) => (
+              <ClubSummaryCard
                 key={w.id}
-                workout={w as PublicWorkoutSummaryAdmin}
+                club={w as PublicClubSummaryAdmin}
                 handleCardClick={() =>
-                  router.push(`${PUBLIC_CONTENT_BASE_URL}/workouts/${w.id}`)
+                  router.push(`${PUBLIC_CONTENT_BASE_URL}/clubs/${w.id}`)
                 }
               />
             ))

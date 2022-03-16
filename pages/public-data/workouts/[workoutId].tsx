@@ -1,21 +1,26 @@
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import Breadcrumbs from '../../../components/breadcrumbs'
 import { WorkoutTag } from '../../../components/cardsAndTags/workoutTag'
 import { TagIcon, TargetIcon } from '../../../components/icons'
 import { LoadingDots } from '../../../components/loadingIndicators'
 import { showToast } from '../../../components/notifications'
 import AdminActionsUI from '../../../components/public-content/workoutDetails/adminActionsUI'
 import WorkoutSectionUI from '../../../components/public-content/workoutDetails/workoutSectionUI'
+import { BackButton } from '../../../components/styled-components/buttons'
 import {
   ElevatedBox,
   FlexBox,
   MainText,
   MaxSizedBox,
   Padding,
+  Spacer,
+  SubTitle,
   Title,
 } from '../../../components/styled-components/styled'
 import {
+  AdminPublicWorkoutCountsDocument,
+  AdminPublicWorkoutSummariesDocument,
+  PublicContentValidationStatus,
   useAdminPublicWorkoutByIdQuery,
   useUpdateWorkoutMetaDataAdminMutation,
 } from '../../../graphql/generated_types'
@@ -60,7 +65,14 @@ export default function WorkoutDetails() {
       <div>
         <FlexBox direction="row">
           <div>
-            <Breadcrumbs pageTitle={workout.name} />
+            <FlexBox direction="row" padding="0 0 10px 0">
+              <BackButton />
+              <Spacer right="4px" />
+              <SubTitle>/</SubTitle>
+              <Spacer right="4px" />
+              <Title>{workout.name}</Title>
+            </FlexBox>
+
             {workout.description && (
               <Padding padding="0 0 8px 0">
                 <MaxSizedBox maxWidth={800}>
@@ -148,6 +160,20 @@ export default function WorkoutDetails() {
                     validated: status,
                   },
                 },
+                /// Refetch the public workout counts query and workout summaries queries (for each status) when you update workout the status.
+                refetchQueries: [
+                  { query: AdminPublicWorkoutCountsDocument },
+                  ...[
+                    PublicContentValidationStatus.Pending,
+                    PublicContentValidationStatus.Valid,
+                    PublicContentValidationStatus.Invalid,
+                  ].map((status) => ({
+                    query: AdminPublicWorkoutSummariesDocument,
+                    variables: {
+                      status,
+                    },
+                  })),
+                ],
               })
             }
             updateDifficultyLevel={(level) =>

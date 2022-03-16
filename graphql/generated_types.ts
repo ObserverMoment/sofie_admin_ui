@@ -1642,6 +1642,13 @@ export type ProgressWidget = {
   subtitle?: Maybe<Scalars['String']>;
 };
 
+export type PublicClubCountsAdmin = {
+  __typename?: 'PublicClubCountsAdmin';
+  invalid: Scalars['Int'];
+  pending: Scalars['Int'];
+  valid: Scalars['Int'];
+};
+
 export type PublicClubSummaryAdmin = {
   __typename?: 'PublicClubSummaryAdmin';
   createdAt: Scalars['DateTime'];
@@ -1656,6 +1663,20 @@ export enum PublicContentValidationStatus {
   Pendingupdated = 'PENDINGUPDATED',
   Valid = 'VALID'
 }
+
+export type PublicWorkoutCountsAdmin = {
+  __typename?: 'PublicWorkoutCountsAdmin';
+  invalid: Scalars['Int'];
+  pending: Scalars['Int'];
+  valid: Scalars['Int'];
+};
+
+export type PublicWorkoutPlanCountsAdmin = {
+  __typename?: 'PublicWorkoutPlanCountsAdmin';
+  invalid: Scalars['Int'];
+  pending: Scalars['Int'];
+  valid: Scalars['Int'];
+};
 
 export type PublicWorkoutPlanSummaryAdmin = {
   __typename?: 'PublicWorkoutPlanSummaryAdmin';
@@ -1676,14 +1697,14 @@ export type PublicWorkoutSummaryAdmin = {
 export type Query = {
   __typename?: 'Query';
   adminPublicClubById: ClubWithMetaDataAdmin;
+  adminPublicClubCounts: PublicClubCountsAdmin;
   adminPublicClubSummaries: Array<PublicClubSummaryAdmin>;
-  adminPublicClubsCount: Scalars['Int'];
   adminPublicWorkoutById: WorkoutWithMetaDataAdmin;
+  adminPublicWorkoutCounts: PublicWorkoutCountsAdmin;
   adminPublicWorkoutPlanById: WorkoutPlanWithMetaDataAdmin;
+  adminPublicWorkoutPlanCounts: PublicWorkoutPlanCountsAdmin;
   adminPublicWorkoutPlanSummaries: Array<PublicWorkoutPlanSummaryAdmin>;
-  adminPublicWorkoutPlansCount: Scalars['Int'];
   adminPublicWorkoutSummaries: Array<PublicWorkoutSummaryAdmin>;
-  adminPublicWorkoutsCount: Scalars['Int'];
   announcementUpdates: Array<AnnouncementUpdate>;
   bodyTrackingEntries: Array<BodyTrackingEntry>;
   checkClubInviteToken: CheckClubInviteTokenResult;
@@ -1757,11 +1778,6 @@ export type QueryAdminPublicClubSummariesArgs = {
 };
 
 
-export type QueryAdminPublicClubsCountArgs = {
-  status: PublicContentValidationStatus;
-};
-
-
 export type QueryAdminPublicWorkoutByIdArgs = {
   id: Scalars['ID'];
 };
@@ -1777,17 +1793,7 @@ export type QueryAdminPublicWorkoutPlanSummariesArgs = {
 };
 
 
-export type QueryAdminPublicWorkoutPlansCountArgs = {
-  status: PublicContentValidationStatus;
-};
-
-
 export type QueryAdminPublicWorkoutSummariesArgs = {
-  status: PublicContentValidationStatus;
-};
-
-
-export type QueryAdminPublicWorkoutsCountArgs = {
   status: PublicContentValidationStatus;
 };
 
@@ -2866,9 +2872,9 @@ export type WorkoutWithMetaDataAdmin = {
 
 export type ClubWithMetaDataAdminFragment = { __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string> };
 
-export type PublicClubSummaryAdminFragment = { __typename: 'PublicClubSummaryAdmin', id: string, createdAt: any, updatedAt: any, name: string };
+export type PublicClubSummaryAdminFragment = { __typename: 'PublicClubSummaryAdmin', id: string, createdAt: any, name: string };
 
-export type ClubMemberNoteFragment = { __typename: 'ClubMemberNote', id: string, createdAt: any, updatedAt: any, note: string, tags: Array<string> };
+export type ClubMemberNoteFragment = { __typename: 'ClubMemberNote', id: string, createdAt: any, note: string, tags: Array<string> };
 
 export type ClubChatSummaryFragment = { __typename?: 'ClubChatSummary', id: string, name: string, coverImageUri?: string | null | undefined, Owner: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, Admins: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }>, Members: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }> };
 
@@ -3028,26 +3034,20 @@ export type AdminPublicWorkoutPlanByIdQueryVariables = Exact<{
 
 export type AdminPublicWorkoutPlanByIdQuery = { __typename?: 'Query', adminPublicWorkoutPlanById: { __typename: 'WorkoutPlanWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutPlanDays: Array<{ __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number, WorkoutPlanDayWorkouts: Array<{ __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number, Workout: { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } }> }>, WorkoutPlanReviews: Array<{ __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutPlanEnrolments: Array<{ __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined, CompletedWorkoutPlanDayWorkouts: Array<{ __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string }>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> } };
 
-export type AdminPublicClubsCountQueryVariables = Exact<{
-  status: PublicContentValidationStatus;
-}>;
+export type AdminPublicClubCountsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AdminPublicClubsCountQuery = { __typename?: 'Query', adminPublicClubsCount: number };
+export type AdminPublicClubCountsQuery = { __typename?: 'Query', adminPublicClubCounts: { __typename: 'PublicClubCountsAdmin', pending: number, valid: number, invalid: number } };
 
-export type AdminPublicWorkoutPlansCountQueryVariables = Exact<{
-  status: PublicContentValidationStatus;
-}>;
+export type AdminPublicWorkoutPlanCountsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AdminPublicWorkoutPlansCountQuery = { __typename?: 'Query', adminPublicWorkoutPlansCount: number };
+export type AdminPublicWorkoutPlanCountsQuery = { __typename?: 'Query', adminPublicWorkoutPlanCounts: { __typename: 'PublicWorkoutPlanCountsAdmin', pending: number, valid: number, invalid: number } };
 
-export type AdminPublicWorkoutsCountQueryVariables = Exact<{
-  status: PublicContentValidationStatus;
-}>;
+export type AdminPublicWorkoutCountsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AdminPublicWorkoutsCountQuery = { __typename?: 'Query', adminPublicWorkoutsCount: number };
+export type AdminPublicWorkoutCountsQuery = { __typename?: 'Query', adminPublicWorkoutCounts: { __typename: 'PublicWorkoutCountsAdmin', pending: number, valid: number, invalid: number } };
 
 export type UpdateClubMetaDataAdminMutationVariables = Exact<{
   data: UpdateClubMetaDataAdminInput;
@@ -3075,7 +3075,7 @@ export type AdminPublicClubSummariesQueryVariables = Exact<{
 }>;
 
 
-export type AdminPublicClubSummariesQuery = { __typename?: 'Query', adminPublicClubSummaries: Array<{ __typename: 'PublicClubSummaryAdmin', id: string, createdAt: any, updatedAt: any, name: string }> };
+export type AdminPublicClubSummariesQuery = { __typename?: 'Query', adminPublicClubSummaries: Array<{ __typename: 'PublicClubSummaryAdmin', id: string, createdAt: any, name: string }> };
 
 export type AdminPublicWorkoutPlanSummariesQueryVariables = Exact<{
   status: PublicContentValidationStatus;
@@ -3114,7 +3114,6 @@ export const PublicClubSummaryAdminFragmentDoc = gql`
   __typename
   id
   createdAt
-  updatedAt
   name
 }
     `;
@@ -3123,7 +3122,6 @@ export const ClubMemberNoteFragmentDoc = gql`
   __typename
   id
   createdAt
-  updatedAt
   note
   tags
 }
@@ -4188,105 +4186,117 @@ export function useAdminPublicWorkoutPlanByIdLazyQuery(baseOptions?: Apollo.Lazy
 export type AdminPublicWorkoutPlanByIdQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlanByIdQuery>;
 export type AdminPublicWorkoutPlanByIdLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlanByIdLazyQuery>;
 export type AdminPublicWorkoutPlanByIdQueryResult = Apollo.QueryResult<AdminPublicWorkoutPlanByIdQuery, AdminPublicWorkoutPlanByIdQueryVariables>;
-export const AdminPublicClubsCountDocument = gql`
-    query adminPublicClubsCount($status: PublicContentValidationStatus!) {
-  adminPublicClubsCount(status: $status)
+export const AdminPublicClubCountsDocument = gql`
+    query adminPublicClubCounts {
+  adminPublicClubCounts {
+    __typename
+    pending
+    valid
+    invalid
+  }
 }
     `;
 
 /**
- * __useAdminPublicClubsCountQuery__
+ * __useAdminPublicClubCountsQuery__
  *
- * To run a query within a React component, call `useAdminPublicClubsCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useAdminPublicClubsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAdminPublicClubCountsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicClubCountsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useAdminPublicClubsCountQuery({
+ * const { data, loading, error } = useAdminPublicClubCountsQuery({
  *   variables: {
- *      status: // value for 'status'
  *   },
  * });
  */
-export function useAdminPublicClubsCountQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicClubsCountQuery, AdminPublicClubsCountQueryVariables>) {
+export function useAdminPublicClubCountsQuery(baseOptions?: Apollo.QueryHookOptions<AdminPublicClubCountsQuery, AdminPublicClubCountsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AdminPublicClubsCountQuery, AdminPublicClubsCountQueryVariables>(AdminPublicClubsCountDocument, options);
+        return Apollo.useQuery<AdminPublicClubCountsQuery, AdminPublicClubCountsQueryVariables>(AdminPublicClubCountsDocument, options);
       }
-export function useAdminPublicClubsCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicClubsCountQuery, AdminPublicClubsCountQueryVariables>) {
+export function useAdminPublicClubCountsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicClubCountsQuery, AdminPublicClubCountsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AdminPublicClubsCountQuery, AdminPublicClubsCountQueryVariables>(AdminPublicClubsCountDocument, options);
+          return Apollo.useLazyQuery<AdminPublicClubCountsQuery, AdminPublicClubCountsQueryVariables>(AdminPublicClubCountsDocument, options);
         }
-export type AdminPublicClubsCountQueryHookResult = ReturnType<typeof useAdminPublicClubsCountQuery>;
-export type AdminPublicClubsCountLazyQueryHookResult = ReturnType<typeof useAdminPublicClubsCountLazyQuery>;
-export type AdminPublicClubsCountQueryResult = Apollo.QueryResult<AdminPublicClubsCountQuery, AdminPublicClubsCountQueryVariables>;
-export const AdminPublicWorkoutPlansCountDocument = gql`
-    query adminPublicWorkoutPlansCount($status: PublicContentValidationStatus!) {
-  adminPublicWorkoutPlansCount(status: $status)
+export type AdminPublicClubCountsQueryHookResult = ReturnType<typeof useAdminPublicClubCountsQuery>;
+export type AdminPublicClubCountsLazyQueryHookResult = ReturnType<typeof useAdminPublicClubCountsLazyQuery>;
+export type AdminPublicClubCountsQueryResult = Apollo.QueryResult<AdminPublicClubCountsQuery, AdminPublicClubCountsQueryVariables>;
+export const AdminPublicWorkoutPlanCountsDocument = gql`
+    query adminPublicWorkoutPlanCounts {
+  adminPublicWorkoutPlanCounts {
+    __typename
+    pending
+    valid
+    invalid
+  }
 }
     `;
 
 /**
- * __useAdminPublicWorkoutPlansCountQuery__
+ * __useAdminPublicWorkoutPlanCountsQuery__
  *
- * To run a query within a React component, call `useAdminPublicWorkoutPlansCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useAdminPublicWorkoutPlansCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAdminPublicWorkoutPlanCountsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutPlanCountsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useAdminPublicWorkoutPlansCountQuery({
+ * const { data, loading, error } = useAdminPublicWorkoutPlanCountsQuery({
  *   variables: {
- *      status: // value for 'status'
  *   },
  * });
  */
-export function useAdminPublicWorkoutPlansCountQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutPlansCountQuery, AdminPublicWorkoutPlansCountQueryVariables>) {
+export function useAdminPublicWorkoutPlanCountsQuery(baseOptions?: Apollo.QueryHookOptions<AdminPublicWorkoutPlanCountsQuery, AdminPublicWorkoutPlanCountsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AdminPublicWorkoutPlansCountQuery, AdminPublicWorkoutPlansCountQueryVariables>(AdminPublicWorkoutPlansCountDocument, options);
+        return Apollo.useQuery<AdminPublicWorkoutPlanCountsQuery, AdminPublicWorkoutPlanCountsQueryVariables>(AdminPublicWorkoutPlanCountsDocument, options);
       }
-export function useAdminPublicWorkoutPlansCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutPlansCountQuery, AdminPublicWorkoutPlansCountQueryVariables>) {
+export function useAdminPublicWorkoutPlanCountsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutPlanCountsQuery, AdminPublicWorkoutPlanCountsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AdminPublicWorkoutPlansCountQuery, AdminPublicWorkoutPlansCountQueryVariables>(AdminPublicWorkoutPlansCountDocument, options);
+          return Apollo.useLazyQuery<AdminPublicWorkoutPlanCountsQuery, AdminPublicWorkoutPlanCountsQueryVariables>(AdminPublicWorkoutPlanCountsDocument, options);
         }
-export type AdminPublicWorkoutPlansCountQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlansCountQuery>;
-export type AdminPublicWorkoutPlansCountLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlansCountLazyQuery>;
-export type AdminPublicWorkoutPlansCountQueryResult = Apollo.QueryResult<AdminPublicWorkoutPlansCountQuery, AdminPublicWorkoutPlansCountQueryVariables>;
-export const AdminPublicWorkoutsCountDocument = gql`
-    query adminPublicWorkoutsCount($status: PublicContentValidationStatus!) {
-  adminPublicWorkoutsCount(status: $status)
+export type AdminPublicWorkoutPlanCountsQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlanCountsQuery>;
+export type AdminPublicWorkoutPlanCountsLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlanCountsLazyQuery>;
+export type AdminPublicWorkoutPlanCountsQueryResult = Apollo.QueryResult<AdminPublicWorkoutPlanCountsQuery, AdminPublicWorkoutPlanCountsQueryVariables>;
+export const AdminPublicWorkoutCountsDocument = gql`
+    query adminPublicWorkoutCounts {
+  adminPublicWorkoutCounts {
+    __typename
+    pending
+    valid
+    invalid
+  }
 }
     `;
 
 /**
- * __useAdminPublicWorkoutsCountQuery__
+ * __useAdminPublicWorkoutCountsQuery__
  *
- * To run a query within a React component, call `useAdminPublicWorkoutsCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useAdminPublicWorkoutsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAdminPublicWorkoutCountsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutCountsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useAdminPublicWorkoutsCountQuery({
+ * const { data, loading, error } = useAdminPublicWorkoutCountsQuery({
  *   variables: {
- *      status: // value for 'status'
  *   },
  * });
  */
-export function useAdminPublicWorkoutsCountQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutsCountQuery, AdminPublicWorkoutsCountQueryVariables>) {
+export function useAdminPublicWorkoutCountsQuery(baseOptions?: Apollo.QueryHookOptions<AdminPublicWorkoutCountsQuery, AdminPublicWorkoutCountsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AdminPublicWorkoutsCountQuery, AdminPublicWorkoutsCountQueryVariables>(AdminPublicWorkoutsCountDocument, options);
+        return Apollo.useQuery<AdminPublicWorkoutCountsQuery, AdminPublicWorkoutCountsQueryVariables>(AdminPublicWorkoutCountsDocument, options);
       }
-export function useAdminPublicWorkoutsCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutsCountQuery, AdminPublicWorkoutsCountQueryVariables>) {
+export function useAdminPublicWorkoutCountsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutCountsQuery, AdminPublicWorkoutCountsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AdminPublicWorkoutsCountQuery, AdminPublicWorkoutsCountQueryVariables>(AdminPublicWorkoutsCountDocument, options);
+          return Apollo.useLazyQuery<AdminPublicWorkoutCountsQuery, AdminPublicWorkoutCountsQueryVariables>(AdminPublicWorkoutCountsDocument, options);
         }
-export type AdminPublicWorkoutsCountQueryHookResult = ReturnType<typeof useAdminPublicWorkoutsCountQuery>;
-export type AdminPublicWorkoutsCountLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutsCountLazyQuery>;
-export type AdminPublicWorkoutsCountQueryResult = Apollo.QueryResult<AdminPublicWorkoutsCountQuery, AdminPublicWorkoutsCountQueryVariables>;
+export type AdminPublicWorkoutCountsQueryHookResult = ReturnType<typeof useAdminPublicWorkoutCountsQuery>;
+export type AdminPublicWorkoutCountsLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutCountsLazyQuery>;
+export type AdminPublicWorkoutCountsQueryResult = Apollo.QueryResult<AdminPublicWorkoutCountsQuery, AdminPublicWorkoutCountsQueryVariables>;
 export const UpdateClubMetaDataAdminDocument = gql`
     mutation updateClubMetaDataAdmin($data: UpdateClubMetaDataAdminInput!) {
   updateClubMetaDataAdmin(data: $data) {

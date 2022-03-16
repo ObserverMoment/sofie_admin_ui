@@ -46,10 +46,6 @@ const AdminActionsUI: React.FC<AdminActionsUIProps> = ({
               label: PublicContentValidationStatus.Pending.toString(),
             },
             {
-              value: PublicContentValidationStatus.Pendingupdated,
-              label: PublicContentValidationStatus.Pendingupdated.toString(),
-            },
-            {
               value: PublicContentValidationStatus.Valid,
               label: PublicContentValidationStatus.Valid.toString(),
             },

@@ -19,7 +19,7 @@ const primaryRoutes = [
   { text: 'Dashboard', link: '/', icon: HomeIcon },
   { text: 'Core Data', link: '/core-data', icon: DataIcon },
   { text: 'Public Data', link: '/public-data', icon: ContentIcon },
-  { text: 'News Content', link: '/news-content', icon: NewsFeedIcon },
+  { text: 'Announcements', link: '/announcements', icon: NewsFeedIcon },
 ]
 
 //// Styled Components ////

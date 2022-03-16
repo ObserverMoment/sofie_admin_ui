@@ -7,7 +7,6 @@ import {
   FlexBox,
   MainText,
   Padding,
-  Title,
 } from '../../components/styled-components/styled'
 import { PUBLIC_CONTENT_BASE_URL } from '../../constants'
 import {

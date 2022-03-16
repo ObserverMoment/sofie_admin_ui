@@ -1,5 +1,8 @@
 import styled from 'styled-components'
-import { WorkoutSet } from '../../../graphql/generated_types'
+import {
+  WorkoutSectionType,
+  WorkoutSet,
+} from '../../../graphql/generated_types'
 import {
   FlexBox,
   MainText,
@@ -10,12 +13,19 @@ import WorkoutMoveUI from './workoutMoveUI'
 
 interface WorkoutSetUIProps {
   workoutSet: WorkoutSet
+  workoutSectionType: WorkoutSectionType
 }
 
-const WorkoutSetUI: React.FC<WorkoutSetUIProps> = ({ workoutSet }) => (
+const WorkoutSetUI: React.FC<WorkoutSetUIProps> = ({
+  workoutSet,
+  workoutSectionType,
+}) => (
   <WorkoutSetContainer>
     <FlexBox direction="row" justify="center">
-      <WorkoutSetHeader workoutSet={workoutSet} />
+      <WorkoutSetHeader
+        workoutSet={workoutSet}
+        workoutSectionType={workoutSectionType}
+      />
     </FlexBox>
 
     {workoutSet.WorkoutMoves.length > 0 ? (
@@ -28,11 +38,10 @@ const WorkoutSetUI: React.FC<WorkoutSetUIProps> = ({ workoutSet }) => (
   </WorkoutSetContainer>
 )
 
-interface WorkoutSetHeaderProps {
-  workoutSet: WorkoutSet
-}
-
-const WorkoutSetHeader: React.FC<WorkoutSetHeaderProps> = ({ workoutSet }) => {
+const WorkoutSetHeader: React.FC<WorkoutSetUIProps> = ({
+  workoutSet,
+  workoutSectionType,
+}) => {
   const numMoves = workoutSet.WorkoutMoves.length
 
   const header =
@@ -44,12 +53,30 @@ const WorkoutSetHeader: React.FC<WorkoutSetHeaderProps> = ({ workoutSet }) => {
       ? 'Super Set'
       : 'Set'
 
+  const isTimedSet = ['HIIT Circuit', 'EMOM'].includes(workoutSectionType.name)
+
+  const isRestSet =
+    workoutSet.WorkoutMoves.length === 1 &&
+    workoutSet.WorkoutMoves[0].Move.name === 'Rest'
+
+  const isTimedOrRest = isTimedSet || isRestSet
+
   return (
-    <Padding padding="4px 0">
-      <SetDefinitionTypeTag>
-        <TinyText>{header}</TinyText>
-      </SetDefinitionTypeTag>
-    </Padding>
+    <FlexBox padding="4px 0" direction="row" justify="center" align="center">
+      {!isRestSet && (
+        <SetDefinitionTypeTag>
+          <TinyText>{header}</TinyText>
+        </SetDefinitionTypeTag>
+      )}
+
+      {isTimedOrRest && (
+        <Padding padding="0 0 0 10px">
+          <SetDefinitionTypeTag>
+            <TinyText>{workoutSet.duration} seconds</TinyText>
+          </SetDefinitionTypeTag>
+        </Padding>
+      )}
+    </FlexBox>
   )
 }
 

@@ -20,6 +20,10 @@ import {
   faTag,
   faTimes,
   faNewspaper,
+  faChevronLeft,
+  faChevronRight,
+  faChevronUp,
+  faChevronDown,
 } from '@fortawesome/free-solid-svg-icons'
 import { ColorTypes, theme } from './styled-components/styled'
 import { SizeProp } from '@fortawesome/fontawesome-svg-core'
@@ -34,6 +38,33 @@ export const Logo = ({ size = 40, invert = false }) => (
   />
 )
 //// Icons ////
+interface ChenvronIconProps {
+  size?: SizeProp
+  colorType?: ColorTypes
+  direction?: ChevronType
+}
+
+type ChevronType = 'left' | 'up' | 'right' | 'down'
+
+const chevronTypeIcons = {
+  left: faChevronLeft,
+  up: faChevronUp,
+  right: faChevronRight,
+  down: faChevronDown,
+}
+
+export const ChevronIcon = ({
+  size = 'lg',
+  colorType = 'primaryDark',
+  direction = 'right',
+}: ChenvronIconProps) => (
+  <FontAwesomeIcon
+    icon={chevronTypeIcons[direction]}
+    size={size}
+    color={theme.colors[colorType]}
+  />
+)
+
 interface IconProps {
   size?: SizeProp
   colorType?: ColorTypes
