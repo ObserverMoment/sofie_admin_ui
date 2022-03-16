@@ -85,7 +85,7 @@ const PrimaryNavItem = styled.a<NavItemProps>`
   }
 
   :hover {
-    opacity: 0.8;
+    opacity: 0.9;
   }
 `
 

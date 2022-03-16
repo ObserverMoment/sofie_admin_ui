@@ -40,12 +40,12 @@ export default function Overview() {
 
     return (
       <FlexBox>
-        <FlexBox align="flex-start">
+        <FlexBox align="start" justify="start" padding="12px">
           <Title>Public Users</Title>
           <UsersList users={publicUsers} />
         </FlexBox>
 
-        <FlexBox align="flex-start">
+        <FlexBox align="start" justify="start" padding="12px">
           <Title>Private Users</Title>
           <UsersList users={privateUsers} />
         </FlexBox>
@@ -74,12 +74,18 @@ const UsersList: React.FC<UsersListProps> = ({ users }) => {
   } else {
     return (
       <ElevatedBox>
-        <FlexBox direction="row" wrap="wrap">
+        <FlexBox
+          direction="row"
+          wrap="wrap"
+          align="start"
+          gap="32px"
+          justify="start"
+        >
           {urlsAndNames.map((u) => (
-            <FlexBox padding="0 16px 0 0 " align="center" justify="center">
-              <UserAvatar src={u.avatarUrl} size={140} />
+            <FlexBox align="center" flexGrow={0}>
+              <UserAvatar src={u.avatarUrl} size={100} />
               <Spacer bottom="8px" />
-              <MainText>{u.name}</MainText>
+              <MainText fontSize="12px">{u.name}</MainText>
             </FlexBox>
           ))}
         </FlexBox>

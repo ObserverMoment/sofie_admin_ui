@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
+import { UserAvatarContainer } from '../../../components/cardsAndTags/userAvatar'
 import { WorkoutTag } from '../../../components/cardsAndTags/workoutTag'
 import { TagIcon } from '../../../components/icons'
 import { LoadingDots } from '../../../components/loadingIndicators'
@@ -81,6 +82,18 @@ export default function WorkoutPlanDetails() {
               <SubTitle>/</SubTitle>
               <Spacer right="4px" />
               <Title>{workoutPlan.name}</Title>
+            </FlexBox>
+
+            <FlexBox padding="0 0 12px 0" direction="row" align="center">
+              {workoutPlan.User.avatarUri && (
+                <Padding padding="0 8px 0 0">
+                  <UserAvatarContainer
+                    uuid={workoutPlan.User.avatarUri}
+                    size={50}
+                  />
+                </Padding>
+              )}
+              <SubTitle>{workoutPlan.User.displayName}</SubTitle>
             </FlexBox>
 
             <FlexBox direction="row" padding="0 0 6px 0">

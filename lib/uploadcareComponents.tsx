@@ -134,7 +134,7 @@ export enum UploadcareApiStatus {
   Success,
 }
 
-const useGetUploadcareUrl = (uuid: string) => {
+export const useGetUploadcareUrl = (uuid: string) => {
   const [status, setStatus] = useState(UploadcareApiStatus.Loading)
   const [url, setUrl] = useState(null)
 
@@ -188,8 +188,6 @@ export const useGetUploadcareUrls = (usersData: UserAvatarData[]) => {
 
     fetchData()
   }, [])
-
-  console.log(urlsAndNames)
 
   return { status, urlsAndNames }
 }

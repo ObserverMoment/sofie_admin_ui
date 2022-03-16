@@ -42,9 +42,15 @@ const ClubMembersListUI: React.FC<ClubMembersListUIProps> = ({
       <FlexBox>
         <Title>{memberTypeToDisplayMap[memberType]}</Title>
         <Spacer bottom="10px" />
-        <FlexBox direction="row">
+        <FlexBox direction="row" justify="start">
           {urlsAndNames.map((u) => (
-            <FlexBox key={u.name} align="center" justify="center" flexGrow={0}>
+            <FlexBox
+              key={u.name}
+              align="center"
+              justify="center"
+              flexGrow={0}
+              gap="16px"
+            >
               <UserAvatar size={100} src={u.avatarUrl} />
               <Spacer bottom="4px" />
               <TinyText>{u.name}</TinyText>
