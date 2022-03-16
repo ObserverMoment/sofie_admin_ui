@@ -9,12 +9,10 @@ import {
   FlexBox,
   MainText,
   Padding,
-  SubTitle,
   theme,
   TinyText,
   Title,
 } from '../../components/styled-components/styled'
-import { CORE_DATA_BASE_URL } from '../../constants'
 import {
   FitnessBenchmark,
   FitnessBenchmarkCategory,
@@ -51,10 +49,7 @@ export default function FitnessBenchmarks() {
         <Padding>
           <FlexBox direction="row" justify="space-between">
             <FlexBox direction="row">
-              <Breadcrumbs
-                pageTitle="Fitness Benchmarks"
-                crumbs={[{ text: 'Core Data', routeTo: CORE_DATA_BASE_URL }]}
-              />
+              <Breadcrumbs pageTitle="Fitness Benchmarks" />
             </FlexBox>
             <CreateButton onClick={handleAddNewClick} />
           </FlexBox>

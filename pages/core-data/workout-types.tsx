@@ -4,7 +4,6 @@ import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingDots } from '../../components/loadingIndicators'
 import { FlexBox, Padding } from '../../components/styled-components/styled'
-import { CORE_DATA_BASE_URL } from '../../constants'
 import { useCoreDataQuery } from '../../graphql/generated_types'
 
 export default function WorkoutTypes() {
@@ -19,10 +18,7 @@ export default function WorkoutTypes() {
       <FlexBox>
         <Padding>
           <FlexBox direction="row">
-            <Breadcrumbs
-              pageTitle="Workout Types"
-              crumbs={[{ text: 'Core Data', routeTo: CORE_DATA_BASE_URL }]}
-            />
+            <Breadcrumbs pageTitle="Workout Types" />
           </FlexBox>
         </Padding>
 
