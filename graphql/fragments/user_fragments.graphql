@@ -1,0 +1,13 @@
+fragment UserProfileSummary on UserProfileSummary {
+  __typename
+  userProfileScope
+  id
+  avatarUri
+  tagline
+  townCity
+  countryCode
+  displayName
+  workoutCount
+  planCount
+  skills
+}

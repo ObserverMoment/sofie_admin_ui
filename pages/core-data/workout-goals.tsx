@@ -1,33 +1,43 @@
 import React from 'react'
+import Breadcrumbs from '../../components/breadcrumbs'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
-import { LoadingSpinner } from '../../components/loadingIndicators'
-import { useWorkoutGoalsQuery } from '../../graphql/generated_types'
+import { LoadingDots } from '../../components/loadingIndicators'
+import { FlexBox, Padding } from '../../components/styled-components/styled'
+import { useCoreDataQuery } from '../../graphql/generated_types'
 
 export default function WorkoutGoals() {
-  const { loading, error, data } = useWorkoutGoalsQuery()
+  const { loading, error, data } = useCoreDataQuery()
 
   if (error) {
     return <ErrorMessage message={error.message} />
   } else if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   } else {
     return (
-      <InteractiveTable
-        columnMapping={[
-          {
-            Header: 'Name',
-            accessor: 'name', // accessor is the "key" in the data
-            disableSortBy: true,
-          },
-          {
-            Header: 'Description',
-            accessor: 'description', // accessor is the "key" in the data
-            disableSortBy: true,
-          },
-        ]}
-        data={data.workoutGoals}
-      />
+      <FlexBox>
+        <Padding>
+          <FlexBox direction="row">
+            <Breadcrumbs pageTitle="Workout Goals" />
+          </FlexBox>
+        </Padding>
+
+        <InteractiveTable
+          columnMapping={[
+            {
+              Header: 'Name',
+              accessor: 'name', // accessor is the "key" in the data
+              disableSortBy: true,
+            },
+            {
+              Header: 'Description',
+              accessor: 'description', // accessor is the "key" in the data
+              disableSortBy: true,
+            },
+          ]}
+          data={data.coreData.workoutGoals}
+        />
+      </FlexBox>
     )
   }
 }

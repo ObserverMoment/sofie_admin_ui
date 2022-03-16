@@ -1,0 +1,5 @@
+mutation updateClubMetaDataAdmin($data: UpdateClubMetaDataAdminInput!) {
+  updateClubMetaDataAdmin(data: $data) {
+    ...ClubWithMetaDataAdminData
+  }
+}

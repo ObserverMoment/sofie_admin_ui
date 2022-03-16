@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { useTable, useSortBy } from 'react-table'
 import styled from 'styled-components'
-import { SortIcon } from './images'
+import { SortIcon } from './icons'
 import { FlexBox, Spacer } from './styled-components/styled'
 
 const StyledTable = styled.table`
@@ -62,7 +62,7 @@ const InteractiveTable = ({
                     <>
                       <Spacer right="4px" />
                       <SortIcon
-                        width={10}
+                        size="xs"
                         type={
                           !column.isSorted
                             ? 'Sort'

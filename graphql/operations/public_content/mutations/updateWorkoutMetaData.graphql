@@ -1,0 +1,5 @@
+mutation updateWorkoutMetaDataAdmin($data: UpdateWorkoutMetaDataAdminInput!) {
+  updateWorkoutMetaDataAdmin(data: $data) {
+    ...WorkoutWithMetaDataAdminData
+  }
+}

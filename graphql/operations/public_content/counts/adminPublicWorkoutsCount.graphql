@@ -1,0 +1,8 @@
+query adminPublicWorkoutCounts {
+  adminPublicWorkoutCounts {
+    __typename
+    pending
+    valid
+    invalid
+  }
+}

@@ -1,5 +1,0 @@
-mutation updateWorkoutPlanMetaData($data: UpdateWorkoutPlanMetaDataInput!) {
-  updateWorkoutPlanMetaData(data: $data) {
-    ...WorkoutPlanMetaData
-  }
-}

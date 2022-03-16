@@ -11,14 +11,11 @@ import {
 } from '../forms/styled'
 import { useFormState } from '../forms/useFormState'
 import {
-  CreateEquipmentDocument,
+  CoreDataDocument,
   Equipment,
-  EquipmentsDocument,
   useCreateEquipmentMutation,
   useUpdateEquipmentMutation,
 } from '../../graphql/generated_types'
-import { gql } from '@apollo/client'
-import { newObjectRefFragment } from '../../lib/apolloClient'
 
 interface CreateEditEquipmentProps {
   readonly equipment?: Equipment
@@ -29,48 +26,42 @@ const CreateEditEquipment = ({
   equipment,
   onComplete,
 }: CreateEditEquipmentProps) => {
-  const [
-    createEquipment,
-    { loading: createEquipmentInProgress },
-  ] = useCreateEquipmentMutation({
-    update(cache, { data: { createEquipment } }) {
-      cache.modify({
-        fields: {
-          equipments(prevEquipments = []) {
-            // https://www.apollographql.com/docs/react/caching/cache-interaction/#example-updating-the-cache-after-a-mutation
-            // Apollo mutations automatically update the normalized cache.
-            // Here we are simply retrieving a ref to the newly created object
-            // and adding it to the equipments field which will cause the equipments query hook to update.
-            const newEquipmentRef = cache.writeFragment({
-              data: createEquipment,
-              fragment: newObjectRefFragment,
-            })
-            return [newEquipmentRef, ...prevEquipments]
-          },
-        },
-      })
-    },
-    onCompleted() {
-      showToast('New Equipment Added', 'Success')
-      onComplete && onComplete()
-    },
-    onError() {
-      showToast('API error creating equipment!', 'Error')
-    },
-  })
+  const [createEquipment, { loading: createEquipmentInProgress }] =
+    useCreateEquipmentMutation({
+      update(cache, { data: { createEquipment } }) {
+        const { coreData } = cache.readQuery({
+          query: CoreDataDocument,
+        })
 
-  const [
-    updateEquipment,
-    { loading: updateEquipmentInProgress },
-  ] = useUpdateEquipmentMutation({
-    onCompleted() {
-      showToast('Equipment Updated', 'Success')
-      onComplete && onComplete()
-    },
-    onError() {
-      showToast('API error updating equipment!', 'Error')
-    },
-  })
+        cache.writeQuery({
+          query: CoreDataDocument,
+          data: {
+            coreData: {
+              ...coreData,
+              equipment: [createEquipment, ...coreData.equipment],
+            },
+          },
+        })
+      },
+      onCompleted() {
+        showToast('New Equipment Added', 'Success')
+        onComplete && onComplete()
+      },
+      onError() {
+        showToast('API error creating equipment!', 'Error')
+      },
+    })
+
+  const [updateEquipment, { loading: updateEquipmentInProgress }] =
+    useUpdateEquipmentMutation({
+      onCompleted() {
+        showToast('Equipment Updated', 'Success')
+        onComplete && onComplete()
+      },
+      onError() {
+        showToast('API error updating equipment!', 'Error')
+      },
+    })
 
   const { formState, formDirty, getFormData } = useFormState<Equipment>([
     {

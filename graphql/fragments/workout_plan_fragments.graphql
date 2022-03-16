@@ -1,0 +1,81 @@
+# Full data tree including all descendents
+fragment WorkoutPlanWithMetaDataAdminData on WorkoutPlanWithMetaDataAdmin {
+  __typename
+  id
+  createdAt
+  updatedAt
+  archived
+  name
+  description
+  lengthWeeks
+  daysPerWeek
+  coverImageUri
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+  contentAccessScope
+  User {
+    ...UserAvatarData
+  }
+  WorkoutPlanDays {
+    ...WorkoutPlanDay
+    WorkoutPlanDayWorkouts {
+      ...WorkoutPlanDayWorkout
+      Workout {
+        ...WorkoutData
+      }
+    }
+  }
+  WorkoutPlanReviews {
+    ...WorkoutPlanReview
+    User {
+      ...UserAvatarData
+    }
+  }
+  WorkoutTags {
+    ...WorkoutTag
+  }
+  WorkoutPlanEnrolments {
+    ...WorkoutPlanEnrolment
+    CompletedWorkoutPlanDayWorkouts {
+      ...CompletedWorkoutPlanDayWorkout
+    }
+    User {
+      ...UserAvatarData
+    }
+  }
+  difficultyLevel
+  metaTags
+  validated
+  reasonNotValidated
+}
+
+fragment PublicWorkoutPlanSummaryAdmin on PublicWorkoutPlanSummaryAdmin {
+  __typename
+  id
+  createdAt
+  updatedAt
+  name
+}
+
+fragment WorkoutPlanDay on WorkoutPlanDay {
+  id
+  __typename
+  note
+  dayNumber
+}
+
+fragment WorkoutPlanDayWorkout on WorkoutPlanDayWorkout {
+  id
+  __typename
+  note
+  sortPosition
+}
+
+fragment WorkoutPlanReview on WorkoutPlanReview {
+  id
+  __typename
+  createdAt
+  score
+  comment
+}

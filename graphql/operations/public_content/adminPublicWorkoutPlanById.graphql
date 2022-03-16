@@ -1,0 +1,5 @@
+query adminPublicWorkoutPlanById($id: ID!) {
+  adminPublicWorkoutPlanById(id: $id) {
+    ...WorkoutPlanWithMetaDataAdminData
+  }
+}

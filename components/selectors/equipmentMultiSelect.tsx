@@ -1,18 +1,17 @@
-import { useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { CloseCircleIcon, PlusIcon } from '../images'
-import { LoadingSpinner } from '../loadingIndicators'
+import { CloseCircleIcon, PlusIcon } from '../icons'
+import { LoadingDots } from '../loadingIndicators'
 import { showToast } from '../notifications'
 import { FlexBox, MainText, Padding, Spacer } from '../styled-components/styled'
 import equal from 'deep-equal'
 import { DarkButton } from '../styled-components/buttons'
 import Modal from '../layout/modal'
 import { ClickableHighlightedBox } from '../styled-components/cards'
-import { Equipment, useEquipmentsQuery } from '../../graphql/generated_types'
+import { Equipment, useCoreDataQuery } from '../../graphql/generated_types'
 
 //// Display Elements - shows already selected items in a simple UI with a button to open the selector ////
-//// Usually what the user will see first - before they open the selector if they need to make edits ////
+//// Usually what the user will see first - before they open the selector if they need to make edits
 interface SelectedEquipmentDisplayProps {
   selectedEquipments: Equipment[]
   updateSelectedEquipments: (updatedEquipments: Equipment[]) => void
@@ -24,7 +23,7 @@ export const SelectedEquipmentDisplay = ({
 }: SelectedEquipmentDisplayProps) => {
   const [openSelector, setOpenSelector] = useState(false)
 
-  const { loading, error, data } = useEquipmentsQuery()
+  const { loading, error, data } = useCoreDataQuery()
 
   function isSelected(v: Equipment) {
     return selectedEquipments.some((s) => equal(s, v))
@@ -49,12 +48,12 @@ export const SelectedEquipmentDisplay = ({
     console.error(error)
     return null
   } else if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   } else {
     return (
       <div>
         <DarkButton onClick={() => setOpenSelector(true)}>
-          <PlusIcon width={12} />
+          <PlusIcon />
           <Spacer right="8px" />
           <MainText colorType="primaryLight">Add</MainText>
         </DarkButton>
@@ -82,7 +81,7 @@ export const SelectedEquipmentDisplay = ({
           closeOnDone
         >
           <EquipmentMultiSelect
-            allEquipments={data.equipments}
+            allEquipments={data.coreData.equipment}
             selected={selectedEquipments}
             toggleSelected={handleToggleSelected}
           />
@@ -104,7 +103,7 @@ const SelectedEquipmentDisplayItem = ({
   <ClickableHighlightedBox onClick={() => removeEquipment(equipment)}>
     <MainText colorType="primaryLight">{equipment.name}</MainText>
     <Spacer right="6px" />
-    <CloseCircleIcon colorType="primaryLight" width={11} />
+    <CloseCircleIcon colorType="primaryLight" />
   </ClickableHighlightedBox>
 )
 

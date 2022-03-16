@@ -1,8 +1,9 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
-import { PlusIcon } from '../images'
-import { ColorTypes, MainText, Spacer } from './styled'
+import { ChevronIcon, PlusIcon } from '../icons'
+import { ColorTypes, FlexBox, MainText, Spacer, SubTitle } from './styled'
 
 //// Buttons ////
 const StyledAnchor = styled.a`
@@ -38,7 +39,8 @@ export const StyledButton = styled.button<StyledButtonProps>`
   justify-content: center;
   align-items: center;
   outline: none;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
   background-color: ${(props) => props.theme.colors[props.colorType]};
   color: ${(props) =>
     props.colorType === 'primaryLight'
@@ -127,8 +129,27 @@ export const CreateButton = ({ flexDirection = 'row', onClick }) => (
     onClick={onClick}
     padding="10px 18px"
   >
-    <PlusIcon width={12} />
+    <PlusIcon size="xs" />
     <Spacer right="8px" />
     <MainText colorType="primaryLight">Add New</MainText>
   </StyledButton>
 )
+
+export const BackButton = () => {
+  const router = useRouter()
+
+  return (
+    <FlexBox
+      direction="row"
+      onClick={router.back}
+      align="center"
+      justify="center"
+      flexGrow={0}
+      cursorHover
+    >
+      <ChevronIcon size="1x" direction="left" />
+      <Spacer right="4px" />
+      <SubTitle>Back</SubTitle>
+    </FlexBox>
+  )
+}

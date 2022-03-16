@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import Link from 'next/link'
 import React from 'react'
 import { FlexBox } from '../styled-components/styled'
 import { LoadingDots } from '../loadingIndicators'
@@ -120,7 +119,7 @@ export const SubmitButton = ({
 }: SubmitButtonProps) => (
   <FlexBox direction="row" justify="center">
     {loading ? (
-      <LoadingDots width={30} height={20} />
+      <LoadingDots size={20} />
     ) : (
       <StyledSubmitButton disabled={disabled}>{text}</StyledSubmitButton>
     )}

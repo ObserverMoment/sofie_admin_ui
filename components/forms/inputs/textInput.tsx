@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'styled-components'
 
 export const StyledTextInput = styled.input`
@@ -17,6 +18,7 @@ interface TextInputProps {
   setValue: (v: string) => void
   size?: number
   maxLength?: number
+  onKeyDown?: (e: React.KeyboardEvent) => void
 }
 
 const TextInput = ({
@@ -26,6 +28,7 @@ const TextInput = ({
   setValue,
   size = 40,
   maxLength = null,
+  onKeyDown,
 }: TextInputProps) => {
   return (
     <StyledTextInput
@@ -36,6 +39,7 @@ const TextInput = ({
       onChange={(e) => setValue(e.target.value)}
       size={size}
       maxLength={maxLength}
+      onKeyDown={onKeyDown}
     />
   )
 }

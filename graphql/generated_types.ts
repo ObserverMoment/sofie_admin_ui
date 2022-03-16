@@ -42,14 +42,28 @@ export type AddWorkoutToCollectionInput = {
   collectionId: Scalars['ID'];
 };
 
-/** Enums */
-export enum BenchmarkType {
-  Amrap = 'AMRAP',
-  Fastesttime = 'FASTESTTIME',
-  Maxload = 'MAXLOAD',
-  Unbrokenreps = 'UNBROKENREPS',
-  Unbrokentime = 'UNBROKENTIME'
-}
+export type AnnouncementUpdate = {
+  __typename?: 'AnnouncementUpdate';
+  actions: Array<AnnouncementUpdateAction>;
+  articleUrl?: Maybe<Scalars['String']>;
+  audioUri?: Maybe<Scalars['String']>;
+  bodyOne?: Maybe<Scalars['String']>;
+  bodyTwo?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  imageUri?: Maybe<Scalars['String']>;
+  subtitle?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
+  videoUri?: Maybe<Scalars['String']>;
+};
+
+export type AnnouncementUpdateAction = {
+  __typename?: 'AnnouncementUpdateAction';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  routeTo: Scalars['String'];
+  text: Scalars['String'];
+};
 
 export type BodyArea = {
   __typename?: 'BodyArea';
@@ -60,6 +74,7 @@ export type BodyArea = {
   upperLower: BodyAreaUpperLower;
 };
 
+/** Enums */
 export enum BodyAreaFrontBack {
   Back = 'BACK',
   Both = 'BOTH',
@@ -69,7 +84,6 @@ export enum BodyAreaFrontBack {
 export type BodyAreaMoveScore = {
   __typename?: 'BodyAreaMoveScore';
   BodyArea: BodyArea;
-  Move: Move;
   score: Scalars['Int'];
 };
 
@@ -122,18 +136,6 @@ export type Club = {
   name: Scalars['String'];
 };
 
-export type ClubAnnouncement = {
-  __typename?: 'ClubAnnouncement';
-  User: UserAvatarData;
-  audioUri?: Maybe<Scalars['String']>;
-  createdAt: Scalars['DateTime'];
-  description: Scalars['String'];
-  id: Scalars['ID'];
-  imageUri?: Maybe<Scalars['String']>;
-  videoThumbUri?: Maybe<Scalars['String']>;
-  videoUri?: Maybe<Scalars['String']>;
-};
-
 export type ClubChatSummary = {
   __typename?: 'ClubChatSummary';
   Admins: Array<UserAvatarData>;
@@ -167,6 +169,16 @@ export type ClubInviteTokens = {
   __typename?: 'ClubInviteTokens';
   id: Scalars['ID'];
   tokens: Array<ClubInviteToken>;
+};
+
+export type ClubMemberNote = {
+  __typename?: 'ClubMemberNote';
+  User?: Maybe<UserAvatarData>;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  note: Scalars['String'];
+  tags: Array<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
 };
 
 export type ClubMemberSummary = {
@@ -205,6 +217,29 @@ export type ClubSummary = {
   name: Scalars['String'];
   planCount: Scalars['Int'];
   workoutCount: Scalars['Int'];
+};
+
+export type ClubWithMetaDataAdmin = {
+  __typename?: 'ClubWithMetaDataAdmin';
+  Admins: Array<UserAvatarData>;
+  ClubInviteTokens?: Maybe<Array<ClubInviteToken>>;
+  Members: Array<UserAvatarData>;
+  Owner: UserAvatarData;
+  WorkoutPlans?: Maybe<Array<WorkoutPlanSummary>>;
+  Workouts?: Maybe<Array<WorkoutSummary>>;
+  contentAccessScope: ContentAccessScope;
+  coverImageUri?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  introAudioUri?: Maybe<Scalars['String']>;
+  introVideoThumbUri?: Maybe<Scalars['String']>;
+  introVideoUri?: Maybe<Scalars['String']>;
+  location?: Maybe<Scalars['String']>;
+  metaTags: Array<Scalars['String']>;
+  name: Scalars['String'];
+  reasonNotValidated?: Maybe<Scalars['String']>;
+  validated: PublicContentValidationStatus;
 };
 
 export type ClubWorkoutPlans = {
@@ -250,21 +285,26 @@ export type CopyWorkoutPlanDayToAnotherDayInput = {
   id: Scalars['ID'];
 };
 
+export type CoreData = {
+  __typename?: 'CoreData';
+  bodyAreas: Array<BodyArea>;
+  equipment: Array<Equipment>;
+  fitnessBenchmarkCategories: Array<FitnessBenchmarkCategory>;
+  fitnessBenchmarkWorkouts: Array<FitnessBenchmarkWorkout>;
+  fitnessBenchmarks: Array<FitnessBenchmark>;
+  moveTypes: Array<MoveType>;
+  progressWidgets: Array<ProgressWidget>;
+  standardMoves: Array<Move>;
+  workoutGoals: Array<WorkoutGoal>;
+  workoutSectionTypes: Array<WorkoutSectionType>;
+};
+
 export type CreateBodyTrackingEntryInput = {
   bodyweight?: InputMaybe<Scalars['Float']>;
   bodyweightUnit?: InputMaybe<BodyweightUnit>;
   fatPercent?: InputMaybe<Scalars['Float']>;
   note?: InputMaybe<Scalars['String']>;
   photoUris?: InputMaybe<Array<Scalars['String']>>;
-};
-
-export type CreateClubAnnouncementInput = {
-  Club: ConnectRelationInput;
-  audioUri?: InputMaybe<Scalars['String']>;
-  description: Scalars['String'];
-  imageUri?: InputMaybe<Scalars['String']>;
-  videoThumbUri?: InputMaybe<Scalars['String']>;
-  videoUri?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateClubInput = {
@@ -279,11 +319,11 @@ export type CreateClubInviteTokenInput = {
   name: Scalars['String'];
 };
 
-export type CreateClubTimelinePostInput = {
-  caption?: InputMaybe<Scalars['String']>;
-  clubId: Scalars['String'];
-  object: Scalars['String'];
-  tags?: InputMaybe<Array<Scalars['String']>>;
+export type CreateClubMemberNoteInput = {
+  clubId: Scalars['ID'];
+  memberId: Scalars['ID'];
+  note: Scalars['String'];
+  tags: Array<Scalars['String']>;
 };
 
 export type CreateCollectionInput = {
@@ -303,28 +343,47 @@ export type CreateEquipmentInput = {
   name: Scalars['String'];
 };
 
+export type CreateFitnessBenchmarkInput = {
+  FitnessBenchmarkCategory: ConnectRelationInput;
+  description: Scalars['String'];
+  instructionalVideoThumbUri?: InputMaybe<Scalars['String']>;
+  instructionalVideoUri?: InputMaybe<Scalars['String']>;
+  instructions?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  scope: FitnessBenchmarkScope;
+  type: FitnessBenchmarkScoreType;
+};
+
+export type CreateFitnessBenchmarkScoreInput = {
+  FitnessBenchmark: ConnectRelationInput;
+  completedOn: Scalars['DateTime'];
+  note?: InputMaybe<Scalars['String']>;
+  score: Scalars['Float'];
+  videoThumbUri?: InputMaybe<Scalars['String']>;
+  videoUri?: InputMaybe<Scalars['String']>;
+};
+
+export type CreateFitnessBenchmarkWorkoutInput = {
+  FitnessBenchmarkWorkout: ConnectRelationInput;
+  completedOn: Scalars['DateTime'];
+  description: Scalars['String'];
+  instructionalVideoThumbUri?: InputMaybe<Scalars['String']>;
+  instructionalVideoUri?: InputMaybe<Scalars['String']>;
+  instructions?: InputMaybe<Scalars['String']>;
+  moveDescriptions: Array<Scalars['String']>;
+  name: Scalars['String'];
+  note?: InputMaybe<Scalars['String']>;
+  pointsForMoveCompleted: Array<Scalars['Int']>;
+  rounds: Scalars['Int'];
+  scope: FitnessBenchmarkScope;
+  score: Scalars['Int'];
+  type: FitnessBenchmarkWorkoutScoreType;
+};
+
 export type CreateGymProfileInput = {
   Equipments?: InputMaybe<Array<ConnectRelationInput>>;
   description?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
-};
-
-export type CreateJournalGoalInput = {
-  deadline?: InputMaybe<Scalars['DateTime']>;
-  description?: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
-};
-
-export type CreateJournalMoodInput = {
-  energyScore: Scalars['Int'];
-  moodScore: Scalars['Int'];
-  tags?: InputMaybe<Array<Scalars['String']>>;
-  textNote?: InputMaybe<Scalars['String']>;
-};
-
-export type CreateJournalNoteInput = {
-  textNote?: InputMaybe<Scalars['String']>;
-  voiceNoteUri?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateLoggedWorkoutInput = {
@@ -401,26 +460,69 @@ export type CreateSkillInput = {
   name: Scalars['String'];
 };
 
-export type CreateUserBenchmarkEntryInput = {
-  UserBenchmark: ConnectRelationInput;
-  completedOn: Scalars['DateTime'];
-  note?: InputMaybe<Scalars['String']>;
-  score: Scalars['Float'];
-  videoThumbUri?: InputMaybe<Scalars['String']>;
-  videoUri?: InputMaybe<Scalars['String']>;
+export type CreateStreamFeedActivityExtraDataInput = {
+  articleUrl?: InputMaybe<Scalars['String']>;
+  audioUrl?: InputMaybe<Scalars['String']>;
+  caption?: InputMaybe<Scalars['String']>;
+  creator?: InputMaybe<Scalars['String']>;
+  imageUrl?: InputMaybe<Scalars['String']>;
+  originalPostId?: InputMaybe<Scalars['String']>;
+  tags: Array<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  videoUrl?: InputMaybe<Scalars['String']>;
 };
 
-export type CreateUserBenchmarkInput = {
-  benchmarkType: BenchmarkType;
+export type CreateStreamFeedActivityInput = {
+  actor: Scalars['String'];
+  extraData: CreateStreamFeedActivityExtraDataInput;
+  object: Scalars['String'];
+  verb: Scalars['String'];
+};
+
+export type CreateUserDayLogMoodInput = {
+  energyScore: Scalars['Int'];
+  moodScore: Scalars['Int'];
+  note?: InputMaybe<Scalars['String']>;
+  tags?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type CreateUserEatWellLogInput = {
+  dayNumber: Scalars['Int'];
+  note?: InputMaybe<Scalars['String']>;
+  rating: UserDayLogRating;
+  year: Scalars['Int'];
+};
+
+export type CreateUserExerciseLoadTrackerInput = {
+  Equipment?: InputMaybe<ConnectRelationInput>;
+  Move: ConnectRelationInput;
+  loadUnit: LoadUnit;
+  reps: Scalars['Int'];
+};
+
+export type CreateUserGoalInput = {
+  deadline?: InputMaybe<Scalars['DateTime']>;
   description?: InputMaybe<Scalars['String']>;
-  equipmentInfo?: InputMaybe<Scalars['String']>;
-  loadUnit?: InputMaybe<LoadUnit>;
   name: Scalars['String'];
+};
+
+export type CreateUserMeditationLogInput = {
+  dayNumber: Scalars['Int'];
+  minutesLogged: Scalars['Int'];
+  note?: InputMaybe<Scalars['String']>;
+  year: Scalars['Int'];
+};
+
+export type CreateUserSleepWellLogInput = {
+  dayNumber: Scalars['Int'];
+  minutesSlept?: InputMaybe<Scalars['Int']>;
+  note?: InputMaybe<Scalars['String']>;
+  rating: UserDayLogRating;
+  year: Scalars['Int'];
 };
 
 export type CreateWorkoutInput = {
   contentAccessScope: ContentAccessScope;
-  difficultyLevel?: InputMaybe<DifficultyLevel>;
   name: Scalars['String'];
 };
 
@@ -537,6 +639,84 @@ export type Equipment = {
   name: Scalars['String'];
 };
 
+export type FitnessBenchmark = {
+  __typename?: 'FitnessBenchmark';
+  FitnessBenchmarkCategory: FitnessBenchmarkCategory;
+  createdAt: Scalars['DateTime'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  instructionalVideoThumbUri?: Maybe<Scalars['String']>;
+  instructionalVideoUri?: Maybe<Scalars['String']>;
+  instructions?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  scope: FitnessBenchmarkScope;
+  type: FitnessBenchmarkScoreType;
+};
+
+export type FitnessBenchmarkCategory = {
+  __typename?: 'FitnessBenchmarkCategory';
+  createdAt: Scalars['DateTime'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+export enum FitnessBenchmarkScope {
+  Custom = 'CUSTOM',
+  Standard = 'STANDARD'
+}
+
+export type FitnessBenchmarkScore = {
+  __typename?: 'FitnessBenchmarkScore';
+  completedOn: Scalars['DateTime'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  note?: Maybe<Scalars['String']>;
+  score: Scalars['Float'];
+  videoThumbUri?: Maybe<Scalars['String']>;
+  videoUri?: Maybe<Scalars['String']>;
+};
+
+export enum FitnessBenchmarkScoreType {
+  Fastesttimedistance = 'FASTESTTIMEDISTANCE',
+  Fastesttimereps = 'FASTESTTIMEREPS',
+  Longestdistance = 'LONGESTDISTANCE',
+  Maxload = 'MAXLOAD',
+  Timedmaxreps = 'TIMEDMAXREPS',
+  Unbrokenmaxreps = 'UNBROKENMAXREPS',
+  Unbrokenmaxtime = 'UNBROKENMAXTIME'
+}
+
+export type FitnessBenchmarkWorkout = {
+  __typename?: 'FitnessBenchmarkWorkout';
+  createdAt: Scalars['DateTime'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  instructionalVideoThumbUri?: Maybe<Scalars['String']>;
+  instructionalVideoUri?: Maybe<Scalars['String']>;
+  instructions?: Maybe<Scalars['String']>;
+  moveDescriptions: Array<Scalars['String']>;
+  name: Scalars['String'];
+  pointsForMoveCompleted: Array<Scalars['Int']>;
+  rounds: Scalars['Int'];
+  scope: FitnessBenchmarkScope;
+  type: FitnessBenchmarkWorkoutScoreType;
+};
+
+export type FitnessBenchmarkWorkoutScore = {
+  __typename?: 'FitnessBenchmarkWorkoutScore';
+  completedOn: Scalars['DateTime'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  note?: Maybe<Scalars['String']>;
+  score: Scalars['Int'];
+};
+
+export enum FitnessBenchmarkWorkoutScoreType {
+  Amrap = 'AMRAP',
+  Fortime = 'FORTIME'
+}
+
 export enum Gender {
   Female = 'FEMALE',
   Male = 'MALE',
@@ -562,34 +742,6 @@ export enum JoinClubRequestStatus {
   Pending = 'PENDING',
   Rejected = 'REJECTED'
 }
-
-export type JournalGoal = {
-  __typename?: 'JournalGoal';
-  completedDate?: Maybe<Scalars['DateTime']>;
-  createdAt: Scalars['DateTime'];
-  deadline?: Maybe<Scalars['DateTime']>;
-  description?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  name: Scalars['String'];
-};
-
-export type JournalMood = {
-  __typename?: 'JournalMood';
-  createdAt: Scalars['DateTime'];
-  energyScore: Scalars['Int'];
-  id: Scalars['ID'];
-  moodScore: Scalars['Int'];
-  tags: Array<Scalars['String']>;
-  textNote?: Maybe<Scalars['String']>;
-};
-
-export type JournalNote = {
-  __typename?: 'JournalNote';
-  createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
-  textNote?: Maybe<Scalars['String']>;
-  voiceNoteUri?: Maybe<Scalars['String']>;
-};
 
 export type LifetimeLogStatsSummary = {
   __typename?: 'LifetimeLogStatsSummary';
@@ -651,6 +803,16 @@ export type LoggedWorkoutSet = {
   timeTakenSeconds?: Maybe<Scalars['Int']>;
 };
 
+export type MarkAnnouncementUpdateAsSeenInput = {
+  announcementUpdateId: Scalars['ID'];
+  userId: Scalars['ID'];
+};
+
+export type MarkWelcomeTodoItemAsSeenInput = {
+  userId: Scalars['ID'];
+  welcomeTodoItemId: Scalars['ID'];
+};
+
 export type Move = {
   __typename?: 'Move';
   BodyAreaMoveScores: Array<BodyAreaMoveScore>;
@@ -706,23 +868,26 @@ export type Mutation = {
   copyWorkoutPlanDayToAnotherDay: WorkoutPlanDay;
   createBodyTrackingEntry: BodyTrackingEntry;
   createClub: ClubSummary;
-  createClubAnnouncement: ClubAnnouncement;
   createClubInviteToken: ClubInviteTokens;
-  createClubTimelinePost: TimelinePostFullData;
+  createClubMemberNote: ClubMemberNote;
+  createClubMembersFeedPost: StreamEnrichedActivity;
   createCollection: Collection;
   createCompletedWorkoutPlanDayWorkout: WorkoutPlanEnrolment;
   createEquipment?: Maybe<Equipment>;
+  createFitnessBenchmark: FitnessBenchmark;
+  createFitnessBenchmarkWorkout: FitnessBenchmarkWorkout;
   createGymProfile: GymProfile;
-  createJournalGoal: JournalGoal;
-  createJournalMood: JournalMood;
-  createJournalNote: JournalNote;
   createLoggedWorkout: LoggedWorkout;
   createMove: Move;
   createScheduleForPlanEnrolment: WorkoutPlanEnrolment;
   createScheduledWorkout: ScheduledWorkout;
   createSkill: Skill;
-  createUserBenchmark: UserBenchmark;
-  createUserBenchmarkEntry: UserBenchmarkEntry;
+  createUserDayLogMood: UserDayLogMood;
+  createUserEatWellLog: UserEatWellLog;
+  createUserExerciseLoadTracker: UserExerciseLoadTracker;
+  createUserGoal: UserGoal;
+  createUserMeditationLog: UserMeditationLog;
+  createUserSleepWellLog: UserSleepWellLog;
   createWorkout: Workout;
   createWorkoutMove: WorkoutMove;
   createWorkoutPlan: WorkoutPlan;
@@ -736,21 +901,20 @@ export type Mutation = {
   createWorkoutTag: WorkoutTag;
   deleteBodyTrackingEntryById: Scalars['ID'];
   deleteClub: Scalars['ID'];
-  deleteClubAnnouncement: Scalars['ID'];
   deleteClubInviteToken: ClubInviteTokens;
-  deleteClubTimelinePost: Scalars['ID'];
+  deleteClubMembersFeedPost: Scalars['ID'];
   deleteCollectionById: Scalars['ID'];
   deleteCompletedWorkoutPlanDayWorkout: WorkoutPlanEnrolment;
+  deleteFitnessBenchmark: Scalars['ID'];
+  deleteFitnessBenchmarkWorkout: Scalars['ID'];
   deleteGymProfileById?: Maybe<Scalars['ID']>;
-  deleteJournalGoalById: Scalars['ID'];
-  deleteJournalMoodById: Scalars['ID'];
-  deleteJournalNoteById: Scalars['ID'];
   deleteLoggedWorkoutById: Scalars['ID'];
   deleteLoggedWorkoutMove: Scalars['ID'];
   deleteScheduledWorkoutById: Scalars['ID'];
   deleteSkillById: Scalars['ID'];
-  deleteUserBenchmark: Scalars['ID'];
-  deleteUserBenchmarkEntry: Scalars['ID'];
+  deleteUserDayLogMood: Scalars['ID'];
+  deleteUserExerciseLoadTracker: Scalars['ID'];
+  deleteUserGoal: Scalars['ID'];
   deleteWorkoutMoveById: Scalars['ID'];
   deleteWorkoutPlanDayWorkoutById: Scalars['ID'];
   deleteWorkoutPlanDaysById: Array<Scalars['ID']>;
@@ -764,6 +928,8 @@ export type Mutation = {
   duplicateWorkoutSetById: WorkoutSet;
   giveMemberAdminStatus: ClubMembers;
   makeCopyWorkoutById: Workout;
+  markAnnouncementUpdateAsSeen: Scalars['ID'];
+  markWelcomeTodoItemAsSeen: Scalars['ID'];
   moveWorkoutPlanDayToAnotherDay: WorkoutPlanDay;
   removeDocumentFromSkill: Skill;
   removeMemberAdminStatus: ClubMembers;
@@ -782,15 +948,15 @@ export type Mutation = {
   unarchiveWorkoutById: Workout;
   unarchiveWorkoutPlanById: WorkoutPlan;
   updateBodyTrackingEntry: BodyTrackingEntry;
-  updateClubAnnouncement: ClubAnnouncement;
   updateClubInviteToken: ClubInviteTokens;
+  updateClubMemberNote: ClubMemberNote;
+  updateClubMetaDataAdmin: ClubWithMetaDataAdmin;
   updateClubSummary: ClubSummary;
   updateCollection: Collection;
   updateEquipment?: Maybe<Equipment>;
+  updateFitnessBenchmark: FitnessBenchmark;
+  updateFitnessBenchmarkWorkout: FitnessBenchmarkWorkout;
   updateGymProfile: GymProfile;
-  updateJournalGoal: JournalGoal;
-  updateJournalMood: JournalMood;
-  updateJournalNote: JournalNote;
   updateLoggedWorkout: LoggedWorkout;
   updateLoggedWorkoutMove: LoggedWorkoutMove;
   updateLoggedWorkoutSection: LoggedWorkoutSection;
@@ -798,15 +964,19 @@ export type Mutation = {
   updateMove: Move;
   updateScheduledWorkout: ScheduledWorkout;
   updateSkill: Skill;
-  updateUserBenchmark: UserBenchmark;
-  updateUserBenchmarkEntry: UserBenchmarkEntry;
+  updateUserEatWellLog: UserEatWellLog;
+  updateUserGoal: UserGoal;
+  updateUserMeditationLog: UserMeditationLog;
   updateUserProfile: UpdateUserProfileResult;
+  updateUserSleepWellLog: UserSleepWellLog;
   updateWorkout: Workout;
+  updateWorkoutMetaDataAdmin: WorkoutWithMetaDataAdmin;
   updateWorkoutMove: WorkoutMove;
   updateWorkoutMoves: Array<WorkoutMove>;
   updateWorkoutPlan: WorkoutPlan;
   updateWorkoutPlanDay: WorkoutPlanDay;
   updateWorkoutPlanDayWorkout: WorkoutPlanDayWorkout;
+  updateWorkoutPlanMetaDataAdmin?: Maybe<WorkoutPlanWithMetaDataAdmin>;
   updateWorkoutPlanReview: WorkoutPlanReview;
   updateWorkoutSection: WorkoutSection;
   updateWorkoutSet: WorkoutSet;
@@ -888,18 +1058,19 @@ export type MutationCreateClubArgs = {
 };
 
 
-export type MutationCreateClubAnnouncementArgs = {
-  data: CreateClubAnnouncementInput;
-};
-
-
 export type MutationCreateClubInviteTokenArgs = {
   data: CreateClubInviteTokenInput;
 };
 
 
-export type MutationCreateClubTimelinePostArgs = {
-  data: CreateClubTimelinePostInput;
+export type MutationCreateClubMemberNoteArgs = {
+  data: CreateClubMemberNoteInput;
+};
+
+
+export type MutationCreateClubMembersFeedPostArgs = {
+  clubId: Scalars['ID'];
+  data: CreateStreamFeedActivityInput;
 };
 
 
@@ -918,23 +1089,18 @@ export type MutationCreateEquipmentArgs = {
 };
 
 
+export type MutationCreateFitnessBenchmarkArgs = {
+  data: CreateFitnessBenchmarkInput;
+};
+
+
+export type MutationCreateFitnessBenchmarkWorkoutArgs = {
+  data: CreateFitnessBenchmarkWorkoutInput;
+};
+
+
 export type MutationCreateGymProfileArgs = {
   data: CreateGymProfileInput;
-};
-
-
-export type MutationCreateJournalGoalArgs = {
-  data: CreateJournalGoalInput;
-};
-
-
-export type MutationCreateJournalMoodArgs = {
-  data: CreateJournalMoodInput;
-};
-
-
-export type MutationCreateJournalNoteArgs = {
-  data: CreateJournalNoteInput;
 };
 
 
@@ -963,13 +1129,33 @@ export type MutationCreateSkillArgs = {
 };
 
 
-export type MutationCreateUserBenchmarkArgs = {
-  data: CreateUserBenchmarkInput;
+export type MutationCreateUserDayLogMoodArgs = {
+  data: CreateUserDayLogMoodInput;
 };
 
 
-export type MutationCreateUserBenchmarkEntryArgs = {
-  data: CreateUserBenchmarkEntryInput;
+export type MutationCreateUserEatWellLogArgs = {
+  data: CreateUserEatWellLogInput;
+};
+
+
+export type MutationCreateUserExerciseLoadTrackerArgs = {
+  data: CreateUserExerciseLoadTrackerInput;
+};
+
+
+export type MutationCreateUserGoalArgs = {
+  data: CreateUserGoalInput;
+};
+
+
+export type MutationCreateUserMeditationLogArgs = {
+  data: CreateUserMeditationLogInput;
+};
+
+
+export type MutationCreateUserSleepWellLogArgs = {
+  data: CreateUserSleepWellLogInput;
 };
 
 
@@ -1038,17 +1224,12 @@ export type MutationDeleteClubArgs = {
 };
 
 
-export type MutationDeleteClubAnnouncementArgs = {
-  id: Scalars['ID'];
-};
-
-
 export type MutationDeleteClubInviteTokenArgs = {
   data: DeleteClubInviteTokenInput;
 };
 
 
-export type MutationDeleteClubTimelinePostArgs = {
+export type MutationDeleteClubMembersFeedPostArgs = {
   activityId: Scalars['ID'];
 };
 
@@ -1063,22 +1244,17 @@ export type MutationDeleteCompletedWorkoutPlanDayWorkoutArgs = {
 };
 
 
+export type MutationDeleteFitnessBenchmarkArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteFitnessBenchmarkWorkoutArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type MutationDeleteGymProfileByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationDeleteJournalGoalByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationDeleteJournalMoodByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationDeleteJournalNoteByIdArgs = {
   id: Scalars['ID'];
 };
 
@@ -1103,12 +1279,17 @@ export type MutationDeleteSkillByIdArgs = {
 };
 
 
-export type MutationDeleteUserBenchmarkArgs = {
+export type MutationDeleteUserDayLogMoodArgs = {
   id: Scalars['ID'];
 };
 
 
-export type MutationDeleteUserBenchmarkEntryArgs = {
+export type MutationDeleteUserExerciseLoadTrackerArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteUserGoalArgs = {
   id: Scalars['ID'];
 };
 
@@ -1176,6 +1357,16 @@ export type MutationGiveMemberAdminStatusArgs = {
 
 export type MutationMakeCopyWorkoutByIdArgs = {
   id: Scalars['ID'];
+};
+
+
+export type MutationMarkAnnouncementUpdateAsSeenArgs = {
+  data: MarkAnnouncementUpdateAsSeenInput;
+};
+
+
+export type MutationMarkWelcomeTodoItemAsSeenArgs = {
+  data: MarkWelcomeTodoItemAsSeenInput;
 };
 
 
@@ -1273,13 +1464,18 @@ export type MutationUpdateBodyTrackingEntryArgs = {
 };
 
 
-export type MutationUpdateClubAnnouncementArgs = {
-  data: UpdateClubAnnouncementInput;
+export type MutationUpdateClubInviteTokenArgs = {
+  data: UpdateClubInviteTokenInput;
 };
 
 
-export type MutationUpdateClubInviteTokenArgs = {
-  data: UpdateClubInviteTokenInput;
+export type MutationUpdateClubMemberNoteArgs = {
+  data: UpdateClubMemberNoteInput;
+};
+
+
+export type MutationUpdateClubMetaDataAdminArgs = {
+  data: UpdateClubMetaDataAdminInput;
 };
 
 
@@ -1298,23 +1494,18 @@ export type MutationUpdateEquipmentArgs = {
 };
 
 
+export type MutationUpdateFitnessBenchmarkArgs = {
+  data: UpdateFitnessBenchmarkInput;
+};
+
+
+export type MutationUpdateFitnessBenchmarkWorkoutArgs = {
+  data: UpdateFitnessBenchmarkWorkoutInput;
+};
+
+
 export type MutationUpdateGymProfileArgs = {
   data: UpdateGymProfileInput;
-};
-
-
-export type MutationUpdateJournalGoalArgs = {
-  data: UpdateJournalGoalInput;
-};
-
-
-export type MutationUpdateJournalMoodArgs = {
-  data: UpdateJournalMoodInput;
-};
-
-
-export type MutationUpdateJournalNoteArgs = {
-  data: UpdateJournalNoteInput;
 };
 
 
@@ -1353,13 +1544,18 @@ export type MutationUpdateSkillArgs = {
 };
 
 
-export type MutationUpdateUserBenchmarkArgs = {
-  data: UpdateUserBenchmarkInput;
+export type MutationUpdateUserEatWellLogArgs = {
+  data: UpdateUserEatWellLogInput;
 };
 
 
-export type MutationUpdateUserBenchmarkEntryArgs = {
-  data: UpdateUserBenchmarkEntryInput;
+export type MutationUpdateUserGoalArgs = {
+  data: UpdateUserGoalInput;
+};
+
+
+export type MutationUpdateUserMeditationLogArgs = {
+  data: UpdateUserMeditationLogInput;
 };
 
 
@@ -1368,8 +1564,18 @@ export type MutationUpdateUserProfileArgs = {
 };
 
 
+export type MutationUpdateUserSleepWellLogArgs = {
+  data: UpdateUserSleepWellLogInput;
+};
+
+
 export type MutationUpdateWorkoutArgs = {
   data: UpdateWorkoutInput;
+};
+
+
+export type MutationUpdateWorkoutMetaDataAdminArgs = {
+  data: UpdateWorkoutMetaDataAdminInput;
 };
 
 
@@ -1398,6 +1604,11 @@ export type MutationUpdateWorkoutPlanDayWorkoutArgs = {
 };
 
 
+export type MutationUpdateWorkoutPlanMetaDataAdminArgs = {
+  data: UpdateWorkoutPlanMetaDataAdminInput;
+};
+
+
 export type MutationUpdateWorkoutPlanReviewArgs = {
   data: UpdateWorkoutPlanReviewInput;
 };
@@ -1422,69 +1633,169 @@ export type MutationUserJoinPublicClubArgs = {
   clubId: Scalars['ID'];
 };
 
+export type ProgressWidget = {
+  __typename?: 'ProgressWidget';
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  subtitle?: Maybe<Scalars['String']>;
+};
+
+export type PublicClubCountsAdmin = {
+  __typename?: 'PublicClubCountsAdmin';
+  invalid: Scalars['Int'];
+  pending: Scalars['Int'];
+  valid: Scalars['Int'];
+};
+
+export type PublicClubSummaryAdmin = {
+  __typename?: 'PublicClubSummaryAdmin';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export enum PublicContentValidationStatus {
+  Invalid = 'INVALID',
+  Pending = 'PENDING',
+  Pendingupdated = 'PENDINGUPDATED',
+  Valid = 'VALID'
+}
+
+export type PublicWorkoutCountsAdmin = {
+  __typename?: 'PublicWorkoutCountsAdmin';
+  invalid: Scalars['Int'];
+  pending: Scalars['Int'];
+  valid: Scalars['Int'];
+};
+
+export type PublicWorkoutPlanCountsAdmin = {
+  __typename?: 'PublicWorkoutPlanCountsAdmin';
+  invalid: Scalars['Int'];
+  pending: Scalars['Int'];
+  valid: Scalars['Int'];
+};
+
+export type PublicWorkoutPlanSummaryAdmin = {
+  __typename?: 'PublicWorkoutPlanSummaryAdmin';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type PublicWorkoutSummaryAdmin = {
+  __typename?: 'PublicWorkoutSummaryAdmin';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
 export type Query = {
   __typename?: 'Query';
-  bodyAreas: Array<BodyArea>;
+  adminAllUsers: Array<UserProfileSummary>;
+  adminPublicClubById: ClubWithMetaDataAdmin;
+  adminPublicClubCounts: PublicClubCountsAdmin;
+  adminPublicClubSummaries: Array<PublicClubSummaryAdmin>;
+  adminPublicWorkoutById: WorkoutWithMetaDataAdmin;
+  adminPublicWorkoutCounts: PublicWorkoutCountsAdmin;
+  adminPublicWorkoutPlanById: WorkoutPlanWithMetaDataAdmin;
+  adminPublicWorkoutPlanCounts: PublicWorkoutPlanCountsAdmin;
+  adminPublicWorkoutPlanSummaries: Array<PublicWorkoutPlanSummaryAdmin>;
+  adminPublicWorkoutSummaries: Array<PublicWorkoutSummaryAdmin>;
+  announcementUpdates: Array<AnnouncementUpdate>;
   bodyTrackingEntries: Array<BodyTrackingEntry>;
   checkClubInviteToken: CheckClubInviteTokenResult;
   checkUniqueClubName: Scalars['Boolean'];
   checkUniqueDisplayName: Scalars['Boolean'];
   checkUserClubMemberStatus: UserClubMemberStatus;
-  clubChatSummary: ClubChatSummary;
+  clubChatSummary?: Maybe<ClubChatSummary>;
   clubInviteTokens: ClubInviteTokens;
+  clubMemberNotes: Array<ClubMemberNote>;
   clubMembers: ClubMembers;
-  clubMembersFeedPosts: Array<TimelinePostFullData>;
+  clubMembersFeedPosts: Array<StreamEnrichedActivity>;
   clubSummaries: Array<ClubSummary>;
-  clubSummary: ClubSummary;
+  clubSummary?: Maybe<ClubSummary>;
   clubWorkoutPlans: ClubWorkoutPlans;
   clubWorkouts: ClubWorkouts;
-  equipments: Array<Equipment>;
+  coreData: CoreData;
+  customMoves: Array<Move>;
   gymProfiles: Array<GymProfile>;
-  journalGoals: Array<JournalGoal>;
-  journalMoods: Array<JournalMood>;
-  journalNotes: Array<JournalNote>;
   lifetimeLogStatsSummary: LifetimeLogStatsSummary;
   logCountByWorkout: Scalars['Int'];
-  loggedWorkoutById: LoggedWorkout;
-  moveTypes: Array<MoveType>;
+  loggedWorkoutById?: Maybe<LoggedWorkout>;
   publicClubs: Array<ClubSummary>;
   publicWorkoutPlans: Array<WorkoutPlanSummary>;
   publicWorkouts: Array<WorkoutSummary>;
-  standardMoves: Array<Move>;
   textSearchUserNames?: Maybe<Array<TextSearchResult>>;
   textSearchUserProfiles?: Maybe<Array<UserProfileSummary>>;
   textSearchWorkoutNames?: Maybe<Array<TextSearchResult>>;
   textSearchWorkoutPlanNames?: Maybe<Array<TextSearchResult>>;
   textSearchWorkoutPlans?: Maybe<Array<WorkoutPlanSummary>>;
   textSearchWorkouts?: Maybe<Array<WorkoutSummary>>;
-  timelinePostsData: Array<TimelinePostObjectData>;
   userArchivedCustomMoves: Array<Move>;
   userArchivedWorkoutPlans: Array<WorkoutPlan>;
   userArchivedWorkouts: Array<Workout>;
-  userAvatarById: UserAvatarData;
+  userAvatarById?: Maybe<UserAvatarData>;
   userAvatars: Array<UserAvatarData>;
-  userBenchmark: UserBenchmark;
-  userBenchmarks: Array<UserBenchmark>;
   userClubs: Array<ClubSummary>;
   userCollectionById: Collection;
   userCollections: Array<Collection>;
-  userCustomMoves: Array<Move>;
+  userDayLogMoods: Array<UserDayLogMood>;
+  userEatWellLogs: Array<UserEatWellLog>;
+  userExerciseLoadTrackers: Array<UserExerciseLoadTracker>;
+  userGoals: Array<UserGoal>;
   userLoggedWorkouts: Array<LoggedWorkout>;
-  userProfile: UserProfile;
+  userMeditationLogs: Array<UserMeditationLog>;
+  userProfile?: Maybe<UserProfile>;
   userProfiles: Array<UserProfileSummary>;
   userPublicWorkoutPlans: Array<WorkoutPlanSummary>;
   userPublicWorkouts: Array<WorkoutSummary>;
+  userRecentlyViewedObjects: Array<UserRecentlyViewedObject>;
   userScheduledWorkouts: Array<ScheduledWorkout>;
+  userSleepWellLogs: Array<UserSleepWellLog>;
   userWorkoutPlans: Array<WorkoutPlanSummary>;
   userWorkoutTags: Array<WorkoutTag>;
   userWorkouts: Array<WorkoutSummary>;
   validateToken: Scalars['Boolean'];
-  workoutById: Workout;
-  workoutGoals: Array<WorkoutGoal>;
-  workoutPlanById: WorkoutPlan;
-  workoutPlanEnrolmentById: WorkoutPlanEnrolmentWithPlan;
+  welcomeTodoItems: Array<WelcomeTodoItem>;
+  workoutById?: Maybe<Workout>;
+  workoutPlanById?: Maybe<WorkoutPlan>;
+  workoutPlanEnrolmentById?: Maybe<WorkoutPlanEnrolmentWithPlan>;
   workoutPlanEnrolments: Array<WorkoutPlanEnrolmentSummary>;
-  workoutSectionTypes: Array<WorkoutSectionType>;
+};
+
+
+export type QueryAdminPublicClubByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryAdminPublicClubSummariesArgs = {
+  status: PublicContentValidationStatus;
+};
+
+
+export type QueryAdminPublicWorkoutByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryAdminPublicWorkoutPlanByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryAdminPublicWorkoutPlanSummariesArgs = {
+  status: PublicContentValidationStatus;
+};
+
+
+export type QueryAdminPublicWorkoutSummariesArgs = {
+  status: PublicContentValidationStatus;
 };
 
 
@@ -1515,6 +1826,14 @@ export type QueryClubChatSummaryArgs = {
 
 export type QueryClubInviteTokensArgs = {
   clubId: Scalars['ID'];
+};
+
+
+export type QueryClubMemberNotesArgs = {
+  clubId: Scalars['ID'];
+  cursor?: InputMaybe<Scalars['ID']>;
+  memberId: Scalars['ID'];
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -1609,11 +1928,6 @@ export type QueryTextSearchWorkoutsArgs = {
 };
 
 
-export type QueryTimelinePostsDataArgs = {
-  postDataRequests: Array<TimelinePostDataRequestInput>;
-};
-
-
 export type QueryUserAvatarByIdArgs = {
   id: Scalars['ID'];
 };
@@ -1624,18 +1938,8 @@ export type QueryUserAvatarsArgs = {
 };
 
 
-export type QueryUserBenchmarkArgs = {
-  id: Scalars['ID'];
-};
-
-
 export type QueryUserCollectionByIdArgs = {
   id: Scalars['ID'];
-};
-
-
-export type QueryUserLoggedWorkoutsArgs = {
-  take?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -1722,12 +2026,69 @@ export type Skill = {
   experience?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type SortPositionUpdated = {
   __typename?: 'SortPositionUpdated';
   id: Scalars['ID'];
   sortPosition: Scalars['Int'];
+};
+
+export type StreamActivityExtraData = {
+  __typename?: 'StreamActivityExtraData';
+  articleUrl?: Maybe<Scalars['String']>;
+  audioUrl?: Maybe<Scalars['String']>;
+  caption?: Maybe<Scalars['String']>;
+  club?: Maybe<StreamFeedClub>;
+  creator?: Maybe<StreamFeedUser>;
+  imageUrl?: Maybe<Scalars['String']>;
+  originalPostId?: Maybe<Scalars['String']>;
+  tags: Array<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  videoUrl?: Maybe<Scalars['String']>;
+};
+
+export type StreamActivityReactionCounts = {
+  __typename?: 'StreamActivityReactionCounts';
+  comments?: Maybe<Scalars['Int']>;
+  likes?: Maybe<Scalars['Int']>;
+};
+
+export type StreamEnrichedActivity = {
+  __typename?: 'StreamEnrichedActivity';
+  actor: StreamFeedUser;
+  extraData: StreamActivityExtraData;
+  id: Scalars['String'];
+  object: Scalars['String'];
+  reactionCounts?: Maybe<StreamActivityReactionCounts>;
+  time: Scalars['DateTime'];
+  userLikeReactionId?: Maybe<Scalars['String']>;
+  verb: Scalars['String'];
+};
+
+export type StreamFeedClub = {
+  __typename?: 'StreamFeedClub';
+  data: StreamFeedClubData;
+  id: Scalars['String'];
+};
+
+export type StreamFeedClubData = {
+  __typename?: 'StreamFeedClubData';
+  image?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export type StreamFeedUser = {
+  __typename?: 'StreamFeedUser';
+  data: StreamFeedUserData;
+  id: Scalars['String'];
+};
+
+export type StreamFeedUserData = {
+  __typename?: 'StreamFeedUserData';
+  image?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 export type TextSearchResult = {
@@ -1742,56 +2103,6 @@ export enum TimeUnit {
   Seconds = 'SECONDS'
 }
 
-export type TimelinePostDataRequestInput = {
-  activityId: Scalars['String'];
-  objectId: Scalars['ID'];
-  objectType: TimelinePostType;
-  posterId: Scalars['ID'];
-};
-
-export type TimelinePostFullData = {
-  __typename?: 'TimelinePostFullData';
-  activityId: Scalars['String'];
-  caption?: Maybe<Scalars['String']>;
-  creator: TimelinePostObjectDataUser;
-  object: TimelinePostObjectDataObject;
-  postedAt: Scalars['DateTime'];
-  poster: TimelinePostObjectDataUser;
-  tags: Array<Scalars['String']>;
-};
-
-export type TimelinePostObjectData = {
-  __typename?: 'TimelinePostObjectData';
-  activityId: Scalars['String'];
-  creator: TimelinePostObjectDataUser;
-  object: TimelinePostObjectDataObject;
-  poster: TimelinePostObjectDataUser;
-};
-
-export type TimelinePostObjectDataObject = {
-  __typename?: 'TimelinePostObjectDataObject';
-  audioUri?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  imageUri?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  type: TimelinePostType;
-  videoThumbUri?: Maybe<Scalars['String']>;
-  videoUri?: Maybe<Scalars['String']>;
-};
-
-export type TimelinePostObjectDataUser = {
-  __typename?: 'TimelinePostObjectDataUser';
-  avatarUri?: Maybe<Scalars['String']>;
-  displayName: Scalars['String'];
-  id: Scalars['ID'];
-};
-
-export enum TimelinePostType {
-  Announcement = 'ANNOUNCEMENT',
-  Workout = 'WORKOUT',
-  Workoutplan = 'WORKOUTPLAN'
-}
-
 export type UpdateBodyTrackingEntryInput = {
   bodyweight?: InputMaybe<Scalars['Float']>;
   bodyweightUnit?: InputMaybe<BodyweightUnit>;
@@ -1801,21 +2112,25 @@ export type UpdateBodyTrackingEntryInput = {
   photoUris?: InputMaybe<Array<Scalars['String']>>;
 };
 
-export type UpdateClubAnnouncementInput = {
-  audioUri?: InputMaybe<Scalars['String']>;
-  description?: InputMaybe<Scalars['String']>;
-  id: Scalars['ID'];
-  imageUri?: InputMaybe<Scalars['String']>;
-  videoThumbUri?: InputMaybe<Scalars['String']>;
-  videoUri?: InputMaybe<Scalars['String']>;
-};
-
 export type UpdateClubInviteTokenInput = {
   active?: InputMaybe<Scalars['Boolean']>;
   clubId: Scalars['ID'];
   id: Scalars['ID'];
   inviteLimit?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateClubMemberNoteInput = {
+  id: Scalars['ID'];
+  note?: InputMaybe<Scalars['String']>;
+  tags?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type UpdateClubMetaDataAdminInput = {
+  id: Scalars['ID'];
+  metaTags?: InputMaybe<Array<Scalars['String']>>;
+  reasonNotValidated?: InputMaybe<Scalars['String']>;
+  validated?: InputMaybe<PublicContentValidationStatus>;
 };
 
 export type UpdateClubSummaryInput = {
@@ -1843,33 +2158,37 @@ export type UpdateEquipmentInput = {
   name?: InputMaybe<Scalars['String']>;
 };
 
+export type UpdateFitnessBenchmarkInput = {
+  FitnessBenchmarkCategory?: InputMaybe<ConnectRelationInput>;
+  description?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  instructionalVideoThumbUri?: InputMaybe<Scalars['String']>;
+  instructionalVideoUri?: InputMaybe<Scalars['String']>;
+  instructions?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  scope?: InputMaybe<FitnessBenchmarkScope>;
+  type?: InputMaybe<FitnessBenchmarkScoreType>;
+};
+
+export type UpdateFitnessBenchmarkWorkoutInput = {
+  description?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  instructionalVideoThumbUri?: InputMaybe<Scalars['String']>;
+  instructionalVideoUri?: InputMaybe<Scalars['String']>;
+  instructions?: InputMaybe<Scalars['String']>;
+  moveDescriptions?: InputMaybe<Array<Scalars['String']>>;
+  name?: InputMaybe<Scalars['String']>;
+  pointsForMoveCompleted?: InputMaybe<Array<Scalars['Int']>>;
+  rounds?: InputMaybe<Scalars['Int']>;
+  scope?: InputMaybe<FitnessBenchmarkScope>;
+  type?: InputMaybe<FitnessBenchmarkWorkoutScoreType>;
+};
+
 export type UpdateGymProfileInput = {
   Equipments?: InputMaybe<Array<ConnectRelationInput>>;
   description?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   name?: InputMaybe<Scalars['String']>;
-};
-
-export type UpdateJournalGoalInput = {
-  completedDate?: InputMaybe<Scalars['DateTime']>;
-  deadline?: InputMaybe<Scalars['DateTime']>;
-  description?: InputMaybe<Scalars['String']>;
-  id: Scalars['ID'];
-  name?: InputMaybe<Scalars['String']>;
-};
-
-export type UpdateJournalMoodInput = {
-  energyScore?: InputMaybe<Scalars['Int']>;
-  id: Scalars['ID'];
-  moodScore?: InputMaybe<Scalars['Int']>;
-  tags?: InputMaybe<Array<Scalars['String']>>;
-  textNote?: InputMaybe<Scalars['String']>;
-};
-
-export type UpdateJournalNoteInput = {
-  id: Scalars['ID'];
-  textNote?: InputMaybe<Scalars['String']>;
-  voiceNoteUri?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateLoggedWorkoutInput = {
@@ -1941,25 +2260,29 @@ export type UpdateSortPositionInput = {
   sortPosition: Scalars['Int'];
 };
 
-export type UpdateUserBenchmarkEntryInput = {
-  completedOn?: InputMaybe<Scalars['DateTime']>;
-  id: Scalars['String'];
+export type UpdateUserEatWellLogInput = {
+  id: Scalars['ID'];
   note?: InputMaybe<Scalars['String']>;
-  score?: InputMaybe<Scalars['Float']>;
-  videoThumbUri?: InputMaybe<Scalars['String']>;
-  videoUri?: InputMaybe<Scalars['String']>;
+  rating?: InputMaybe<UserDayLogRating>;
 };
 
-export type UpdateUserBenchmarkInput = {
-  benchmarkType: BenchmarkType;
+export type UpdateUserGoalInput = {
+  completedDate?: InputMaybe<Scalars['DateTime']>;
+  deadline?: InputMaybe<Scalars['DateTime']>;
   description?: InputMaybe<Scalars['String']>;
-  equipmentInfo?: InputMaybe<Scalars['String']>;
-  id: Scalars['String'];
-  loadUnit?: InputMaybe<LoadUnit>;
+  id: Scalars['ID'];
   name?: InputMaybe<Scalars['String']>;
 };
 
+export type UpdateUserMeditationLogInput = {
+  id: Scalars['ID'];
+  minutesLogged?: InputMaybe<Scalars['Int']>;
+  note?: InputMaybe<Scalars['String']>;
+};
+
 export type UpdateUserProfileInput = {
+  activeLogDataWidgets?: InputMaybe<Array<Scalars['String']>>;
+  activeProgressWidgets?: InputMaybe<Array<Scalars['String']>>;
   avatarUri?: InputMaybe<Scalars['String']>;
   bio?: InputMaybe<Scalars['String']>;
   birthdate?: InputMaybe<Scalars['DateTime']>;
@@ -1977,11 +2300,14 @@ export type UpdateUserProfileInput = {
   tiktokHandle?: InputMaybe<Scalars['String']>;
   townCity?: InputMaybe<Scalars['String']>;
   userProfileScope?: InputMaybe<UserProfileScope>;
+  workoutsPerWeekTarget?: InputMaybe<Scalars['Int']>;
   youtubeHandle?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateUserProfileResult = {
   __typename?: 'UpdateUserProfileResult';
+  activeLogDataWidgets?: Maybe<Array<Scalars['String']>>;
+  activeProgressWidgets?: Maybe<Array<Scalars['String']>>;
   avatarUri?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   birthdate?: Maybe<Scalars['DateTime']>;
@@ -2000,7 +2326,15 @@ export type UpdateUserProfileResult = {
   tiktokHandle?: Maybe<Scalars['String']>;
   townCity?: Maybe<Scalars['String']>;
   userProfileScope?: Maybe<UserProfileScope>;
+  workoutsPerWeekTarget?: Maybe<Scalars['Int']>;
   youtubeHandle?: Maybe<Scalars['String']>;
+};
+
+export type UpdateUserSleepWellLogInput = {
+  id: Scalars['ID'];
+  minutesSlept?: InputMaybe<Scalars['Int']>;
+  note?: InputMaybe<Scalars['String']>;
+  rating?: InputMaybe<UserDayLogRating>;
 };
 
 export type UpdateWorkoutInput = {
@@ -2009,13 +2343,20 @@ export type UpdateWorkoutInput = {
   contentAccessScope?: InputMaybe<ContentAccessScope>;
   coverImageUri?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
-  difficultyLevel?: InputMaybe<DifficultyLevel>;
   id: Scalars['ID'];
   introAudioUri?: InputMaybe<Scalars['String']>;
   introVideoThumbUri?: InputMaybe<Scalars['String']>;
   introVideoUri?: InputMaybe<Scalars['String']>;
   lengthMinutes?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateWorkoutMetaDataAdminInput = {
+  difficultyLevel?: InputMaybe<DifficultyLevel>;
+  id: Scalars['ID'];
+  metaTags?: InputMaybe<Array<Scalars['String']>>;
+  reasonNotValidated?: InputMaybe<Scalars['String']>;
+  validated?: InputMaybe<PublicContentValidationStatus>;
 };
 
 export type UpdateWorkoutMoveInput = {
@@ -2057,6 +2398,14 @@ export type UpdateWorkoutPlanInput = {
   name?: InputMaybe<Scalars['String']>;
 };
 
+export type UpdateWorkoutPlanMetaDataAdminInput = {
+  difficultyLevel?: InputMaybe<DifficultyLevel>;
+  id: Scalars['ID'];
+  metaTags?: InputMaybe<Array<Scalars['String']>>;
+  reasonNotValidated?: InputMaybe<Scalars['String']>;
+  validated?: InputMaybe<PublicContentValidationStatus>;
+};
+
 export type UpdateWorkoutPlanReviewInput = {
   comment?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
@@ -2095,46 +2444,6 @@ export type UserAvatarData = {
   id: Scalars['ID'];
 };
 
-export type UserBenchmark = {
-  __typename?: 'UserBenchmark';
-  UserBenchmarkEntries: Array<UserBenchmarkEntry>;
-  benchmarkType: BenchmarkType;
-  createdAt: Scalars['DateTime'];
-  description?: Maybe<Scalars['String']>;
-  equipmentInfo?: Maybe<Scalars['String']>;
-  id: Scalars['String'];
-  lastEntryAt: Scalars['DateTime'];
-  loadUnit: LoadUnit;
-  name: Scalars['String'];
-};
-
-export type UserBenchmarkEntry = {
-  __typename?: 'UserBenchmarkEntry';
-  completedOn: Scalars['DateTime'];
-  createdAt: Scalars['DateTime'];
-  id: Scalars['String'];
-  note?: Maybe<Scalars['String']>;
-  score: Scalars['Float'];
-  videoThumbUri?: Maybe<Scalars['String']>;
-  videoUri?: Maybe<Scalars['String']>;
-};
-
-export type UserBenchmarkSummary = {
-  __typename?: 'UserBenchmarkSummary';
-  benchmarkType: BenchmarkType;
-  equipmentInfo?: Maybe<Scalars['String']>;
-  id: Scalars['String'];
-  lastEntryAt: Scalars['DateTime'];
-  loadUnit: LoadUnit;
-  name: Scalars['String'];
-};
-
-export type UserBenchmarkWithBestEntry = {
-  __typename?: 'UserBenchmarkWithBestEntry';
-  BestEntry?: Maybe<UserBenchmarkEntry>;
-  UserBenchmarkSummary: UserBenchmarkSummary;
-};
-
 export enum UserClubMemberStatus {
   Admin = 'ADMIN',
   Member = 'MEMBER',
@@ -2142,12 +2451,70 @@ export enum UserClubMemberStatus {
   Owner = 'OWNER'
 }
 
+export type UserDayLogMood = {
+  __typename?: 'UserDayLogMood';
+  createdAt: Scalars['DateTime'];
+  energyScore: Scalars['Int'];
+  id: Scalars['ID'];
+  moodScore: Scalars['Int'];
+  note?: Maybe<Scalars['String']>;
+  tags: Array<Scalars['String']>;
+};
+
+export enum UserDayLogRating {
+  Average = 'AVERAGE',
+  Bad = 'BAD',
+  Good = 'GOOD'
+}
+
+export type UserEatWellLog = {
+  __typename?: 'UserEatWellLog';
+  createdAt: Scalars['DateTime'];
+  dayNumber: Scalars['Int'];
+  id: Scalars['ID'];
+  note?: Maybe<Scalars['String']>;
+  rating: UserDayLogRating;
+  year: Scalars['Int'];
+};
+
+export type UserExerciseLoadTracker = {
+  __typename?: 'UserExerciseLoadTracker';
+  Equipment?: Maybe<Equipment>;
+  Move: Move;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  loadUnit: LoadUnit;
+  reps: Scalars['Int'];
+};
+
+export type UserGoal = {
+  __typename?: 'UserGoal';
+  completedDate?: Maybe<Scalars['DateTime']>;
+  createdAt: Scalars['DateTime'];
+  deadline?: Maybe<Scalars['DateTime']>;
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type UserMeditationLog = {
+  __typename?: 'UserMeditationLog';
+  createdAt: Scalars['DateTime'];
+  dayNumber: Scalars['Int'];
+  id: Scalars['ID'];
+  minutesLogged: Scalars['Int'];
+  note?: Maybe<Scalars['String']>;
+  year: Scalars['Int'];
+};
+
 export type UserProfile = {
   __typename?: 'UserProfile';
-  BenchmarksWithBestEntries: Array<UserBenchmarkWithBestEntry>;
   Clubs: Array<ClubSummary>;
   LifetimeLogStatsSummary?: Maybe<LifetimeLogStatsSummary>;
   Skills: Array<Skill>;
+  activeLogDataWidgets?: Maybe<Array<Scalars['String']>>;
+  activeProgressWidgets?: Maybe<Array<Scalars['String']>>;
   avatarUri?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   birthdate?: Maybe<Scalars['DateTime']>;
@@ -2166,6 +2533,7 @@ export type UserProfile = {
   townCity?: Maybe<Scalars['String']>;
   userProfileScope: UserProfileScope;
   workoutCount?: Maybe<Scalars['Int']>;
+  workoutsPerWeekTarget?: Maybe<Scalars['Int']>;
   youtubeHandle?: Maybe<Scalars['String']>;
 };
 
@@ -2189,6 +2557,33 @@ export type UserProfileSummary = {
   workoutCount: Scalars['Int'];
 };
 
+export type UserRecentlyViewedObject = {
+  __typename?: 'UserRecentlyViewedObject';
+  Club?: Maybe<ClubSummary>;
+  Workout?: Maybe<WorkoutSummary>;
+  WorkoutPlan?: Maybe<WorkoutPlanSummary>;
+};
+
+export type UserSleepWellLog = {
+  __typename?: 'UserSleepWellLog';
+  createdAt: Scalars['DateTime'];
+  dayNumber: Scalars['Int'];
+  id: Scalars['ID'];
+  minutesSlept?: Maybe<Scalars['Int']>;
+  note?: Maybe<Scalars['String']>;
+  rating: UserDayLogRating;
+  year: Scalars['Int'];
+};
+
+export type WelcomeTodoItem = {
+  __typename?: 'WelcomeTodoItem';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  routeTo?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
+  videoUri?: Maybe<Scalars['String']>;
+};
+
 export type Workout = {
   __typename?: 'Workout';
   User: UserAvatarData;
@@ -2207,6 +2602,7 @@ export type Workout = {
   introVideoUri?: Maybe<Scalars['String']>;
   lengthMinutes?: Maybe<Scalars['Int']>;
   name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type WorkoutFiltersInput = {
@@ -2272,6 +2668,7 @@ export type WorkoutPlan = {
   introVideoUri?: Maybe<Scalars['String']>;
   lengthWeeks: Scalars['Int'];
   name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type WorkoutPlanDay = {
@@ -2345,7 +2742,34 @@ export type WorkoutPlanSummary = {
   reviewCount: Scalars['Int'];
   reviewScore?: Maybe<Scalars['Float']>;
   tags: Array<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
   workoutsCount: Scalars['Int'];
+};
+
+export type WorkoutPlanWithMetaDataAdmin = {
+  __typename?: 'WorkoutPlanWithMetaDataAdmin';
+  User: UserAvatarData;
+  WorkoutPlanDays: Array<WorkoutPlanDay>;
+  WorkoutPlanEnrolments: Array<WorkoutPlanEnrolment>;
+  WorkoutPlanReviews: Array<WorkoutPlanReview>;
+  WorkoutTags: Array<WorkoutTag>;
+  archived: Scalars['Boolean'];
+  contentAccessScope: ContentAccessScope;
+  coverImageUri?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  daysPerWeek: Scalars['Int'];
+  description?: Maybe<Scalars['String']>;
+  difficultyLevel?: Maybe<DifficultyLevel>;
+  id: Scalars['ID'];
+  introAudioUri?: Maybe<Scalars['String']>;
+  introVideoThumbUri?: Maybe<Scalars['String']>;
+  introVideoUri?: Maybe<Scalars['String']>;
+  lengthWeeks: Scalars['Int'];
+  metaTags: Array<Scalars['String']>;
+  name: Scalars['String'];
+  reasonNotValidated?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  validated: PublicContentValidationStatus;
 };
 
 export type WorkoutSection = {
@@ -2368,8 +2792,6 @@ export type WorkoutSection = {
 
 export type WorkoutSectionType = {
   __typename?: 'WorkoutSectionType';
-  LoggedWorkoutSections: Array<LoggedWorkoutSection>;
-  WorkoutSections: Array<WorkoutSection>;
   description: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
@@ -2401,18 +2823,22 @@ export type WorkoutSummary = {
   __typename?: 'WorkoutSummary';
   User: UserAvatarData;
   archived: Scalars['Boolean'];
+  bodyAreas: Array<Scalars['ID']>;
   coverImageUri?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
   difficultyLevel?: Maybe<DifficultyLevel>;
   equipments: Array<Scalars['String']>;
+  goals: Array<Scalars['String']>;
   hasClassAudio: Scalars['Boolean'];
   hasClassVideo: Scalars['Boolean'];
   id: Scalars['ID'];
   lengthMinutes?: Maybe<Scalars['Int']>;
   loggedSessionsCount: Scalars['Int'];
   name: Scalars['String'];
+  sectionTypes: Array<Scalars['String']>;
   tags: Array<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
 };
 
 export type WorkoutTag = {
@@ -2421,26 +2847,111 @@ export type WorkoutTag = {
   tag: Scalars['String'];
 };
 
+export type WorkoutWithMetaDataAdmin = {
+  __typename?: 'WorkoutWithMetaDataAdmin';
+  User: UserAvatarData;
+  WorkoutGoals: Array<WorkoutGoal>;
+  WorkoutSections: Array<WorkoutSection>;
+  WorkoutTags: Array<WorkoutTag>;
+  archived: Scalars['Boolean'];
+  contentAccessScope: ContentAccessScope;
+  coverImageUri?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  difficultyLevel?: Maybe<DifficultyLevel>;
+  id: Scalars['ID'];
+  introAudioUri?: Maybe<Scalars['String']>;
+  introVideoThumbUri?: Maybe<Scalars['String']>;
+  introVideoUri?: Maybe<Scalars['String']>;
+  lengthMinutes?: Maybe<Scalars['Int']>;
+  metaTags: Array<Scalars['String']>;
+  name: Scalars['String'];
+  reasonNotValidated?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  validated: PublicContentValidationStatus;
+};
+
+export type ClubWithMetaDataAdminDataFragment = { __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string>, Owner: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, Admins: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }>, Members: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }> };
+
+export type ClubSummaryFragment = { __typename: 'ClubSummary', id: string, createdAt: any, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, location?: string | null | undefined, memberCount: number, workoutCount: number, planCount: number };
+
+export type PublicClubSummaryAdminFragment = { __typename: 'PublicClubSummaryAdmin', id: string, createdAt: any, name: string };
+
+export type ClubMemberNoteFragment = { __typename: 'ClubMemberNote', id: string, createdAt: any, note: string, tags: Array<string> };
+
+export type ClubChatSummaryFragment = { __typename?: 'ClubChatSummary', id: string, name: string, coverImageUri?: string | null | undefined, Owner: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, Admins: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }>, Members: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }> };
+
+export type ClubMemberSummaryFragment = { __typename: 'ClubMemberSummary', id: string, displayName: string, avatarUri?: string | null | undefined, townCity?: string | null | undefined, countryCode?: string | null | undefined, tagline?: string | null | undefined, skills: Array<string> };
+
+export type ClubInviteTokenFragment = { __typename: 'ClubInviteToken', id: string, createdAt: any, name: string, active: boolean, inviteLimit: number, joinedUserIds: Array<string> };
+
+export type FitnessBenchmarkCategoryFragment = { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string };
+
+export type FitnessBenchmarkFragment = { __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined };
+
+export type FitnessBenchmarkScoreFragment = { __typename: 'FitnessBenchmarkScore', id: string, createdAt: any, completedOn: any, score: number, note?: string | null | undefined, videoUri?: string | null | undefined, videoThumbUri?: string | null | undefined };
+
+export type FitnessBenchmarkWorkoutFragment = { __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number> };
+
+export type FitnessBenchmarkWorkoutScoreFragment = { __typename: 'FitnessBenchmarkWorkoutScore', id: string, createdAt: any, completedOn: any, score: number, note?: string | null | undefined };
+
 export type EquipmentFragment = { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean };
 
 export type BodyAreaFragment = { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower };
 
-export type ClubSummaryFragment = { __typename: 'ClubSummary', id: string, createdAt: any, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, location?: string | null | undefined, memberCount: number, workoutCount: number, planCount: number };
+export type MoveFragment = { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType> };
 
 export type MoveTypeFragment = { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined };
 
-export type WorkoutSummaryFragment = { __typename: 'WorkoutSummary', id: string, createdAt: any, archived: boolean, name: string, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, description?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, loggedSessionsCount: number, hasClassVideo: boolean, hasClassAudio: boolean, equipments: Array<string>, tags: Array<string>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } };
-
-export type WorkoutPlanSummaryFragment = { __typename: 'WorkoutPlanSummary', id: string, createdAt: any, archived: boolean, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, workoutsCount: number, enrolmentsCount: number, tags: Array<string>, reviewScore?: number | null | undefined, reviewCount: number, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, goals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }> };
-
-export type WorkoutGoalFragment = { __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string };
+export type ProgressWidgetFragment = { __typename: 'ProgressWidget', id: string, createdAt: any, name: string, subtitle?: string | null | undefined, description?: string | null | undefined };
 
 export type UserAvatarDataFragment = { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string };
 
-export type BodyAreasQueryVariables = Exact<{ [key: string]: never; }>;
+export type UserProfileSummaryFragment = { __typename: 'UserProfileSummary', userProfileScope: UserProfileScope, id: string, avatarUri?: string | null | undefined, tagline?: string | null | undefined, townCity?: string | null | undefined, countryCode?: string | null | undefined, displayName: string, workoutCount: number, planCount: number, skills: Array<string> };
+
+export type WorkoutWithMetaDataAdminDataFragment = { __typename: 'WorkoutWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> };
+
+export type WorkoutDataFragment = { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> };
+
+export type PublicWorkoutSummaryAdminFragment = { __typename: 'PublicWorkoutSummaryAdmin', id: string, createdAt: any, updatedAt: any, name: string };
+
+export type ArchivedWorkoutFragment = { __typename: 'Workout', id: string, name: string, archived: boolean };
+
+export type WorkoutGoalFragment = { __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string };
+
+export type WorkoutSectionFragment = { __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined };
+
+export type WorkoutSectionTypeFragment = { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> };
+
+export type WorkoutSetFragment = { __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number };
+
+export type WorkoutMoveFragment = { __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit };
+
+export type WorkoutTagFragment = { __typename: 'WorkoutTag', id: string, tag: string };
+
+export type WorkoutPlanEnrolmentFragment = { __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined };
+
+export type CompletedWorkoutPlanDayWorkoutFragment = { __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string };
+
+export type WorkoutPlanWithMetaDataAdminDataFragment = { __typename: 'WorkoutPlanWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutPlanDays: Array<{ __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number, WorkoutPlanDayWorkouts: Array<{ __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number, Workout: { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } }> }>, WorkoutPlanReviews: Array<{ __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutPlanEnrolments: Array<{ __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined, CompletedWorkoutPlanDayWorkouts: Array<{ __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string }>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> };
+
+export type PublicWorkoutPlanSummaryAdminFragment = { __typename: 'PublicWorkoutPlanSummaryAdmin', id: string, createdAt: any, updatedAt: any, name: string };
+
+export type WorkoutPlanDayFragment = { __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number };
+
+export type WorkoutPlanDayWorkoutFragment = { __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number };
+
+export type WorkoutPlanReviewFragment = { __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined };
+
+export type AdminAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type BodyAreasQuery = { __typename?: 'Query', bodyAreas: Array<{ __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower }> };
+export type AdminAllUsersQuery = { __typename?: 'Query', adminAllUsers: Array<{ __typename: 'UserProfileSummary', userProfileScope: UserProfileScope, id: string, avatarUri?: string | null | undefined, tagline?: string | null | undefined, townCity?: string | null | undefined, countryCode?: string | null | undefined, displayName: string, workoutCount: number, planCount: number, skills: Array<string>, Clubs: Array<{ __typename: 'ClubSummary', id: string, createdAt: any, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, location?: string | null | undefined, memberCount: number, workoutCount: number, planCount: number, Owner: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, Admins: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }> }> }> };
+
+export type CoreDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CoreDataQuery = { __typename?: 'Query', coreData: { __typename: 'CoreData', bodyAreas: Array<{ __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower }>, equipment: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, moveTypes: Array<{ __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }>, workoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, workoutSectionTypes: Array<{ __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }>, standardMoves: Array<{ __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> }>, progressWidgets: Array<{ __typename: 'ProgressWidget', id: string, createdAt: any, name: string, subtitle?: string | null | undefined, description?: string | null | undefined }>, fitnessBenchmarkCategories: Array<{ __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string }>, fitnessBenchmarks: Array<{ __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, FitnessBenchmarkCategory: { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string } }>, fitnessBenchmarkWorkouts: Array<{ __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number> }> } };
 
 export type CreateEquipmentMutationVariables = Exact<{
   data: CreateEquipmentInput;
@@ -2449,11 +2960,6 @@ export type CreateEquipmentMutationVariables = Exact<{
 
 export type CreateEquipmentMutation = { __typename?: 'Mutation', createEquipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined };
 
-export type EquipmentsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type EquipmentsQuery = { __typename?: 'Query', equipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> };
-
 export type UpdateEquipmentMutationVariables = Exact<{
   data: UpdateEquipmentInput;
 }>;
@@ -2461,82 +2967,175 @@ export type UpdateEquipmentMutationVariables = Exact<{
 
 export type UpdateEquipmentMutation = { __typename?: 'Mutation', updateEquipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined };
 
+export type CreateFitnessBenchmarkMutationVariables = Exact<{
+  data: CreateFitnessBenchmarkInput;
+}>;
+
+
+export type CreateFitnessBenchmarkMutation = { __typename?: 'Mutation', createFitnessBenchmark: { __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, FitnessBenchmarkCategory: { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string } } };
+
+export type CreateFitnessBenchmarkWorkoutMutationVariables = Exact<{
+  data: CreateFitnessBenchmarkWorkoutInput;
+}>;
+
+
+export type CreateFitnessBenchmarkWorkoutMutation = { __typename?: 'Mutation', createFitnessBenchmarkWorkout: { __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number> } };
+
+export type DeleteFitnessBenchmarkMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteFitnessBenchmarkMutation = { __typename?: 'Mutation', deleteFitnessBenchmark: string };
+
+export type DeleteFitnessBenchmarkWorkoutMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteFitnessBenchmarkWorkoutMutation = { __typename?: 'Mutation', deleteFitnessBenchmarkWorkout: string };
+
+export type UpdateFitnessBenchmarkWorkoutMutationVariables = Exact<{
+  data: UpdateFitnessBenchmarkWorkoutInput;
+}>;
+
+
+export type UpdateFitnessBenchmarkWorkoutMutation = { __typename?: 'Mutation', updateFitnessBenchmarkWorkout: { __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number> } };
+
+export type UpdateFitnessBenchmarkMutationVariables = Exact<{
+  data: UpdateFitnessBenchmarkInput;
+}>;
+
+
+export type UpdateFitnessBenchmarkMutation = { __typename?: 'Mutation', updateFitnessBenchmark: { __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, FitnessBenchmarkCategory: { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string } } };
+
 export type CreateMoveMutationVariables = Exact<{
   data: CreateMoveInput;
 }>;
 
 
-export type CreateMoveMutation = { __typename?: 'Mutation', createMove: { __typename?: 'Move', id: string, name: string, description?: string | null | undefined, searchTerms?: string | null | undefined, validRepTypes: Array<WorkoutMoveRepType>, demoVideoUri?: string | null | undefined, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }> } };
-
-export type StandardMovesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type StandardMovesQuery = { __typename?: 'Query', standardMoves: Array<{ __typename?: 'Move', id: string, name: string, description?: string | null | undefined, searchTerms?: string | null | undefined, validRepTypes: Array<WorkoutMoveRepType>, demoVideoUri?: string | null | undefined, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }> }> };
+export type CreateMoveMutation = { __typename?: 'Mutation', createMove: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }> } };
 
 export type UpdateMoveMutationVariables = Exact<{
   data: UpdateMoveInput;
 }>;
 
 
-export type UpdateMoveMutation = { __typename?: 'Mutation', updateMove: { __typename?: 'Move', id: string, name: string, description?: string | null | undefined, searchTerms?: string | null | undefined, validRepTypes: Array<WorkoutMoveRepType>, demoVideoUri?: string | null | undefined, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }> } };
+export type UpdateMoveMutation = { __typename?: 'Mutation', updateMove: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }> } };
 
-export type MoveTypesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MoveTypesQuery = { __typename?: 'Query', moveTypes: Array<{ __typename?: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }> };
-
-export type WorkoutGoalsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type WorkoutGoalsQuery = { __typename?: 'Query', workoutGoals: Array<{ __typename?: 'WorkoutGoal', id: string, name: string, description: string }> };
-
-export type WorkoutSectionTypesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type WorkoutSectionTypesQuery = { __typename?: 'Query', workoutSectionTypes: Array<{ __typename?: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }> };
-
-export type PublicClubsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PublicClubsQuery = { __typename?: 'Query', publicClubs: Array<{ __typename: 'ClubSummary', id: string, createdAt: any, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, location?: string | null | undefined, memberCount: number, workoutCount: number, planCount: number, Owner: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, Admins: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }> }> };
-
-export type PublicWorkoutPlansQueryVariables = Exact<{
-  cursor?: InputMaybe<Scalars['ID']>;
-  filters?: InputMaybe<WorkoutPlanFiltersInput>;
-  take?: InputMaybe<Scalars['Int']>;
+export type AdminPublicClubByIdQueryVariables = Exact<{
+  id: Scalars['ID'];
 }>;
 
 
-export type PublicWorkoutPlansQuery = { __typename?: 'Query', publicWorkoutPlans: Array<{ __typename: 'WorkoutPlanSummary', id: string, createdAt: any, archived: boolean, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, workoutsCount: number, enrolmentsCount: number, tags: Array<string>, reviewScore?: number | null | undefined, reviewCount: number, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, goals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }> }> };
+export type AdminPublicClubByIdQuery = { __typename?: 'Query', adminPublicClubById: { __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string>, Owner: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, Admins: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }>, Members: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }> } };
 
-export type PublicWorkoutsQueryVariables = Exact<{
-  cursor?: InputMaybe<Scalars['ID']>;
-  filters?: InputMaybe<WorkoutFiltersInput>;
-  take?: InputMaybe<Scalars['Int']>;
+export type AdminPublicWorkoutByIdQueryVariables = Exact<{
+  id: Scalars['ID'];
 }>;
 
 
-export type PublicWorkoutsQuery = { __typename?: 'Query', publicWorkouts: Array<{ __typename: 'WorkoutSummary', id: string, createdAt: any, archived: boolean, name: string, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, description?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, loggedSessionsCount: number, hasClassVideo: boolean, hasClassAudio: boolean, equipments: Array<string>, tags: Array<string>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> };
+export type AdminPublicWorkoutByIdQuery = { __typename?: 'Query', adminPublicWorkoutById: { __typename: 'WorkoutWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } };
 
-export const EquipmentFragmentDoc = gql`
-    fragment Equipment on Equipment {
+export type AdminPublicWorkoutPlanByIdQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AdminPublicWorkoutPlanByIdQuery = { __typename?: 'Query', adminPublicWorkoutPlanById: { __typename: 'WorkoutPlanWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutPlanDays: Array<{ __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number, WorkoutPlanDayWorkouts: Array<{ __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number, Workout: { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } }> }>, WorkoutPlanReviews: Array<{ __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutPlanEnrolments: Array<{ __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined, CompletedWorkoutPlanDayWorkouts: Array<{ __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string }>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> } };
+
+export type AdminPublicClubCountsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminPublicClubCountsQuery = { __typename?: 'Query', adminPublicClubCounts: { __typename: 'PublicClubCountsAdmin', pending: number, valid: number, invalid: number } };
+
+export type AdminPublicWorkoutPlanCountsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminPublicWorkoutPlanCountsQuery = { __typename?: 'Query', adminPublicWorkoutPlanCounts: { __typename: 'PublicWorkoutPlanCountsAdmin', pending: number, valid: number, invalid: number } };
+
+export type AdminPublicWorkoutCountsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminPublicWorkoutCountsQuery = { __typename?: 'Query', adminPublicWorkoutCounts: { __typename: 'PublicWorkoutCountsAdmin', pending: number, valid: number, invalid: number } };
+
+export type UpdateClubMetaDataAdminMutationVariables = Exact<{
+  data: UpdateClubMetaDataAdminInput;
+}>;
+
+
+export type UpdateClubMetaDataAdminMutation = { __typename?: 'Mutation', updateClubMetaDataAdmin: { __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string>, Owner: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, Admins: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }>, Members: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }> } };
+
+export type UpdateWorkoutMetaDataAdminMutationVariables = Exact<{
+  data: UpdateWorkoutMetaDataAdminInput;
+}>;
+
+
+export type UpdateWorkoutMetaDataAdminMutation = { __typename?: 'Mutation', updateWorkoutMetaDataAdmin: { __typename: 'WorkoutWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } };
+
+export type UpdateWorkoutPlanMetaDataAdminMutationVariables = Exact<{
+  data: UpdateWorkoutPlanMetaDataAdminInput;
+}>;
+
+
+export type UpdateWorkoutPlanMetaDataAdminMutation = { __typename?: 'Mutation', updateWorkoutPlanMetaDataAdmin?: { __typename: 'WorkoutPlanWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthWeeks: number, daysPerWeek: number, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutPlanDays: Array<{ __typename: 'WorkoutPlanDay', id: string, note?: string | null | undefined, dayNumber: number, WorkoutPlanDayWorkouts: Array<{ __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number, Workout: { __typename: 'Workout', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> } }> }>, WorkoutPlanReviews: Array<{ __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutPlanEnrolments: Array<{ __typename: 'WorkoutPlanEnrolment', id: string, startDate?: any | null | undefined, CompletedWorkoutPlanDayWorkouts: Array<{ __typename: 'CompletedWorkoutPlanDayWorkout', id: string, loggedWorkoutId: string, workoutPlanDayWorkoutId: string }>, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string } }> } | null | undefined };
+
+export type AdminPublicClubSummariesQueryVariables = Exact<{
+  status: PublicContentValidationStatus;
+}>;
+
+
+export type AdminPublicClubSummariesQuery = { __typename?: 'Query', adminPublicClubSummaries: Array<{ __typename: 'PublicClubSummaryAdmin', id: string, createdAt: any, name: string }> };
+
+export type AdminPublicWorkoutPlanSummariesQueryVariables = Exact<{
+  status: PublicContentValidationStatus;
+}>;
+
+
+export type AdminPublicWorkoutPlanSummariesQuery = { __typename?: 'Query', adminPublicWorkoutPlanSummaries: Array<{ __typename: 'PublicWorkoutPlanSummaryAdmin', id: string, createdAt: any, updatedAt: any, name: string }> };
+
+export type AdminPublicWorkoutSummariesQueryVariables = Exact<{
+  status: PublicContentValidationStatus;
+}>;
+
+
+export type AdminPublicWorkoutSummariesQuery = { __typename?: 'Query', adminPublicWorkoutSummaries: Array<{ __typename: 'PublicWorkoutSummaryAdmin', id: string, createdAt: any, updatedAt: any, name: string }> };
+
+export const UserAvatarDataFragmentDoc = gql`
+    fragment UserAvatarData on UserAvatarData {
   __typename
   id
-  name
-  altNames
-  loadAdjustable
+  avatarUri
+  displayName
 }
     `;
-export const BodyAreaFragmentDoc = gql`
-    fragment BodyArea on BodyArea {
+export const ClubWithMetaDataAdminDataFragmentDoc = gql`
+    fragment ClubWithMetaDataAdminData on ClubWithMetaDataAdmin {
   __typename
   id
+  createdAt
   name
-  altNames
-  frontBack
-  upperLower
+  description
+  location
+  coverImageUri
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+  contentAccessScope
+  validated
+  reasonNotValidated
+  metaTags
+  Owner {
+    ...UserAvatarData
+  }
+  Admins {
+    ...UserAvatarData
+  }
+  Members {
+    ...UserAvatarData
+  }
 }
-    `;
+    ${UserAvatarDataFragmentDoc}`;
 export const ClubSummaryFragmentDoc = gql`
     fragment ClubSummary on ClubSummary {
   __typename
@@ -2555,44 +3154,149 @@ export const ClubSummaryFragmentDoc = gql`
   planCount
 }
     `;
-export const MoveTypeFragmentDoc = gql`
-    fragment MoveType on MoveType {
-  __typename
-  id
-  name
-  description
-  imageUri
-}
-    `;
-export const UserAvatarDataFragmentDoc = gql`
-    fragment UserAvatarData on UserAvatarData {
-  __typename
-  id
-  avatarUri
-  displayName
-}
-    `;
-export const WorkoutSummaryFragmentDoc = gql`
-    fragment WorkoutSummary on WorkoutSummary {
+export const PublicClubSummaryAdminFragmentDoc = gql`
+    fragment PublicClubSummaryAdmin on PublicClubSummaryAdmin {
   __typename
   id
   createdAt
-  archived
   name
-  User {
-    ...UserAvatarData
-  }
-  lengthMinutes
-  coverImageUri
-  description
-  difficultyLevel
-  loggedSessionsCount
-  hasClassVideo
-  hasClassAudio
-  equipments
+}
+    `;
+export const ClubMemberNoteFragmentDoc = gql`
+    fragment ClubMemberNote on ClubMemberNote {
+  __typename
+  id
+  createdAt
+  note
   tags
 }
+    `;
+export const ClubChatSummaryFragmentDoc = gql`
+    fragment ClubChatSummary on ClubChatSummary {
+  id
+  name
+  coverImageUri
+  Owner {
+    ...UserAvatarData
+  }
+  Admins {
+    ...UserAvatarData
+  }
+  Members {
+    ...UserAvatarData
+  }
+}
     ${UserAvatarDataFragmentDoc}`;
+export const ClubMemberSummaryFragmentDoc = gql`
+    fragment ClubMemberSummary on ClubMemberSummary {
+  __typename
+  id
+  displayName
+  avatarUri
+  townCity
+  countryCode
+  tagline
+  skills
+}
+    `;
+export const ClubInviteTokenFragmentDoc = gql`
+    fragment ClubInviteToken on ClubInviteToken {
+  __typename
+  id
+  createdAt
+  name
+  active
+  inviteLimit
+  joinedUserIds
+}
+    `;
+export const FitnessBenchmarkCategoryFragmentDoc = gql`
+    fragment FitnessBenchmarkCategory on FitnessBenchmarkCategory {
+  __typename
+  id
+  createdAt
+  name
+  description
+}
+    `;
+export const FitnessBenchmarkFragmentDoc = gql`
+    fragment FitnessBenchmark on FitnessBenchmark {
+  __typename
+  id
+  createdAt
+  scope
+  type
+  name
+  description
+  instructions
+  instructionalVideoUri
+  instructionalVideoThumbUri
+}
+    `;
+export const FitnessBenchmarkScoreFragmentDoc = gql`
+    fragment FitnessBenchmarkScore on FitnessBenchmarkScore {
+  __typename
+  id
+  createdAt
+  completedOn
+  score
+  note
+  videoUri
+  videoThumbUri
+}
+    `;
+export const FitnessBenchmarkWorkoutFragmentDoc = gql`
+    fragment FitnessBenchmarkWorkout on FitnessBenchmarkWorkout {
+  __typename
+  id
+  createdAt
+  scope
+  type
+  name
+  description
+  instructions
+  instructionalVideoUri
+  instructionalVideoThumbUri
+  rounds
+  moveDescriptions
+  pointsForMoveCompleted
+}
+    `;
+export const FitnessBenchmarkWorkoutScoreFragmentDoc = gql`
+    fragment FitnessBenchmarkWorkoutScore on FitnessBenchmarkWorkoutScore {
+  __typename
+  id
+  createdAt
+  completedOn
+  score
+  note
+}
+    `;
+export const ProgressWidgetFragmentDoc = gql`
+    fragment ProgressWidget on ProgressWidget {
+  __typename
+  id
+  createdAt
+  name
+  subtitle
+  description
+}
+    `;
+export const UserProfileSummaryFragmentDoc = gql`
+    fragment UserProfileSummary on UserProfileSummary {
+  __typename
+  userProfileScope
+  id
+  avatarUri
+  tagline
+  townCity
+  countryCode
+  displayName
+  workoutCount
+  planCount
+  skills
+}
+    `;
 export const WorkoutGoalFragmentDoc = gql`
     fragment WorkoutGoal on WorkoutGoal {
   __typename
@@ -2602,65 +3306,506 @@ export const WorkoutGoalFragmentDoc = gql`
   hexColor
 }
     `;
-export const WorkoutPlanSummaryFragmentDoc = gql`
-    fragment WorkoutPlanSummary on WorkoutPlanSummary {
+export const WorkoutTagFragmentDoc = gql`
+    fragment WorkoutTag on WorkoutTag {
+  __typename
+  id
+  tag
+}
+    `;
+export const WorkoutSectionFragmentDoc = gql`
+    fragment WorkoutSection on WorkoutSection {
+  __typename
+  id
+  name
+  note
+  rounds
+  timecap
+  sortPosition
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+  classVideoUri
+  classVideoThumbUri
+  classAudioUri
+}
+    `;
+export const WorkoutSectionTypeFragmentDoc = gql`
+    fragment WorkoutSectionType on WorkoutSectionType {
+  __typename
+  id
+  name
+  subtitle
+  description
+  validRepTypes
+}
+    `;
+export const WorkoutSetFragmentDoc = gql`
+    fragment WorkoutSet on WorkoutSet {
+  __typename
+  id
+  sortPosition
+  duration
+}
+    `;
+export const WorkoutMoveFragmentDoc = gql`
+    fragment WorkoutMove on WorkoutMove {
+  __typename
+  id
+  sortPosition
+  reps
+  repType
+  distanceUnit
+  loadAmount
+  loadUnit
+  timeUnit
+}
+    `;
+export const EquipmentFragmentDoc = gql`
+    fragment Equipment on Equipment {
+  __typename
+  id
+  name
+  altNames
+  loadAdjustable
+}
+    `;
+export const MoveFragmentDoc = gql`
+    fragment Move on Move {
+  __typename
+  id
+  archived
+  name
+  searchTerms
+  description
+  demoVideoUri
+  demoVideoThumbUri
+  scope
+  validRepTypes
+}
+    `;
+export const MoveTypeFragmentDoc = gql`
+    fragment MoveType on MoveType {
+  __typename
+  id
+  name
+  description
+  imageUri
+}
+    `;
+export const BodyAreaFragmentDoc = gql`
+    fragment BodyArea on BodyArea {
+  __typename
+  id
+  name
+  altNames
+  frontBack
+  upperLower
+}
+    `;
+export const WorkoutWithMetaDataAdminDataFragmentDoc = gql`
+    fragment WorkoutWithMetaDataAdminData on WorkoutWithMetaDataAdmin {
   __typename
   id
   createdAt
+  updatedAt
   archived
   name
   description
+  lengthMinutes
   coverImageUri
-  lengthWeeks
-  daysPerWeek
-  workoutsCount
+  contentAccessScope
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
   User {
     ...UserAvatarData
   }
-  enrolmentsCount
-  goals {
+  WorkoutGoals {
     ...WorkoutGoal
   }
-  tags
-  reviewScore
-  reviewCount
+  WorkoutTags {
+    ...WorkoutTag
+  }
+  WorkoutSections {
+    ...WorkoutSection
+    WorkoutSectionType {
+      ...WorkoutSectionType
+    }
+    WorkoutSets {
+      ...WorkoutSet
+      WorkoutMoves {
+        ...WorkoutMove
+        Equipment {
+          ...Equipment
+        }
+        Move {
+          ...Move
+          MoveType {
+            ...MoveType
+          }
+          BodyAreaMoveScores {
+            score
+            BodyArea {
+              ...BodyArea
+            }
+          }
+          RequiredEquipments {
+            ...Equipment
+          }
+          SelectableEquipments {
+            ...Equipment
+          }
+        }
+      }
+    }
+  }
+  difficultyLevel
+  metaTags
+  validated
+  reasonNotValidated
 }
     ${UserAvatarDataFragmentDoc}
-${WorkoutGoalFragmentDoc}`;
-export const BodyAreasDocument = gql`
-    query bodyAreas {
-  bodyAreas {
-    ...BodyArea
+${WorkoutGoalFragmentDoc}
+${WorkoutTagFragmentDoc}
+${WorkoutSectionFragmentDoc}
+${WorkoutSectionTypeFragmentDoc}
+${WorkoutSetFragmentDoc}
+${WorkoutMoveFragmentDoc}
+${EquipmentFragmentDoc}
+${MoveFragmentDoc}
+${MoveTypeFragmentDoc}
+${BodyAreaFragmentDoc}`;
+export const PublicWorkoutSummaryAdminFragmentDoc = gql`
+    fragment PublicWorkoutSummaryAdmin on PublicWorkoutSummaryAdmin {
+  __typename
+  id
+  createdAt
+  updatedAt
+  name
+}
+    `;
+export const ArchivedWorkoutFragmentDoc = gql`
+    fragment ArchivedWorkout on Workout {
+  __typename
+  id
+  name
+  archived
+}
+    `;
+export const WorkoutPlanDayFragmentDoc = gql`
+    fragment WorkoutPlanDay on WorkoutPlanDay {
+  id
+  __typename
+  note
+  dayNumber
+}
+    `;
+export const WorkoutPlanDayWorkoutFragmentDoc = gql`
+    fragment WorkoutPlanDayWorkout on WorkoutPlanDayWorkout {
+  id
+  __typename
+  note
+  sortPosition
+}
+    `;
+export const WorkoutDataFragmentDoc = gql`
+    fragment WorkoutData on Workout {
+  __typename
+  id
+  createdAt
+  updatedAt
+  archived
+  name
+  description
+  lengthMinutes
+  coverImageUri
+  contentAccessScope
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+  User {
+    ...UserAvatarData
+  }
+  WorkoutGoals {
+    ...WorkoutGoal
+  }
+  WorkoutTags {
+    ...WorkoutTag
+  }
+  WorkoutSections {
+    ...WorkoutSection
+    WorkoutSectionType {
+      ...WorkoutSectionType
+    }
+    WorkoutSets {
+      ...WorkoutSet
+      WorkoutMoves {
+        ...WorkoutMove
+        Equipment {
+          ...Equipment
+        }
+        Move {
+          ...Move
+          MoveType {
+            ...MoveType
+          }
+          BodyAreaMoveScores {
+            score
+            BodyArea {
+              ...BodyArea
+            }
+          }
+          RequiredEquipments {
+            ...Equipment
+          }
+          SelectableEquipments {
+            ...Equipment
+          }
+        }
+      }
+    }
   }
 }
-    ${BodyAreaFragmentDoc}`;
+    ${UserAvatarDataFragmentDoc}
+${WorkoutGoalFragmentDoc}
+${WorkoutTagFragmentDoc}
+${WorkoutSectionFragmentDoc}
+${WorkoutSectionTypeFragmentDoc}
+${WorkoutSetFragmentDoc}
+${WorkoutMoveFragmentDoc}
+${EquipmentFragmentDoc}
+${MoveFragmentDoc}
+${MoveTypeFragmentDoc}
+${BodyAreaFragmentDoc}`;
+export const WorkoutPlanReviewFragmentDoc = gql`
+    fragment WorkoutPlanReview on WorkoutPlanReview {
+  id
+  __typename
+  createdAt
+  score
+  comment
+}
+    `;
+export const WorkoutPlanEnrolmentFragmentDoc = gql`
+    fragment WorkoutPlanEnrolment on WorkoutPlanEnrolment {
+  __typename
+  id
+  startDate
+}
+    `;
+export const CompletedWorkoutPlanDayWorkoutFragmentDoc = gql`
+    fragment CompletedWorkoutPlanDayWorkout on CompletedWorkoutPlanDayWorkout {
+  __typename
+  id
+  loggedWorkoutId
+  workoutPlanDayWorkoutId
+}
+    `;
+export const WorkoutPlanWithMetaDataAdminDataFragmentDoc = gql`
+    fragment WorkoutPlanWithMetaDataAdminData on WorkoutPlanWithMetaDataAdmin {
+  __typename
+  id
+  createdAt
+  updatedAt
+  archived
+  name
+  description
+  lengthWeeks
+  daysPerWeek
+  coverImageUri
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+  contentAccessScope
+  User {
+    ...UserAvatarData
+  }
+  WorkoutPlanDays {
+    ...WorkoutPlanDay
+    WorkoutPlanDayWorkouts {
+      ...WorkoutPlanDayWorkout
+      Workout {
+        ...WorkoutData
+      }
+    }
+  }
+  WorkoutPlanReviews {
+    ...WorkoutPlanReview
+    User {
+      ...UserAvatarData
+    }
+  }
+  WorkoutTags {
+    ...WorkoutTag
+  }
+  WorkoutPlanEnrolments {
+    ...WorkoutPlanEnrolment
+    CompletedWorkoutPlanDayWorkouts {
+      ...CompletedWorkoutPlanDayWorkout
+    }
+    User {
+      ...UserAvatarData
+    }
+  }
+  difficultyLevel
+  metaTags
+  validated
+  reasonNotValidated
+}
+    ${UserAvatarDataFragmentDoc}
+${WorkoutPlanDayFragmentDoc}
+${WorkoutPlanDayWorkoutFragmentDoc}
+${WorkoutDataFragmentDoc}
+${WorkoutPlanReviewFragmentDoc}
+${WorkoutTagFragmentDoc}
+${WorkoutPlanEnrolmentFragmentDoc}
+${CompletedWorkoutPlanDayWorkoutFragmentDoc}`;
+export const PublicWorkoutPlanSummaryAdminFragmentDoc = gql`
+    fragment PublicWorkoutPlanSummaryAdmin on PublicWorkoutPlanSummaryAdmin {
+  __typename
+  id
+  createdAt
+  updatedAt
+  name
+}
+    `;
+export const AdminAllUsersDocument = gql`
+    query adminAllUsers {
+  adminAllUsers {
+    ...UserProfileSummary
+    Clubs {
+      ...ClubSummary
+      Owner {
+        ...UserAvatarData
+      }
+      Admins {
+        ...UserAvatarData
+      }
+    }
+  }
+}
+    ${UserProfileSummaryFragmentDoc}
+${ClubSummaryFragmentDoc}
+${UserAvatarDataFragmentDoc}`;
 
 /**
- * __useBodyAreasQuery__
+ * __useAdminAllUsersQuery__
  *
- * To run a query within a React component, call `useBodyAreasQuery` and pass it any options that fit your needs.
- * When your component renders, `useBodyAreasQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAdminAllUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useBodyAreasQuery({
+ * const { data, loading, error } = useAdminAllUsersQuery({
  *   variables: {
  *   },
  * });
  */
-export function useBodyAreasQuery(baseOptions?: Apollo.QueryHookOptions<BodyAreasQuery, BodyAreasQueryVariables>) {
+export function useAdminAllUsersQuery(baseOptions?: Apollo.QueryHookOptions<AdminAllUsersQuery, AdminAllUsersQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<BodyAreasQuery, BodyAreasQueryVariables>(BodyAreasDocument, options);
+        return Apollo.useQuery<AdminAllUsersQuery, AdminAllUsersQueryVariables>(AdminAllUsersDocument, options);
       }
-export function useBodyAreasLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BodyAreasQuery, BodyAreasQueryVariables>) {
+export function useAdminAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminAllUsersQuery, AdminAllUsersQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<BodyAreasQuery, BodyAreasQueryVariables>(BodyAreasDocument, options);
+          return Apollo.useLazyQuery<AdminAllUsersQuery, AdminAllUsersQueryVariables>(AdminAllUsersDocument, options);
         }
-export type BodyAreasQueryHookResult = ReturnType<typeof useBodyAreasQuery>;
-export type BodyAreasLazyQueryHookResult = ReturnType<typeof useBodyAreasLazyQuery>;
-export type BodyAreasQueryResult = Apollo.QueryResult<BodyAreasQuery, BodyAreasQueryVariables>;
+export type AdminAllUsersQueryHookResult = ReturnType<typeof useAdminAllUsersQuery>;
+export type AdminAllUsersLazyQueryHookResult = ReturnType<typeof useAdminAllUsersLazyQuery>;
+export type AdminAllUsersQueryResult = Apollo.QueryResult<AdminAllUsersQuery, AdminAllUsersQueryVariables>;
+export const CoreDataDocument = gql`
+    query coreData {
+  coreData {
+    __typename
+    bodyAreas {
+      ...BodyArea
+    }
+    equipment {
+      ...Equipment
+    }
+    moveTypes {
+      ...MoveType
+    }
+    workoutGoals {
+      ...WorkoutGoal
+    }
+    workoutSectionTypes {
+      ...WorkoutSectionType
+    }
+    standardMoves {
+      ...Move
+      MoveType {
+        ...MoveType
+      }
+      BodyAreaMoveScores {
+        score
+        BodyArea {
+          ...BodyArea
+        }
+      }
+      RequiredEquipments {
+        ...Equipment
+      }
+      SelectableEquipments {
+        ...Equipment
+      }
+    }
+    progressWidgets {
+      ...ProgressWidget
+    }
+    fitnessBenchmarkCategories {
+      ...FitnessBenchmarkCategory
+    }
+    fitnessBenchmarks {
+      ...FitnessBenchmark
+      FitnessBenchmarkCategory {
+        ...FitnessBenchmarkCategory
+      }
+    }
+    fitnessBenchmarkWorkouts {
+      ...FitnessBenchmarkWorkout
+    }
+  }
+}
+    ${BodyAreaFragmentDoc}
+${EquipmentFragmentDoc}
+${MoveTypeFragmentDoc}
+${WorkoutGoalFragmentDoc}
+${WorkoutSectionTypeFragmentDoc}
+${MoveFragmentDoc}
+${ProgressWidgetFragmentDoc}
+${FitnessBenchmarkCategoryFragmentDoc}
+${FitnessBenchmarkFragmentDoc}
+${FitnessBenchmarkWorkoutFragmentDoc}`;
+
+/**
+ * __useCoreDataQuery__
+ *
+ * To run a query within a React component, call `useCoreDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCoreDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCoreDataQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCoreDataQuery(baseOptions?: Apollo.QueryHookOptions<CoreDataQuery, CoreDataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CoreDataQuery, CoreDataQueryVariables>(CoreDataDocument, options);
+      }
+export function useCoreDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CoreDataQuery, CoreDataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CoreDataQuery, CoreDataQueryVariables>(CoreDataDocument, options);
+        }
+export type CoreDataQueryHookResult = ReturnType<typeof useCoreDataQuery>;
+export type CoreDataLazyQueryHookResult = ReturnType<typeof useCoreDataLazyQuery>;
+export type CoreDataQueryResult = Apollo.QueryResult<CoreDataQuery, CoreDataQueryVariables>;
 export const CreateEquipmentDocument = gql`
     mutation createEquipment($data: CreateEquipmentInput!) {
   createEquipment(data: $data) {
@@ -2694,40 +3839,6 @@ export function useCreateEquipmentMutation(baseOptions?: Apollo.MutationHookOpti
 export type CreateEquipmentMutationHookResult = ReturnType<typeof useCreateEquipmentMutation>;
 export type CreateEquipmentMutationResult = Apollo.MutationResult<CreateEquipmentMutation>;
 export type CreateEquipmentMutationOptions = Apollo.BaseMutationOptions<CreateEquipmentMutation, CreateEquipmentMutationVariables>;
-export const EquipmentsDocument = gql`
-    query equipments {
-  equipments {
-    ...Equipment
-  }
-}
-    ${EquipmentFragmentDoc}`;
-
-/**
- * __useEquipmentsQuery__
- *
- * To run a query within a React component, call `useEquipmentsQuery` and pass it any options that fit your needs.
- * When your component renders, `useEquipmentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useEquipmentsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useEquipmentsQuery(baseOptions?: Apollo.QueryHookOptions<EquipmentsQuery, EquipmentsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<EquipmentsQuery, EquipmentsQueryVariables>(EquipmentsDocument, options);
-      }
-export function useEquipmentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EquipmentsQuery, EquipmentsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<EquipmentsQuery, EquipmentsQueryVariables>(EquipmentsDocument, options);
-        }
-export type EquipmentsQueryHookResult = ReturnType<typeof useEquipmentsQuery>;
-export type EquipmentsLazyQueryHookResult = ReturnType<typeof useEquipmentsLazyQuery>;
-export type EquipmentsQueryResult = Apollo.QueryResult<EquipmentsQuery, EquipmentsQueryVariables>;
 export const UpdateEquipmentDocument = gql`
     mutation updateEquipment($data: UpdateEquipmentInput!) {
   updateEquipment(data: $data) {
@@ -2761,18 +3872,216 @@ export function useUpdateEquipmentMutation(baseOptions?: Apollo.MutationHookOpti
 export type UpdateEquipmentMutationHookResult = ReturnType<typeof useUpdateEquipmentMutation>;
 export type UpdateEquipmentMutationResult = Apollo.MutationResult<UpdateEquipmentMutation>;
 export type UpdateEquipmentMutationOptions = Apollo.BaseMutationOptions<UpdateEquipmentMutation, UpdateEquipmentMutationVariables>;
+export const CreateFitnessBenchmarkDocument = gql`
+    mutation createFitnessBenchmark($data: CreateFitnessBenchmarkInput!) {
+  createFitnessBenchmark(data: $data) {
+    ...FitnessBenchmark
+    FitnessBenchmarkCategory {
+      ...FitnessBenchmarkCategory
+    }
+  }
+}
+    ${FitnessBenchmarkFragmentDoc}
+${FitnessBenchmarkCategoryFragmentDoc}`;
+export type CreateFitnessBenchmarkMutationFn = Apollo.MutationFunction<CreateFitnessBenchmarkMutation, CreateFitnessBenchmarkMutationVariables>;
+
+/**
+ * __useCreateFitnessBenchmarkMutation__
+ *
+ * To run a mutation, you first call `useCreateFitnessBenchmarkMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateFitnessBenchmarkMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createFitnessBenchmarkMutation, { data, loading, error }] = useCreateFitnessBenchmarkMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateFitnessBenchmarkMutation(baseOptions?: Apollo.MutationHookOptions<CreateFitnessBenchmarkMutation, CreateFitnessBenchmarkMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateFitnessBenchmarkMutation, CreateFitnessBenchmarkMutationVariables>(CreateFitnessBenchmarkDocument, options);
+      }
+export type CreateFitnessBenchmarkMutationHookResult = ReturnType<typeof useCreateFitnessBenchmarkMutation>;
+export type CreateFitnessBenchmarkMutationResult = Apollo.MutationResult<CreateFitnessBenchmarkMutation>;
+export type CreateFitnessBenchmarkMutationOptions = Apollo.BaseMutationOptions<CreateFitnessBenchmarkMutation, CreateFitnessBenchmarkMutationVariables>;
+export const CreateFitnessBenchmarkWorkoutDocument = gql`
+    mutation createFitnessBenchmarkWorkout($data: CreateFitnessBenchmarkWorkoutInput!) {
+  createFitnessBenchmarkWorkout(data: $data) {
+    ...FitnessBenchmarkWorkout
+  }
+}
+    ${FitnessBenchmarkWorkoutFragmentDoc}`;
+export type CreateFitnessBenchmarkWorkoutMutationFn = Apollo.MutationFunction<CreateFitnessBenchmarkWorkoutMutation, CreateFitnessBenchmarkWorkoutMutationVariables>;
+
+/**
+ * __useCreateFitnessBenchmarkWorkoutMutation__
+ *
+ * To run a mutation, you first call `useCreateFitnessBenchmarkWorkoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateFitnessBenchmarkWorkoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createFitnessBenchmarkWorkoutMutation, { data, loading, error }] = useCreateFitnessBenchmarkWorkoutMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateFitnessBenchmarkWorkoutMutation(baseOptions?: Apollo.MutationHookOptions<CreateFitnessBenchmarkWorkoutMutation, CreateFitnessBenchmarkWorkoutMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateFitnessBenchmarkWorkoutMutation, CreateFitnessBenchmarkWorkoutMutationVariables>(CreateFitnessBenchmarkWorkoutDocument, options);
+      }
+export type CreateFitnessBenchmarkWorkoutMutationHookResult = ReturnType<typeof useCreateFitnessBenchmarkWorkoutMutation>;
+export type CreateFitnessBenchmarkWorkoutMutationResult = Apollo.MutationResult<CreateFitnessBenchmarkWorkoutMutation>;
+export type CreateFitnessBenchmarkWorkoutMutationOptions = Apollo.BaseMutationOptions<CreateFitnessBenchmarkWorkoutMutation, CreateFitnessBenchmarkWorkoutMutationVariables>;
+export const DeleteFitnessBenchmarkDocument = gql`
+    mutation deleteFitnessBenchmark($id: ID!) {
+  deleteFitnessBenchmark(id: $id)
+}
+    `;
+export type DeleteFitnessBenchmarkMutationFn = Apollo.MutationFunction<DeleteFitnessBenchmarkMutation, DeleteFitnessBenchmarkMutationVariables>;
+
+/**
+ * __useDeleteFitnessBenchmarkMutation__
+ *
+ * To run a mutation, you first call `useDeleteFitnessBenchmarkMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteFitnessBenchmarkMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteFitnessBenchmarkMutation, { data, loading, error }] = useDeleteFitnessBenchmarkMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteFitnessBenchmarkMutation(baseOptions?: Apollo.MutationHookOptions<DeleteFitnessBenchmarkMutation, DeleteFitnessBenchmarkMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteFitnessBenchmarkMutation, DeleteFitnessBenchmarkMutationVariables>(DeleteFitnessBenchmarkDocument, options);
+      }
+export type DeleteFitnessBenchmarkMutationHookResult = ReturnType<typeof useDeleteFitnessBenchmarkMutation>;
+export type DeleteFitnessBenchmarkMutationResult = Apollo.MutationResult<DeleteFitnessBenchmarkMutation>;
+export type DeleteFitnessBenchmarkMutationOptions = Apollo.BaseMutationOptions<DeleteFitnessBenchmarkMutation, DeleteFitnessBenchmarkMutationVariables>;
+export const DeleteFitnessBenchmarkWorkoutDocument = gql`
+    mutation deleteFitnessBenchmarkWorkout($id: ID!) {
+  deleteFitnessBenchmarkWorkout(id: $id)
+}
+    `;
+export type DeleteFitnessBenchmarkWorkoutMutationFn = Apollo.MutationFunction<DeleteFitnessBenchmarkWorkoutMutation, DeleteFitnessBenchmarkWorkoutMutationVariables>;
+
+/**
+ * __useDeleteFitnessBenchmarkWorkoutMutation__
+ *
+ * To run a mutation, you first call `useDeleteFitnessBenchmarkWorkoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteFitnessBenchmarkWorkoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteFitnessBenchmarkWorkoutMutation, { data, loading, error }] = useDeleteFitnessBenchmarkWorkoutMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteFitnessBenchmarkWorkoutMutation(baseOptions?: Apollo.MutationHookOptions<DeleteFitnessBenchmarkWorkoutMutation, DeleteFitnessBenchmarkWorkoutMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteFitnessBenchmarkWorkoutMutation, DeleteFitnessBenchmarkWorkoutMutationVariables>(DeleteFitnessBenchmarkWorkoutDocument, options);
+      }
+export type DeleteFitnessBenchmarkWorkoutMutationHookResult = ReturnType<typeof useDeleteFitnessBenchmarkWorkoutMutation>;
+export type DeleteFitnessBenchmarkWorkoutMutationResult = Apollo.MutationResult<DeleteFitnessBenchmarkWorkoutMutation>;
+export type DeleteFitnessBenchmarkWorkoutMutationOptions = Apollo.BaseMutationOptions<DeleteFitnessBenchmarkWorkoutMutation, DeleteFitnessBenchmarkWorkoutMutationVariables>;
+export const UpdateFitnessBenchmarkWorkoutDocument = gql`
+    mutation updateFitnessBenchmarkWorkout($data: UpdateFitnessBenchmarkWorkoutInput!) {
+  updateFitnessBenchmarkWorkout(data: $data) {
+    ...FitnessBenchmarkWorkout
+  }
+}
+    ${FitnessBenchmarkWorkoutFragmentDoc}`;
+export type UpdateFitnessBenchmarkWorkoutMutationFn = Apollo.MutationFunction<UpdateFitnessBenchmarkWorkoutMutation, UpdateFitnessBenchmarkWorkoutMutationVariables>;
+
+/**
+ * __useUpdateFitnessBenchmarkWorkoutMutation__
+ *
+ * To run a mutation, you first call `useUpdateFitnessBenchmarkWorkoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateFitnessBenchmarkWorkoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateFitnessBenchmarkWorkoutMutation, { data, loading, error }] = useUpdateFitnessBenchmarkWorkoutMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateFitnessBenchmarkWorkoutMutation(baseOptions?: Apollo.MutationHookOptions<UpdateFitnessBenchmarkWorkoutMutation, UpdateFitnessBenchmarkWorkoutMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateFitnessBenchmarkWorkoutMutation, UpdateFitnessBenchmarkWorkoutMutationVariables>(UpdateFitnessBenchmarkWorkoutDocument, options);
+      }
+export type UpdateFitnessBenchmarkWorkoutMutationHookResult = ReturnType<typeof useUpdateFitnessBenchmarkWorkoutMutation>;
+export type UpdateFitnessBenchmarkWorkoutMutationResult = Apollo.MutationResult<UpdateFitnessBenchmarkWorkoutMutation>;
+export type UpdateFitnessBenchmarkWorkoutMutationOptions = Apollo.BaseMutationOptions<UpdateFitnessBenchmarkWorkoutMutation, UpdateFitnessBenchmarkWorkoutMutationVariables>;
+export const UpdateFitnessBenchmarkDocument = gql`
+    mutation updateFitnessBenchmark($data: UpdateFitnessBenchmarkInput!) {
+  updateFitnessBenchmark(data: $data) {
+    ...FitnessBenchmark
+    FitnessBenchmarkCategory {
+      ...FitnessBenchmarkCategory
+    }
+  }
+}
+    ${FitnessBenchmarkFragmentDoc}
+${FitnessBenchmarkCategoryFragmentDoc}`;
+export type UpdateFitnessBenchmarkMutationFn = Apollo.MutationFunction<UpdateFitnessBenchmarkMutation, UpdateFitnessBenchmarkMutationVariables>;
+
+/**
+ * __useUpdateFitnessBenchmarkMutation__
+ *
+ * To run a mutation, you first call `useUpdateFitnessBenchmarkMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateFitnessBenchmarkMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateFitnessBenchmarkMutation, { data, loading, error }] = useUpdateFitnessBenchmarkMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateFitnessBenchmarkMutation(baseOptions?: Apollo.MutationHookOptions<UpdateFitnessBenchmarkMutation, UpdateFitnessBenchmarkMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateFitnessBenchmarkMutation, UpdateFitnessBenchmarkMutationVariables>(UpdateFitnessBenchmarkDocument, options);
+      }
+export type UpdateFitnessBenchmarkMutationHookResult = ReturnType<typeof useUpdateFitnessBenchmarkMutation>;
+export type UpdateFitnessBenchmarkMutationResult = Apollo.MutationResult<UpdateFitnessBenchmarkMutation>;
+export type UpdateFitnessBenchmarkMutationOptions = Apollo.BaseMutationOptions<UpdateFitnessBenchmarkMutation, UpdateFitnessBenchmarkMutationVariables>;
 export const CreateMoveDocument = gql`
     mutation createMove($data: CreateMoveInput!) {
   createMove(data: $data) {
-    id
-    name
-    description
-    searchTerms
+    __typename
+    ...Move
     MoveType {
       ...MoveType
     }
-    validRepTypes
-    demoVideoUri
     RequiredEquipments {
       ...Equipment
     }
@@ -2787,7 +4096,8 @@ export const CreateMoveDocument = gql`
     }
   }
 }
-    ${MoveTypeFragmentDoc}
+    ${MoveFragmentDoc}
+${MoveTypeFragmentDoc}
 ${EquipmentFragmentDoc}
 ${BodyAreaFragmentDoc}`;
 export type CreateMoveMutationFn = Apollo.MutationFunction<CreateMoveMutation, CreateMoveMutationVariables>;
@@ -2816,74 +4126,14 @@ export function useCreateMoveMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateMoveMutationHookResult = ReturnType<typeof useCreateMoveMutation>;
 export type CreateMoveMutationResult = Apollo.MutationResult<CreateMoveMutation>;
 export type CreateMoveMutationOptions = Apollo.BaseMutationOptions<CreateMoveMutation, CreateMoveMutationVariables>;
-export const StandardMovesDocument = gql`
-    query standardMoves {
-  standardMoves {
-    id
-    name
-    description
-    searchTerms
-    MoveType {
-      ...MoveType
-    }
-    validRepTypes
-    demoVideoUri
-    RequiredEquipments {
-      ...Equipment
-    }
-    SelectableEquipments {
-      ...Equipment
-    }
-    BodyAreaMoveScores {
-      BodyArea {
-        ...BodyArea
-      }
-      score
-    }
-  }
-}
-    ${MoveTypeFragmentDoc}
-${EquipmentFragmentDoc}
-${BodyAreaFragmentDoc}`;
-
-/**
- * __useStandardMovesQuery__
- *
- * To run a query within a React component, call `useStandardMovesQuery` and pass it any options that fit your needs.
- * When your component renders, `useStandardMovesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useStandardMovesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useStandardMovesQuery(baseOptions?: Apollo.QueryHookOptions<StandardMovesQuery, StandardMovesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<StandardMovesQuery, StandardMovesQueryVariables>(StandardMovesDocument, options);
-      }
-export function useStandardMovesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<StandardMovesQuery, StandardMovesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<StandardMovesQuery, StandardMovesQueryVariables>(StandardMovesDocument, options);
-        }
-export type StandardMovesQueryHookResult = ReturnType<typeof useStandardMovesQuery>;
-export type StandardMovesLazyQueryHookResult = ReturnType<typeof useStandardMovesLazyQuery>;
-export type StandardMovesQueryResult = Apollo.QueryResult<StandardMovesQuery, StandardMovesQueryVariables>;
 export const UpdateMoveDocument = gql`
     mutation updateMove($data: UpdateMoveInput!) {
   updateMove(data: $data) {
-    id
-    name
-    description
-    searchTerms
+    __typename
+    ...Move
     MoveType {
       ...MoveType
     }
-    validRepTypes
-    demoVideoUri
     RequiredEquipments {
       ...Equipment
     }
@@ -2898,7 +4148,8 @@ export const UpdateMoveDocument = gql`
     }
   }
 }
-    ${MoveTypeFragmentDoc}
+    ${MoveFragmentDoc}
+${MoveTypeFragmentDoc}
 ${EquipmentFragmentDoc}
 ${BodyAreaFragmentDoc}`;
 export type UpdateMoveMutationFn = Apollo.MutationFunction<UpdateMoveMutation, UpdateMoveMutationVariables>;
@@ -2927,229 +4178,423 @@ export function useUpdateMoveMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateMoveMutationHookResult = ReturnType<typeof useUpdateMoveMutation>;
 export type UpdateMoveMutationResult = Apollo.MutationResult<UpdateMoveMutation>;
 export type UpdateMoveMutationOptions = Apollo.BaseMutationOptions<UpdateMoveMutation, UpdateMoveMutationVariables>;
-export const MoveTypesDocument = gql`
-    query moveTypes {
-  moveTypes {
-    id
-    name
-    description
-    imageUri
+export const AdminPublicClubByIdDocument = gql`
+    query adminPublicClubById($id: ID!) {
+  adminPublicClubById(id: $id) {
+    ...ClubWithMetaDataAdminData
+  }
+}
+    ${ClubWithMetaDataAdminDataFragmentDoc}`;
+
+/**
+ * __useAdminPublicClubByIdQuery__
+ *
+ * To run a query within a React component, call `useAdminPublicClubByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicClubByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminPublicClubByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminPublicClubByIdQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicClubByIdQuery, AdminPublicClubByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminPublicClubByIdQuery, AdminPublicClubByIdQueryVariables>(AdminPublicClubByIdDocument, options);
+      }
+export function useAdminPublicClubByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicClubByIdQuery, AdminPublicClubByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminPublicClubByIdQuery, AdminPublicClubByIdQueryVariables>(AdminPublicClubByIdDocument, options);
+        }
+export type AdminPublicClubByIdQueryHookResult = ReturnType<typeof useAdminPublicClubByIdQuery>;
+export type AdminPublicClubByIdLazyQueryHookResult = ReturnType<typeof useAdminPublicClubByIdLazyQuery>;
+export type AdminPublicClubByIdQueryResult = Apollo.QueryResult<AdminPublicClubByIdQuery, AdminPublicClubByIdQueryVariables>;
+export const AdminPublicWorkoutByIdDocument = gql`
+    query adminPublicWorkoutById($id: ID!) {
+  adminPublicWorkoutById(id: $id) {
+    ...WorkoutWithMetaDataAdminData
+  }
+}
+    ${WorkoutWithMetaDataAdminDataFragmentDoc}`;
+
+/**
+ * __useAdminPublicWorkoutByIdQuery__
+ *
+ * To run a query within a React component, call `useAdminPublicWorkoutByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminPublicWorkoutByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminPublicWorkoutByIdQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutByIdQuery, AdminPublicWorkoutByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminPublicWorkoutByIdQuery, AdminPublicWorkoutByIdQueryVariables>(AdminPublicWorkoutByIdDocument, options);
+      }
+export function useAdminPublicWorkoutByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutByIdQuery, AdminPublicWorkoutByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminPublicWorkoutByIdQuery, AdminPublicWorkoutByIdQueryVariables>(AdminPublicWorkoutByIdDocument, options);
+        }
+export type AdminPublicWorkoutByIdQueryHookResult = ReturnType<typeof useAdminPublicWorkoutByIdQuery>;
+export type AdminPublicWorkoutByIdLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutByIdLazyQuery>;
+export type AdminPublicWorkoutByIdQueryResult = Apollo.QueryResult<AdminPublicWorkoutByIdQuery, AdminPublicWorkoutByIdQueryVariables>;
+export const AdminPublicWorkoutPlanByIdDocument = gql`
+    query adminPublicWorkoutPlanById($id: ID!) {
+  adminPublicWorkoutPlanById(id: $id) {
+    ...WorkoutPlanWithMetaDataAdminData
+  }
+}
+    ${WorkoutPlanWithMetaDataAdminDataFragmentDoc}`;
+
+/**
+ * __useAdminPublicWorkoutPlanByIdQuery__
+ *
+ * To run a query within a React component, call `useAdminPublicWorkoutPlanByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutPlanByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminPublicWorkoutPlanByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminPublicWorkoutPlanByIdQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutPlanByIdQuery, AdminPublicWorkoutPlanByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminPublicWorkoutPlanByIdQuery, AdminPublicWorkoutPlanByIdQueryVariables>(AdminPublicWorkoutPlanByIdDocument, options);
+      }
+export function useAdminPublicWorkoutPlanByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutPlanByIdQuery, AdminPublicWorkoutPlanByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminPublicWorkoutPlanByIdQuery, AdminPublicWorkoutPlanByIdQueryVariables>(AdminPublicWorkoutPlanByIdDocument, options);
+        }
+export type AdminPublicWorkoutPlanByIdQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlanByIdQuery>;
+export type AdminPublicWorkoutPlanByIdLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlanByIdLazyQuery>;
+export type AdminPublicWorkoutPlanByIdQueryResult = Apollo.QueryResult<AdminPublicWorkoutPlanByIdQuery, AdminPublicWorkoutPlanByIdQueryVariables>;
+export const AdminPublicClubCountsDocument = gql`
+    query adminPublicClubCounts {
+  adminPublicClubCounts {
+    __typename
+    pending
+    valid
+    invalid
   }
 }
     `;
 
 /**
- * __useMoveTypesQuery__
+ * __useAdminPublicClubCountsQuery__
  *
- * To run a query within a React component, call `useMoveTypesQuery` and pass it any options that fit your needs.
- * When your component renders, `useMoveTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAdminPublicClubCountsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicClubCountsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMoveTypesQuery({
+ * const { data, loading, error } = useAdminPublicClubCountsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useMoveTypesQuery(baseOptions?: Apollo.QueryHookOptions<MoveTypesQuery, MoveTypesQueryVariables>) {
+export function useAdminPublicClubCountsQuery(baseOptions?: Apollo.QueryHookOptions<AdminPublicClubCountsQuery, AdminPublicClubCountsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MoveTypesQuery, MoveTypesQueryVariables>(MoveTypesDocument, options);
+        return Apollo.useQuery<AdminPublicClubCountsQuery, AdminPublicClubCountsQueryVariables>(AdminPublicClubCountsDocument, options);
       }
-export function useMoveTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MoveTypesQuery, MoveTypesQueryVariables>) {
+export function useAdminPublicClubCountsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicClubCountsQuery, AdminPublicClubCountsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MoveTypesQuery, MoveTypesQueryVariables>(MoveTypesDocument, options);
+          return Apollo.useLazyQuery<AdminPublicClubCountsQuery, AdminPublicClubCountsQueryVariables>(AdminPublicClubCountsDocument, options);
         }
-export type MoveTypesQueryHookResult = ReturnType<typeof useMoveTypesQuery>;
-export type MoveTypesLazyQueryHookResult = ReturnType<typeof useMoveTypesLazyQuery>;
-export type MoveTypesQueryResult = Apollo.QueryResult<MoveTypesQuery, MoveTypesQueryVariables>;
-export const WorkoutGoalsDocument = gql`
-    query workoutGoals {
-  workoutGoals {
-    id
-    name
-    description
+export type AdminPublicClubCountsQueryHookResult = ReturnType<typeof useAdminPublicClubCountsQuery>;
+export type AdminPublicClubCountsLazyQueryHookResult = ReturnType<typeof useAdminPublicClubCountsLazyQuery>;
+export type AdminPublicClubCountsQueryResult = Apollo.QueryResult<AdminPublicClubCountsQuery, AdminPublicClubCountsQueryVariables>;
+export const AdminPublicWorkoutPlanCountsDocument = gql`
+    query adminPublicWorkoutPlanCounts {
+  adminPublicWorkoutPlanCounts {
+    __typename
+    pending
+    valid
+    invalid
   }
 }
     `;
 
 /**
- * __useWorkoutGoalsQuery__
+ * __useAdminPublicWorkoutPlanCountsQuery__
  *
- * To run a query within a React component, call `useWorkoutGoalsQuery` and pass it any options that fit your needs.
- * When your component renders, `useWorkoutGoalsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAdminPublicWorkoutPlanCountsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutPlanCountsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useWorkoutGoalsQuery({
+ * const { data, loading, error } = useAdminPublicWorkoutPlanCountsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useWorkoutGoalsQuery(baseOptions?: Apollo.QueryHookOptions<WorkoutGoalsQuery, WorkoutGoalsQueryVariables>) {
+export function useAdminPublicWorkoutPlanCountsQuery(baseOptions?: Apollo.QueryHookOptions<AdminPublicWorkoutPlanCountsQuery, AdminPublicWorkoutPlanCountsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<WorkoutGoalsQuery, WorkoutGoalsQueryVariables>(WorkoutGoalsDocument, options);
+        return Apollo.useQuery<AdminPublicWorkoutPlanCountsQuery, AdminPublicWorkoutPlanCountsQueryVariables>(AdminPublicWorkoutPlanCountsDocument, options);
       }
-export function useWorkoutGoalsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<WorkoutGoalsQuery, WorkoutGoalsQueryVariables>) {
+export function useAdminPublicWorkoutPlanCountsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutPlanCountsQuery, AdminPublicWorkoutPlanCountsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<WorkoutGoalsQuery, WorkoutGoalsQueryVariables>(WorkoutGoalsDocument, options);
+          return Apollo.useLazyQuery<AdminPublicWorkoutPlanCountsQuery, AdminPublicWorkoutPlanCountsQueryVariables>(AdminPublicWorkoutPlanCountsDocument, options);
         }
-export type WorkoutGoalsQueryHookResult = ReturnType<typeof useWorkoutGoalsQuery>;
-export type WorkoutGoalsLazyQueryHookResult = ReturnType<typeof useWorkoutGoalsLazyQuery>;
-export type WorkoutGoalsQueryResult = Apollo.QueryResult<WorkoutGoalsQuery, WorkoutGoalsQueryVariables>;
-export const WorkoutSectionTypesDocument = gql`
-    query workoutSectionTypes {
-  workoutSectionTypes {
-    id
-    name
-    subtitle
-    description
-    validRepTypes
+export type AdminPublicWorkoutPlanCountsQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlanCountsQuery>;
+export type AdminPublicWorkoutPlanCountsLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlanCountsLazyQuery>;
+export type AdminPublicWorkoutPlanCountsQueryResult = Apollo.QueryResult<AdminPublicWorkoutPlanCountsQuery, AdminPublicWorkoutPlanCountsQueryVariables>;
+export const AdminPublicWorkoutCountsDocument = gql`
+    query adminPublicWorkoutCounts {
+  adminPublicWorkoutCounts {
+    __typename
+    pending
+    valid
+    invalid
   }
 }
     `;
 
 /**
- * __useWorkoutSectionTypesQuery__
+ * __useAdminPublicWorkoutCountsQuery__
  *
- * To run a query within a React component, call `useWorkoutSectionTypesQuery` and pass it any options that fit your needs.
- * When your component renders, `useWorkoutSectionTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAdminPublicWorkoutCountsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutCountsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useWorkoutSectionTypesQuery({
+ * const { data, loading, error } = useAdminPublicWorkoutCountsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useWorkoutSectionTypesQuery(baseOptions?: Apollo.QueryHookOptions<WorkoutSectionTypesQuery, WorkoutSectionTypesQueryVariables>) {
+export function useAdminPublicWorkoutCountsQuery(baseOptions?: Apollo.QueryHookOptions<AdminPublicWorkoutCountsQuery, AdminPublicWorkoutCountsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<WorkoutSectionTypesQuery, WorkoutSectionTypesQueryVariables>(WorkoutSectionTypesDocument, options);
+        return Apollo.useQuery<AdminPublicWorkoutCountsQuery, AdminPublicWorkoutCountsQueryVariables>(AdminPublicWorkoutCountsDocument, options);
       }
-export function useWorkoutSectionTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<WorkoutSectionTypesQuery, WorkoutSectionTypesQueryVariables>) {
+export function useAdminPublicWorkoutCountsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutCountsQuery, AdminPublicWorkoutCountsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<WorkoutSectionTypesQuery, WorkoutSectionTypesQueryVariables>(WorkoutSectionTypesDocument, options);
+          return Apollo.useLazyQuery<AdminPublicWorkoutCountsQuery, AdminPublicWorkoutCountsQueryVariables>(AdminPublicWorkoutCountsDocument, options);
         }
-export type WorkoutSectionTypesQueryHookResult = ReturnType<typeof useWorkoutSectionTypesQuery>;
-export type WorkoutSectionTypesLazyQueryHookResult = ReturnType<typeof useWorkoutSectionTypesLazyQuery>;
-export type WorkoutSectionTypesQueryResult = Apollo.QueryResult<WorkoutSectionTypesQuery, WorkoutSectionTypesQueryVariables>;
-export const PublicClubsDocument = gql`
-    query publicClubs {
-  publicClubs {
-    ...ClubSummary
-    Owner {
-      ...UserAvatarData
-    }
-    Admins {
-      ...UserAvatarData
-    }
+export type AdminPublicWorkoutCountsQueryHookResult = ReturnType<typeof useAdminPublicWorkoutCountsQuery>;
+export type AdminPublicWorkoutCountsLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutCountsLazyQuery>;
+export type AdminPublicWorkoutCountsQueryResult = Apollo.QueryResult<AdminPublicWorkoutCountsQuery, AdminPublicWorkoutCountsQueryVariables>;
+export const UpdateClubMetaDataAdminDocument = gql`
+    mutation updateClubMetaDataAdmin($data: UpdateClubMetaDataAdminInput!) {
+  updateClubMetaDataAdmin(data: $data) {
+    ...ClubWithMetaDataAdminData
   }
 }
-    ${ClubSummaryFragmentDoc}
-${UserAvatarDataFragmentDoc}`;
+    ${ClubWithMetaDataAdminDataFragmentDoc}`;
+export type UpdateClubMetaDataAdminMutationFn = Apollo.MutationFunction<UpdateClubMetaDataAdminMutation, UpdateClubMetaDataAdminMutationVariables>;
 
 /**
- * __usePublicClubsQuery__
+ * __useUpdateClubMetaDataAdminMutation__
  *
- * To run a query within a React component, call `usePublicClubsQuery` and pass it any options that fit your needs.
- * When your component renders, `usePublicClubsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useUpdateClubMetaDataAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateClubMetaDataAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = usePublicClubsQuery({
+ * const [updateClubMetaDataAdminMutation, { data, loading, error }] = useUpdateClubMetaDataAdminMutation({
  *   variables: {
+ *      data: // value for 'data'
  *   },
  * });
  */
-export function usePublicClubsQuery(baseOptions?: Apollo.QueryHookOptions<PublicClubsQuery, PublicClubsQueryVariables>) {
+export function useUpdateClubMetaDataAdminMutation(baseOptions?: Apollo.MutationHookOptions<UpdateClubMetaDataAdminMutation, UpdateClubMetaDataAdminMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PublicClubsQuery, PublicClubsQueryVariables>(PublicClubsDocument, options);
+        return Apollo.useMutation<UpdateClubMetaDataAdminMutation, UpdateClubMetaDataAdminMutationVariables>(UpdateClubMetaDataAdminDocument, options);
       }
-export function usePublicClubsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PublicClubsQuery, PublicClubsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PublicClubsQuery, PublicClubsQueryVariables>(PublicClubsDocument, options);
-        }
-export type PublicClubsQueryHookResult = ReturnType<typeof usePublicClubsQuery>;
-export type PublicClubsLazyQueryHookResult = ReturnType<typeof usePublicClubsLazyQuery>;
-export type PublicClubsQueryResult = Apollo.QueryResult<PublicClubsQuery, PublicClubsQueryVariables>;
-export const PublicWorkoutPlansDocument = gql`
-    query publicWorkoutPlans($cursor: ID, $filters: WorkoutPlanFiltersInput, $take: Int) {
-  publicWorkoutPlans(cursor: $cursor, filters: $filters, take: $take) {
-    ...WorkoutPlanSummary
+export type UpdateClubMetaDataAdminMutationHookResult = ReturnType<typeof useUpdateClubMetaDataAdminMutation>;
+export type UpdateClubMetaDataAdminMutationResult = Apollo.MutationResult<UpdateClubMetaDataAdminMutation>;
+export type UpdateClubMetaDataAdminMutationOptions = Apollo.BaseMutationOptions<UpdateClubMetaDataAdminMutation, UpdateClubMetaDataAdminMutationVariables>;
+export const UpdateWorkoutMetaDataAdminDocument = gql`
+    mutation updateWorkoutMetaDataAdmin($data: UpdateWorkoutMetaDataAdminInput!) {
+  updateWorkoutMetaDataAdmin(data: $data) {
+    ...WorkoutWithMetaDataAdminData
   }
 }
-    ${WorkoutPlanSummaryFragmentDoc}`;
+    ${WorkoutWithMetaDataAdminDataFragmentDoc}`;
+export type UpdateWorkoutMetaDataAdminMutationFn = Apollo.MutationFunction<UpdateWorkoutMetaDataAdminMutation, UpdateWorkoutMetaDataAdminMutationVariables>;
 
 /**
- * __usePublicWorkoutPlansQuery__
+ * __useUpdateWorkoutMetaDataAdminMutation__
  *
- * To run a query within a React component, call `usePublicWorkoutPlansQuery` and pass it any options that fit your needs.
- * When your component renders, `usePublicWorkoutPlansQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useUpdateWorkoutMetaDataAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateWorkoutMetaDataAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = usePublicWorkoutPlansQuery({
+ * const [updateWorkoutMetaDataAdminMutation, { data, loading, error }] = useUpdateWorkoutMetaDataAdminMutation({
  *   variables: {
- *      cursor: // value for 'cursor'
- *      filters: // value for 'filters'
- *      take: // value for 'take'
+ *      data: // value for 'data'
  *   },
  * });
  */
-export function usePublicWorkoutPlansQuery(baseOptions?: Apollo.QueryHookOptions<PublicWorkoutPlansQuery, PublicWorkoutPlansQueryVariables>) {
+export function useUpdateWorkoutMetaDataAdminMutation(baseOptions?: Apollo.MutationHookOptions<UpdateWorkoutMetaDataAdminMutation, UpdateWorkoutMetaDataAdminMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PublicWorkoutPlansQuery, PublicWorkoutPlansQueryVariables>(PublicWorkoutPlansDocument, options);
+        return Apollo.useMutation<UpdateWorkoutMetaDataAdminMutation, UpdateWorkoutMetaDataAdminMutationVariables>(UpdateWorkoutMetaDataAdminDocument, options);
       }
-export function usePublicWorkoutPlansLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PublicWorkoutPlansQuery, PublicWorkoutPlansQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PublicWorkoutPlansQuery, PublicWorkoutPlansQueryVariables>(PublicWorkoutPlansDocument, options);
-        }
-export type PublicWorkoutPlansQueryHookResult = ReturnType<typeof usePublicWorkoutPlansQuery>;
-export type PublicWorkoutPlansLazyQueryHookResult = ReturnType<typeof usePublicWorkoutPlansLazyQuery>;
-export type PublicWorkoutPlansQueryResult = Apollo.QueryResult<PublicWorkoutPlansQuery, PublicWorkoutPlansQueryVariables>;
-export const PublicWorkoutsDocument = gql`
-    query publicWorkouts($cursor: ID, $filters: WorkoutFiltersInput, $take: Int) {
-  publicWorkouts(cursor: $cursor, filters: $filters, take: $take) {
-    ...WorkoutSummary
+export type UpdateWorkoutMetaDataAdminMutationHookResult = ReturnType<typeof useUpdateWorkoutMetaDataAdminMutation>;
+export type UpdateWorkoutMetaDataAdminMutationResult = Apollo.MutationResult<UpdateWorkoutMetaDataAdminMutation>;
+export type UpdateWorkoutMetaDataAdminMutationOptions = Apollo.BaseMutationOptions<UpdateWorkoutMetaDataAdminMutation, UpdateWorkoutMetaDataAdminMutationVariables>;
+export const UpdateWorkoutPlanMetaDataAdminDocument = gql`
+    mutation updateWorkoutPlanMetaDataAdmin($data: UpdateWorkoutPlanMetaDataAdminInput!) {
+  updateWorkoutPlanMetaDataAdmin(data: $data) {
+    ...WorkoutPlanWithMetaDataAdminData
   }
 }
-    ${WorkoutSummaryFragmentDoc}`;
+    ${WorkoutPlanWithMetaDataAdminDataFragmentDoc}`;
+export type UpdateWorkoutPlanMetaDataAdminMutationFn = Apollo.MutationFunction<UpdateWorkoutPlanMetaDataAdminMutation, UpdateWorkoutPlanMetaDataAdminMutationVariables>;
 
 /**
- * __usePublicWorkoutsQuery__
+ * __useUpdateWorkoutPlanMetaDataAdminMutation__
  *
- * To run a query within a React component, call `usePublicWorkoutsQuery` and pass it any options that fit your needs.
- * When your component renders, `usePublicWorkoutsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a mutation, you first call `useUpdateWorkoutPlanMetaDataAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateWorkoutPlanMetaDataAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateWorkoutPlanMetaDataAdminMutation, { data, loading, error }] = useUpdateWorkoutPlanMetaDataAdminMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateWorkoutPlanMetaDataAdminMutation(baseOptions?: Apollo.MutationHookOptions<UpdateWorkoutPlanMetaDataAdminMutation, UpdateWorkoutPlanMetaDataAdminMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateWorkoutPlanMetaDataAdminMutation, UpdateWorkoutPlanMetaDataAdminMutationVariables>(UpdateWorkoutPlanMetaDataAdminDocument, options);
+      }
+export type UpdateWorkoutPlanMetaDataAdminMutationHookResult = ReturnType<typeof useUpdateWorkoutPlanMetaDataAdminMutation>;
+export type UpdateWorkoutPlanMetaDataAdminMutationResult = Apollo.MutationResult<UpdateWorkoutPlanMetaDataAdminMutation>;
+export type UpdateWorkoutPlanMetaDataAdminMutationOptions = Apollo.BaseMutationOptions<UpdateWorkoutPlanMetaDataAdminMutation, UpdateWorkoutPlanMetaDataAdminMutationVariables>;
+export const AdminPublicClubSummariesDocument = gql`
+    query adminPublicClubSummaries($status: PublicContentValidationStatus!) {
+  adminPublicClubSummaries(status: $status) {
+    ...PublicClubSummaryAdmin
+  }
+}
+    ${PublicClubSummaryAdminFragmentDoc}`;
+
+/**
+ * __useAdminPublicClubSummariesQuery__
+ *
+ * To run a query within a React component, call `useAdminPublicClubSummariesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicClubSummariesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = usePublicWorkoutsQuery({
+ * const { data, loading, error } = useAdminPublicClubSummariesQuery({
  *   variables: {
- *      cursor: // value for 'cursor'
- *      filters: // value for 'filters'
- *      take: // value for 'take'
+ *      status: // value for 'status'
  *   },
  * });
  */
-export function usePublicWorkoutsQuery(baseOptions?: Apollo.QueryHookOptions<PublicWorkoutsQuery, PublicWorkoutsQueryVariables>) {
+export function useAdminPublicClubSummariesQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicClubSummariesQuery, AdminPublicClubSummariesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PublicWorkoutsQuery, PublicWorkoutsQueryVariables>(PublicWorkoutsDocument, options);
+        return Apollo.useQuery<AdminPublicClubSummariesQuery, AdminPublicClubSummariesQueryVariables>(AdminPublicClubSummariesDocument, options);
       }
-export function usePublicWorkoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PublicWorkoutsQuery, PublicWorkoutsQueryVariables>) {
+export function useAdminPublicClubSummariesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicClubSummariesQuery, AdminPublicClubSummariesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PublicWorkoutsQuery, PublicWorkoutsQueryVariables>(PublicWorkoutsDocument, options);
+          return Apollo.useLazyQuery<AdminPublicClubSummariesQuery, AdminPublicClubSummariesQueryVariables>(AdminPublicClubSummariesDocument, options);
         }
-export type PublicWorkoutsQueryHookResult = ReturnType<typeof usePublicWorkoutsQuery>;
-export type PublicWorkoutsLazyQueryHookResult = ReturnType<typeof usePublicWorkoutsLazyQuery>;
-export type PublicWorkoutsQueryResult = Apollo.QueryResult<PublicWorkoutsQuery, PublicWorkoutsQueryVariables>;
+export type AdminPublicClubSummariesQueryHookResult = ReturnType<typeof useAdminPublicClubSummariesQuery>;
+export type AdminPublicClubSummariesLazyQueryHookResult = ReturnType<typeof useAdminPublicClubSummariesLazyQuery>;
+export type AdminPublicClubSummariesQueryResult = Apollo.QueryResult<AdminPublicClubSummariesQuery, AdminPublicClubSummariesQueryVariables>;
+export const AdminPublicWorkoutPlanSummariesDocument = gql`
+    query adminPublicWorkoutPlanSummaries($status: PublicContentValidationStatus!) {
+  adminPublicWorkoutPlanSummaries(status: $status) {
+    ...PublicWorkoutPlanSummaryAdmin
+  }
+}
+    ${PublicWorkoutPlanSummaryAdminFragmentDoc}`;
+
+/**
+ * __useAdminPublicWorkoutPlanSummariesQuery__
+ *
+ * To run a query within a React component, call `useAdminPublicWorkoutPlanSummariesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutPlanSummariesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminPublicWorkoutPlanSummariesQuery({
+ *   variables: {
+ *      status: // value for 'status'
+ *   },
+ * });
+ */
+export function useAdminPublicWorkoutPlanSummariesQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutPlanSummariesQuery, AdminPublicWorkoutPlanSummariesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminPublicWorkoutPlanSummariesQuery, AdminPublicWorkoutPlanSummariesQueryVariables>(AdminPublicWorkoutPlanSummariesDocument, options);
+      }
+export function useAdminPublicWorkoutPlanSummariesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutPlanSummariesQuery, AdminPublicWorkoutPlanSummariesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminPublicWorkoutPlanSummariesQuery, AdminPublicWorkoutPlanSummariesQueryVariables>(AdminPublicWorkoutPlanSummariesDocument, options);
+        }
+export type AdminPublicWorkoutPlanSummariesQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlanSummariesQuery>;
+export type AdminPublicWorkoutPlanSummariesLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutPlanSummariesLazyQuery>;
+export type AdminPublicWorkoutPlanSummariesQueryResult = Apollo.QueryResult<AdminPublicWorkoutPlanSummariesQuery, AdminPublicWorkoutPlanSummariesQueryVariables>;
+export const AdminPublicWorkoutSummariesDocument = gql`
+    query adminPublicWorkoutSummaries($status: PublicContentValidationStatus!) {
+  adminPublicWorkoutSummaries(status: $status) {
+    ...PublicWorkoutSummaryAdmin
+  }
+}
+    ${PublicWorkoutSummaryAdminFragmentDoc}`;
+
+/**
+ * __useAdminPublicWorkoutSummariesQuery__
+ *
+ * To run a query within a React component, call `useAdminPublicWorkoutSummariesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPublicWorkoutSummariesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminPublicWorkoutSummariesQuery({
+ *   variables: {
+ *      status: // value for 'status'
+ *   },
+ * });
+ */
+export function useAdminPublicWorkoutSummariesQuery(baseOptions: Apollo.QueryHookOptions<AdminPublicWorkoutSummariesQuery, AdminPublicWorkoutSummariesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminPublicWorkoutSummariesQuery, AdminPublicWorkoutSummariesQueryVariables>(AdminPublicWorkoutSummariesDocument, options);
+      }
+export function useAdminPublicWorkoutSummariesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPublicWorkoutSummariesQuery, AdminPublicWorkoutSummariesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminPublicWorkoutSummariesQuery, AdminPublicWorkoutSummariesQueryVariables>(AdminPublicWorkoutSummariesDocument, options);
+        }
+export type AdminPublicWorkoutSummariesQueryHookResult = ReturnType<typeof useAdminPublicWorkoutSummariesQuery>;
+export type AdminPublicWorkoutSummariesLazyQueryHookResult = ReturnType<typeof useAdminPublicWorkoutSummariesLazyQuery>;
+export type AdminPublicWorkoutSummariesQueryResult = Apollo.QueryResult<AdminPublicWorkoutSummariesQuery, AdminPublicWorkoutSummariesQueryVariables>;

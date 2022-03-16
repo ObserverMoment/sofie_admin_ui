@@ -1,5 +1,5 @@
 import React from 'react'
-import { ErrorIcon } from './images'
+import { ErrorIcon } from './icons'
 import {
   ElevatedBox,
   FlexBox,

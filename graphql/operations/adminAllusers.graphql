@@ -1,0 +1,14 @@
+query adminAllUsers {
+  adminAllUsers {
+    ...UserProfileSummary
+    Clubs {
+      ...ClubSummary
+      Owner {
+        ...UserAvatarData
+      }
+      Admins {
+        ...UserAvatarData
+      }
+    }
+  }
+}

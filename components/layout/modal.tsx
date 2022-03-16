@@ -1,10 +1,10 @@
 import React, { useRef, PropsWithChildren } from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
-import { CloseWindowIcon } from '../images'
+import { CloseWindowIcon } from '../icons'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useOnClickOutside } from '../../lib/utils'
-import { HighlightButton, LightButton } from '../styled-components/buttons'
+import { LightButton } from '../styled-components/buttons'
 import { MainText } from '../styled-components/styled'
 
 export const ModalOverlay = styled(motion.div)`
@@ -56,7 +56,7 @@ export const containerVariant = {
     x: '-50%',
     y: '-55%',
     opacity: 0,
-    transition: { type: 'spring', duration: 1.5 },
+    transition: { type: 'spring', duration: 1 },
   },
   isOpen: { x: '-50%', y: '-50%', opacity: 1 },
   exit: { x: '-50%', y: '-53%', opacity: 0 },

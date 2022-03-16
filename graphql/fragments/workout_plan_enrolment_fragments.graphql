@@ -1,0 +1,12 @@
+fragment WorkoutPlanEnrolment on WorkoutPlanEnrolment {
+  __typename
+  id
+  startDate
+}
+
+fragment CompletedWorkoutPlanDayWorkout on CompletedWorkoutPlanDayWorkout {
+  __typename
+  id
+  loggedWorkoutId
+  workoutPlanDayWorkoutId
+}

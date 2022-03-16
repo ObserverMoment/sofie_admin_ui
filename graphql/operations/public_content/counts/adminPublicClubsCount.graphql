@@ -1,0 +1,8 @@
+query adminPublicClubCounts {
+  adminPublicClubCounts {
+    __typename
+    pending
+    valid
+    invalid
+  }
+}

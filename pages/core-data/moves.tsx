@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import CreateEditMove from '../../components/contentCRUD/createEditMove'
 import InteractiveTable from '../../components/interactiveTable'
-import { LoadingSpinner } from '../../components/loadingIndicators'
+import { LoadingDots } from '../../components/loadingIndicators'
 import { showToast } from '../../components/notifications'
 import {
   FlexBox,
@@ -16,8 +16,9 @@ import {
   BodyAreaMoveScore,
   Equipment,
   Move,
-  useStandardMovesQuery,
+  useCoreDataQuery,
 } from '../../graphql/generated_types'
+import Breadcrumbs from '../../components/breadcrumbs'
 
 const ScoreTotal = styled.div`
   padding: 3px;
@@ -35,7 +36,7 @@ export default function Moves() {
     title: '',
   })
 
-  const { loading, error, data } = useStandardMovesQuery()
+  const { loading, error, data } = useCoreDataQuery()
 
   const [activeMoveData, setActiveMoveData] = useState(null)
 
@@ -66,12 +67,14 @@ export default function Moves() {
     console.error(error)
     return null
   } else if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   } else {
     return (
       <FlexBox>
         <Padding>
-          <FlexBox direction="row" justify="center">
+          <FlexBox direction="row" justify="space-between">
+            <Breadcrumbs pageTitle="Moves" />
+
             <CreateButton onClick={handleAddNewClick} />
           </FlexBox>
         </Padding>
@@ -147,7 +150,7 @@ export default function Moves() {
               disableSortBy: true,
             },
           ]}
-          data={data.standardMoves}
+          data={data.coreData.standardMoves}
         />
         <Modal
           isOpen={isOpen}

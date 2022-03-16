@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { LoadingSpinner } from '../../components/loadingIndicators'
+import { LoadingDots } from '../../components/loadingIndicators'
 import InteractiveTable from '../../components/interactiveTable'
 import {
   FlexBox,
@@ -10,7 +10,8 @@ import Modal from '../../components/layout/modal'
 import CreateEditEquipment from '../../components/contentCRUD/createEditEquipment'
 import { showToast } from '../../components/notifications'
 import { CreateButton } from '../../components/styled-components/buttons'
-import { Equipment, useEquipmentsQuery } from '../../graphql/generated_types'
+import { Equipment, useCoreDataQuery } from '../../graphql/generated_types'
+import Breadcrumbs from '../../components/breadcrumbs'
 
 export default function EquipmentData() {
   const [{ isOpen, title }, setModalState] = useState({
@@ -18,7 +19,7 @@ export default function EquipmentData() {
     title: 'Equipment',
   })
 
-  const { loading, error, data } = useEquipmentsQuery()
+  const { loading, error, data } = useCoreDataQuery()
 
   const [activeEquipmentData, setActiveEquipmentData] = useState(null)
 
@@ -37,12 +38,14 @@ export default function EquipmentData() {
     console.error(error)
     return null
   } else if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   } else {
     return (
       <FlexBox>
         <Padding>
-          <FlexBox direction="row" justify="center">
+          <FlexBox direction="row" justify="space-between">
+            <Breadcrumbs pageTitle="Equipment" />
+
             <CreateButton onClick={handleAddNewClick} />
           </FlexBox>
         </Padding>
@@ -66,7 +69,7 @@ export default function EquipmentData() {
                 loadAdjustable ? 'TRUE' : 'FALSE',
             },
           ]}
-          data={[...data.equipments]}
+          data={[...data.coreData.equipment]}
         />
         <Modal
           isOpen={isOpen}

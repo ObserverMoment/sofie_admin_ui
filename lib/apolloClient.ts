@@ -108,15 +108,3 @@ export function useApollo(pageProps = {}) {
   const apolloClient = useMemo(() => initializeApollo(state), [state])
   return apolloClient
 }
-
-// Use this fragment when we just need to get back a ref for data already written to cache
-// So that we can update the necessary query fields.
-// https://www.apollographql.com/docs/react/caching/cache-interaction/#example-updating-the-cache-after-a-mutation
-// Apollo mutations automatically update the normalized cache.
-// Here we are simply retrieving a ref to the newly created object
-// and adding it to the equipments field which will cause the equipments query hook to update.
-export const newObjectRefFragment = gql`
-  fragment NewEquipment on Equipment {
-    id
-  }
-`

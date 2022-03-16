@@ -5,12 +5,12 @@ import {
   BodyArea,
   BodyAreaMoveScore,
   Move,
-  useBodyAreasQuery,
+  useCoreDataQuery,
 } from '../../graphql/generated_types'
 import NumberInput from '../forms/inputs/numberInput'
-import { EditIcon } from '../images'
+import { EditIcon } from '../icons'
 import Modal from '../layout/modal'
-import { LoadingSpinner } from '../loadingIndicators'
+import { LoadingDots } from '../loadingIndicators'
 import { showToast } from '../notifications'
 import { DarkButton, HighlightButton } from '../styled-components/buttons'
 import { HighlightedBox } from '../styled-components/cards'
@@ -36,7 +36,7 @@ export const SelectedBodyAreaMoveScores = ({
 }: SelectedBodyAreaMoveScoresProps) => {
   const [openEditor, setOpeneditor] = useState(false)
 
-  const { loading, error, data } = useBodyAreasQuery()
+  const { loading, error, data } = useCoreDataQuery()
 
   function handleUpdateBodyAreaMoveScores(
     updatedBodyAreaMoveScores: BodyAreaMoveScore[],
@@ -54,13 +54,13 @@ export const SelectedBodyAreaMoveScores = ({
     console.error(error)
     return null
   } else if (loading) {
-    return <LoadingSpinner />
+    return <LoadingDots />
   } else {
     return (
       <div>
         <FlexBox direction="row" align="center">
           <DarkButton onClick={() => setOpeneditor(true)}>
-            <EditIcon width={12} />
+            <EditIcon />
             <Spacer right="8px" />
             <MainText colorType="primaryLight">Edit</MainText>
           </DarkButton>
@@ -104,7 +104,7 @@ export const SelectedBodyAreaMoveScores = ({
         >
           <BodyAreaScoresEditor
             move={move}
-            allBodyAreas={data.bodyAreas}
+            allBodyAreas={data.coreData.bodyAreas}
             bodyAreaMoveScores={bodyAreaMoveScores}
             updateBodyAreaMoveScores={handleUpdateBodyAreaMoveScores}
           />

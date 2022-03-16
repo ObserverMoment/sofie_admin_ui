@@ -1,5 +1,0 @@
-mutation updateClubMetaData($data: UpdateClubMetaDataInput!) {
-  updateClubMetaData(data: $data) {
-    ...ClubMetaData
-  }
-}

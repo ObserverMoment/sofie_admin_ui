@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import ErrorMessage from '../errorMessage'
-import { Logo } from '../images'
+import { Logo } from '../icons'
 import { FlexBox, Spacer, Title } from '../styled-components/styled'
 import {
   StyledForm,

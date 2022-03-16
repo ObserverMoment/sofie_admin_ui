@@ -3,28 +3,34 @@ import styled from 'styled-components'
 //// Global Themes Data ////
 export const theme = {
   colors: {
-    primaryDark: '#131313',
+    primaryDark: '#1a1a1a',
     pureBlack: '#000000',
-    primaryLight: '#fafafa',
+    primaryLight: '#f3f3f3',
     pureWhite: '#ffffff',
-    grey: '#868686',
-    highlight: '#0e285e',
+    headingGrey: '#3b3b3b',
+    grey: '#3b3b3b',
+    lightGrey: '#9e9e9e',
+    highlight: '#069b8e',
     destructive: '#bb2020',
     info: '#054894',
     success: '#167974',
   },
   spacing: {
-    sideNavWidth: '80px',
+    sideNavWidth: '140px',
   },
 }
 
 //// Text ////
 export type ColorTypes =
   | 'primaryDark'
+  | 'pureBlack'
   | 'primaryLight'
+  | 'pureWhite'
+  | 'grey'
+  | 'lightGrey'
   | 'highlight'
   | 'destructive'
-  | 'grey'
+  | 'info'
   | 'success'
 
 interface TextProps {
@@ -37,29 +43,31 @@ interface TextProps {
     | 'initial'
     | 'inherit'
   readonly colorType?: ColorTypes
+  readonly fontSize?: string
 }
 
 export const Title = styled.h1<TextProps>`
-  font-size: 26px;
+  font-size: ${(props) => props.fontSize || '22px'};
+  font-weight: bold;
+  margin: 0px;
+  color: ${(props) =>
+    props.colorType
+      ? props.theme.colors[props.colorType]
+      : props.theme.colors.headingGrey};
+`
+
+export const SubTitle = styled.h2<TextProps>`
+  font-size: ${(props) => props.fontSize || '20px'};
   font-weight: normal;
   margin: 0px;
   color: ${(props) =>
     props.colorType
       ? props.theme.colors[props.colorType]
-      : props.theme.colors.primaryDark};
-`
-
-export const SubTitle = styled.h2<TextProps>`
-  font-size: 20px;
-  margin: 0px;
-  color: ${(props) =>
-    props.colorType
-      ? props.theme.colors[props.colorType]
-      : props.theme.colors.primaryDark};
+      : props.theme.colors.headingGrey};
 `
 
 export const MainText = styled.span<TextProps>`
-  font-size: 15px;
+  font-size: ${(props) => props.fontSize || '15px'};
   text-align: ${(props) => props.textAlign || 'left'};
   color: ${(props) =>
     props.colorType
@@ -97,7 +105,6 @@ export const MainContent = styled.div`
   padding: 10px 20px;
   width: calc(100% - 60px - ${(props) => props.theme.spacing.sideNavWidth});
   display: flex;
-  align-items: center;
   flex-direction: column;
 `
 
@@ -108,12 +115,18 @@ interface FlexProps {
   readonly wrap?: string
   readonly width?: string
   readonly height?: string
+  readonly margin?: string
   readonly padding?: string
   readonly backgroundColor?: string
+  readonly cursorHover?: boolean
+  readonly borderRadius?: string
+  readonly flexGrow?: number
+  readonly boxShadow?: string
 }
 
 export const FlexBox = styled.div<FlexProps>`
   padding: ${(props) => props.padding || 0};
+  margin: ${(props) => props.margin || 0};
   display: flex;
   flex-direction: ${(props) => props.direction || 'column'};
   justify-content: ${(props) => props.justify || 'flex-start'};
@@ -121,8 +134,14 @@ export const FlexBox = styled.div<FlexProps>`
   flex-wrap: ${(props) => props.wrap || 'nowrap'};
   width: ${(props) => props.width || 'auto'};
   height: ${(props) => props.height || 'auto'};
-  flex-grow: 1;
-  background-color: ${(props) => props.backgroundColor || 'none'};
+  flex-grow: ${(props) =>
+    typeof props.flexGrow === 'number' ? props.flexGrow : 1};
+  background-color: ${(props) => props.backgroundColor || 'inherit'};
+  border-radius: ${(props) => props.borderRadius || '0px'};
+  box-shadow: ${(props) => props.boxShadow || 'none'};
+  :hover {
+    cursor: ${(props) => (props.cursorHover ? 'pointer' : 'default')};
+  }
 `
 
 interface PaddingProps {
@@ -153,18 +172,30 @@ interface SizedBoxProps {
 }
 
 export const SizedBox = styled.div<SizedBoxProps>`
-  width: ${(props) => `${props.width}px` || '100%'};
-  height: ${(props) => `${props.height}px` || '100%'};
+  width: ${(props) => (props.width ? `${props.width}px` : 'inherit')};
+  height: ${(props) => (props.height ? `${props.height}px` : 'auto')};
+`
+
+interface MaxSizedBoxProps {
+  readonly maxWidth?: number
+  readonly maxHeight?: number
+}
+
+export const MaxSizedBox = styled.div<MaxSizedBoxProps>`
+  max-width: ${(props) => (props.maxWidth ? `${props.maxWidth}px` : 'none')};
+  max-height: ${(props) => (props.maxHeight ? `${props.maxHeight}px` : 'none')};
 `
 
 export const ElevatedBox = styled.div<FlexProps>`
-  box-shadow: 0px 8px 20px rgb(0 0 0 / 9%);
-  border-radius: 6px;
-  padding: 16px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  padding: ${(props) => (props.padding ? `${props.padding}px` : '16px')};
   margin: 6px;
   display: flex;
   flex-direction: ${(props) => props.direction || 'column'};
   justify-content: ${(props) => props.justify || 'flex-start'};
   align-items: ${(props) => props.align || 'stretch'};
   flex-wrap: ${(props) => props.wrap || 'wrap'};
+  background-color: ${(props) =>
+    props.backgroundColor || props.theme.colors.pureWhite};
 `
