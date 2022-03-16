@@ -9,6 +9,7 @@ export const theme = {
     pureWhite: '#ffffff',
     headingGrey: '#3b3b3b',
     grey: '#3b3b3b',
+    lightGrey: '#9e9e9e',
     highlight: '#069b8e',
     destructive: '#bb2020',
     info: '#054894',
@@ -26,6 +27,7 @@ export type ColorTypes =
   | 'primaryLight'
   | 'pureWhite'
   | 'grey'
+  | 'lightGrey'
   | 'highlight'
   | 'destructive'
   | 'info'

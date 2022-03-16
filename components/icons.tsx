@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Image from 'next/image'
 import {
   faUserCircle,
   faBullseye,
@@ -54,7 +55,7 @@ const chevronTypeIcons = {
 }
 
 export const ChevronIcon = ({
-  size = 'lg',
+  size,
   colorType = 'primaryDark',
   direction = 'right',
 }: ChenvronIconProps) => (
@@ -70,10 +71,7 @@ interface IconProps {
   colorType?: ColorTypes
 }
 
-export const ContentIcon = ({
-  size = 'lg',
-  colorType = 'primaryDark',
-}: IconProps) => (
+export const ContentIcon = ({ size, colorType = 'primaryDark' }: IconProps) => (
   <FontAwesomeIcon
     icon={faClipboardList}
     size={size}
@@ -82,7 +80,7 @@ export const ContentIcon = ({
 )
 
 export const CloseWindowIcon = ({
-  size = 'lg',
+  size,
   colorType = 'primaryDark',
 }: IconProps) => (
   <FontAwesomeIcon
@@ -93,7 +91,7 @@ export const CloseWindowIcon = ({
 )
 
 export const CloseCircleIcon = ({
-  size = 'lg',
+  size,
   colorType = 'primaryDark',
 }: IconProps) => (
   <FontAwesomeIcon
@@ -103,10 +101,7 @@ export const CloseCircleIcon = ({
   />
 )
 
-export const DataIcon = ({
-  size = 'lg',
-  colorType = 'primaryDark',
-}: IconProps) => (
+export const DataIcon = ({ size, colorType = 'primaryDark' }: IconProps) => (
   <FontAwesomeIcon
     icon={faDatabase}
     size={size}
@@ -114,17 +109,11 @@ export const DataIcon = ({
   />
 )
 
-export const DeleteIcon = ({
-  size = 'lg',
-  colorType = 'primaryDark',
-}: IconProps) => (
+export const DeleteIcon = ({ size, colorType = 'primaryDark' }: IconProps) => (
   <FontAwesomeIcon icon={faTimes} size={size} color={theme.colors[colorType]} />
 )
 
-export const EditIcon = ({
-  size = 'lg',
-  colorType = 'primaryDark',
-}: IconProps) => (
+export const EditIcon = ({ size, colorType = 'primaryDark' }: IconProps) => (
   <FontAwesomeIcon icon={faEdit} size={size} color={theme.colors[colorType]} />
 )
 
@@ -136,10 +125,7 @@ export const ErrorIcon = ({ size = 'lg' }: IconProps) => (
   />
 )
 
-export const HomeIcon = ({
-  size = 'lg',
-  colorType = 'primaryDark',
-}: IconProps) => (
+export const HomeIcon = ({ size, colorType = 'primaryDark' }: IconProps) => (
   <FontAwesomeIcon
     icon={faChartBar}
     size={size}
@@ -152,7 +138,7 @@ export const InfoIcon = ({ size = 'lg' }: IconProps) => (
 )
 
 export const NewsFeedIcon = ({
-  size = 'lg',
+  size,
   colorType = 'primaryDark',
 }: IconProps) => (
   <FontAwesomeIcon
@@ -166,10 +152,7 @@ export const PlusIcon = ({ size = 'lg' }: IconProps) => (
   <FontAwesomeIcon icon={faPlus} size={size} />
 )
 
-export const SignOutIcon = ({
-  size = 'lg',
-  colorType = 'primaryDark',
-}: IconProps) => (
+export const SignOutIcon = ({ size, colorType = 'primaryDark' }: IconProps) => (
   <FontAwesomeIcon
     icon={faSignOutAlt}
     size={size}
@@ -185,7 +168,7 @@ const sortIcons = {
 }
 
 export const SortIcon = ({
-  size = 'lg',
+  size,
   type = 'Sort',
 }: {
   size?: SizeProp
@@ -200,17 +183,11 @@ export const SuccessIcon = ({ size = 'lg' }: IconProps) => (
   />
 )
 
-export const TagIcon = ({
-  size = 'lg',
-  colorType = 'primaryDark',
-}: IconProps) => (
+export const TagIcon = ({ size, colorType = 'primaryDark' }: IconProps) => (
   <FontAwesomeIcon icon={faTag} size={size} color={theme.colors[colorType]} />
 )
 
-export const TargetIcon = ({
-  size = 'lg',
-  colorType = 'primaryDark',
-}: IconProps) => (
+export const TargetIcon = ({ size, colorType = 'primaryDark' }: IconProps) => (
   <FontAwesomeIcon
     icon={faBullseye}
     size={size}
@@ -218,18 +195,17 @@ export const TargetIcon = ({
   />
 )
 
-export const UserAvatar = ({ size = 'lg' }: IconProps) => (
+export const UserAvatarIcon = ({
+  size,
+  colorType = 'primaryDark',
+}: IconProps) => (
   <FontAwesomeIcon
     icon={faUserCircle}
     size={size}
-    display="block"
-    color="white"
+    color={theme.colors[colorType]}
   />
 )
 
-export const UsersIcon = ({
-  size = 'lg',
-  colorType = 'primaryDark',
-}: IconProps) => (
+export const UsersIcon = ({ size, colorType = 'primaryDark' }: IconProps) => (
   <FontAwesomeIcon icon={faUsers} size={size} color={theme.colors[colorType]} />
 )

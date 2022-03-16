@@ -2,6 +2,8 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { LoadingDots } from '../../../components/loadingIndicators'
 import { showToast } from '../../../components/notifications'
+import AdminActionsUI from '../../../components/public-content/clubDetails.tsx/adminActionsUI'
+import ClubMembersListUI from '../../../components/public-content/clubDetails.tsx/clubMembersList'
 import { BackButton } from '../../../components/styled-components/buttons'
 import {
   ElevatedBox,
@@ -15,6 +17,8 @@ import {
 } from '../../../components/styled-components/styled'
 import {
   AdminPublicClubCountsDocument,
+  AdminPublicClubSummariesDocument,
+  PublicContentValidationStatus,
   useAdminPublicClubByIdQuery,
   useUpdateClubMetaDataAdminMutation,
 } from '../../../graphql/generated_types'
@@ -36,8 +40,6 @@ export default function ClubDetails() {
 
   const [update, { loading: updateInProgress, reset }] =
     useUpdateClubMetaDataAdminMutation({
-      /// Refetch the public club counts query.
-      refetchQueries: [AdminPublicClubCountsDocument],
       onCompleted() {
         showToast('Club Meta Data Updated', 'Success')
         reset()
@@ -69,6 +71,12 @@ export default function ClubDetails() {
               <Title>{club.name}</Title>
             </FlexBox>
 
+            {club.location && (
+              <Padding padding="0 0 8px 0">
+                <SubTitle>{club.location}</SubTitle>
+              </Padding>
+            )}
+
             {club.description && (
               <Padding padding="0 0 8px 0">
                 <MaxSizedBox maxWidth={800}>
@@ -76,45 +84,87 @@ export default function ClubDetails() {
                 </MaxSizedBox>
               </Padding>
             )}
+
+            <FlexBox direction="row">
+              {club.coverImageUri && (
+                <MediaUIContainer>
+                  <UploadcareImageWrapper uuid={club.coverImageUri} />
+                </MediaUIContainer>
+              )}
+              {club.introAudioUri && (
+                <UploadcareAudioPlayerWrapper uuid={club.introAudioUri} />
+              )}
+            </FlexBox>
           </div>
           <FlexBox direction="row" justify="flex-end" wrap="wrap">
-            {club.introAudioUri ? (
-              <UploadcareAudioPlayerWrapper uuid={club.introAudioUri} />
-            ) : (
-              <ElevatedBox>
-                <MainText>No intro audio</MainText>
-              </ElevatedBox>
-            )}
-
-            {club.introVideoUri ? (
+            {club.introVideoUri && (
               <UploadcareVideoPlayerWrapper
                 uuid={club.introVideoUri}
-                width="240px"
+                height="300px"
               />
-            ) : (
-              <ElevatedBox>
-                <MainText>No intro video</MainText>{' '}
-              </ElevatedBox>
-            )}
-
-            {club.coverImageUri ? (
-              <MediaUIContainer>
-                <UploadcareImageWrapper uuid={club.coverImageUri} />
-              </MediaUIContainer>
-            ) : (
-              <ElevatedBox>
-                <MainText>No cover image</MainText>
-              </ElevatedBox>
             )}
           </FlexBox>
         </FlexBox>
 
         <ElevatedBox>
-          <MainText>Admin Actions</MainText>
+          <AdminActionsUI
+            club={club}
+            updateInProgress={updateInProgress}
+            updateTags={(tags) => {
+              update({
+                variables: {
+                  data: {
+                    id: club.id,
+                    metaTags: tags,
+                  },
+                },
+              })
+            }}
+            updateStatus={(status) =>
+              update({
+                variables: {
+                  data: {
+                    id: club.id,
+                    validated: status,
+                  },
+                },
+                /// Refetch the public workout counts query and workout summaries queries (for each status) when you update workout the status.
+                refetchQueries: [
+                  { query: AdminPublicClubCountsDocument },
+                  ...[
+                    PublicContentValidationStatus.Pending,
+                    PublicContentValidationStatus.Valid,
+                    PublicContentValidationStatus.Invalid,
+                  ].map((status) => ({
+                    query: AdminPublicClubSummariesDocument,
+                    variables: {
+                      status,
+                    },
+                  })),
+                ],
+              })
+            }
+          />
         </ElevatedBox>
 
         <ElevatedBox>
-          <MainText>Club Info</MainText>
+          <ClubMembersListUI memberType="Owner" members={[club.Owner]} />
+        </ElevatedBox>
+
+        <ElevatedBox>
+          {club.Admins.length ? (
+            <ClubMembersListUI memberType="Admin" members={club.Admins} />
+          ) : (
+            <MainText>No admins</MainText>
+          )}
+        </ElevatedBox>
+
+        <ElevatedBox>
+          {club.Members.length ? (
+            <ClubMembersListUI memberType="Member" members={club.Members} />
+          ) : (
+            <MainText>No members</MainText>
+          )}
         </ElevatedBox>
       </div>
     )

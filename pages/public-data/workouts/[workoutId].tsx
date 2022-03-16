@@ -80,8 +80,9 @@ export default function WorkoutDetails() {
                 </MaxSizedBox>
               </Padding>
             )}
+
             {workout.WorkoutTags.length > 0 && (
-              <Padding padding="0 0 4px 0">
+              <Padding padding="0 0 6px 0">
                 <FlexBox wrap="wrap" direction="row">
                   {workout.WorkoutTags.map((tag) => (
                     <Padding key={tag.id} padding="0 8px 0 0">
@@ -92,7 +93,7 @@ export default function WorkoutDetails() {
               </Padding>
             )}
             {workout.WorkoutGoals.length > 0 && (
-              <Padding padding="0 0 4px 0">
+              <Padding padding="0 0 8px 0">
                 <FlexBox wrap="wrap" direction="row">
                   {workout.WorkoutGoals.map((goal) => (
                     <Padding key={goal.id} padding="0 8px 0 0">
@@ -105,35 +106,26 @@ export default function WorkoutDetails() {
                 </FlexBox>
               </Padding>
             )}
+            {(workout.coverImageUri || workout.introAudioUri) && (
+              <FlexBox direction="row" padding="10px 0">
+                {workout.coverImageUri && (
+                  <MediaUIContainer>
+                    <UploadcareImageWrapper uuid={workout.coverImageUri} />
+                  </MediaUIContainer>
+                )}
+
+                {workout.introAudioUri && (
+                  <UploadcareAudioPlayerWrapper uuid={workout.introAudioUri} />
+                )}
+              </FlexBox>
+            )}
           </div>
           <FlexBox direction="row" justify="flex-end" wrap="wrap">
-            {workout.introAudioUri ? (
-              <UploadcareAudioPlayerWrapper uuid={workout.introAudioUri} />
-            ) : (
-              <ElevatedBox>
-                <MainText>No intro audio</MainText>
-              </ElevatedBox>
-            )}
-
-            {workout.introVideoUri ? (
+            {workout.introVideoUri && (
               <UploadcareVideoPlayerWrapper
                 uuid={workout.introVideoUri}
-                width="240px"
+                height="300px"
               />
-            ) : (
-              <ElevatedBox>
-                <MainText>No intro video</MainText>{' '}
-              </ElevatedBox>
-            )}
-
-            {workout.coverImageUri ? (
-              <MediaUIContainer>
-                <UploadcareImageWrapper uuid={workout.coverImageUri} />
-              </MediaUIContainer>
-            ) : (
-              <ElevatedBox>
-                <MainText>No cover image</MainText>
-              </ElevatedBox>
             )}
           </FlexBox>
         </FlexBox>
@@ -198,9 +190,9 @@ export default function WorkoutDetails() {
             ))}
           </Padding>
         ) : (
-          <Padding padding="0 8px 0 0">
+          <ElevatedBox>
             <MainText>No sections defined</MainText>
-          </Padding>
+          </ElevatedBox>
         )}
       </div>
     )

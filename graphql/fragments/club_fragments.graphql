@@ -1,4 +1,4 @@
-fragment ClubWithMetaDataAdmin on ClubWithMetaDataAdmin {
+fragment ClubWithMetaDataAdminData on ClubWithMetaDataAdmin {
   __typename
   id
   createdAt
@@ -13,6 +13,32 @@ fragment ClubWithMetaDataAdmin on ClubWithMetaDataAdmin {
   validated
   reasonNotValidated
   metaTags
+  Owner {
+    ...UserAvatarData
+  }
+  Admins {
+    ...UserAvatarData
+  }
+  Members {
+    ...UserAvatarData
+  }
+}
+
+fragment ClubSummary on ClubSummary {
+  __typename
+  id
+  createdAt
+  name
+  description
+  coverImageUri
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+  contentAccessScope
+  location
+  memberCount
+  workoutCount
+  planCount
 }
 
 fragment PublicClubSummaryAdmin on PublicClubSummaryAdmin {

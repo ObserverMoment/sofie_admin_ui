@@ -10,6 +10,7 @@ import {
   SignOutIcon,
   Logo,
   NewsFeedIcon,
+  UserAvatarIcon,
 } from '../icons'
 import { MyLink } from '../styled-components/buttons'
 import { FlexBox, Spacer, TinyText, Title } from '../styled-components/styled'
@@ -19,6 +20,7 @@ const primaryRoutes = [
   { text: 'Dashboard', link: '/', icon: HomeIcon },
   { text: 'Core Data', link: '/core-data', icon: DataIcon },
   { text: 'Public Data', link: '/public-data', icon: ContentIcon },
+  { text: 'User Data', link: '/user-data', icon: UserAvatarIcon },
   { text: 'Announcements', link: '/announcements', icon: NewsFeedIcon },
 ]
 

@@ -1696,6 +1696,7 @@ export type PublicWorkoutSummaryAdmin = {
 
 export type Query = {
   __typename?: 'Query';
+  adminAllUsers: Array<UserProfileSummary>;
   adminPublicClubById: ClubWithMetaDataAdmin;
   adminPublicClubCounts: PublicClubCountsAdmin;
   adminPublicClubSummaries: Array<PublicClubSummaryAdmin>;
@@ -2870,7 +2871,9 @@ export type WorkoutWithMetaDataAdmin = {
   validated: PublicContentValidationStatus;
 };
 
-export type ClubWithMetaDataAdminFragment = { __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string> };
+export type ClubWithMetaDataAdminDataFragment = { __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string>, Owner: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, Admins: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }>, Members: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }> };
+
+export type ClubSummaryFragment = { __typename: 'ClubSummary', id: string, createdAt: any, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, location?: string | null | undefined, memberCount: number, workoutCount: number, planCount: number };
 
 export type PublicClubSummaryAdminFragment = { __typename: 'PublicClubSummaryAdmin', id: string, createdAt: any, name: string };
 
@@ -2903,6 +2906,8 @@ export type MoveTypeFragment = { __typename: 'MoveType', id: string, name: strin
 export type ProgressWidgetFragment = { __typename: 'ProgressWidget', id: string, createdAt: any, name: string, subtitle?: string | null | undefined, description?: string | null | undefined };
 
 export type UserAvatarDataFragment = { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string };
+
+export type UserProfileSummaryFragment = { __typename: 'UserProfileSummary', userProfileScope: UserProfileScope, id: string, avatarUri?: string | null | undefined, tagline?: string | null | undefined, townCity?: string | null | undefined, countryCode?: string | null | undefined, displayName: string, workoutCount: number, planCount: number, skills: Array<string> };
 
 export type WorkoutWithMetaDataAdminDataFragment = { __typename: 'WorkoutWithMetaDataAdmin', id: string, createdAt: any, updatedAt: any, archived: boolean, name: string, description?: string | null | undefined, lengthMinutes?: number | null | undefined, coverImageUri?: string | null | undefined, contentAccessScope: ContentAccessScope, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, difficultyLevel?: DifficultyLevel | null | undefined, metaTags: Array<string>, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, User: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, WorkoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, WorkoutTags: Array<{ __typename: 'WorkoutTag', id: string, tag: string }>, WorkoutSections: Array<{ __typename: 'WorkoutSection', id: string, name?: string | null | undefined, note?: string | null | undefined, rounds: number, timecap: number, sortPosition: number, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, classVideoUri?: string | null | undefined, classVideoThumbUri?: string | null | undefined, classAudioUri?: string | null | undefined, WorkoutSectionType: { __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }, WorkoutSets: Array<{ __typename: 'WorkoutSet', id: string, sortPosition: number, duration: number, WorkoutMoves: Array<{ __typename: 'WorkoutMove', id: string, sortPosition: number, reps: number, repType: WorkoutMoveRepType, distanceUnit: DistanceUnit, loadAmount: number, loadUnit: LoadUnit, timeUnit: TimeUnit, Equipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined, Move: { __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> } }> }> }> };
 
@@ -2937,6 +2942,11 @@ export type WorkoutPlanDayFragment = { __typename: 'WorkoutPlanDay', id: string,
 export type WorkoutPlanDayWorkoutFragment = { __typename: 'WorkoutPlanDayWorkout', id: string, note?: string | null | undefined, sortPosition: number };
 
 export type WorkoutPlanReviewFragment = { __typename: 'WorkoutPlanReview', id: string, createdAt: any, score: number, comment?: string | null | undefined };
+
+export type AdminAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminAllUsersQuery = { __typename?: 'Query', adminAllUsers: Array<{ __typename: 'UserProfileSummary', userProfileScope: UserProfileScope, id: string, avatarUri?: string | null | undefined, tagline?: string | null | undefined, townCity?: string | null | undefined, countryCode?: string | null | undefined, displayName: string, workoutCount: number, planCount: number, skills: Array<string>, Clubs: Array<{ __typename: 'ClubSummary', id: string, createdAt: any, name: string, description?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, location?: string | null | undefined, memberCount: number, workoutCount: number, planCount: number, Owner: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, Admins: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }> }> }> };
 
 export type CoreDataQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3018,7 +3028,7 @@ export type AdminPublicClubByIdQueryVariables = Exact<{
 }>;
 
 
-export type AdminPublicClubByIdQuery = { __typename?: 'Query', adminPublicClubById: { __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string> } };
+export type AdminPublicClubByIdQuery = { __typename?: 'Query', adminPublicClubById: { __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string>, Owner: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, Admins: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }>, Members: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }> } };
 
 export type AdminPublicWorkoutByIdQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -3054,7 +3064,7 @@ export type UpdateClubMetaDataAdminMutationVariables = Exact<{
 }>;
 
 
-export type UpdateClubMetaDataAdminMutation = { __typename?: 'Mutation', updateClubMetaDataAdmin: { __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string> } };
+export type UpdateClubMetaDataAdminMutation = { __typename?: 'Mutation', updateClubMetaDataAdmin: { __typename: 'ClubWithMetaDataAdmin', id: string, createdAt: any, name: string, description?: string | null | undefined, location?: string | null | undefined, coverImageUri?: string | null | undefined, introVideoUri?: string | null | undefined, introVideoThumbUri?: string | null | undefined, introAudioUri?: string | null | undefined, contentAccessScope: ContentAccessScope, validated: PublicContentValidationStatus, reasonNotValidated?: string | null | undefined, metaTags: Array<string>, Owner: { __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }, Admins: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }>, Members: Array<{ __typename: 'UserAvatarData', id: string, avatarUri?: string | null | undefined, displayName: string }> } };
 
 export type UpdateWorkoutMetaDataAdminMutationVariables = Exact<{
   data: UpdateWorkoutMetaDataAdminInput;
@@ -3091,8 +3101,16 @@ export type AdminPublicWorkoutSummariesQueryVariables = Exact<{
 
 export type AdminPublicWorkoutSummariesQuery = { __typename?: 'Query', adminPublicWorkoutSummaries: Array<{ __typename: 'PublicWorkoutSummaryAdmin', id: string, createdAt: any, updatedAt: any, name: string }> };
 
-export const ClubWithMetaDataAdminFragmentDoc = gql`
-    fragment ClubWithMetaDataAdmin on ClubWithMetaDataAdmin {
+export const UserAvatarDataFragmentDoc = gql`
+    fragment UserAvatarData on UserAvatarData {
+  __typename
+  id
+  avatarUri
+  displayName
+}
+    `;
+export const ClubWithMetaDataAdminDataFragmentDoc = gql`
+    fragment ClubWithMetaDataAdminData on ClubWithMetaDataAdmin {
   __typename
   id
   createdAt
@@ -3107,6 +3125,33 @@ export const ClubWithMetaDataAdminFragmentDoc = gql`
   validated
   reasonNotValidated
   metaTags
+  Owner {
+    ...UserAvatarData
+  }
+  Admins {
+    ...UserAvatarData
+  }
+  Members {
+    ...UserAvatarData
+  }
+}
+    ${UserAvatarDataFragmentDoc}`;
+export const ClubSummaryFragmentDoc = gql`
+    fragment ClubSummary on ClubSummary {
+  __typename
+  id
+  createdAt
+  name
+  description
+  coverImageUri
+  introVideoUri
+  introVideoThumbUri
+  introAudioUri
+  contentAccessScope
+  location
+  memberCount
+  workoutCount
+  planCount
 }
     `;
 export const PublicClubSummaryAdminFragmentDoc = gql`
@@ -3124,14 +3169,6 @@ export const ClubMemberNoteFragmentDoc = gql`
   createdAt
   note
   tags
-}
-    `;
-export const UserAvatarDataFragmentDoc = gql`
-    fragment UserAvatarData on UserAvatarData {
-  __typename
-  id
-  avatarUri
-  displayName
 }
     `;
 export const ClubChatSummaryFragmentDoc = gql`
@@ -3243,6 +3280,21 @@ export const ProgressWidgetFragmentDoc = gql`
   name
   subtitle
   description
+}
+    `;
+export const UserProfileSummaryFragmentDoc = gql`
+    fragment UserProfileSummary on UserProfileSummary {
+  __typename
+  userProfileScope
+  id
+  avatarUri
+  tagline
+  townCity
+  countryCode
+  displayName
+  workoutCount
+  planCount
+  skills
 }
     `;
 export const WorkoutGoalFragmentDoc = gql`
@@ -3618,6 +3670,51 @@ export const PublicWorkoutPlanSummaryAdminFragmentDoc = gql`
   name
 }
     `;
+export const AdminAllUsersDocument = gql`
+    query adminAllUsers {
+  adminAllUsers {
+    ...UserProfileSummary
+    Clubs {
+      ...ClubSummary
+      Owner {
+        ...UserAvatarData
+      }
+      Admins {
+        ...UserAvatarData
+      }
+    }
+  }
+}
+    ${UserProfileSummaryFragmentDoc}
+${ClubSummaryFragmentDoc}
+${UserAvatarDataFragmentDoc}`;
+
+/**
+ * __useAdminAllUsersQuery__
+ *
+ * To run a query within a React component, call `useAdminAllUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminAllUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminAllUsersQuery(baseOptions?: Apollo.QueryHookOptions<AdminAllUsersQuery, AdminAllUsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminAllUsersQuery, AdminAllUsersQueryVariables>(AdminAllUsersDocument, options);
+      }
+export function useAdminAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminAllUsersQuery, AdminAllUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminAllUsersQuery, AdminAllUsersQueryVariables>(AdminAllUsersDocument, options);
+        }
+export type AdminAllUsersQueryHookResult = ReturnType<typeof useAdminAllUsersQuery>;
+export type AdminAllUsersLazyQueryHookResult = ReturnType<typeof useAdminAllUsersLazyQuery>;
+export type AdminAllUsersQueryResult = Apollo.QueryResult<AdminAllUsersQuery, AdminAllUsersQueryVariables>;
 export const CoreDataDocument = gql`
     query coreData {
   coreData {
@@ -4084,10 +4181,10 @@ export type UpdateMoveMutationOptions = Apollo.BaseMutationOptions<UpdateMoveMut
 export const AdminPublicClubByIdDocument = gql`
     query adminPublicClubById($id: ID!) {
   adminPublicClubById(id: $id) {
-    ...ClubWithMetaDataAdmin
+    ...ClubWithMetaDataAdminData
   }
 }
-    ${ClubWithMetaDataAdminFragmentDoc}`;
+    ${ClubWithMetaDataAdminDataFragmentDoc}`;
 
 /**
  * __useAdminPublicClubByIdQuery__
@@ -4300,10 +4397,10 @@ export type AdminPublicWorkoutCountsQueryResult = Apollo.QueryResult<AdminPublic
 export const UpdateClubMetaDataAdminDocument = gql`
     mutation updateClubMetaDataAdmin($data: UpdateClubMetaDataAdminInput!) {
   updateClubMetaDataAdmin(data: $data) {
-    ...ClubWithMetaDataAdmin
+    ...ClubWithMetaDataAdminData
   }
 }
-    ${ClubWithMetaDataAdminFragmentDoc}`;
+    ${ClubWithMetaDataAdminDataFragmentDoc}`;
 export type UpdateClubMetaDataAdminMutationFn = Apollo.MutationFunction<UpdateClubMetaDataAdminMutation, UpdateClubMetaDataAdminMutationVariables>;
 
 /**

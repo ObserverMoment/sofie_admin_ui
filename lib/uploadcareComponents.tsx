@@ -12,6 +12,7 @@ import {
   Spacer,
   TinyText,
 } from '../components/styled-components/styled'
+import { UserAvatarData } from '../graphql/generated_types'
 import { getFileUrlFromUuid } from './uploadcare'
 
 interface UploadcareImageWrapperProps {
@@ -127,7 +128,7 @@ export const UploadcareAudioPlayerWrapper: React.FC<
 }
 
 //// Hooks ////
-enum UploadcareApiStatus {
+export enum UploadcareApiStatus {
   Loading,
   Error,
   Success,
@@ -153,4 +154,42 @@ const useGetUploadcareUrl = (uuid: string) => {
   }, [uuid])
 
   return { status, url }
+}
+
+export interface UserAvatarUrlName {
+  name: string
+  avatarUrl?: string
+}
+
+export const useGetUploadcareUrls = (usersData: UserAvatarData[]) => {
+  const [status, setStatus] = useState(UploadcareApiStatus.Loading)
+  const [urlsAndNames, setUrlsAndNames] = useState([] as UserAvatarUrlName[])
+
+  useEffect(() => {
+    if (!usersData) return
+    const fetchData = async () => {
+      try {
+        const urls = await Promise.all(
+          usersData.map((u) =>
+            u.avatarUri ? getFileUrlFromUuid(u.avatarUri) : null,
+          ),
+        )
+        setUrlsAndNames(
+          urls.map((url, i) => ({
+            name: usersData[i].displayName,
+            avatarUrl: url,
+          })),
+        )
+        setStatus(UploadcareApiStatus.Success)
+      } catch (e) {
+        setStatus(UploadcareApiStatus.Error)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  console.log(urlsAndNames)
+
+  return { status, urlsAndNames }
 }

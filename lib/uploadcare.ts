@@ -59,6 +59,7 @@ export async function getFileUrlFromUuid(uuid: string): Promise<string> {
   )
 
   const info = await response.json()
+  console.log(info)
 
   return info.original_file_url
 }

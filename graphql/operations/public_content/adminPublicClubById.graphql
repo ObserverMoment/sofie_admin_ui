@@ -1,5 +1,5 @@
 query adminPublicClubById($id: ID!) {
   adminPublicClubById(id: $id) {
-    ...ClubWithMetaDataAdmin
+    ...ClubWithMetaDataAdminData
   }
 }
