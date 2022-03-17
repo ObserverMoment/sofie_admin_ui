@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import { UserAvatarData } from '../../../graphql/generated_types'
 import {
   UploadcareApiStatus,
@@ -42,18 +43,12 @@ const ClubMembersListUI: React.FC<ClubMembersListUIProps> = ({
       <FlexBox>
         <Title>{memberTypeToDisplayMap[memberType]}</Title>
         <Spacer bottom="10px" />
-        <FlexBox direction="row" justify="start">
+        <FlexBox direction="row" justify="start" gap="24px">
           {urlsAndNames.map((u) => (
-            <FlexBox
-              key={u.name}
-              align="center"
-              justify="center"
-              flexGrow={0}
-              gap="16px"
-            >
+            <FlexBox key={u.name} align="center" flexGrow={0}>
               <UserAvatar size={100} src={u.avatarUrl} />
               <Spacer bottom="4px" />
-              <TinyText>{u.name}</TinyText>
+              <StyledUserNameText>{u.name}</StyledUserNameText>
             </FlexBox>
           ))}
         </FlexBox>
@@ -63,3 +58,10 @@ const ClubMembersListUI: React.FC<ClubMembersListUIProps> = ({
 }
 
 export default ClubMembersListUI
+
+//// Styled Components ////
+const StyledUserNameText = styled(TinyText)`
+  overflow-wrap: break-word;
+  width: 100px;
+  text-align: center;
+`
