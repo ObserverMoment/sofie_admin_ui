@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import { UserAvatar } from '../../components/cardsAndTags/userAvatar'
 import { LoadingDots } from '../../components/loadingIndicators'
 import { showToast } from '../../components/notifications'
@@ -20,8 +21,6 @@ import {
 
 export default function Overview() {
   const { loading, error, data } = useAdminAllUsersQuery()
-
-  console.log(data)
 
   if (error) {
     showToast(`Error retrieving data`, 'Error', 5000)
@@ -85,7 +84,7 @@ const UsersList: React.FC<UsersListProps> = ({ users }) => {
             <FlexBox align="center" flexGrow={0}>
               <UserAvatar src={u.avatarUrl} size={100} />
               <Spacer bottom="8px" />
-              <MainText fontSize="12px">{u.name}</MainText>
+              <StyledUserNameText fontSize="12px">{u.name}</StyledUserNameText>
             </FlexBox>
           ))}
         </FlexBox>
@@ -93,3 +92,10 @@ const UsersList: React.FC<UsersListProps> = ({ users }) => {
     )
   }
 }
+
+//// Styled Components ////
+const StyledUserNameText = styled(MainText)`
+  overflow-wrap: break-word;
+  width: 100px;
+  text-align: center;
+`
