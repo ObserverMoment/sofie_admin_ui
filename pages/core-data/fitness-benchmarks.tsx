@@ -16,7 +16,7 @@ import {
 import {
   FitnessBenchmark,
   FitnessBenchmarkCategory,
-  useCoreDataQuery,
+  useAdminStandardFitnessBenchmarksQuery,
 } from '../../graphql/generated_types'
 
 export default function FitnessBenchmarks() {
@@ -25,7 +25,7 @@ export default function FitnessBenchmarks() {
     title: '',
   })
 
-  const { loading, error, data } = useCoreDataQuery()
+  const { loading, error, data } = useAdminStandardFitnessBenchmarksQuery()
 
   const [activeBenchmarkData, setActiveBenchmarkData] = useState(null)
 
@@ -44,6 +44,17 @@ export default function FitnessBenchmarks() {
   } else if (loading) {
     return <LoadingDots />
   } else {
+    const categories = data.adminStandardFitnessBenchmarks.reduce(
+      (acum, next) => {
+        if (acum.some((cat) => cat.id === next.FitnessBenchmarkCategory.id)) {
+          return acum
+        } else {
+          acum.push(next.FitnessBenchmarkCategory)
+          return acum
+        }
+      },
+      [],
+    )
     return (
       <div>
         <Padding>
@@ -55,10 +66,10 @@ export default function FitnessBenchmarks() {
           </FlexBox>
         </Padding>
 
-        {data.coreData.fitnessBenchmarkCategories.map((c) => (
+        {categories.map((c) => (
           <FitnessBenchmarkCategoryDisplay
             category={c}
-            benchmarks={data.coreData.fitnessBenchmarks.filter(
+            benchmarks={data.adminStandardFitnessBenchmarks.filter(
               (b) => b.FitnessBenchmarkCategory.id === c.id,
             )}
             handleBenchmarkClick={handleBenchmarkClick}

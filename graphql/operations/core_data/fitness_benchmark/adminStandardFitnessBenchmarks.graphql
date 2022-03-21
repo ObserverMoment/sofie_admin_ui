@@ -1,0 +1,11 @@
+query adminStandardFitnessBenchmarks {
+  adminStandardFitnessBenchmarks {
+    ...FitnessBenchmark
+    FitnessBenchmarkCategory {
+      ...FitnessBenchmarkCategory
+    }
+    FitnessBenchmarkScores {
+      ...FitnessBenchmarkScore
+    }
+  }
+}

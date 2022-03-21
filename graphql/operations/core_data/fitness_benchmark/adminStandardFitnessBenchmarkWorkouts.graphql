@@ -1,0 +1,8 @@
+query adminStandardFitnessBenchmarkWorkouts {
+  adminStandardFitnessBenchmarkWorkouts {
+    ...FitnessBenchmarkWorkout
+    FitnessBenchmarkWorkoutScores {
+      ...FitnessBenchmarkWorkoutScore
+    }
+  }
+}

@@ -40,14 +40,5 @@ query coreData {
     fitnessBenchmarkCategories {
       ...FitnessBenchmarkCategory
     }
-    fitnessBenchmarks {
-      ...FitnessBenchmark
-      FitnessBenchmarkCategory {
-        ...FitnessBenchmarkCategory
-      }
-    }
-    fitnessBenchmarkWorkouts {
-      ...FitnessBenchmarkWorkout
-    }
   }
 }
