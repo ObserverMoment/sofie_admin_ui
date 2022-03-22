@@ -4,5 +4,8 @@ mutation updateFitnessBenchmark($data: UpdateFitnessBenchmarkInput!) {
     FitnessBenchmarkCategory {
       ...FitnessBenchmarkCategory
     }
+    FitnessBenchmarkScores {
+      ...FitnessBenchmarkScore
+    }
   }
 }

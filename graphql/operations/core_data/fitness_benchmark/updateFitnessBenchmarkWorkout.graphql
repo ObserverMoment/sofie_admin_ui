@@ -3,5 +3,8 @@ mutation updateFitnessBenchmarkWorkout(
 ) {
   updateFitnessBenchmarkWorkout(data: $data) {
     ...FitnessBenchmarkWorkout
+    FitnessBenchmarkWorkoutScores {
+      ...FitnessBenchmarkWorkoutScore
+    }
   }
 }

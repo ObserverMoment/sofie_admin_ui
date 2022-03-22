@@ -68,6 +68,7 @@ export default function FitnessBenchmarks() {
 
         {categories.map((c) => (
           <FitnessBenchmarkCategoryDisplay
+            key={c.id}
             category={c}
             benchmarks={data.adminStandardFitnessBenchmarks.filter(
               (b) => b.FitnessBenchmarkCategory.id === c.id,
@@ -113,7 +114,7 @@ const FitnessBenchmarkCategoryDisplay = ({
     <Title>{category.name}</Title>
     <FlexBox direction="row" wrap="wrap">
       {benchmarks.map((b) => (
-        <Padding>
+        <Padding key={b.id}>
           <FitnessBenchmarkDisplay
             benchmark={b}
             handleBenchmarkClick={handleBenchmarkClick}
@@ -143,7 +144,9 @@ const FitnessBenchmarkDisplay = ({
     onClick={() => handleBenchmarkClick(benchmark)}
   >
     <MainText>{benchmark.name}</MainText>
-
     <TinyText>{benchmark.type.toString()}</TinyText>
+    <TinyText>
+      Scores Submitted: {benchmark.FitnessBenchmarkScores.length}
+    </TinyText>
   </FlexBox>
 )

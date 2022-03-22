@@ -675,6 +675,7 @@ export enum FitnessBenchmarkScope {
 
 export type FitnessBenchmarkScore = {
   __typename?: 'FitnessBenchmarkScore';
+  User?: Maybe<UserAvatarData>;
   completedOn: Scalars['DateTime'];
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
@@ -713,6 +714,7 @@ export type FitnessBenchmarkWorkout = {
 
 export type FitnessBenchmarkWorkoutScore = {
   __typename?: 'FitnessBenchmarkWorkoutScore';
+  User?: Maybe<UserAvatarData>;
   completedOn: Scalars['DateTime'];
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
@@ -3050,14 +3052,14 @@ export type UpdateFitnessBenchmarkWorkoutMutationVariables = Exact<{
 }>;
 
 
-export type UpdateFitnessBenchmarkWorkoutMutation = { __typename?: 'Mutation', updateFitnessBenchmarkWorkout: { __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description?: string | null | undefined, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number> } };
+export type UpdateFitnessBenchmarkWorkoutMutation = { __typename?: 'Mutation', updateFitnessBenchmarkWorkout: { __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description?: string | null | undefined, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number>, FitnessBenchmarkWorkoutScores?: Array<{ __typename: 'FitnessBenchmarkWorkoutScore', id: string, createdAt: any, completedOn: any, score: number, note?: string | null | undefined }> | null | undefined } };
 
 export type UpdateFitnessBenchmarkMutationVariables = Exact<{
   data: UpdateFitnessBenchmarkInput;
 }>;
 
 
-export type UpdateFitnessBenchmarkMutation = { __typename?: 'Mutation', updateFitnessBenchmark: { __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description?: string | null | undefined, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, FitnessBenchmarkCategory: { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string } } };
+export type UpdateFitnessBenchmarkMutation = { __typename?: 'Mutation', updateFitnessBenchmark: { __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description?: string | null | undefined, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, FitnessBenchmarkCategory: { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string }, FitnessBenchmarkScores?: Array<{ __typename: 'FitnessBenchmarkScore', id: string, createdAt: any, completedOn: any, score: number, note?: string | null | undefined, videoUri?: string | null | undefined, videoThumbUri?: string | null | undefined }> | null | undefined } };
 
 export type CreateMoveMutationVariables = Exact<{
   data: CreateMoveInput;
@@ -4127,9 +4129,13 @@ export const UpdateFitnessBenchmarkWorkoutDocument = gql`
     mutation updateFitnessBenchmarkWorkout($data: UpdateFitnessBenchmarkWorkoutInput!) {
   updateFitnessBenchmarkWorkout(data: $data) {
     ...FitnessBenchmarkWorkout
+    FitnessBenchmarkWorkoutScores {
+      ...FitnessBenchmarkWorkoutScore
+    }
   }
 }
-    ${FitnessBenchmarkWorkoutFragmentDoc}`;
+    ${FitnessBenchmarkWorkoutFragmentDoc}
+${FitnessBenchmarkWorkoutScoreFragmentDoc}`;
 export type UpdateFitnessBenchmarkWorkoutMutationFn = Apollo.MutationFunction<UpdateFitnessBenchmarkWorkoutMutation, UpdateFitnessBenchmarkWorkoutMutationVariables>;
 
 /**
@@ -4163,10 +4169,14 @@ export const UpdateFitnessBenchmarkDocument = gql`
     FitnessBenchmarkCategory {
       ...FitnessBenchmarkCategory
     }
+    FitnessBenchmarkScores {
+      ...FitnessBenchmarkScore
+    }
   }
 }
     ${FitnessBenchmarkFragmentDoc}
-${FitnessBenchmarkCategoryFragmentDoc}`;
+${FitnessBenchmarkCategoryFragmentDoc}
+${FitnessBenchmarkScoreFragmentDoc}`;
 export type UpdateFitnessBenchmarkMutationFn = Apollo.MutationFunction<UpdateFitnessBenchmarkMutation, UpdateFitnessBenchmarkMutationVariables>;
 
 /**
