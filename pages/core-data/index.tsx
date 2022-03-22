@@ -5,7 +5,11 @@ import ErrorMessage from '../../components/errorMessage'
 import { LoadingDots } from '../../components/loadingIndicators'
 import { FlexBox, Title } from '../../components/styled-components/styled'
 import { CORE_DATA_BASE_URL } from '../../constants'
-import { useCoreDataQuery } from '../../graphql/generated_types'
+import {
+  useAdminStandardFitnessBenchmarksQuery,
+  useAdminStandardFitnessBenchmarkWorkoutsQuery,
+  useCoreDataQuery,
+} from '../../graphql/generated_types'
 
 export default function Overview() {
   const { loading, error, data } = useCoreDataQuery()
@@ -98,9 +102,7 @@ export default function Overview() {
             passHref
           >
             <GridItem>
-              <ObjectCountText>
-                {data.coreData.fitnessBenchmarks.length.toString()}
-              </ObjectCountText>
+              <FitnessBenchmarksCount />
               <Title>Fitness Benchmarks</Title>
             </GridItem>
           </Link>
@@ -111,14 +113,45 @@ export default function Overview() {
             passHref
           >
             <GridItem>
-              <ObjectCountText>
-                {data.coreData.fitnessBenchmarkWorkouts.length.toString()}
-              </ObjectCountText>
+              <FitnessBenchmarkWorkoutsCount />
               <Title>Benchmark Workouts</Title>
             </GridItem>
           </Link>
         </DashboardGrid>
       </FlexBox>
+    )
+  }
+}
+
+const FitnessBenchmarksCount = () => {
+  const { loading, error, data } = useAdminStandardFitnessBenchmarksQuery()
+
+  if (error) {
+    return <ErrorMessage message={error.message} />
+  } else if (loading) {
+    return <LoadingDots />
+  } else {
+    return (
+      <ObjectCountText>
+        {data.adminStandardFitnessBenchmarks.length}
+      </ObjectCountText>
+    )
+  }
+}
+
+const FitnessBenchmarkWorkoutsCount = () => {
+  const { loading, error, data } =
+    useAdminStandardFitnessBenchmarkWorkoutsQuery()
+
+  if (error) {
+    return <ErrorMessage message={error.message} />
+  } else if (loading) {
+    return <LoadingDots />
+  } else {
+    return (
+      <ObjectCountText>
+        {data.adminStandardFitnessBenchmarkWorkouts.length}
+      </ObjectCountText>
     )
   }
 }

@@ -49,6 +49,13 @@ type AnnouncementUpdateAction {
   text: String!
 }
 
+type BestBenchmarkScoreSummary {
+  benchmarkName: String!
+  benchmarkType: FitnessBenchmarkScoreType!
+  bestScore: Float!
+  videoUri: String
+}
+
 type BodyArea {
   altNames: String
   frontBack: BodyAreaFrontBack!
@@ -258,8 +265,6 @@ type CoreData {
   bodyAreas: [BodyArea!]!
   equipment: [Equipment!]!
   fitnessBenchmarkCategories: [FitnessBenchmarkCategory!]!
-  fitnessBenchmarkWorkouts: [FitnessBenchmarkWorkout!]!
-  fitnessBenchmarks: [FitnessBenchmark!]!
   moveTypes: [MoveType!]!
   progressWidgets: [ProgressWidget!]!
   standardMoves: [Move!]!
@@ -313,7 +318,7 @@ input CreateEquipmentInput {
 
 input CreateFitnessBenchmarkInput {
   FitnessBenchmarkCategory: ConnectRelationInput!
-  description: String!
+  description: String
   instructionalVideoThumbUri: String
   instructionalVideoUri: String
   instructions: String
@@ -334,7 +339,7 @@ input CreateFitnessBenchmarkScoreInput {
 input CreateFitnessBenchmarkWorkoutInput {
   FitnessBenchmarkWorkout: ConnectRelationInput!
   completedOn: DateTime!
-  description: String!
+  description: String
   instructionalVideoThumbUri: String
   instructionalVideoUri: String
   instructions: String
@@ -610,8 +615,9 @@ type Equipment {
 
 type FitnessBenchmark {
   FitnessBenchmarkCategory: FitnessBenchmarkCategory!
+  FitnessBenchmarkScores: [FitnessBenchmarkScore!]
   createdAt: DateTime!
-  description: String!
+  description: String
   id: ID!
   instructionalVideoThumbUri: String
   instructionalVideoUri: String
@@ -634,6 +640,7 @@ enum FitnessBenchmarkScope {
 }
 
 type FitnessBenchmarkScore {
+  User: UserAvatarData
   completedOn: DateTime!
   createdAt: DateTime!
   id: ID!
@@ -654,8 +661,9 @@ enum FitnessBenchmarkScoreType {
 }
 
 type FitnessBenchmarkWorkout {
+  FitnessBenchmarkWorkoutScores: [FitnessBenchmarkWorkoutScore!]
   createdAt: DateTime!
-  description: String!
+  description: String
   id: ID!
   instructionalVideoThumbUri: String
   instructionalVideoUri: String
@@ -669,6 +677,7 @@ type FitnessBenchmarkWorkout {
 }
 
 type FitnessBenchmarkWorkoutScore {
+  User: UserAvatarData
   completedOn: DateTime!
   createdAt: DateTime!
   id: ID!
@@ -842,6 +851,9 @@ type Mutation {
   ): WorkoutPlanEnrolment!
   createEquipment(data: CreateEquipmentInput!): Equipment
   createFitnessBenchmark(data: CreateFitnessBenchmarkInput!): FitnessBenchmark!
+  createFitnessBenchmarkScore(
+    data: CreateFitnessBenchmarkScoreInput!
+  ): FitnessBenchmark!
   createFitnessBenchmarkWorkout(
     data: CreateFitnessBenchmarkWorkoutInput!
   ): FitnessBenchmarkWorkout!
@@ -891,6 +903,7 @@ type Mutation {
     data: DeleteCompletedWorkoutPlanDayWorkoutInput!
   ): WorkoutPlanEnrolment!
   deleteFitnessBenchmark(id: ID!): ID!
+  deleteFitnessBenchmarkScore(id: ID!): FitnessBenchmark!
   deleteFitnessBenchmarkWorkout(id: ID!): ID!
   deleteGymProfileById(id: ID!): ID
   deleteLoggedWorkoutById(id: ID!): ID!
@@ -956,6 +969,9 @@ type Mutation {
   updateCollection(data: UpdateCollectionInput!): Collection!
   updateEquipment(data: UpdateEquipmentInput!): Equipment
   updateFitnessBenchmark(data: UpdateFitnessBenchmarkInput!): FitnessBenchmark!
+  updateFitnessBenchmarkScore(
+    data: UpdateFitnessBenchmarkScoreInput!
+  ): FitnessBenchmark!
   updateFitnessBenchmarkWorkout(
     data: UpdateFitnessBenchmarkWorkoutInput!
   ): FitnessBenchmarkWorkout!
@@ -1072,6 +1088,8 @@ type Query {
   adminPublicWorkoutSummaries(
     status: PublicContentValidationStatus!
   ): [PublicWorkoutSummaryAdmin!]!
+  adminStandardFitnessBenchmarkWorkouts: [FitnessBenchmarkWorkout!]!
+  adminStandardFitnessBenchmarks: [FitnessBenchmark!]!
   announcementUpdates: [AnnouncementUpdate!]!
   bodyTrackingEntries: [BodyTrackingEntry!]!
   checkClubInviteToken(id: ID!): CheckClubInviteTokenResult!
@@ -1124,12 +1142,14 @@ type Query {
   userArchivedWorkouts: [Workout!]!
   userAvatarById(id: ID!): UserAvatarData
   userAvatars(ids: [ID!]!): [UserAvatarData!]!
+  userBenchmarkWorkouts: [FitnessBenchmarkWorkout!]!
   userClubs: [ClubSummary!]!
   userCollectionById(id: ID!): Collection!
   userCollections: [Collection!]!
   userDayLogMoods: [UserDayLogMood!]!
   userEatWellLogs: [UserEatWellLog!]!
   userExerciseLoadTrackers: [UserExerciseLoadTracker!]!
+  userFitnessBenchmarks: [FitnessBenchmark!]!
   userGoals: [UserGoal!]!
   userLoggedWorkouts: [LoggedWorkout!]!
   userMeditationLogs: [UserMeditationLog!]!
@@ -1332,6 +1352,15 @@ input UpdateFitnessBenchmarkInput {
   type: FitnessBenchmarkScoreType
 }
 
+input UpdateFitnessBenchmarkScoreInput {
+  completedOn: DateTime
+  id: ID!
+  note: String
+  score: Float
+  videoThumbUri: String
+  videoUri: String
+}
+
 input UpdateFitnessBenchmarkWorkoutInput {
   description: String
   id: ID!
@@ -1443,7 +1472,7 @@ input UpdateUserMeditationLogInput {
 }
 
 input UpdateUserProfileInput {
-  activeLogDataWidgets: [String!]
+  activeFitnessBenchmarks: [String!]
   activeProgressWidgets: [String!]
   avatarUri: String
   bio: String
@@ -1467,7 +1496,7 @@ input UpdateUserProfileInput {
 }
 
 type UpdateUserProfileResult {
-  activeLogDataWidgets: [String!]
+  activeFitnessBenchmarks: [String!]
   activeProgressWidgets: [String!]
   avatarUri: String
   bio: String
@@ -1667,9 +1696,10 @@ type UserProfile {
   Clubs: [ClubSummary!]!
   LifetimeLogStatsSummary: LifetimeLogStatsSummary
   Skills: [Skill!]!
-  activeLogDataWidgets: [String!]
+  activeFitnessBenchmarks: [String!]
   activeProgressWidgets: [String!]
   avatarUri: String
+  bestBenchmarkScores: [BestBenchmarkScoreSummary!]
   bio: String
   birthdate: DateTime
   countryCode: String

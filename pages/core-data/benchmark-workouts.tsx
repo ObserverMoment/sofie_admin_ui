@@ -4,10 +4,11 @@ import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingDots } from '../../components/loadingIndicators'
 import { FlexBox, Padding } from '../../components/styled-components/styled'
-import { useCoreDataQuery } from '../../graphql/generated_types'
+import { useAdminStandardFitnessBenchmarkWorkoutsQuery } from '../../graphql/generated_types'
 
 export default function BenchmarkWorkouts() {
-  const { loading, error, data } = useCoreDataQuery()
+  const { loading, error, data } =
+    useAdminStandardFitnessBenchmarkWorkoutsQuery()
 
   if (error) {
     return <ErrorMessage message={error.message} />
@@ -39,7 +40,7 @@ export default function BenchmarkWorkouts() {
               disableSortBy: true,
             },
           ]}
-          data={data.coreData.fitnessBenchmarkWorkouts}
+          data={data.adminStandardFitnessBenchmarkWorkouts}
         />
       </div>
     )

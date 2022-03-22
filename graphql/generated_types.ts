@@ -65,6 +65,14 @@ export type AnnouncementUpdateAction = {
   text: Scalars['String'];
 };
 
+export type BestBenchmarkScoreSummary = {
+  __typename?: 'BestBenchmarkScoreSummary';
+  benchmarkName: Scalars['String'];
+  benchmarkType: FitnessBenchmarkScoreType;
+  bestScore: Scalars['Float'];
+  videoUri?: Maybe<Scalars['String']>;
+};
+
 export type BodyArea = {
   __typename?: 'BodyArea';
   altNames?: Maybe<Scalars['String']>;
@@ -290,8 +298,6 @@ export type CoreData = {
   bodyAreas: Array<BodyArea>;
   equipment: Array<Equipment>;
   fitnessBenchmarkCategories: Array<FitnessBenchmarkCategory>;
-  fitnessBenchmarkWorkouts: Array<FitnessBenchmarkWorkout>;
-  fitnessBenchmarks: Array<FitnessBenchmark>;
   moveTypes: Array<MoveType>;
   progressWidgets: Array<ProgressWidget>;
   standardMoves: Array<Move>;
@@ -345,7 +351,7 @@ export type CreateEquipmentInput = {
 
 export type CreateFitnessBenchmarkInput = {
   FitnessBenchmarkCategory: ConnectRelationInput;
-  description: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
   instructionalVideoThumbUri?: InputMaybe<Scalars['String']>;
   instructionalVideoUri?: InputMaybe<Scalars['String']>;
   instructions?: InputMaybe<Scalars['String']>;
@@ -366,7 +372,7 @@ export type CreateFitnessBenchmarkScoreInput = {
 export type CreateFitnessBenchmarkWorkoutInput = {
   FitnessBenchmarkWorkout: ConnectRelationInput;
   completedOn: Scalars['DateTime'];
-  description: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
   instructionalVideoThumbUri?: InputMaybe<Scalars['String']>;
   instructionalVideoUri?: InputMaybe<Scalars['String']>;
   instructions?: InputMaybe<Scalars['String']>;
@@ -642,8 +648,9 @@ export type Equipment = {
 export type FitnessBenchmark = {
   __typename?: 'FitnessBenchmark';
   FitnessBenchmarkCategory: FitnessBenchmarkCategory;
+  FitnessBenchmarkScores?: Maybe<Array<FitnessBenchmarkScore>>;
   createdAt: Scalars['DateTime'];
-  description: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   instructionalVideoThumbUri?: Maybe<Scalars['String']>;
   instructionalVideoUri?: Maybe<Scalars['String']>;
@@ -668,6 +675,7 @@ export enum FitnessBenchmarkScope {
 
 export type FitnessBenchmarkScore = {
   __typename?: 'FitnessBenchmarkScore';
+  User?: Maybe<UserAvatarData>;
   completedOn: Scalars['DateTime'];
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
@@ -689,8 +697,9 @@ export enum FitnessBenchmarkScoreType {
 
 export type FitnessBenchmarkWorkout = {
   __typename?: 'FitnessBenchmarkWorkout';
+  FitnessBenchmarkWorkoutScores?: Maybe<Array<FitnessBenchmarkWorkoutScore>>;
   createdAt: Scalars['DateTime'];
-  description: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   instructionalVideoThumbUri?: Maybe<Scalars['String']>;
   instructionalVideoUri?: Maybe<Scalars['String']>;
@@ -705,6 +714,7 @@ export type FitnessBenchmarkWorkout = {
 
 export type FitnessBenchmarkWorkoutScore = {
   __typename?: 'FitnessBenchmarkWorkoutScore';
+  User?: Maybe<UserAvatarData>;
   completedOn: Scalars['DateTime'];
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
@@ -875,6 +885,7 @@ export type Mutation = {
   createCompletedWorkoutPlanDayWorkout: WorkoutPlanEnrolment;
   createEquipment?: Maybe<Equipment>;
   createFitnessBenchmark: FitnessBenchmark;
+  createFitnessBenchmarkScore: FitnessBenchmark;
   createFitnessBenchmarkWorkout: FitnessBenchmarkWorkout;
   createGymProfile: GymProfile;
   createLoggedWorkout: LoggedWorkout;
@@ -906,6 +917,7 @@ export type Mutation = {
   deleteCollectionById: Scalars['ID'];
   deleteCompletedWorkoutPlanDayWorkout: WorkoutPlanEnrolment;
   deleteFitnessBenchmark: Scalars['ID'];
+  deleteFitnessBenchmarkScore: FitnessBenchmark;
   deleteFitnessBenchmarkWorkout: Scalars['ID'];
   deleteGymProfileById?: Maybe<Scalars['ID']>;
   deleteLoggedWorkoutById: Scalars['ID'];
@@ -955,6 +967,7 @@ export type Mutation = {
   updateCollection: Collection;
   updateEquipment?: Maybe<Equipment>;
   updateFitnessBenchmark: FitnessBenchmark;
+  updateFitnessBenchmarkScore: FitnessBenchmark;
   updateFitnessBenchmarkWorkout: FitnessBenchmarkWorkout;
   updateGymProfile: GymProfile;
   updateLoggedWorkout: LoggedWorkout;
@@ -1091,6 +1104,11 @@ export type MutationCreateEquipmentArgs = {
 
 export type MutationCreateFitnessBenchmarkArgs = {
   data: CreateFitnessBenchmarkInput;
+};
+
+
+export type MutationCreateFitnessBenchmarkScoreArgs = {
+  data: CreateFitnessBenchmarkScoreInput;
 };
 
 
@@ -1245,6 +1263,11 @@ export type MutationDeleteCompletedWorkoutPlanDayWorkoutArgs = {
 
 
 export type MutationDeleteFitnessBenchmarkArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteFitnessBenchmarkScoreArgs = {
   id: Scalars['ID'];
 };
 
@@ -1499,6 +1522,11 @@ export type MutationUpdateFitnessBenchmarkArgs = {
 };
 
 
+export type MutationUpdateFitnessBenchmarkScoreArgs = {
+  data: UpdateFitnessBenchmarkScoreInput;
+};
+
+
 export type MutationUpdateFitnessBenchmarkWorkoutArgs = {
   data: UpdateFitnessBenchmarkWorkoutInput;
 };
@@ -1706,6 +1734,8 @@ export type Query = {
   adminPublicWorkoutPlanCounts: PublicWorkoutPlanCountsAdmin;
   adminPublicWorkoutPlanSummaries: Array<PublicWorkoutPlanSummaryAdmin>;
   adminPublicWorkoutSummaries: Array<PublicWorkoutSummaryAdmin>;
+  adminStandardFitnessBenchmarkWorkouts: Array<FitnessBenchmarkWorkout>;
+  adminStandardFitnessBenchmarks: Array<FitnessBenchmark>;
   announcementUpdates: Array<AnnouncementUpdate>;
   bodyTrackingEntries: Array<BodyTrackingEntry>;
   checkClubInviteToken: CheckClubInviteTokenResult;
@@ -1741,12 +1771,14 @@ export type Query = {
   userArchivedWorkouts: Array<Workout>;
   userAvatarById?: Maybe<UserAvatarData>;
   userAvatars: Array<UserAvatarData>;
+  userBenchmarkWorkouts: Array<FitnessBenchmarkWorkout>;
   userClubs: Array<ClubSummary>;
   userCollectionById: Collection;
   userCollections: Array<Collection>;
   userDayLogMoods: Array<UserDayLogMood>;
   userEatWellLogs: Array<UserEatWellLog>;
   userExerciseLoadTrackers: Array<UserExerciseLoadTracker>;
+  userFitnessBenchmarks: Array<FitnessBenchmark>;
   userGoals: Array<UserGoal>;
   userLoggedWorkouts: Array<LoggedWorkout>;
   userMeditationLogs: Array<UserMeditationLog>;
@@ -2170,6 +2202,15 @@ export type UpdateFitnessBenchmarkInput = {
   type?: InputMaybe<FitnessBenchmarkScoreType>;
 };
 
+export type UpdateFitnessBenchmarkScoreInput = {
+  completedOn?: InputMaybe<Scalars['DateTime']>;
+  id: Scalars['ID'];
+  note?: InputMaybe<Scalars['String']>;
+  score?: InputMaybe<Scalars['Float']>;
+  videoThumbUri?: InputMaybe<Scalars['String']>;
+  videoUri?: InputMaybe<Scalars['String']>;
+};
+
 export type UpdateFitnessBenchmarkWorkoutInput = {
   description?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
@@ -2281,7 +2322,7 @@ export type UpdateUserMeditationLogInput = {
 };
 
 export type UpdateUserProfileInput = {
-  activeLogDataWidgets?: InputMaybe<Array<Scalars['String']>>;
+  activeFitnessBenchmarks?: InputMaybe<Array<Scalars['String']>>;
   activeProgressWidgets?: InputMaybe<Array<Scalars['String']>>;
   avatarUri?: InputMaybe<Scalars['String']>;
   bio?: InputMaybe<Scalars['String']>;
@@ -2306,7 +2347,7 @@ export type UpdateUserProfileInput = {
 
 export type UpdateUserProfileResult = {
   __typename?: 'UpdateUserProfileResult';
-  activeLogDataWidgets?: Maybe<Array<Scalars['String']>>;
+  activeFitnessBenchmarks?: Maybe<Array<Scalars['String']>>;
   activeProgressWidgets?: Maybe<Array<Scalars['String']>>;
   avatarUri?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
@@ -2513,9 +2554,10 @@ export type UserProfile = {
   Clubs: Array<ClubSummary>;
   LifetimeLogStatsSummary?: Maybe<LifetimeLogStatsSummary>;
   Skills: Array<Skill>;
-  activeLogDataWidgets?: Maybe<Array<Scalars['String']>>;
+  activeFitnessBenchmarks?: Maybe<Array<Scalars['String']>>;
   activeProgressWidgets?: Maybe<Array<Scalars['String']>>;
   avatarUri?: Maybe<Scalars['String']>;
+  bestBenchmarkScores?: Maybe<Array<BestBenchmarkScoreSummary>>;
   bio?: Maybe<Scalars['String']>;
   birthdate?: Maybe<Scalars['DateTime']>;
   countryCode?: Maybe<Scalars['String']>;
@@ -2887,11 +2929,11 @@ export type ClubInviteTokenFragment = { __typename: 'ClubInviteToken', id: strin
 
 export type FitnessBenchmarkCategoryFragment = { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string };
 
-export type FitnessBenchmarkFragment = { __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined };
+export type FitnessBenchmarkFragment = { __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description?: string | null | undefined, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined };
 
 export type FitnessBenchmarkScoreFragment = { __typename: 'FitnessBenchmarkScore', id: string, createdAt: any, completedOn: any, score: number, note?: string | null | undefined, videoUri?: string | null | undefined, videoThumbUri?: string | null | undefined };
 
-export type FitnessBenchmarkWorkoutFragment = { __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number> };
+export type FitnessBenchmarkWorkoutFragment = { __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description?: string | null | undefined, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number> };
 
 export type FitnessBenchmarkWorkoutScoreFragment = { __typename: 'FitnessBenchmarkWorkoutScore', id: string, createdAt: any, completedOn: any, score: number, note?: string | null | undefined };
 
@@ -2951,7 +2993,7 @@ export type AdminAllUsersQuery = { __typename?: 'Query', adminAllUsers: Array<{ 
 export type CoreDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CoreDataQuery = { __typename?: 'Query', coreData: { __typename: 'CoreData', bodyAreas: Array<{ __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower }>, equipment: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, moveTypes: Array<{ __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }>, workoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, workoutSectionTypes: Array<{ __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }>, standardMoves: Array<{ __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> }>, progressWidgets: Array<{ __typename: 'ProgressWidget', id: string, createdAt: any, name: string, subtitle?: string | null | undefined, description?: string | null | undefined }>, fitnessBenchmarkCategories: Array<{ __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string }>, fitnessBenchmarks: Array<{ __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, FitnessBenchmarkCategory: { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string } }>, fitnessBenchmarkWorkouts: Array<{ __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number> }> } };
+export type CoreDataQuery = { __typename?: 'Query', coreData: { __typename: 'CoreData', bodyAreas: Array<{ __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower }>, equipment: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, moveTypes: Array<{ __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }>, workoutGoals: Array<{ __typename: 'WorkoutGoal', id: string, name: string, description: string, hexColor: string }>, workoutSectionTypes: Array<{ __typename: 'WorkoutSectionType', id: string, name: string, subtitle: string, description: string, validRepTypes: Array<WorkoutMoveRepType> }>, standardMoves: Array<{ __typename: 'Move', id: string, archived: boolean, name: string, searchTerms?: string | null | undefined, description?: string | null | undefined, demoVideoUri?: string | null | undefined, demoVideoThumbUri?: string | null | undefined, scope: MoveScope, validRepTypes: Array<WorkoutMoveRepType>, MoveType: { __typename: 'MoveType', id: string, name: string, description?: string | null | undefined, imageUri?: string | null | undefined }, BodyAreaMoveScores: Array<{ __typename?: 'BodyAreaMoveScore', score: number, BodyArea: { __typename: 'BodyArea', id: string, name: string, altNames?: string | null | undefined, frontBack: BodyAreaFrontBack, upperLower: BodyAreaUpperLower } }>, RequiredEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }>, SelectableEquipments: Array<{ __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean }> }>, progressWidgets: Array<{ __typename: 'ProgressWidget', id: string, createdAt: any, name: string, subtitle?: string | null | undefined, description?: string | null | undefined }>, fitnessBenchmarkCategories: Array<{ __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string }> } };
 
 export type CreateEquipmentMutationVariables = Exact<{
   data: CreateEquipmentInput;
@@ -2967,19 +3009,29 @@ export type UpdateEquipmentMutationVariables = Exact<{
 
 export type UpdateEquipmentMutation = { __typename?: 'Mutation', updateEquipment?: { __typename: 'Equipment', id: string, name: string, altNames?: string | null | undefined, loadAdjustable: boolean } | null | undefined };
 
+export type AdminStandardFitnessBenchmarkWorkoutsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminStandardFitnessBenchmarkWorkoutsQuery = { __typename?: 'Query', adminStandardFitnessBenchmarkWorkouts: Array<{ __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description?: string | null | undefined, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number>, FitnessBenchmarkWorkoutScores?: Array<{ __typename: 'FitnessBenchmarkWorkoutScore', id: string, createdAt: any, completedOn: any, score: number, note?: string | null | undefined }> | null | undefined }> };
+
+export type AdminStandardFitnessBenchmarksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminStandardFitnessBenchmarksQuery = { __typename?: 'Query', adminStandardFitnessBenchmarks: Array<{ __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description?: string | null | undefined, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, FitnessBenchmarkCategory: { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string }, FitnessBenchmarkScores?: Array<{ __typename: 'FitnessBenchmarkScore', id: string, createdAt: any, completedOn: any, score: number, note?: string | null | undefined, videoUri?: string | null | undefined, videoThumbUri?: string | null | undefined }> | null | undefined }> };
+
 export type CreateFitnessBenchmarkMutationVariables = Exact<{
   data: CreateFitnessBenchmarkInput;
 }>;
 
 
-export type CreateFitnessBenchmarkMutation = { __typename?: 'Mutation', createFitnessBenchmark: { __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, FitnessBenchmarkCategory: { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string } } };
+export type CreateFitnessBenchmarkMutation = { __typename?: 'Mutation', createFitnessBenchmark: { __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description?: string | null | undefined, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, FitnessBenchmarkCategory: { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string } } };
 
 export type CreateFitnessBenchmarkWorkoutMutationVariables = Exact<{
   data: CreateFitnessBenchmarkWorkoutInput;
 }>;
 
 
-export type CreateFitnessBenchmarkWorkoutMutation = { __typename?: 'Mutation', createFitnessBenchmarkWorkout: { __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number> } };
+export type CreateFitnessBenchmarkWorkoutMutation = { __typename?: 'Mutation', createFitnessBenchmarkWorkout: { __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description?: string | null | undefined, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number> } };
 
 export type DeleteFitnessBenchmarkMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -3000,14 +3052,14 @@ export type UpdateFitnessBenchmarkWorkoutMutationVariables = Exact<{
 }>;
 
 
-export type UpdateFitnessBenchmarkWorkoutMutation = { __typename?: 'Mutation', updateFitnessBenchmarkWorkout: { __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number> } };
+export type UpdateFitnessBenchmarkWorkoutMutation = { __typename?: 'Mutation', updateFitnessBenchmarkWorkout: { __typename: 'FitnessBenchmarkWorkout', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkWorkoutScoreType, name: string, description?: string | null | undefined, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, rounds: number, moveDescriptions: Array<string>, pointsForMoveCompleted: Array<number>, FitnessBenchmarkWorkoutScores?: Array<{ __typename: 'FitnessBenchmarkWorkoutScore', id: string, createdAt: any, completedOn: any, score: number, note?: string | null | undefined }> | null | undefined } };
 
 export type UpdateFitnessBenchmarkMutationVariables = Exact<{
   data: UpdateFitnessBenchmarkInput;
 }>;
 
 
-export type UpdateFitnessBenchmarkMutation = { __typename?: 'Mutation', updateFitnessBenchmark: { __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description: string, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, FitnessBenchmarkCategory: { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string } } };
+export type UpdateFitnessBenchmarkMutation = { __typename?: 'Mutation', updateFitnessBenchmark: { __typename: 'FitnessBenchmark', id: string, createdAt: any, scope: FitnessBenchmarkScope, type: FitnessBenchmarkScoreType, name: string, description?: string | null | undefined, instructions?: string | null | undefined, instructionalVideoUri?: string | null | undefined, instructionalVideoThumbUri?: string | null | undefined, FitnessBenchmarkCategory: { __typename: 'FitnessBenchmarkCategory', id: string, createdAt: any, name: string, description: string }, FitnessBenchmarkScores?: Array<{ __typename: 'FitnessBenchmarkScore', id: string, createdAt: any, completedOn: any, score: number, note?: string | null | undefined, videoUri?: string | null | undefined, videoThumbUri?: string | null | undefined }> | null | undefined } };
 
 export type CreateMoveMutationVariables = Exact<{
   data: CreateMoveInput;
@@ -3758,15 +3810,6 @@ export const CoreDataDocument = gql`
     fitnessBenchmarkCategories {
       ...FitnessBenchmarkCategory
     }
-    fitnessBenchmarks {
-      ...FitnessBenchmark
-      FitnessBenchmarkCategory {
-        ...FitnessBenchmarkCategory
-      }
-    }
-    fitnessBenchmarkWorkouts {
-      ...FitnessBenchmarkWorkout
-    }
   }
 }
     ${BodyAreaFragmentDoc}
@@ -3776,9 +3819,7 @@ ${WorkoutGoalFragmentDoc}
 ${WorkoutSectionTypeFragmentDoc}
 ${MoveFragmentDoc}
 ${ProgressWidgetFragmentDoc}
-${FitnessBenchmarkCategoryFragmentDoc}
-${FitnessBenchmarkFragmentDoc}
-${FitnessBenchmarkWorkoutFragmentDoc}`;
+${FitnessBenchmarkCategoryFragmentDoc}`;
 
 /**
  * __useCoreDataQuery__
@@ -3872,6 +3913,86 @@ export function useUpdateEquipmentMutation(baseOptions?: Apollo.MutationHookOpti
 export type UpdateEquipmentMutationHookResult = ReturnType<typeof useUpdateEquipmentMutation>;
 export type UpdateEquipmentMutationResult = Apollo.MutationResult<UpdateEquipmentMutation>;
 export type UpdateEquipmentMutationOptions = Apollo.BaseMutationOptions<UpdateEquipmentMutation, UpdateEquipmentMutationVariables>;
+export const AdminStandardFitnessBenchmarkWorkoutsDocument = gql`
+    query adminStandardFitnessBenchmarkWorkouts {
+  adminStandardFitnessBenchmarkWorkouts {
+    ...FitnessBenchmarkWorkout
+    FitnessBenchmarkWorkoutScores {
+      ...FitnessBenchmarkWorkoutScore
+    }
+  }
+}
+    ${FitnessBenchmarkWorkoutFragmentDoc}
+${FitnessBenchmarkWorkoutScoreFragmentDoc}`;
+
+/**
+ * __useAdminStandardFitnessBenchmarkWorkoutsQuery__
+ *
+ * To run a query within a React component, call `useAdminStandardFitnessBenchmarkWorkoutsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminStandardFitnessBenchmarkWorkoutsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminStandardFitnessBenchmarkWorkoutsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminStandardFitnessBenchmarkWorkoutsQuery(baseOptions?: Apollo.QueryHookOptions<AdminStandardFitnessBenchmarkWorkoutsQuery, AdminStandardFitnessBenchmarkWorkoutsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminStandardFitnessBenchmarkWorkoutsQuery, AdminStandardFitnessBenchmarkWorkoutsQueryVariables>(AdminStandardFitnessBenchmarkWorkoutsDocument, options);
+      }
+export function useAdminStandardFitnessBenchmarkWorkoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminStandardFitnessBenchmarkWorkoutsQuery, AdminStandardFitnessBenchmarkWorkoutsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminStandardFitnessBenchmarkWorkoutsQuery, AdminStandardFitnessBenchmarkWorkoutsQueryVariables>(AdminStandardFitnessBenchmarkWorkoutsDocument, options);
+        }
+export type AdminStandardFitnessBenchmarkWorkoutsQueryHookResult = ReturnType<typeof useAdminStandardFitnessBenchmarkWorkoutsQuery>;
+export type AdminStandardFitnessBenchmarkWorkoutsLazyQueryHookResult = ReturnType<typeof useAdminStandardFitnessBenchmarkWorkoutsLazyQuery>;
+export type AdminStandardFitnessBenchmarkWorkoutsQueryResult = Apollo.QueryResult<AdminStandardFitnessBenchmarkWorkoutsQuery, AdminStandardFitnessBenchmarkWorkoutsQueryVariables>;
+export const AdminStandardFitnessBenchmarksDocument = gql`
+    query adminStandardFitnessBenchmarks {
+  adminStandardFitnessBenchmarks {
+    ...FitnessBenchmark
+    FitnessBenchmarkCategory {
+      ...FitnessBenchmarkCategory
+    }
+    FitnessBenchmarkScores {
+      ...FitnessBenchmarkScore
+    }
+  }
+}
+    ${FitnessBenchmarkFragmentDoc}
+${FitnessBenchmarkCategoryFragmentDoc}
+${FitnessBenchmarkScoreFragmentDoc}`;
+
+/**
+ * __useAdminStandardFitnessBenchmarksQuery__
+ *
+ * To run a query within a React component, call `useAdminStandardFitnessBenchmarksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminStandardFitnessBenchmarksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminStandardFitnessBenchmarksQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminStandardFitnessBenchmarksQuery(baseOptions?: Apollo.QueryHookOptions<AdminStandardFitnessBenchmarksQuery, AdminStandardFitnessBenchmarksQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminStandardFitnessBenchmarksQuery, AdminStandardFitnessBenchmarksQueryVariables>(AdminStandardFitnessBenchmarksDocument, options);
+      }
+export function useAdminStandardFitnessBenchmarksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminStandardFitnessBenchmarksQuery, AdminStandardFitnessBenchmarksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminStandardFitnessBenchmarksQuery, AdminStandardFitnessBenchmarksQueryVariables>(AdminStandardFitnessBenchmarksDocument, options);
+        }
+export type AdminStandardFitnessBenchmarksQueryHookResult = ReturnType<typeof useAdminStandardFitnessBenchmarksQuery>;
+export type AdminStandardFitnessBenchmarksLazyQueryHookResult = ReturnType<typeof useAdminStandardFitnessBenchmarksLazyQuery>;
+export type AdminStandardFitnessBenchmarksQueryResult = Apollo.QueryResult<AdminStandardFitnessBenchmarksQuery, AdminStandardFitnessBenchmarksQueryVariables>;
 export const CreateFitnessBenchmarkDocument = gql`
     mutation createFitnessBenchmark($data: CreateFitnessBenchmarkInput!) {
   createFitnessBenchmark(data: $data) {
@@ -4008,9 +4129,13 @@ export const UpdateFitnessBenchmarkWorkoutDocument = gql`
     mutation updateFitnessBenchmarkWorkout($data: UpdateFitnessBenchmarkWorkoutInput!) {
   updateFitnessBenchmarkWorkout(data: $data) {
     ...FitnessBenchmarkWorkout
+    FitnessBenchmarkWorkoutScores {
+      ...FitnessBenchmarkWorkoutScore
+    }
   }
 }
-    ${FitnessBenchmarkWorkoutFragmentDoc}`;
+    ${FitnessBenchmarkWorkoutFragmentDoc}
+${FitnessBenchmarkWorkoutScoreFragmentDoc}`;
 export type UpdateFitnessBenchmarkWorkoutMutationFn = Apollo.MutationFunction<UpdateFitnessBenchmarkWorkoutMutation, UpdateFitnessBenchmarkWorkoutMutationVariables>;
 
 /**
@@ -4044,10 +4169,14 @@ export const UpdateFitnessBenchmarkDocument = gql`
     FitnessBenchmarkCategory {
       ...FitnessBenchmarkCategory
     }
+    FitnessBenchmarkScores {
+      ...FitnessBenchmarkScore
+    }
   }
 }
     ${FitnessBenchmarkFragmentDoc}
-${FitnessBenchmarkCategoryFragmentDoc}`;
+${FitnessBenchmarkCategoryFragmentDoc}
+${FitnessBenchmarkScoreFragmentDoc}`;
 export type UpdateFitnessBenchmarkMutationFn = Apollo.MutationFunction<UpdateFitnessBenchmarkMutation, UpdateFitnessBenchmarkMutationVariables>;
 
 /**

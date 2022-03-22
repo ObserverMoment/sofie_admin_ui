@@ -1,5 +1,5 @@
-mutation updateFitnessBenchmark($data: UpdateFitnessBenchmarkInput!) {
-  updateFitnessBenchmark(data: $data) {
+query adminStandardFitnessBenchmarks {
+  adminStandardFitnessBenchmarks {
     ...FitnessBenchmark
     FitnessBenchmarkCategory {
       ...FitnessBenchmarkCategory
