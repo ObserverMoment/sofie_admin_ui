@@ -1,6 +1,6 @@
+import { format } from 'date-fns'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import { UserAvatarContainer } from '../../../components/cardsAndTags/userAvatar'
 import { LoadingDots } from '../../../components/loadingIndicators'
 import { showToast } from '../../../components/notifications'
 import AdminActionsUI from '../../../components/public-content/clubDetails.tsx/adminActionsUI'
@@ -14,6 +14,7 @@ import {
   Padding,
   Spacer,
   SubTitle,
+  TinyText,
   Title,
 } from '../../../components/styled-components/styled'
 import {
@@ -77,6 +78,12 @@ export default function ClubDetails() {
                 <SubTitle>{club.location}</SubTitle>
               </Padding>
             )}
+
+            <Padding padding="0 0 8px 0">
+              <TinyText>
+                Created on {format(new Date(club.createdAt), 'PPP')}
+              </TinyText>
+            </Padding>
 
             {club.description && (
               <Padding padding="0 0 8px 0">

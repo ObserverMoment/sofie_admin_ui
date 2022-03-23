@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { UserAvatarContainer } from '../../../components/cardsAndTags/userAvatar'
@@ -16,6 +17,7 @@ import {
   Padding,
   Spacer,
   SubTitle,
+  TinyText,
   Title,
 } from '../../../components/styled-components/styled'
 import {
@@ -67,11 +69,6 @@ export default function WorkoutPlanDetails() {
   } else {
     const workoutPlan = data.adminPublicWorkoutPlanById
 
-    console.log('workoutPlan.WorkoutPlanDays.length')
-    console.log(workoutPlan.WorkoutPlanDays.length)
-
-    console.log(workoutPlan.WorkoutPlanDays.map((o) => o.dayNumber))
-
     return (
       <div>
         <FlexBox direction="row">
@@ -93,7 +90,12 @@ export default function WorkoutPlanDetails() {
                   />
                 </Padding>
               )}
-              <SubTitle>{workoutPlan.User.displayName}</SubTitle>
+              <FlexBox padding="0 8px 0 0">
+                <SubTitle>{workoutPlan.User.displayName}</SubTitle>
+                <TinyText>
+                  Created on {format(new Date(workoutPlan.createdAt), 'PPP')}
+                </TinyText>
+              </FlexBox>
             </FlexBox>
 
             <FlexBox direction="row" padding="0 0 6px 0">
