@@ -1,9 +1,7 @@
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import {
-  UserAvatar,
-  UserAvatarContainer,
-} from '../../../components/cardsAndTags/userAvatar'
+import { format } from 'date-fns'
+import { UserAvatarContainer } from '../../../components/cardsAndTags/userAvatar'
 import { WorkoutTag } from '../../../components/cardsAndTags/workoutTag'
 import { TagIcon, TargetIcon } from '../../../components/icons'
 import { LoadingDots } from '../../../components/loadingIndicators'
@@ -19,6 +17,7 @@ import {
   Padding,
   Spacer,
   SubTitle,
+  TinyText,
   Title,
 } from '../../../components/styled-components/styled'
 import {
@@ -86,7 +85,12 @@ export default function WorkoutDetails() {
                   />
                 </Padding>
               )}
-              <SubTitle>{workout.User.displayName}</SubTitle>
+              <FlexBox padding="0 8px 0 0">
+                <SubTitle>{workout.User.displayName}</SubTitle>
+                <TinyText>
+                  Created on {format(new Date(workout.createdAt), 'PPP')}
+                </TinyText>
+              </FlexBox>
             </FlexBox>
 
             {workout.description && (
