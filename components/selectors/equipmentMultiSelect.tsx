@@ -3,12 +3,13 @@ import styled from 'styled-components'
 import { CloseCircleIcon, PlusIcon } from '../icons'
 import { LoadingDots } from '../loadingIndicators'
 import { showToast } from '../notifications'
-import { FlexBox, MainText, Padding, Spacer } from '../styled-components/styled'
 import equal from 'deep-equal'
-import { DarkButton } from '../styled-components/buttons'
+import { DarkButton } from '../../styles/buttons'
 import Modal from '../layout/modal'
-import { ClickableHighlightedBox } from '../styled-components/cards'
+import { ClickableHighlightedBox } from '../../styles/cards'
 import { Equipment, useCoreDataQuery } from '../../graphql/generated_types'
+import { FlexBox, Padding, Spacer } from '../../styles/layout'
+import { MainText } from '../../styles/text'
 
 //// Display Elements - shows already selected items in a simple UI with a button to open the selector ////
 //// Usually what the user will see first - before they open the selector if they need to make edits

@@ -2,13 +2,9 @@ import router from 'next/router'
 import styled from 'styled-components'
 import { PUBLIC_CONTENT_BASE_URL } from '../../../constants'
 import { Workout, WorkoutPlanDay } from '../../../graphql/generated_types'
+import { FlexBox, Spacer } from '../../../styles/layout'
+import { MainText, TinyText } from '../../../styles/text'
 import { ChevronIcon } from '../../icons'
-import {
-  FlexBox,
-  MainText,
-  Spacer,
-  TinyText,
-} from '../../styled-components/styled'
 
 interface WorkoutOnDayUIProps {
   workout: Workout

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { useTable, useSortBy } from 'react-table'
 import styled from 'styled-components'
 import { SortIcon } from './icons'
-import { FlexBox, Spacer } from './styled-components/styled'
+import { FlexBox, Spacer } from '../styles/layout'
 
 const StyledTable = styled.table`
   border-radius: 6px;

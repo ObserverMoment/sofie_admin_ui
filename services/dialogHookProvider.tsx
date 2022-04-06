@@ -1,14 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { MyButton } from '../components/styled-components/buttons'
-import {
-  FlexBox,
-  MainText,
-  Padding,
-  Spacer,
-  Title,
-} from '../components/styled-components/styled'
+import { MyButton } from '../styles/buttons'
+import { FlexBox, Spacer } from '../styles/layout'
+import { MainText, Title } from '../styles/text'
 
 // https://codesandbox.io/s/github/metamodal/blog/tree/master/control-a-dialog-box-asynchronously-using-react-hooks/example/final?file=/src/ConfirmationDialog.jsx
 

@@ -2,8 +2,6 @@ import React from 'react'
 import { SuccessIcon } from '../icons'
 import { LoadingDots } from '../loadingIndicators'
 import { showToast } from '../notifications'
-import { DestructiveButton, LightButton } from '../styled-components/buttons'
-import { FlexBox, MainText, Spacer } from '../styled-components/styled'
 import FileUploader from '../forms/fileUploader'
 import RadioButtons from '../forms/inputs/radioButtons'
 import TextAreaInput from '../forms/inputs/textAreaInput'
@@ -15,8 +13,6 @@ import {
   SubmitButton,
 } from '../forms/styled'
 import { useFormState } from '../forms/useFormState'
-import { defaultVideoEncoding } from '../../lib/uploadcare'
-import { useConfirmationDialog } from '../../lib/dialogHookProvider'
 import {
   CoreDataDocument,
   CreateFitnessBenchmarkInput,
@@ -28,6 +24,11 @@ import {
   useCreateFitnessBenchmarkMutation,
   useUpdateFitnessBenchmarkMutation,
 } from '../../graphql/generated_types'
+import { useConfirmationDialog } from '../../services/dialogHookProvider'
+import { FlexBox, Spacer } from '../../styles/layout'
+import { MainText } from '../../styles/text'
+import { DestructiveButton, LightButton } from '../../styles/buttons'
+import { defaultVideoEncoding } from '../../services/uploadcare'
 
 interface CreateEditFitnessBenchmarkProps {
   readonly fitnessBenchmark?: FitnessBenchmark

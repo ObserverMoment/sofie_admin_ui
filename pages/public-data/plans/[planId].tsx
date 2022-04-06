@@ -8,18 +8,7 @@ import { LoadingDots } from '../../../components/loadingIndicators'
 import { showToast } from '../../../components/notifications'
 import AdminActionsUI from '../../../components/public-content/workoutPlanDetails.tsx/adminActionsUI'
 import WorkoutPlanWeekUI from '../../../components/public-content/workoutPlanDetails.tsx/workoutPlanWeekUI'
-import { BackButton } from '../../../components/styled-components/buttons'
-import {
-  ElevatedBox,
-  FlexBox,
-  MainText,
-  MaxSizedBox,
-  Padding,
-  Spacer,
-  SubTitle,
-  TinyText,
-  Title,
-} from '../../../components/styled-components/styled'
+import { BackButton } from '../../../styles/buttons'
 import {
   AdminPublicWorkoutPlanCountsDocument,
   AdminPublicWorkoutPlanSummariesDocument,
@@ -32,7 +21,15 @@ import {
   UploadcareAudioPlayerWrapper,
   UploadcareImageWrapper,
   UploadcareVideoPlayerWrapper,
-} from '../../../lib/uploadcareComponents'
+} from '../../../services/uploadcareComponents'
+import {
+  ElevatedBox,
+  FlexBox,
+  MaxSizedBox,
+  Padding,
+  Spacer,
+} from '../../../styles/layout'
+import { MainText, SubTitle, TinyText, Title } from '../../../styles/text'
 
 interface WorkoutsByPlanDayObject {
   [dayNumber: number]: WorkoutPlanDay

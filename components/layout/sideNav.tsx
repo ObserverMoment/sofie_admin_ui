@@ -2,7 +2,10 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
-import { signOut } from '../../lib/firebaseClient'
+import { signOut } from '../../services/firebaseClient'
+import { MyLink } from '../../styles/buttons'
+import { FlexBox, Spacer } from '../../styles/layout'
+import { TinyText, Title } from '../../styles/text'
 import {
   ContentIcon,
   DataIcon,
@@ -12,8 +15,6 @@ import {
   NewsFeedIcon,
   UserAvatarIcon,
 } from '../icons'
-import { MyLink } from '../styled-components/buttons'
-import { FlexBox, Spacer, TinyText, Title } from '../styled-components/styled'
 
 //// Routing Data ////
 const primaryRoutes = [
@@ -37,7 +38,6 @@ const SideNavContainer = styled.div`
   height: 100vh;
   width: ${(props) => props.theme.spacing.sideNavWidth};
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-  /* background-color: ${(props) => props.theme.colors.pureWhite}; */
 `
 
 const PrimaryNavContainer = styled.nav`

@@ -4,14 +4,8 @@ import CreateEditMove from '../../components/contentCRUD/createEditMove'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingDots } from '../../components/loadingIndicators'
 import { showToast } from '../../components/notifications'
-import {
-  FlexBox,
-  Padding,
-  theme,
-  Title,
-} from '../../components/styled-components/styled'
 import Modal from '../../components/layout/modal'
-import { CreateButton } from '../../components/styled-components/buttons'
+import { CreateButton } from '../../styles/buttons'
 import {
   BodyAreaMoveScore,
   Equipment,
@@ -19,6 +13,9 @@ import {
   useCoreDataQuery,
 } from '../../graphql/generated_types'
 import Breadcrumbs from '../../components/breadcrumbs'
+import { theme } from '../../styles/theme'
+import { FlexBox, Padding } from '../../styles/layout'
+import { Title } from '../../styles/text'
 
 const ScoreTotal = styled.div`
   padding: 3px;

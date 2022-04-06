@@ -1,17 +1,14 @@
 import React, { useState } from 'react'
 import { LoadingDots } from '../../components/loadingIndicators'
 import InteractiveTable from '../../components/interactiveTable'
-import {
-  FlexBox,
-  Padding,
-  Title,
-} from '../../components/styled-components/styled'
 import Modal from '../../components/layout/modal'
 import CreateEditEquipment from '../../components/contentCRUD/createEditEquipment'
 import { showToast } from '../../components/notifications'
-import { CreateButton } from '../../components/styled-components/buttons'
+import { CreateButton } from '../../styles/buttons'
 import { Equipment, useCoreDataQuery } from '../../graphql/generated_types'
 import Breadcrumbs from '../../components/breadcrumbs'
+import { FlexBox, Padding } from '../../styles/layout'
+import { Title } from '../../styles/text'
 
 export default function EquipmentData() {
   const [{ isOpen, title }, setModalState] = useState({

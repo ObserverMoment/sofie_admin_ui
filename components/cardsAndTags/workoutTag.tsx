@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
-import { MainText, Padding } from '../styled-components/styled'
-import { Tag } from '../styled-components/tags'
+import { Padding } from '../../styles/layout'
+import { Tag } from '../../styles/tags'
+import { MainText } from '../../styles/text'
 
 interface WorkoutTagProps {
   tag: string

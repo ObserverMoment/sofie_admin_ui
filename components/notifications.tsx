@@ -1,6 +1,7 @@
 import React from 'react'
 import { toast } from 'react-toastify'
-import { FlexBox, MainText, theme } from './styled-components/styled'
+import { MainText } from '../styles/text'
+import { theme } from '../styles/theme'
 
 type ToastType = 'Success' | 'Info' | 'Error'
 const colors = {

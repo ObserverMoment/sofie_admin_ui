@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import { CloseWindowIcon } from '../icons'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useOnClickOutside } from '../../lib/utils'
-import { LightButton } from '../styled-components/buttons'
-import { MainText } from '../styled-components/styled'
+import { useOnClickOutside } from '../../services/utils'
+import { LightButton } from '../../styles/buttons'
+import { MainText } from '../../styles/text'
 
 export const ModalOverlay = styled(motion.div)`
   position: fixed;

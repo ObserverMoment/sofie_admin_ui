@@ -4,8 +4,6 @@ import { LoadingDots } from '../loadingIndicators'
 import { showToast } from '../notifications'
 import { SelectedBodyAreaMoveScores } from '../selectors/bodyAreaMoveScores'
 import { SelectedEquipmentDisplay } from '../selectors/equipmentMultiSelect'
-import { DestructiveButton, LightButton } from '../styled-components/buttons'
-import { FlexBox, MainText, Spacer } from '../styled-components/styled'
 import FileUploader from '../forms/fileUploader'
 import CheckBoxes from '../forms/inputs/checkBoxes'
 import RadioButtons from '../forms/inputs/radioButtons'
@@ -19,8 +17,6 @@ import {
   SubmitButton,
 } from '../forms/styled'
 import { useFormState } from '../forms/useFormState'
-import { defaultVideoEncoding } from '../../lib/uploadcare'
-import { useConfirmationDialog } from '../../lib/dialogHookProvider'
 import {
   BodyAreaMoveScore,
   CoreDataDocument,
@@ -34,6 +30,11 @@ import {
   useUpdateMoveMutation,
   WorkoutMoveRepType,
 } from '../../graphql/generated_types'
+import { useConfirmationDialog } from '../../services/dialogHookProvider'
+import { FlexBox, Spacer } from '../../styles/layout'
+import { MainText } from '../../styles/text'
+import { DestructiveButton, LightButton } from '../../styles/buttons'
+import { defaultVideoEncoding } from '../../services/uploadcare'
 
 interface CreateEditMoveProps {
   readonly move?: Move

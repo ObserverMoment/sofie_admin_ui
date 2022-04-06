@@ -2,14 +2,9 @@ import { WorkoutSection } from '../../../graphql/generated_types'
 import {
   UploadcareAudioPlayerWrapper,
   UploadcareVideoPlayerWrapper,
-} from '../../../lib/uploadcareComponents'
-import {
-  ElevatedBox,
-  FlexBox,
-  MainText,
-  Spacer,
-  Title,
-} from '../../styled-components/styled'
+} from '../../../services/uploadcareComponents'
+import { ElevatedBox, FlexBox, Spacer } from '../../../styles/layout'
+import { MainText, Title } from '../../../styles/text'
 import WorkoutSetUI from './workoutSetUI'
 
 interface WorkoutSectionUIProps {
@@ -32,7 +27,7 @@ const WorkoutSectionUI: React.FC<WorkoutSectionUIProps> = ({
         />
       )}
     </FlexBox>
-    <Spacer bottom="10px"></Spacer>
+    <Spacer bottom="10px" />
 
     {workoutSection.name && <Title>{workoutSection.name}</Title>}
     <Title fontSize="16px">{workoutSection.WorkoutSectionType.name}</Title>

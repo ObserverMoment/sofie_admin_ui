@@ -4,20 +4,15 @@ import CreateEditFitnessBenchmark from '../../components/contentCRUD/createEditF
 import ErrorMessage from '../../components/errorMessage'
 import Modal from '../../components/layout/modal'
 import { LoadingDots } from '../../components/loadingIndicators'
-import { CreateButton } from '../../components/styled-components/buttons'
-import {
-  FlexBox,
-  MainText,
-  Padding,
-  theme,
-  TinyText,
-  Title,
-} from '../../components/styled-components/styled'
+import { CreateButton } from '../../styles/buttons'
 import {
   FitnessBenchmark,
   FitnessBenchmarkCategory,
   useAdminStandardFitnessBenchmarksQuery,
 } from '../../graphql/generated_types'
+import { FlexBox, Padding } from '../../styles/layout'
+import { MainText, TinyText, Title } from '../../styles/text'
+import { theme } from '../../styles/theme'
 
 export default function FitnessBenchmarks() {
   const [{ isOpen, title }, setModalState] = useState({

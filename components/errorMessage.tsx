@@ -1,11 +1,6 @@
 import React from 'react'
-import { ErrorIcon } from './icons'
-import {
-  ElevatedBox,
-  FlexBox,
-  MainText,
-  Spacer,
-} from './styled-components/styled'
+import { ElevatedBox, FlexBox, Spacer } from '../styles/layout'
+import { MainText } from '../styles/text'
 
 const ErrorMessage = ({ message }: { message: string }) => (
   <ElevatedBox direction="row" justify="center">

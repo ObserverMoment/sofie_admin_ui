@@ -1,12 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { FlexBox, Spacer } from '../../../styles/layout'
+import { MainText } from '../../../styles/text'
+import { theme } from '../../../styles/theme'
 import { DeleteIcon } from '../../icons'
-import {
-  FlexBox,
-  MainText,
-  Spacer,
-  theme,
-} from '../../styled-components/styled'
 import TextInput from './textInput'
 
 interface TagsInputEditorProps {

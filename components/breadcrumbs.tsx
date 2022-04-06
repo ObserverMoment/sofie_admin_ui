@@ -2,7 +2,8 @@ import Link from 'next/link'
 import { NextRouter, useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
-import { FlexBox, Spacer, SubTitle, Title } from './styled-components/styled'
+import { FlexBox, Spacer } from '../styles/layout'
+import { SubTitle, Title } from '../styles/text'
 
 export interface BreadCrumbData {
   title: string

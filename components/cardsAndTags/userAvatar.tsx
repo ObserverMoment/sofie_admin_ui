@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 import UploadcareImage from '@uploadcare/nextjs-loader'
+import { ErrorIcon } from '../icons'
 import {
   UploadcareApiStatus,
   useGetUploadcareUrl,
-} from '../../lib/uploadcareComponents'
-import { ErrorIcon } from '../icons'
+} from '../../services/uploadcareComponents'
 
 interface UserAvatarProps {
   src?: string

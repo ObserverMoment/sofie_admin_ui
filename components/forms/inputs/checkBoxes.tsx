@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { FlexBox, MainText, Spacer } from '../../styled-components/styled'
 import equal from 'deep-equal'
+import { MainText } from '../../../styles/text'
+import { FlexBox } from '../../../styles/layout'
 
 interface CheckBoxesProps<T> {
   direction?: 'row' | 'column'

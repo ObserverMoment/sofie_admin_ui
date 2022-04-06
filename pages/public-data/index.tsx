@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import PublicClubsDashboard from '../../components/public-content/dashboard/clubs'
 import PublicWorkoutPlansDashboard from '../../components/public-content/dashboard/workoutPlans'
 import PublicWorkoutsDashboard from '../../components/public-content/dashboard/workouts'
-import { FlexBox, Title } from '../../components/styled-components/styled'
+import { FlexBox } from '../../styles/layout'
+import { Title } from '../../styles/text'
 
 export default function Overview() {
   return (

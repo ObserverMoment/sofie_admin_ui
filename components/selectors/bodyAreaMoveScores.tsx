@@ -7,20 +7,15 @@ import {
   Move,
   useCoreDataQuery,
 } from '../../graphql/generated_types'
+import { DarkButton, HighlightButton } from '../../styles/buttons'
+import { HighlightedBox } from '../../styles/cards'
+import { FlexBox, Padding, Spacer } from '../../styles/layout'
+import { MainText, Title } from '../../styles/text'
 import NumberInput from '../forms/inputs/numberInput'
 import { EditIcon } from '../icons'
 import Modal from '../layout/modal'
 import { LoadingDots } from '../loadingIndicators'
 import { showToast } from '../notifications'
-import { DarkButton, HighlightButton } from '../styled-components/buttons'
-import { HighlightedBox } from '../styled-components/cards'
-import {
-  FlexBox,
-  MainText,
-  Padding,
-  Spacer,
-  Title,
-} from '../styled-components/styled'
 
 //// Usually what the user will see first - before they open the selector if they need to make edits ////
 interface SelectedBodyAreaMoveScoresProps {

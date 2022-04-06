@@ -1,6 +1,6 @@
 import { PublicClubSummaryAdmin } from '../../graphql/generated_types'
-import { SummaryCard } from '../styled-components/cards'
-import { SubTitle } from '../styled-components/styled'
+import { SummaryCard } from '../../styles/cards'
+import { SubTitle } from '../../styles/text'
 
 interface ClubSummaryCardProps {
   club: PublicClubSummaryAdmin

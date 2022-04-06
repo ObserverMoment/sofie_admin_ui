@@ -1,22 +1,19 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { ApolloProvider } from '@apollo/client'
-import {
-  FlexBox,
-  MainContent,
-  PageContainer,
-  theme,
-} from '../components/styled-components/styled'
 import React from 'react'
 import Head from 'next/head'
 import { LogoMenuAndSideNav } from '../components/layout/sideNav'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
-import { createApolloClient } from '../lib/apolloClient'
-import { auth, signOut } from '../lib/firebaseClient'
+import { createApolloClient } from '../services/apolloClient'
+import { auth, signOut } from '../services/firebaseClient'
 import LoginModal from '../components/layout/loginModal'
-import { ConfirmationDialogProvider } from '../lib/dialogHookProvider'
+import { ConfirmationDialogProvider } from '../services/dialogHookProvider'
 import { LoadingDots } from '../components/loadingIndicators'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import { AppProps } from 'next/app'
+import { theme } from '../styles/theme'
+import { FlexBox, MainContent, PageContainer } from '../styles/layout'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -49,7 +46,7 @@ const apolloClient = createApolloClient()
 type AuthState = 'loading' | 'authed' | 'unauthed'
 type CacheState = 'shouldClear' | 'authed' | 'unauthed'
 
-export default function App({ Component, pageProps }) {
+export default function App({ Component, pageProps }: AppProps) {
   const [user, loading, error] = useAuthState(auth)
 
   if (loading) {
@@ -62,34 +59,6 @@ export default function App({ Component, pageProps }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Head>
-        <title>Sofie Admin</title>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&family=Nunito:wght@300;400;600;700&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
-        <link rel="manifest" href="/site.webmanifest" />
-      </Head>
       <GlobalStyle />
       <ApolloProvider client={apolloClient}>
         <ConfirmationDialogProvider>

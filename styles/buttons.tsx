@@ -2,8 +2,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
-import { ChevronIcon, PlusIcon } from '../icons'
-import { ColorTypes, FlexBox, MainText, Spacer, SubTitle } from './styled'
+import { ChevronIcon, PlusIcon } from '../components/icons'
+import { FlexBox, Spacer } from './layout'
+import { ColorTypes, MainText, SubTitle } from './text'
 
 //// Buttons ////
 const StyledAnchor = styled.a`

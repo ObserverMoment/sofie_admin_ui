@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { FlexBox, MainText, theme } from '../../styled-components/styled'
 import equal from 'deep-equal'
+import { theme } from '../../../styles/theme'
+import { MainText } from '../../../styles/text'
+import { FlexBox } from '../../../styles/layout'
 
 interface RadioButtonsProps<T> {
   direction?: 'row' | 'column'

@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 import {
   ApolloClient,
   createHttpLink,
-  gql,
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client'

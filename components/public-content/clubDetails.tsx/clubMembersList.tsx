@@ -3,16 +3,11 @@ import { UserAvatarData } from '../../../graphql/generated_types'
 import {
   UploadcareApiStatus,
   useGetUploadcareUrls,
-} from '../../../lib/uploadcareComponents'
+} from '../../../services/uploadcareComponents'
+import { FlexBox, Spacer } from '../../../styles/layout'
+import { MainText, TinyText, Title } from '../../../styles/text'
 import { UserAvatar } from '../../cardsAndTags/userAvatar'
 import { LoadingDots } from '../../loadingIndicators'
-import {
-  FlexBox,
-  MainText,
-  Spacer,
-  TinyText,
-  Title,
-} from '../../styled-components/styled'
 
 interface ClubMembersListUIProps {
   memberType: MemberType

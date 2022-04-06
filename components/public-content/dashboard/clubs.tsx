@@ -7,9 +7,9 @@ import {
   DashboardSectionNavItem,
   ObjectCountText,
 } from '../../../pages/public-data'
+import { SubTitle } from '../../../styles/text'
 import ErrorMessage from '../../errorMessage'
 import { LoadingDots } from '../../loadingIndicators'
-import { SubTitle } from '../../styled-components/styled'
 
 export default function PublicClubsDashboard() {
   const { loading, error, data } = useAdminPublicClubCountsQuery()

@@ -3,12 +3,8 @@ import {
   WorkoutSectionType,
   WorkoutSet,
 } from '../../../graphql/generated_types'
-import {
-  FlexBox,
-  MainText,
-  Padding,
-  TinyText,
-} from '../../styled-components/styled'
+import { FlexBox, Padding } from '../../../styles/layout'
+import { MainText, TinyText } from '../../../styles/text'
 import WorkoutMoveUI from './workoutMoveUI'
 
 interface WorkoutSetUIProps {

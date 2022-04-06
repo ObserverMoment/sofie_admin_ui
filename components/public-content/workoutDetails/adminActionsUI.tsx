@@ -3,11 +3,12 @@ import {
   PublicContentValidationStatus,
   WorkoutWithMetaDataAdmin,
 } from '../../../graphql/generated_types'
+import { FlexBox, SizedBox } from '../../../styles/layout'
+import { Title } from '../../../styles/text'
 import RadioButtons from '../../forms/inputs/radioButtons'
 import { TagsInputEditor } from '../../forms/inputs/tagsInputEditor'
 import { StyledInputGroup, StyledLabel } from '../../forms/styled'
 import { LoadingDots } from '../../loadingIndicators'
-import { FlexBox, SizedBox, Title } from '../../styled-components/styled'
 
 interface AdminActionsUIProps {
   workout: WorkoutWithMetaDataAdmin

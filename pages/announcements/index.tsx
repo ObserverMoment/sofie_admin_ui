@@ -1,8 +1,5 @@
-import {
-  FlexBox,
-  Padding,
-  Title,
-} from '../../components/styled-components/styled'
+import { FlexBox, Padding } from '../../styles/layout'
+import { Title } from '../../styles/text'
 
 export default function Overview() {
   return (

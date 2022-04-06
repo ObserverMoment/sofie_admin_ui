@@ -1,5 +1,6 @@
 import { WorkoutPlanDay } from '../../../graphql/generated_types'
-import { FlexBox, Padding, SubTitle } from '../../styled-components/styled'
+import { FlexBox, Padding } from '../../../styles/layout'
+import { SubTitle } from '../../../styles/text'
 import WorkoutPlanDayUI from './workoutPlanDayUI'
 
 interface WorkoutPlanWeekUIProps {

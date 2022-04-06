@@ -5,15 +5,11 @@ import {
   ElevatedRoundedAudio,
   ElevatedRoundedImage,
   ElevatedRoundedVideo,
-} from '../components/styled-components/media'
-import {
-  FlexBox,
-  Padding,
-  Spacer,
-  TinyText,
-} from '../components/styled-components/styled'
+} from '../styles/media'
 import { UserAvatarData } from '../graphql/generated_types'
 import { getFileUrlFromUuid } from './uploadcare'
+import { FlexBox, Padding, Spacer } from '../styles/layout'
+import { TinyText } from '../styles/text'
 
 interface UploadcareImageWrapperProps {
   uuid: string

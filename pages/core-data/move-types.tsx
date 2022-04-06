@@ -3,8 +3,8 @@ import Breadcrumbs from '../../components/breadcrumbs'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingDots } from '../../components/loadingIndicators'
-import { FlexBox, Padding } from '../../components/styled-components/styled'
 import { useCoreDataQuery } from '../../graphql/generated_types'
+import { FlexBox, Padding } from '../../styles/layout'
 
 export default function MoveTypes() {
   const { loading, error, data } = useCoreDataQuery()

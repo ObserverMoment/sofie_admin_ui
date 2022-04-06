@@ -3,13 +3,14 @@ import React from 'react'
 import styled from 'styled-components'
 import ErrorMessage from '../../components/errorMessage'
 import { LoadingDots } from '../../components/loadingIndicators'
-import { FlexBox, Title } from '../../components/styled-components/styled'
 import { CORE_DATA_BASE_URL } from '../../constants'
 import {
   useAdminStandardFitnessBenchmarksQuery,
   useAdminStandardFitnessBenchmarkWorkoutsQuery,
   useCoreDataQuery,
 } from '../../graphql/generated_types'
+import { FlexBox } from '../../styles/layout'
+import { Title } from '../../styles/text'
 
 export default function Overview() {
   const { loading, error, data } = useCoreDataQuery()

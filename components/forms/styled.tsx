@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React from 'react'
-import { FlexBox } from '../styled-components/styled'
 import { LoadingDots } from '../loadingIndicators'
+import { FlexBox } from '../../styles/layout'
 
 export const StyledForm = styled.form`
   padding: 16px 10px;

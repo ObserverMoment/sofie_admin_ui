@@ -3,13 +3,6 @@ import { UserAvatar } from '../../components/cardsAndTags/userAvatar'
 import { LoadingDots } from '../../components/loadingIndicators'
 import { showToast } from '../../components/notifications'
 import {
-  ElevatedBox,
-  FlexBox,
-  MainText,
-  Spacer,
-  Title,
-} from '../../components/styled-components/styled'
-import {
   useAdminAllUsersQuery,
   UserProfileScope,
   UserProfileSummary,
@@ -17,7 +10,9 @@ import {
 import {
   UploadcareApiStatus,
   useGetUploadcareUrls,
-} from '../../lib/uploadcareComponents'
+} from '../../services/uploadcareComponents'
+import { ElevatedBox, FlexBox, Spacer } from '../../styles/layout'
+import { MainText, Title } from '../../styles/text'
 
 export default function Overview() {
   const { loading, error, data } = useAdminAllUsersQuery()

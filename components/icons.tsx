@@ -1,5 +1,4 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Image from 'next/image'
 import {
   faUserCircle,
   faBullseye,
@@ -26,8 +25,9 @@ import {
   faChevronUp,
   faChevronDown,
 } from '@fortawesome/free-solid-svg-icons'
-import { ColorTypes, theme } from './styled-components/styled'
 import { SizeProp } from '@fortawesome/fontawesome-svg-core'
+import { ColorTypes } from '../styles/text'
+import { theme } from '../styles/theme'
 
 export const Logo = ({ size = 40, invert = false }) => (
   <img
@@ -38,6 +38,7 @@ export const Logo = ({ size = 40, invert = false }) => (
     style={invert ? { filter: 'invert(100%)' } : null}
   />
 )
+
 //// Icons ////
 interface ChenvronIconProps {
   size?: SizeProp

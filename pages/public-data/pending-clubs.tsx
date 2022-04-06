@@ -3,11 +3,8 @@ import Breadcrumbs from '../../components/breadcrumbs'
 import { ClubSummaryCard } from '../../components/cardsAndTags/clubSummaryCard'
 import { LoadingDots } from '../../components/loadingIndicators'
 import { showToast } from '../../components/notifications'
-import {
-  FlexBox,
-  MainText,
-  Padding,
-} from '../../components/styled-components/styled'
+import { FlexBox, Padding } from '../../styles/layout'
+import { MainText } from '../../styles/text'
 import { PUBLIC_CONTENT_BASE_URL } from '../../constants'
 import {
   PublicClubSummaryAdmin,

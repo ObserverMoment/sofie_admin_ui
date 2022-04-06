@@ -3,15 +3,16 @@ import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import ErrorMessage from '../errorMessage'
 import { Logo } from '../icons'
-import { FlexBox, Spacer, Title } from '../styled-components/styled'
 import {
   StyledForm,
   StyledInputGroup,
   StyledLabel,
   SubmitButton,
-} from '../forms/styled'
-import { signIn } from '../../lib/firebaseClient'
-import { StyledTextInput } from '../forms/inputs/textInput'
+} from './styled'
+import { StyledTextInput } from './inputs/textInput'
+import { signIn } from '../../services/firebaseClient'
+import { FlexBox, Spacer } from '../../styles/layout'
+import { Title } from '../../styles/text'
 
 interface LoginData {
   email: string

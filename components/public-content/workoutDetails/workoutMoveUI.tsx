@@ -3,13 +3,8 @@ import {
   WorkoutMove,
   WorkoutMoveRepType,
 } from '../../../graphql/generated_types'
-import {
-  FlexBox,
-  MainText,
-  Padding,
-  Spacer,
-  TinyText,
-} from '../../styled-components/styled'
+import { FlexBox, Padding, Spacer } from '../../../styles/layout'
+import { MainText, TinyText } from '../../../styles/text'
 
 interface WorkoutMoveUIProps {
   workoutMove: WorkoutMove

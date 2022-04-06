@@ -1,6 +1,6 @@
 import React from 'react'
 import { TailSpin, ThreeDots } from 'react-loading-icons'
-import { FlexBox, Padding } from './styled-components/styled'
+import { FlexBox, Padding } from '../styles/layout'
 
 export const LoadingSpinner = ({ size = 40 }) => (
   <FlexBox justify="center" align="center" width="100%" height="100%">

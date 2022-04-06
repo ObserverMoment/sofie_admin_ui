@@ -8,18 +8,7 @@ import { LoadingDots } from '../../../components/loadingIndicators'
 import { showToast } from '../../../components/notifications'
 import AdminActionsUI from '../../../components/public-content/workoutDetails/adminActionsUI'
 import WorkoutSectionUI from '../../../components/public-content/workoutDetails/workoutSectionUI'
-import { BackButton } from '../../../components/styled-components/buttons'
-import {
-  ElevatedBox,
-  FlexBox,
-  MainText,
-  MaxSizedBox,
-  Padding,
-  Spacer,
-  SubTitle,
-  TinyText,
-  Title,
-} from '../../../components/styled-components/styled'
+import { BackButton } from '../../../styles/buttons'
 import {
   AdminPublicWorkoutCountsDocument,
   AdminPublicWorkoutSummariesDocument,
@@ -31,7 +20,15 @@ import {
   UploadcareAudioPlayerWrapper,
   UploadcareImageWrapper,
   UploadcareVideoPlayerWrapper,
-} from '../../../lib/uploadcareComponents'
+} from '../../../services/uploadcareComponents'
+import {
+  ElevatedBox,
+  FlexBox,
+  MaxSizedBox,
+  Padding,
+  Spacer,
+} from '../../../styles/layout'
+import { MainText, SubTitle, TinyText, Title } from '../../../styles/text'
 
 export default function WorkoutDetails() {
   const router = useRouter()

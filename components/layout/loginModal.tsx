@@ -1,6 +1,6 @@
 import React from 'react'
 import { AnimatePresence } from 'framer-motion'
-import LoginForm from './loginForm'
+import LoginForm from '../forms/loginForm'
 import {
   containerVariant,
   ModalContainer,

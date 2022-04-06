@@ -3,7 +3,7 @@ import Breadcrumbs from '../../components/breadcrumbs'
 import ErrorMessage from '../../components/errorMessage'
 import InteractiveTable from '../../components/interactiveTable'
 import { LoadingDots } from '../../components/loadingIndicators'
-import { FlexBox, Padding } from '../../components/styled-components/styled'
+import { FlexBox, Padding } from '../../styles/layout'
 import { useCoreDataQuery } from '../../graphql/generated_types'
 
 export default function WorkoutTypes() {
